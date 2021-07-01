@@ -90,7 +90,7 @@ export default {
       tab: "/room",
       items: [
         { text: "Ледовые дворцы и арены", route: "/" },
-        { text: "Лиги и турниры", route: "/home" },
+        { text: "Лиги и турниры", route: "/league" },
         { text: "Детские турниры", route: "/about" },
         { text: "Раздевалка", route: "/room" },
         { text: "Скамейка запасных", route: "/danger" },

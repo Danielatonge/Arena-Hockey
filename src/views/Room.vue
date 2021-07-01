@@ -87,12 +87,17 @@
       <v-row dense class="mx-n4">
         <v-col cols="12" md="6" v-for="(item, i) in team_items" :key="i">
           <v-card color="transparent" elevation="0">
-            <div class="d-flex flex-no-wrap">
+            <div class="d-flex flex-no-wrap" @click="teamClicked()">
               <v-avatar class="ma-3" size="125" tile>
                 <v-img :src="require('../assets' + item + '.jpg')"></v-img>
               </v-avatar>
-              <v-card-text :data="`../assets${item}.jpg`">
-                <div class="body-1 blue--text mb-2">Москва</div>
+              <v-card-text>
+                <div
+                  class="body-1 blue--text mb-2"
+                  style="text-decoration: none"
+                >
+                  Москва
+                </div>
                 <div class="text-h5 mb-2">Название команды</div>
                 <div class="body-1 grey--text">Краткое описание</div>
               </v-card-text>
@@ -170,7 +175,7 @@
               <v-avatar class="ma-3" size="125" tile>
                 <v-img :src="require('../assets' + item + '.jpg')"></v-img>
               </v-avatar>
-              <v-card-text :data="`../assets${item}.jpg`">
+              <v-card-text>
                 <div class="text-h5 mb-2">Фамилия Имя Отчество</div>
                 <div class="body-1 blue--text mb-2">Возраст, город</div>
                 <div class="d-flex">
@@ -206,6 +211,9 @@ export default {
     showPlayer() {
       this.team_room = false;
       this.player_room = true;
+    },
+    teamClicked() {
+      this.$router.push({ path: "teamname" });
     },
   },
   data() {
@@ -244,7 +252,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+a div.v-card__text > div {
+  text-decoration: unset !important;
+}
 .banner-room {
   background: url("../assets/banner-room.jpg") no-repeat center center;
   background-size: cover;
