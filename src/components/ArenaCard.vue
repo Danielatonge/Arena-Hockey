@@ -1,5 +1,5 @@
 <template>
-  <v-card class="rounded-lg" elevation="0">
+  <v-card class="rounded-lg" :elevation="elevation" @mouseover="elevation='2'" @mouseout="elevation='0'">
     <v-img :src="require('../assets' + item + '.jpg')" height="200px">
       <v-container>
         <v-row class="ma-2">
@@ -18,10 +18,11 @@
         </v-row>
       </v-container>
     </v-img>
-
+    <router-link to="/arenaname" class="undo-link-default">
     <v-card-title class="pb-5"> Los Angeles Clippers </v-card-title>
 
     <v-card-subtitle> ул. Лермонтова, д. 14, пом. 3, г. Чита </v-card-subtitle>
+    </router-link>
   </v-card>
 </template>
 
@@ -33,6 +34,7 @@ export default {
   },
   data() {
     return {
+      elevation: 0,
       selected: false,
     };
   },

@@ -3,6 +3,8 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Room from "../views/Room.vue";
 import TeamName from "../views/TeamName.vue";
+import ArenaName from "../views/ArenaName.vue";
+import PaymentPortal from "../views/PaymentPortal.vue";
 
 Vue.use(VueRouter);
 
@@ -13,6 +15,16 @@ const routes = [
     component: Home,
   },
   {
+    path: "/arenaname",
+    name: "ArenaName",
+    component: ArenaName,
+  },
+  {
+    path: "/payment_portal",
+    name: "PaymentPortal",
+    component: PaymentPortal,
+  },
+  {
     path: "/room",
     name: "Room",
     component: Room,
@@ -21,13 +33,6 @@ const routes = [
     path: "/teamname",
     name: "TeamName",
     component: TeamName,
-  },
-  {
-    path: "/about",
-    name: "About",
-    component: function () {
-      return import(/* webpackChunkName: "about" */ "../views/About.vue");
-    },
   },
 ];
 

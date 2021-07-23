@@ -86,7 +86,7 @@
     <v-container class="mt-10">
       <p class="text-h5">Место проведения тренировок</p>
       <v-row dense class="mx-n4">
-        <v-col cols="12" lg="6">
+        <v-col cols="12" md="6">
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
               <div class="ma-3" width="282px" height="186px">
@@ -113,36 +113,28 @@
             </div>
           </v-card>
         </v-col>
+        <v-col cols="12" md="6" class="">
+          <p class="text-h5">Расписание тренировок</p>
+          <v-simple-table>
+            <template v-slot:default>
+              <thead>
+                <tr class="grey lighten-3">
+                  <th class="text-left">Понедельник</th>
+                  <th class="text-left">Среда</th>
+                  <th class="text-left">Суббота</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>15:30 - 16:00</td>
+                  <td>15:30 - 16:00</td>
+                  <td>15:30 - 16:00</td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+        </v-col>
       </v-row>
-    </v-container>
-    <v-container class="mt-10">
-      <p class="text-h5">Расписание тренировок</p>
-      <v-simple-table>
-        <template v-slot:default>
-          <thead>
-            <tr class="grey lighten-3">
-              <th class="text-left">Понедельник</th>
-              <th class="text-left">Вторник</th>
-              <th class="text-left">Среда</th>
-              <th class="text-left">Четверг</th>
-              <th class="text-left">Пятница</th>
-              <th class="text-left">Суббота</th>
-              <th class="text-left">Воскресенье</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>15:30 - 16:00</td>
-              <td>-</td>
-              <td>15:30 - 16:00</td>
-              <td>-</td>
-              <td>-</td>
-              <td>15:30 - 16:00</td>
-              <td>-</td>
-            </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
     </v-container>
     <v-container class="mt-10">
       <p class="text-h5">Состав</p>
@@ -224,22 +216,12 @@
     </v-container>
     <v-container class="mt-10">
       <p class="text-h5">Активные объявления</p>
-      <v-row class="mt-2">
-        <v-col cols="12" sm="7" md="5" lg="4" xl="3">
-          <v-bottom-navigation
-            :value="value"
-            color="primary"
-            class="rounded-lg remove-horizontal-space"
-            grow
-          >
-            <v-btn class="">
-              <span class="body-2">Команда ищет игроков</span>
-            </v-btn>
-            <v-btn>
-              <span class="body-2">Команда ищет тренера</span>
-            </v-btn>
-          </v-bottom-navigation>
-        </v-col>
+      <v-row class="mt-2 ml-0">
+        <v-tabs v-model="value" class="d-flex flex-no-wrap rounded-lg">
+          <v-tab v-for="item in advert_nav" :key="item">
+            {{ item }}
+          </v-tab>
+        </v-tabs>
       </v-row>
       <v-row>
         <v-col cols="12" md="6">
@@ -339,9 +321,11 @@
 
 <script>
 export default {
+  name: "TeamName",
   data() {
     return {
       value: 0,
+      advert_nav: ["Команда ищет игроков", "Команда ищет тренера"],
       player_items: ["/player_1", "/player_2"],
       breadcrumb_items: [
         {

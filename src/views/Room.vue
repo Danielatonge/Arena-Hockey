@@ -5,24 +5,19 @@
         <div class="text-h4">Раздевалка</div>
         <v-row class="mt-2">
           <v-col cols="6" sm="4" lg="3">
-            <v-bottom-navigation
-              :value="value"
-              color="primary"
-              class="rounded-lg"
-              grow
+            <v-tabs
+              v-model="value"
+              class="d-flex flex-no-wrap rounded-lg"
             >
-              <v-btn @click="showRoom()">
-                <span class="body-1">Команды</span>
-              </v-btn>
-              <v-btn @click="showPlayer()">
-                <span class="body-1">Игроки</span>
-              </v-btn>
-            </v-bottom-navigation>
+              <v-tab class="px-6" v-for="item in room_nav" :key="item">
+                {{ item }}
+              </v-tab>
+            </v-tabs>
           </v-col>
         </v-row>
       </v-container>
     </div>
-    <v-container class="pt-16 pb-0" v-show="team_room">
+    <v-container class="pt-16 pb-0" v-show="value == 0">
       <div class="pb-16">
         <v-row dense>
           <v-col class="d-flex" cols="12" md="2">
@@ -86,27 +81,29 @@
       </div>
       <v-row dense class="mx-n4">
         <v-col cols="12" md="6" v-for="(item, i) in team_items" :key="i">
-          <v-card color="transparent" elevation="0">
-            <div class="d-flex flex-no-wrap" @click="teamClicked()">
-              <v-avatar class="ma-3" size="125" tile>
-                <v-img :src="require('../assets' + item + '.jpg')"></v-img>
-              </v-avatar>
-              <v-card-text>
-                <div
-                  class="body-1 blue--text mb-2"
-                  style="text-decoration: none"
-                >
-                  Москва
-                </div>
-                <div class="text-h5 mb-2">Название команды</div>
-                <div class="body-1 grey--text">Краткое описание</div>
-              </v-card-text>
-            </div>
-          </v-card>
+          <router-link to="/teamname" class="undo-link-default">
+            <v-card color="transparent" elevation="0">
+              <div class="d-flex flex-no-wrap">
+                <v-avatar class="ma-3" size="125" tile>
+                  <v-img :src="require('../assets' + item + '.jpg')"></v-img>
+                </v-avatar>
+                <v-card-text>
+                  <div
+                    class="body-1 blue--text mb-2"
+                    style="text-decoration: none"
+                  >
+                    Москва
+                  </div>
+                  <div class="text-h5 mb-2">Название команды</div>
+                  <div class="body-1 grey--text">Краткое описание</div>
+                </v-card-text>
+              </div>
+            </v-card>
+          </router-link>
         </v-col>
       </v-row>
     </v-container>
-    <v-container class="pt-16 pb-0" v-show="player_room">
+    <v-container class="pt-16 pb-0" v-show="value == 1">
       <div class="pb-16">
         <v-row dense>
           <v-col class="d-flex" cols="12" md="2">
@@ -198,23 +195,26 @@
         :total-visible="7"
       ></v-pagination>
     </div>
+    <v-container>
+      <v-row>
+        <v-col cols="12" v-for="(item, i) in items" :key="i">
+          {{ item.title }}
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
-  methods: {
-    showRoom() {
-      this.team_room = true;
-      this.player_room = false;
-    },
-    showPlayer() {
-      this.team_room = false;
-      this.player_room = true;
-    },
-    teamClicked() {
-      this.$router.push({ path: "teamname" });
-    },
+  name: 'Room',
+  computed: {
+    ...mapState(["items"]),
+  },
+  mounted() {
+    this.$store.dispatch("loadItems");
   },
   data() {
     return {
@@ -249,12 +249,25 @@ export default {
       display_items: ["Показывать по 12", "Показывать по 25"],
     };
   },
+  methods: {
+    showRoom() {
+      this.team_room = true;
+      this.player_room = false;
+    },
+    showPlayer() {
+      this.team_room = false;
+      this.player_room = true;
+    },
+    teamClicked() {
+      this.$router.push({ path: "teamname" });
+    },
+  },
 };
 </script>
 
-<style scoped>
-a div.v-card__text > div {
-  text-decoration: unset !important;
+<style>
+.undo-link-default {
+  text-decoration: none;
 }
 .banner-room {
   background: url("../assets/banner-room.jpg") no-repeat center center;
