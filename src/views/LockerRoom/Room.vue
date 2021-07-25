@@ -85,7 +85,7 @@
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
                 <v-avatar class="ma-3" size="125" tile>
-                  <v-img :src="require('../assets' + item + '.jpg')"></v-img>
+                  <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
                 </v-avatar>
                 <v-card-text>
                   <div
@@ -170,7 +170,7 @@
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
               <v-avatar class="ma-3" size="125" tile>
-                <v-img :src="require('../assets' + item + '.jpg')"></v-img>
+                <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
               </v-avatar>
               <v-card-text>
                 <div class="text-h5 mb-2">Фамилия Имя Отчество</div>
@@ -270,7 +270,7 @@ export default {
   text-decoration: none;
 }
 .banner-room {
-  background: url("../assets/banner-room.jpg") no-repeat center center;
+  background: url("../../assets/banner-room.jpg") no-repeat center center;
   background-size: cover;
 }
 </style>

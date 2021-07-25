@@ -1,10 +1,13 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
-import Room from "../views/Room.vue";
-import TeamName from "../views/TeamName.vue";
-import ArenaName from "../views/ArenaName.vue";
-import PaymentPortal from "../views/PaymentPortal.vue";
+import Home from "../views/Arena/Home.vue";
+import Room from "../views/LockerRoom/Room.vue";
+import TeamName from "../views/LockerRoom/TeamName.vue";
+import ArenaName from "../views/Arena/ArenaName.vue";
+import PaymentPortal from "../views/Arena/PaymentPortal.vue";
+import EventSchedule from "../views/Arena/EventSchedule.vue";
+import JoinTeam from "../views/Arena/JoinTeam.vue";
+import BookRoom from "../views/LockerRoom/BookRoom.vue";
 
 Vue.use(VueRouter);
 
@@ -13,6 +16,11 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+  },
+  {
+    path: "/event_schedule",
+    name: "EventSchedule",
+    component: EventSchedule,
   },
   {
     path: "/arenaname",
@@ -25,6 +33,11 @@ const routes = [
     component: PaymentPortal,
   },
   {
+    path: "/join_team",
+    name: "JoinTeam",
+    component: JoinTeam,
+  },
+  {
     path: "/room",
     name: "Room",
     component: Room,
@@ -33,6 +46,11 @@ const routes = [
     path: "/teamname",
     name: "TeamName",
     component: TeamName,
+  },
+  {
+    path: "/book_room",
+    name: "BookRoom",
+    component: BookRoom,
   },
 ];
 

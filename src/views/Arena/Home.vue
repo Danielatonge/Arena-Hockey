@@ -43,7 +43,9 @@
               height="48px"
               width="100%"
             >
+            <router-link to="/event_schedule" class="reset-link">
               Расписание мероприятий
+            </router-link>
             </v-btn>
           </v-col>
         </v-row>
@@ -116,7 +118,7 @@
 </template>
 
 <script>
-import ArenaCard from "../components/ArenaCard.vue";
+import ArenaCard from "../../components/Arena/ArenaCard.vue";
 export default {
   name: "Home",
   methods: {},
@@ -141,3 +143,10 @@ export default {
   components: { ArenaCard },
 };
 </script>
+
+<style>
+.reset-link {
+  text-decoration: none;
+  color: unset !important;
+}
+</style>

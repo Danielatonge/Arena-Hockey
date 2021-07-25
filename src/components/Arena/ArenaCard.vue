@@ -1,6 +1,6 @@
 <template>
   <v-card class="rounded-lg" :elevation="elevation" @mouseover="elevation='2'" @mouseout="elevation='0'">
-    <v-img :src="require('../assets' + item + '.jpg')" height="200px">
+    <v-img :src="require('@/assets' + item + '.jpg')" height="200px">
       <v-container>
         <v-row class="ma-2">
           <v-btn class="rounded-lg white" small elevation="0">На карте</v-btn>

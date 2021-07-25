@@ -4,7 +4,7 @@
       color="grey"
       height="450px"
       width="100%"
-      src="../assets/banner-arena.jpg"
+      src="@/assets/banner-arena.jpg"
     >
       <v-container class="pt-8 pb-0">
         <v-row class="">
@@ -134,7 +134,7 @@
               м.Первомайская, м.Щёлковская, м.Измайловская
             </p>
 
-            <v-img src="../assets/map_1.jpg"></v-img>
+            <v-img src="@/assets/map_1.jpg"></v-img>
 
             <p class="text-h6 mt-10">Следж-хоккей</p>
             <p class>
@@ -168,7 +168,7 @@
                 v-for="(item, i) in gallery_items"
                 :key="i"
               >
-                <v-img :src="require('../assets' + item + '.jpg')"></v-img>
+                <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
               </v-col>
             </v-row>
 
@@ -192,7 +192,7 @@
                     <v-card color="transparent" elevation="0">
                       <div class="d-flex flex-no-wrap">
                         <div class="ma-3" width="282px" height="186px">
-                          <v-img src="../assets/preview_arena_1.jpg"></v-img>
+                          <v-img src="@/assets/preview_arena_1.jpg"></v-img>
                         </div>
                         <div class="description">
                           <v-card-text>

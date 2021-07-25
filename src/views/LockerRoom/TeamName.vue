@@ -54,7 +54,7 @@
         <v-spacer></v-spacer>
         <div class="px-3">
           <v-img
-            src="../assets/team_room_1.jpg"
+            src="@/assets/team_room_1.jpg"
             height="180px"
             width="180px"
           ></v-img>
@@ -86,11 +86,11 @@
     <v-container class="mt-10">
       <p class="text-h5">Место проведения тренировок</p>
       <v-row dense class="mx-n4">
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="7">
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
               <div class="ma-3" width="282px" height="186px">
-                <v-img src="../assets/preview_arena_1.jpg"></v-img>
+                <v-img src="@/assets/preview_arena_1.jpg"></v-img>
               </div>
               <div class="description">
                 <v-card-text>
@@ -113,7 +113,7 @@
             </div>
           </v-card>
         </v-col>
-        <v-col cols="12" md="6" class="">
+        <v-col cols="12" md="5">
           <p class="text-h5">Расписание тренировок</p>
           <v-simple-table>
             <template v-slot:default>
@@ -144,7 +144,7 @@
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
               <v-avatar class="ma-3" size="125" tile>
-                <v-img :src="require('../assets' + item + '.jpg')"></v-img>
+                <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
               </v-avatar>
               <v-card-text>
                 <div class="text-h5 mb-2">Фамилия Имя Отчество</div>
@@ -163,7 +163,7 @@
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
               <v-avatar class="ma-3" size="125" tile>
-                <v-img :src="require('../assets' + item + '.jpg')"></v-img>
+                <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
               </v-avatar>
               <v-card-text>
                 <div class="text-h5 mb-2">Фамилия Имя Отчество</div>
@@ -182,7 +182,7 @@
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
               <v-avatar class="ma-3" size="125" tile>
-                <v-img :src="require('../assets' + item + '.jpg')"></v-img>
+                <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
               </v-avatar>
               <v-card-text>
                 <div class="text-h5 mb-2">Фамилия Имя Отчество</div>
@@ -201,7 +201,7 @@
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
               <v-avatar class="ma-3" size="125" tile>
-                <v-img :src="require('../assets' + item + '.jpg')"></v-img>
+                <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
               </v-avatar>
               <v-card-text>
                 <div class="text-h5 mb-2">Фамилия Имя Отчество</div>
@@ -227,8 +227,9 @@
         <v-col cols="12" md="6">
           <v-card elevation="0" class="pa-5">
             <div class="d-flex flex-no-wrap">
+              
               <v-avatar class="ma-3" size="100" tile>
-                <v-img src="../assets/advert_1.jpg"></v-img>
+                <v-img src="@/assets/advert_1.jpg"></v-img>
               </v-avatar>
               <v-card-text>
                 <div class="body-1 grey--text">19 апреля 2021</div>
@@ -255,7 +256,7 @@
           <v-card elevation="0" class="pa-5">
             <div class="d-flex flex-no-wrap">
               <v-avatar class="ma-3" size="100" tile>
-                <v-img src="../assets/advert_2.jpg"></v-img>
+                <v-img src="@/assets/advert_2.jpg"></v-img>
               </v-avatar>
               <v-card-text>
                 <div class="body-1 grey--text">19 апреля 2021</div>
@@ -291,7 +292,7 @@
           v-for="(item, i) in gallery_items"
           :key="i"
         >
-          <v-img :src="require('../assets' + item + '.jpg')"></v-img>
+          <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
         </v-col>
       </v-row>
     </v-container>
