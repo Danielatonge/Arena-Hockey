@@ -64,7 +64,9 @@
               width="100%"
               color="primary"
             >
+            <router-link to="/arena_maps" class="reset-link">
               На карте
+            </router-link>
             </v-btn>
           </v-col>
 

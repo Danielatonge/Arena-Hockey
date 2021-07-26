@@ -7,6 +7,7 @@ import ArenaName from "../views/Arena/ArenaName.vue";
 import PaymentPortal from "../views/Arena/PaymentPortal.vue";
 import EventSchedule from "../views/Arena/EventSchedule.vue";
 import JoinTeam from "../views/Arena/JoinTeam.vue";
+import ArenaMapAll from "../views/Arena/ArenaMapAll.vue";
 import BookRoom from "../views/LockerRoom/BookRoom.vue";
 
 Vue.use(VueRouter);
@@ -16,6 +17,11 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+  },
+  {
+    path: "/arena_maps",
+    name: "ArenaMapAll",
+    component: ArenaMapAll,
   },
   {
     path: "/event_schedule",

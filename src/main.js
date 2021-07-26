@@ -10,7 +10,6 @@ new Vue({
   router,
   store,
   vuetify,
-
   render: function (h) {
     return h(App);
   },

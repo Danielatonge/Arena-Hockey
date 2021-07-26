@@ -75,7 +75,12 @@
       <v-row class="mt-5">
         <v-col cols="5" md="3">
           <v-tabs vertical class="pl-4 rounded-lg" v-model="sidebar_tab">
-            <v-tab v-for="(item, i) in sidebar_items" :key="i" router :to="item.link">
+            <v-tab
+              v-for="(item, i) in sidebar_items"
+              :key="i"
+              router
+              :to="item.link"
+            >
               {{ item.text }}
             </v-tab>
           </v-tabs>
@@ -84,9 +89,13 @@
           <div>
             <p class="text-h4">Информация</p>
             <div class="ml-n2">
-              <v-chip color="primary" class="ma-2" label> Тренажерный зал </v-chip>
+              <v-chip color="primary" class="ma-2" label>
+                Тренажерный зал
+              </v-chip>
               <v-chip color="primary" class="ma-2" label> Кафе </v-chip>
-              <v-chip color="primary" class="ma-2" label> 12 раздевалок </v-chip>
+              <v-chip color="primary" class="ma-2" label>
+                12 раздевалок
+              </v-chip>
             </div>
             <p class="mt-3">
               «Академия «Спартак» - это новый современный многофункциональный
@@ -134,7 +143,14 @@
               м.Первомайская, м.Щёлковская, м.Измайловская
             </p>
 
-            <v-img src="@/assets/map_1.jpg"></v-img>
+            <section class="wrapper-map">
+              <ArenaMap
+                :coords="coords"
+                :surfaces="surfaces"
+                :zoom="zoom"
+                @set-coords="coords = $event"
+              />
+            </section>
 
             <p class="text-h6 mt-10">Следж-хоккей</p>
             <p class>
@@ -257,10 +273,15 @@
 </template>
 
 <script>
+import ArenaMap from "@/components/Arena/ArenaMap";
+
 export default {
+  components: {
+    ArenaMap,
+  },
   data() {
     return {
-      name: 'ArenaName',
+      name: "ArenaName",
       sidebar_tab: 0,
       premises_tab: null,
       premises_nav: ["Катки", "Бросковые зоны", "Спортивные залы"],
@@ -288,12 +309,23 @@ export default {
         "/gallery_8",
       ],
       sidebar_items: [
-        { text: "Информация", link: "/arenaname"},
-        { text: "Платные услуги", link: "/payment_portal"},
-        { text: "Расписание мероприятий", link: "/event_schedule"},
-        { text: "Список команд", link: "/list_teams"},
-        { text: "Тренерский состав", link: "/training_staff"},
+        { text: "Информация", link: "/arenaname" },
+        { text: "Платные услуги", link: "/payment_portal" },
+        { text: "Расписание мероприятий", link: "/event_schedule" },
+        { text: "Список команд", link: "/list_teams" },
+        { text: "Тренерский состав", link: "/training_staff" },
       ],
+      zoom: 8,
+      surfaces: [
+        {
+          id: "1",
+          city: "Moscow",
+          type: "Mediawall",
+          address: 'ТРЦ "Океания", пр. Кутузовский, 57',
+          coords: "55.727790, 37.475986",
+        },
+      ],
+      coords: [55.727790, 37.475986],
     };
   },
 };
@@ -302,6 +334,13 @@ export default {
 <style>
 .margin-top-big {
   margin-top: 178px;
+}
+.wrapper-map {
+  background-color: #ccc;
+  height: 600px;
+  width: 100%;
+  position: relative;
+  margin: 10px auto;
 }
 
 @media (max-width: 600px) {
