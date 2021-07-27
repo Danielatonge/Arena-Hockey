@@ -94,7 +94,7 @@ export default {
         { text: "Лиги и турниры", route: "/league" },
         { text: "Детские турниры", route: "/about" },
         { text: "Раздевалка", route: "/room" },
-        { text: "Скамейка запасных", route: "/danger" },
+        { text: "Скамейка запасных", route: "/subs_bench" },
         { text: "Школы", route: "/school" },
         { text: "Лагеря и сборы", route: "/team" },
         { text: "Сушилка", route: "/dryer" },

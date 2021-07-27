@@ -13,6 +13,7 @@ import EventSchedule from "../views/Arena/EventSchedule.vue";
 import JoinTeam from "../views/Arena/JoinTeam.vue";
 import ArenaMapAll from "../views/Arena/ArenaMapAll.vue";
 import BookRoom from "../views/LockerRoom/BookRoom.vue";
+import SubstituteBench from "../views/Bench/SubstituteBench.vue";
 
 Vue.use(VueRouter);
 
@@ -81,6 +82,11 @@ const routes = [
     path: "/book_room",
     name: "BookRoom",
     component: BookRoom,
+  },
+  {
+    path: "/subs_bench",
+    name: "SubstituteBench",
+    component: SubstituteBench,
   },
 ];
 
