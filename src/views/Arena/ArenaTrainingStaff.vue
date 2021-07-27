@@ -87,7 +87,7 @@
         </v-col>
         <v-col cols="7" md="9">
           <div>
-            <p class="text-h4">Платные услуги</p>
+            <p class="text-h4">Тренерский состав</p>
             <v-tabs
               v-model="premises_tab"
               class="d-flex flex-no-wrap rounded-lg"
@@ -101,90 +101,55 @@
               v-model="premises_tab"
               style="background-color: unset"
             >
-              <v-tab-item v-for="item in premises_nav" :key="item">
+              <v-tab-item v-for="nav in premises_nav" :key="nav">
+                <div class="mt-5 mb-n5 text-h5">Тренеры детской школы</div>
                 <v-row dense class="mx-n4 mt-5">
-                  <v-col cols="12" v-for="i in 3" :key="i">
+                  <v-col cols="12" v-for="(item, i) in player_items" :key="i">
                     <v-card color="transparent" elevation="0">
                       <div class="d-flex flex-no-wrap">
-                        <div class="ma-3" width="282px" height="186px">
-                          <v-img src="@/assets/preview_arena_1.jpg"></v-img>
-                        </div>
-                        <div class="description">
-                          <v-card-text>
-                            <div class="text-h4 mb-4">Название катка 1</div>
-                            <div class="body-1 grey--text mb-3">
-                              Краткое описание катка
-                            </div>
-                            <div class="body-1 blue--text">
-                              +7 (123) 234-15-23
-                            </div>
-                          </v-card-text>
-                          <v-card-actions class="pl-4 bottom">
-                            <v-btn
-                              class="px-6"
-                              color="primary"
-                              x-large
-                              elevation="0"
-                            >
-                              Забронировать
-                            </v-btn>
-                            <v-btn
-                              class="px-6"
-                              color="grey lighten-2"
-                              x-large
-                              elevation="0"
-                            >
-                              Подробнее
-                            </v-btn>
-                          </v-card-actions>
-                        </div>
+                        <v-avatar class="ma-3" size="125" tile>
+                          <v-img
+                            :src="require('@/assets' + item + '.jpg')"
+                          ></v-img>
+                        </v-avatar>
+                        <v-card-text>
+                          <div class="text-h5 mb-2">Фамилия Имя Отчество</div>
+                          <div class="body-1 blue--text mb-2">
+                            Возраст, город
+                          </div>
+                          <div class="body-2 grey--text">
+                            Позиция
+                          </div>
+                        </v-card-text>
+                      </div>
+                    </v-card>
+                  </v-col>
+                </v-row>
+                <div class="mt-5 mb-n5 text-h5">Тренеры юношеской сборной</div>
+                <v-row dense class="mx-n4 mt-5">
+                  <v-col cols="12" v-for="(item, i) in player_items" :key="i">
+                    <v-card color="transparent" elevation="0">
+                      <div class="d-flex flex-no-wrap">
+                        <v-avatar class="ma-3" size="125" tile>
+                          <v-img
+                            :src="require('@/assets' + item + '.jpg')"
+                          ></v-img>
+                        </v-avatar>
+                        <v-card-text>
+                          <div class="text-h5 mb-2">Фамилия Имя Отчество</div>
+                          <div class="body-1 blue--text mb-2">
+                            Возраст, город
+                          </div>
+                          <div class="body-2 grey--text">
+                            Позиция
+                          </div>
+                        </v-card-text>
                       </div>
                     </v-card>
                   </v-col>
                 </v-row>
               </v-tab-item>
             </v-tabs-items>
-            <p class="text-h6 mt-10">Прайс-лист</p>
-            <p class="grey--text">Цены указаны за 1 час аренды</p>
-
-            <div v-for="i in 3" :key="i">
-              <p class="text-h4 mt-8 mb-0">Название катка {{ i }}</p>
-              <p class="grey--text">Краткое описание катка</p>
-              <v-row>
-                <v-col
-                  cols="2"
-                  class="text-center border"
-                  v-for="(item, indx) in price_list"
-                  :key="indx"
-                >
-                  <div class="mb-3 grey--text">{{ item.interval }}</div>
-                  <div class="right-border mr-n3">
-                    <p class="mb-0">{{ item.weekday }}</p>
-                    <p class="primary--text">{{ item.weekend }}</p>
-                  </div>
-                </v-col>
-              </v-row>
-              <div class="mt-n8">
-                <span class="mr-5 font-weight-bold">
-                  <v-icon style="font-size: 70px" color="#000" class="">
-                    mdi-circle-small
-                  </v-icon>
-                  <span class="ml-n5">Будни</span>
-                </span>
-                <span class="font-weight-bold primary--text">
-                  <v-icon style="font-size: 70px" color="primary" class="">
-                    mdi-circle-small
-                  </v-icon>
-                  <span class="ml-n5"> Выходные </span>
-                </span>
-              </div>
-            </div>
-
-            <div class="mt-5">
-              <v-btn color="primary" elevation="0" class="mr-3">
-                Забронировать
-              </v-btn>
-            </div>
           </div>
         </v-col>
       </v-row>
@@ -196,10 +161,10 @@
 export default {
   data() {
     return {
-      name: "PaymentPortal",
+      name: "ArenaTeamList",
       sidebar_tab: 0,
       premises_tab: null,
-      premises_nav: ["Катки", "Бросковые зоны", "Спортивные залы"],
+      premises_nav: ["Все тренеры", "Детские тренеры", "Юношеские тренеры"],
       breadcrumb_items: [
         {
           text: "Москва",
@@ -219,6 +184,7 @@ export default {
         { text: "Список команд", link: "/list_teams" },
         { text: "Тренерский состав", link: "/training_staff" },
       ],
+      player_items: ["/player_1", "/player_2", "/player_3"],
       price_list: [
         { interval: "06:00–08:30", weekday: "8 000", weekend: "10 000" },
         { interval: "08:30–15:00", weekday: "8 000", weekend: "10 000" },
@@ -229,17 +195,9 @@ export default {
       ],
     };
   },
+  computed: {},
 };
 </script>
 
 <style>
-.margin-top-big {
-  margin-top: 178px;
-}
-
-@media (max-width: 600px) {
-  .margin-top-big {
-    margin-top: 100px;
-  }
-}
 </style>
