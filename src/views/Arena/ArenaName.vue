@@ -169,12 +169,46 @@
             </p>
             <v-btn color="grey lighten-2" elevation="0"> Подробнее </v-btn>
 
-            <p class="text-h6 mt-10">Прайс-лист</p>
+            <p class="text-h6 mt-10 mb-0">Прайс-лист</p>
             <p class="grey--text">Цены указаны за 1 час аренды</p>
-
-            <p class="text-h4 mt-10">Название катка 1</p>
-            <p class="grey--text">Краткое описание катка</p>
-
+            <div v-for="i in 3" :key="i">
+              <p class="text-h4 mt-8 mb-0">Название катка {{ i }}</p>
+              <p class="grey--text">Краткое описание катка</p>
+              <v-row>
+                <v-col
+                  cols="2"
+                  class="text-center border"
+                  v-for="(item, indx) in price_list"
+                  :key="indx"
+                >
+                  <div class="mb-3 grey--text">{{ item.interval }}</div>
+                  <div class="right-border mr-n3">
+                    <p class="mb-0">{{ item.weekday }}</p>
+                    <p class="primary--text">{{ item.weekend }}</p>
+                  </div>
+                </v-col>
+              </v-row>
+              <div class="mt-n8">
+                <span class="mr-5 font-weight-bold">
+                  <v-icon style="font-size: 70px" color="#000" class="">
+                    mdi-circle-small
+                  </v-icon>
+                  <span class="ml-n5">Будни</span>
+                </span>
+                <span class="font-weight-bold primary--text">
+                  <v-icon style="font-size: 70px" color="primary" class="">
+                    mdi-circle-small
+                  </v-icon>
+                  <span class="ml-n5"> Выходные </span>
+                </span>
+              </div>
+            </div>
+            <div class="mt-5">
+              <v-btn color="primary" elevation="0" class="mr-3"> Забронировать </v-btn>
+              <v-btn color="grey lighten-2" elevation="0">
+                Посмотреть катки
+              </v-btn>
+            </div>
             <p class="text-h5 font-weight-bold mt-10">Галерея</p>
             <v-row>
               <v-col
@@ -315,6 +349,14 @@ export default {
         { text: "Список команд", link: "/list_teams" },
         { text: "Тренерский состав", link: "/training_staff" },
       ],
+      price_list: [
+        { interval: "06:00–08:30", weekday: "8 000", weekend: "10 000" },
+        { interval: "08:30–15:00", weekday: "8 000", weekend: "10 000" },
+        { interval: "15:00–17:00", weekday: "8 000", weekend: "10 000" },
+        { interval: "17:00–19:00", weekday: "10 000", weekend: "10 000" },
+        { interval: "19:00–22:30", weekday: "12 000", weekend: "10 000" },
+        { interval: "22:30–00:00", weekday: "10 000", weekend: "10 000" },
+      ],
       zoom: 8,
       surfaces: [
         {
@@ -325,13 +367,19 @@ export default {
           coords: "55.727790, 37.475986",
         },
       ],
-      coords: [55.727790, 37.475986],
+      coords: [55.72779, 37.475986],
     };
   },
 };
 </script>
 
 <style>
+.border > .right-border {
+  border-right: 1px solid #ccc;
+}
+.border:last-child .right-border {
+  border-right: unset;
+}
 .margin-top-big {
   margin-top: 178px;
 }
