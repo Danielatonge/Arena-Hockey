@@ -1,12 +1,25 @@
 <template>
-  <v-card class="rounded-lg" :elevation="elevation" @mouseover="elevation='2'" @mouseout="elevation='0'">
+  <v-card
+    class="rounded-lg"
+    :elevation="elevation"
+    @mouseover="elevation = '2'"
+    @mouseout="elevation = '0'"
+    @click="goToArena"
+  >
     <v-img :src="require('@/assets' + item + '.jpg')" height="200px">
       <v-container>
         <v-row class="ma-2">
-          <v-btn class="rounded-lg white" small elevation="0">На карте</v-btn>
+          <v-btn
+            @click.stop="openCard"
+            class="rounded-lg white"
+            small
+            elevation="0"
+          >
+            На карте
+          </v-btn>
           <v-spacer></v-spacer>
           <v-btn
-            @click="selectToggle()"
+            @click.stop="selectToggle"
             :class="[selected ? 'primary' : '']"
             x-small
             class="rounded-lg white"
@@ -18,11 +31,8 @@
         </v-row>
       </v-container>
     </v-img>
-    <router-link to="/arenaname" class="undo-link-default">
     <v-card-title class="pb-5"> Los Angeles Clippers </v-card-title>
-
     <v-card-subtitle> ул. Лермонтова, д. 14, пом. 3, г. Чита </v-card-subtitle>
-    </router-link>
   </v-card>
 </template>
 
@@ -39,6 +49,10 @@ export default {
     };
   },
   methods: {
+    goToArena() {
+      this.$router.push({ path: "/arenaname" });
+    },
+    openCard() {},
     selectToggle() {
       this.selected = !this.selected;
     },

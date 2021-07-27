@@ -1,76 +1,27 @@
 <template>
   <div class="grey lighten-4">
-    <v-img
-      color="grey"
-      height="450px"
-      width="100%"
-      src="@/assets/banner-arena.jpg"
-    >
-      <v-container class="pt-8 pb-0">
-        <v-row class="">
-          <div>
-            <v-breadcrumbs
-              dark
-              :items="breadcrumb_items"
-              class="px-3"
-            ></v-breadcrumbs>
-          </div>
-          <v-spacer></v-spacer>
-          <div class="pr-3 my-auto">
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="mr-1"
-            >
-              <v-icon color="white">mdi-whatsapp</v-icon>
-            </v-btn>
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="mx-1"
-            >
-              <v-icon color="white">mdi-instagram</v-icon>
-            </v-btn>
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="mx-1"
-            >
-              <v-icon color="white">mdi-vk</v-icon>
-            </v-btn>
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="ml-1"
-            >
-              <v-icon color="white">mdi-web</v-icon>
-            </v-btn>
-          </div>
-        </v-row>
-        <div class="margin-top-big">
-          <v-row class="mb-3">
-            <v-col cols="12" sm="6" md="7" lg="5">
-              <p class="text-h4 white--text">Название арены</p>
-              <p class="white--text">
-                <v-icon color="white">mdi-map-marker-outline</v-icon> ул.
-                Лермонтова, д. 14, пом. 3, г. Чита
-              </p>
-            </v-col>
-            <v-spacer></v-spacer>
-          </v-row>
-          <v-btn color="primary mr-4 mt-4" elevation="0">Забронировать</v-btn>
-          <v-btn class="mt-4" dark outlined elevation="0">Как проехать?</v-btn>
+    <v-container class="pt-8 pb-0">
+      <v-row>
+        <div>
+          <v-breadcrumbs :items="breadcrumb_items" class="px-3"></v-breadcrumbs>
         </div>
-      </v-container>
-    </v-img>
+      </v-row>
+      <v-row class="mb-3">
+        <v-col cols="12">
+          <p class="text-h5">Выбранные арены</p>
+          <p class="grey--text" v-show="false">
+            Нет выбранных арен. Чтобы добавить арену, нажмите на значок добавить
+            на карточке арены.
+          </p>
+          <v-row>
+            <v-col cols="4" v-for="i in 3" :key="i">
+              <ArenaChosen />
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+      <v-btn color="primary" elevation="0">Добавить арену</v-btn>
+    </v-container>
     <v-container class="mt-14">
       <p class="text-h4">Расписание мероприятий</p>
       <div class="rounded-lg white">
@@ -99,18 +50,6 @@
               class="ma-2 white"
             ></v-select>
           </div>
-          <div style="width: 200px">
-            <v-select
-              v-model="mode"
-              :items="mode_lesson"
-              dense
-              single-line
-              outlined
-              hide-details
-              label="Каток 1"
-              class="ma-2 white"
-            ></v-select>
-          </div>
 
           <v-spacer></v-spacer>
           <v-btn class="ma-2" color="primary" elevation="0">
@@ -134,7 +73,7 @@
             v-model="value"
             :weekdays="weekday"
             :weekday-format="myDayFormat"
-            :type="'week'"
+            :type="'4day'"
             :events="events"
             :event-overlap-mode="mode"
             :event-overlap-threshold="30"
@@ -148,7 +87,9 @@
 </template>
 
 <script>
+import ArenaChosen from "@/components/Arena/ArenaChosen.vue";
 export default {
+  components: { ArenaChosen },
   data() {
     return {
       breadcrumb_items: [
@@ -163,6 +104,7 @@ export default {
           href: "/event_schedule",
         },
       ],
+      dialog: false,
       currentDay: "23.09.2021, пн",
       mode: "column",
       mode_lesson: ["0", "1", "2"],
@@ -216,6 +158,28 @@ export default {
       }
 
       this.events = events;
+    },
+    myDayFormat(day) {
+      switch (day.weekday) {
+        case 0:
+          return "Каток 1";
+        case 1:
+          return "Каток 1";
+        case 2:
+          return "Каток 1";
+        case 3:
+          return "Каток 2";
+        case 4:
+          return "Каток 3";
+        case 5:
+          return "Каток 4";
+        case 6:
+          return "Каток 5";
+        case 7:
+          return "Каток 6";
+        default:
+          return "Каток";
+      }
     },
     getEventColor(event) {
       return event.color;

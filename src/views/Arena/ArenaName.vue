@@ -204,7 +204,9 @@
               </div>
             </div>
             <div class="mt-5">
-              <v-btn color="primary" elevation="0" class="mr-3"> Забронировать </v-btn>
+              <v-btn color="primary" elevation="0" class="mr-3">
+                Забронировать
+              </v-btn>
               <v-btn color="grey lighten-2" elevation="0">
                 Посмотреть катки
               </v-btn>

@@ -5,8 +5,8 @@ import Room from "../views/LockerRoom/Room.vue";
 import TeamName from "../views/LockerRoom/TeamName.vue";
 import ArenaName from "../views/Arena/ArenaName.vue";
 import PaymentPortal from "../views/Arena/PaymentPortal.vue";
+import EventScheduleAll from "../views/Arena/EventScheduleAll.vue";
 import EventSchedule from "../views/Arena/EventSchedule.vue";
-import EventSchedule2 from "../views/Arena/EventSchedule2.vue";
 import JoinTeam from "../views/Arena/JoinTeam.vue";
 import ArenaMapAll from "../views/Arena/ArenaMapAll.vue";
 import BookRoom from "../views/LockerRoom/BookRoom.vue";
@@ -25,14 +25,14 @@ const routes = [
     component: ArenaMapAll,
   },
   {
+    path: "/event_schedule_all",
+    name: "EventScheduleAll",
+    component: EventScheduleAll,
+  },
+  {
     path: "/event_schedule",
     name: "EventSchedule",
     component: EventSchedule,
-  },
-  {
-    path: "/event_schedule_2",
-    name: "EventSchedule2",
-    component: EventSchedule2,
   },
   {
     path: "/arenaname",
