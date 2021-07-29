@@ -3,7 +3,7 @@
     <div class="banner-room">
       <v-container class="pt-16 pb-16 white--text">
         <div class="text-h4">Скамейка запасных</div>
-        <div class="mt-2 d-lg-flex">
+        <div class="mt-4 d-lg-flex">
           <v-tabs v-model="value" class="d-flex flex-no-wrap rounded-lg mb-2">
             <v-tab class="px-3" v-for="item in bench_nav" :key="item">
               {{ item }}

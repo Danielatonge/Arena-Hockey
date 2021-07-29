@@ -1,7 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import axios from "axios";
 
 Vue.use(Vuex);
+axios.defaults.baseURL = "https://api-hockey-io.herokuapp.com";
 
 export default new Vuex.Store({
   state: {
@@ -13,11 +15,17 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    async loadItems({ commit }) {
-      const response = await fetch(`/api/arenas`);
-      const data = await response.json();
-      commit("SET_ITEM", data);
-    }
+    loadItems({ commit }) {
+      axios
+        .get(`/arenas`)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      // commit("SET_ITEM", data);
+    },
   },
   modules: {},
 });
