@@ -6,7 +6,7 @@
     @mouseout="elevation = '0'"
     @click="goToArena"
   >
-    <v-img :src="require('@/assets' + item + '.jpg')" height="200px">
+    <v-img :src="require('@/assets/arena_1.jpg')" height="200px">
       <v-container>
         <v-row class="ma-2">
           <v-btn
@@ -31,8 +31,12 @@
         </v-row>
       </v-container>
     </v-img>
-    <v-card-title class="pb-5"> Los Angeles Clippers </v-card-title>
-    <v-card-subtitle> ул. Лермонтова, д. 14, пом. 3, г. Чита </v-card-subtitle>
+    <v-card-title class="pb-5">
+      {{ arena.title || "Los Angeles Clippers" }}
+    </v-card-title>
+    <v-card-subtitle>
+      {{ arena.address || "ул. Лермонтова, д. 14, пом. 3, г. Чита" |  addressDescription }}
+    </v-card-subtitle>
   </v-card>
 </template>
 
@@ -40,7 +44,7 @@
 export default {
   name: "ArenaCard",
   props: {
-    item: String,
+    arena: Object,
   },
   data() {
     return {
@@ -55,6 +59,12 @@ export default {
     openCard() {},
     selectToggle() {
       this.selected = !this.selected;
+    },
+  },
+  filters: {
+    addressDescription: (value) => {
+      if (!value) return "";
+      return value.slice(0, 45);
     },
   },
   computed: {

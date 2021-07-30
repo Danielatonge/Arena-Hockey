@@ -1,31 +1,41 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
+import VuexPersistence from "vuex-persist";
 
 Vue.use(Vuex);
 axios.defaults.baseURL = "https://api-hockey-io.herokuapp.com";
 
+const vuexLocal = new VuexPersistence({
+  storage: window.localStorage,
+});
+
 export default new Vuex.Store({
   state: {
     items: {},
+    list_arenas: [],
   },
   mutations: {
-    SET_ITEM(state, items) {
-      state.items = items;
+    SET_ARENAS(state, arenas) {
+      state.list_arenas = arenas;
     },
   },
   actions: {
-    loadItems({ commit }) {
+    getAllArenas({ commit }) {
       axios
         .get(`/arenas`)
         .then((response) => {
-          console.log(response);
+          commit("SET_ARENAS", response.data);
+          console.log(response.data);
         })
         .catch((err) => {
           console.log(err);
         });
-      // commit("SET_ITEM", data);
     },
+    // getArenaGivenID({ commit }, payload) {
+    //   axios.get('/')
+    // }
   },
   modules: {},
+  plugins: [vuexLocal.plugin],
 });

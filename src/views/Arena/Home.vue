@@ -43,9 +43,9 @@
               height="48px"
               width="100%"
             >
-            <router-link to="/event_schedule_all" class="reset-link">
-              Расписание мероприятий
-            </router-link>
+              <router-link to="/event_schedule_all" class="reset-link">
+                Расписание мероприятий
+              </router-link>
             </v-btn>
           </v-col>
         </v-row>
@@ -64,9 +64,9 @@
               width="100%"
               color="primary"
             >
-            <router-link to="/arena_maps" class="reset-link">
-              На карте
-            </router-link>
+              <router-link to="/arena_maps" class="reset-link">
+                На карте
+              </router-link>
             </v-btn>
           </v-col>
 
@@ -101,11 +101,22 @@
           cols="12"
           md="4"
           xl="3"
-          v-for="(item, i) in team_items"
+          v-for="(arena, i) in list_arenas"
           :key="i"
         >
-          <ArenaCard :item='item' />
+          <ArenaCard :arena="arena"  />
         </v-col>
+        <v-col
+          class="pa-4"
+          cols="12"
+          md="4"
+          xl="3"
+          v-for="i in 3"
+          :key="i"
+        >
+          <ArenaCard :arena="i" />
+        </v-col>
+        
       </v-row>
     </v-container>
     <div class="text-center py-10">
@@ -120,9 +131,14 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import ArenaCard from "../../components/Arena/ArenaCard.vue";
+
 export default {
   name: "Home",
+  computed: {
+    ...mapState(["list_arenas"]),
+  },
   methods: {},
   data() {
     return {
@@ -143,6 +159,9 @@ export default {
     };
   },
   components: { ArenaCard },
+  mounted() {
+    this.$store.dispatch("getAllArenas");
+  },
 };
 </script>
 
