@@ -39,7 +39,7 @@ const routes = [
     component: EventSchedule,
   },
   {
-    path: "/arenaname",
+    path: "/arenaname/:id",
     name: "ArenaName",
     component: ArenaName,
   },

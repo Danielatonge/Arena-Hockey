@@ -35,7 +35,10 @@
       {{ arena.title || "Los Angeles Clippers" }}
     </v-card-title>
     <v-card-subtitle>
-      {{ arena.address || "ул. Лермонтова, д. 14, пом. 3, г. Чита" |  addressDescription }}
+      {{
+        arena.address ||
+        "ул. Лермонтова, д. 14, пом. 3, г. Чита" | addressDescription
+      }}
     </v-card-subtitle>
   </v-card>
 </template>
@@ -54,7 +57,8 @@ export default {
   },
   methods: {
     goToArena() {
-      this.$router.push({ path: "/arenaname" });
+      const arenaId = this.arena.id;
+      this.$router.push({ path: `/arenaname/${arenaId}`});
     },
     openCard() {},
     selectToggle() {

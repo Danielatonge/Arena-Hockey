@@ -105,18 +105,7 @@
           :key="i"
         >
           <ArenaCard :arena="arena"  />
-        </v-col>
-        <v-col
-          class="pa-4"
-          cols="12"
-          md="4"
-          xl="3"
-          v-for="i in 3"
-          :key="i"
-        >
-          <ArenaCard :arena="i" />
-        </v-col>
-        
+        </v-col>        
       </v-row>
     </v-container>
     <div class="text-center py-10">

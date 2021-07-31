@@ -14,10 +14,14 @@ export default new Vuex.Store({
   state: {
     items: {},
     list_arenas: [],
+    current_arena: {},
   },
   mutations: {
     SET_ARENAS(state, arenas) {
       state.list_arenas = arenas;
+    },
+    SET_CURRENT_ARENA(state, arena) {
+      state.current_arena = arena;
     },
   },
   actions: {
@@ -26,15 +30,18 @@ export default new Vuex.Store({
         .get(`/arenas`)
         .then((response) => {
           commit("SET_ARENAS", response.data);
-          console.log(response.data);
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    // getArenaGivenID({ commit }, payload) {
-    //   axios.get('/')
-    // }
+    getArenaGivenID({ commit }, payload) {
+      const item = this.state.list_arenas.filter(
+        (arena) => arena.id === payload
+      );
+      console.log(item[0]);
+      commit("SET_CURRENT_ARENA", item[0]);
+    },
   },
   modules: {},
   plugins: [vuexLocal.plugin],

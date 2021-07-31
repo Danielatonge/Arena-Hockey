@@ -58,13 +58,12 @@
         <div class="margin-top-big">
           <v-row class="mb-3">
             <v-col cols="12" sm="6" md="7" lg="5">
-              <p class="text-h4 white--text">Название арены</p>
+              <p class="text-h4 white--text">{{ arena.title }}</p>
               <p class="white--text">
-                <v-icon color="white">mdi-map-marker-outline</v-icon> ул.
-                Лермонтова, д. 14, пом. 3, г. Чита
+                <v-icon color="white">mdi-map-marker-outline</v-icon>
+                {{ arena.address }}
               </p>
             </v-col>
-            <v-spacer></v-spacer>
           </v-row>
           <v-btn color="primary mr-4 mt-4" elevation="0">Забронировать</v-btn>
           <v-btn class="mt-4" dark outlined elevation="0">Как проехать?</v-btn>
@@ -88,35 +87,22 @@
         <v-col cols="7" md="9">
           <div>
             <p class="text-h4">Информация</p>
-            <div class="ml-n2">
-              <v-chip color="primary" class="ma-2" label>
-                Тренажерный зал
-              </v-chip>
-              <v-chip color="primary" class="ma-2" label> Кафе </v-chip>
-              <v-chip color="primary" class="ma-2" label>
-                12 раздевалок
+            <div class="ml-n2 mb-3">
+              <v-chip
+                color="primary"
+                class="ma-2"
+                label
+                v-for="(tag, i) in arena.tags"
+                :key="i"
+              >
+                {{ tag }}
               </v-chip>
             </div>
-            <p class="mt-3">
-              «Академия «Спартак» - это новый современный многофункциональный
-              хоккейный комплекс, площадью 10 000 м2. Располагается в парке
-              «Сокольники» и граничит с особо охраняемой природной территорией
-              регионального значения «природно-исторический парк «Сокольники».
-              Это место было выбрано не случайно. Еще в 18 веке Сокольники были
-              центром притяжения народных гуляний и спортивных потех. Здесь
-              любили проводить время русские цари и московская знать. Уже к 20
-              столетию к рекреационной функции парка была добавлена еще и
-              спортивная. Здесь стали проводить спортивные праздники и
-              спартакиады, соревнования по различным видам спорта на первенство
-              города и страны.
-            </p>
             <p>
-              В окружении многочисленных водоемов, фонтанов и смешанного леса
-              вас ничто не будет отвлекать от занятий спортом. Здесь нет суеты
-              большого города, только великолепная природа и свежий воздух.
-              Сокольники - это место побед и спортивного духа. И мы продолжаем
-              эти традиции!
+              <!-- v-for can enter here -->
+              {{ arena.description }}
             </p>
+
             <p>
               Хоккейный комплекс «Академия «Спартак» отвечает всем современным
               требованиям и оборудован высококлассной техникой для качественной
@@ -128,19 +114,19 @@
 
             <p class="text-h6 mt-10">Адрес</p>
             <p class="blue--text text-h5">
-              Россия, Москва, ул. 11-я Парковая, 36
+              {{ arena.address }}
             </p>
 
             <p class="text-h6 mt-10">Как проехать?</p>
             <p class="grey--text">
-              Turpis turpis blandit auctor risus. Ultricies rutrum interdum
-              placerat nisl eleifend quis ornare tortor, velit. Nunc, viverra ut
-              nunc velit metus ipsum. Urna consequat facilisis fringilla nunc.
+              {{ arena.route }}
             </p>
 
             <p lass="mt-5">
               Ближайшие станции метро: <br />
-              м.Первомайская, м.Щёлковская, м.Измайловская
+              <span class="mr-3" v-for="(metro, i) in arena.metro" :key="i">
+                {{ metro }}
+              </span>
             </p>
 
             <section class="wrapper-map">
@@ -310,10 +296,22 @@
 
 <script>
 import ArenaMap from "@/components/Arena/ArenaMap";
+import { mapState } from "vuex";
 
 export default {
   components: {
     ArenaMap,
+  },
+  computed: {
+    ...mapState({ arena: "current_arena" }),
+  },
+  mounted() {
+    const arenaId = this.$route.params.id;
+    this.$store.dispatch("getArenaGivenID", arenaId);
+    console.log(
+      `${this.$store.state.current_arena.lat}, ` +
+        `${this.$store.state.current_arena.lan}`
+    );
   },
   data() {
     return {
@@ -359,17 +357,22 @@ export default {
         { interval: "19:00–22:30", weekday: "12 000", weekend: "10 000" },
         { interval: "22:30–00:00", weekday: "10 000", weekend: "10 000" },
       ],
-      zoom: 8,
+      zoom: 16,
       surfaces: [
         {
           id: "1",
-          city: "Moscow",
+          city: this.$store.state.current_arena.city,
           type: "Mediawall",
-          address: 'ТРЦ "Океания", пр. Кутузовский, 57',
-          coords: "55.727790, 37.475986",
+          address: this.$store.state.current_arena.address,
+          coords:
+            `${this.$store.state.current_arena.lat}, ` +
+            `${this.$store.state.current_arena.lan}`,
         },
       ],
-      coords: [55.72779, 37.475986],
+      coords: [
+        this.$store.state.current_arena.lat,
+        this.$store.state.current_arena.lan,
+      ],
     };
   },
 };
