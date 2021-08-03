@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-toolbar flat app class="my-2 ">
+    <v-toolbar flat app class="my-2">
       <v-toolbar-side-icon class="mr-4 fix-margin-left">
         <div class="my-logo"></div>
       </v-toolbar-side-icon>
@@ -10,7 +10,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
 
-      <div class="d-none d-md-flex" >
+      <div class="d-none d-md-flex">
         <v-text-field
           label="Поиск"
           single-line
@@ -18,12 +18,17 @@
           outlined
           dense
           hide-details="auto"
-          class="rounded-lg"></v-text-field>
-      
+          class="rounded-lg"
+        ></v-text-field>
 
-      <v-btn class="ml-4 rounded-lg fix-margin-right" height="40px" depressed color="primary">
-        Личный кабинет
-      </v-btn>
+        <v-btn
+          class="ml-4 rounded-lg fix-margin-right"
+          height="40px"
+          depressed
+          color="primary"
+        >
+          <router-link to="/admin/name_complex" class="reset-link"> Личный кабинет </router-link>
+        </v-btn>
       </div>
     </v-toolbar>
   </v-container>
@@ -31,16 +36,16 @@
 
 <script>
 export default {
-  name: 'Header',
+  name: "Header",
 };
 </script>
 
 <style>
 .fix-margin-left {
-    margin-left: -16px;
+  margin-left: -16px;
 }
 .fix-margin-right {
-    margin-right: -16px;
+  margin-right: -16px;
 }
 .my-logo {
   width: 40px;

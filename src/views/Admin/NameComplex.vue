@@ -17,7 +17,9 @@
           </div>
           <div>
             <v-btn class="mr-2 mb-2" color="primary" elevation="0">
-              Редактировать
+              <router-link to="/admin/name_complex/edit" class="reset-link">
+                Редактировать
+              </router-link>
             </v-btn>
             <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
               Добавить в избранное
@@ -37,16 +39,24 @@
       </v-row>
       <div class="mb-4 text-h6">Разделы арены</div>
       <v-row class="mx-n4 pb-10">
-        <v-col class="pa-4" cols="4" md='2' v-for="(section, i) in sections" :key="i">
+        <v-col
+          class="pa-4"
+          cols="4"
+          md="2"
+          v-for="(section, i) in sections"
+          :key="i"
+        >
           <v-sheet
             color="grey lighten-3"
             elevation="0"
             height="60"
             width="100%"
           >
-          <div class="text-center py-2">
-            {{ section.text }}
-          </div>
+          <router-link :to="`${section.link}`" class="reset-link">
+            <div class="text-center py-2">
+              {{ section.text }}
+            </div>
+          </router-link>
           </v-sheet>
         </v-col>
       </v-row>
@@ -79,27 +89,27 @@ export default {
       sections: [
         {
           text: "Информация",
-          link: "",
+          link: "/admin/name_complex/information",
         },
         {
           text: "Платные услуги",
-          link: "",
+          link: "/admin/name_complex/payment_portal",
         },
         {
           text: "Расписание мероприятий",
-          link: "",
+          link: "/admin/name_complex/schedule_event",
         },
         {
           text: "Список команд",
-          link: "",
+          link: "/admin/name_complex/team_list",
         },
         {
           text: "Тренерский состав",
-          link: "",
+          link: "/admin/name_complex/training_staff",
         },
         {
           text: "Состав руководства",
-          link: "",
+          link: "/admin/name_complex/management_staff",
         },
       ],
     };
