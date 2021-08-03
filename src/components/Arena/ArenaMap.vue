@@ -87,10 +87,8 @@ export default {
     mapBalloon(billboard) {
       return `
       <div><h1>${billboard.id}</h1>
-      <p><strong>City</strong>: ${billboard.city}</p>
-      <p><strong>Type</strong>: ${billboard.type}</p>
-      <p><strong>Side</strong>: ${billboard.side}</p>
-      <p><strong>Address</strong>: ${billboard.address}</p>
+      <div><strong>City</strong>: ${billboard.city}</div>
+      <div><strong>Address</strong>: ${billboard.address}</div>
       </div>
       `;
     },

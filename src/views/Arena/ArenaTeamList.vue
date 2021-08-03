@@ -1,182 +1,132 @@
 <template>
-  <div class="grey lighten-4">
-    <v-img
-      color="grey"
-      height="450px"
-      width="100%"
-      src="@/assets/banner-arena.jpg"
-    >
-      <v-container class="pt-8 pb-0">
-        <v-row class="">
-          <div>
-            <v-breadcrumbs
-              dark
-              :items="breadcrumb_items"
-              class="px-3"
-            ></v-breadcrumbs>
-          </div>
-          <v-spacer></v-spacer>
-          <div class="pr-3 my-auto">
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="mr-1"
-            >
-              <v-icon color="white">mdi-whatsapp</v-icon>
-            </v-btn>
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="mx-1"
-            >
-              <v-icon color="white">mdi-instagram</v-icon>
-            </v-btn>
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="mx-1"
-            >
-              <v-icon color="white">mdi-vk</v-icon>
-            </v-btn>
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="ml-1"
-            >
-              <v-icon color="white">mdi-web</v-icon>
-            </v-btn>
-          </div>
-        </v-row>
-        <div class="margin-top-big">
-          <v-row class="mb-3">
-            <v-col cols="12" sm="6" md="7" lg="5">
-              <p class="text-h4 white--text">Название арены</p>
-              <p class="white--text">
-                <v-icon color="white">mdi-map-marker-outline</v-icon> ул.
-                Лермонтова, д. 14, пом. 3, г. Чита
-              </p>
-            </v-col>
-            <v-spacer></v-spacer>
-          </v-row>
-          <v-btn color="primary mr-4 mt-4" elevation="0">Забронировать</v-btn>
-          <v-btn class="mt-4" dark outlined elevation="0">Как проехать?</v-btn>
-        </div>
-      </v-container>
-    </v-img>
-    <v-container class="pb-10">
-      <v-row class="mt-5">
-        <v-col cols="5" md="3">
-          <v-tabs vertical class="pl-4 rounded-lg" v-model="sidebar_tab">
-            <v-tab
-              v-for="(item, i) in sidebar_items"
-              :key="i"
-              router
-              :to="item.link"
-            >
-              {{ item.text }}
-            </v-tab>
-          </v-tabs>
-        </v-col>
-        <v-col cols="7" md="9">
-          <div>
-            <p class="text-h4">Список команд</p>
-            <v-tabs
-              v-model="premises_tab"
-              class="d-flex flex-no-wrap rounded-lg"
-            >
-              <v-tab v-for="item in premises_nav" :key="item">
-                {{ item }}
-              </v-tab>
-            </v-tabs>
+  <div>
+    <p class="text-h4">Список команд</p>
+    <v-tabs v-model="premises_tab" class="d-flex flex-no-wrap rounded-lg">
+      <v-tab v-for="item in premises_nav" :key="item">
+        {{ item }}
+      </v-tab>
+    </v-tabs>
 
-            <v-tabs-items
-              v-model="premises_tab"
-              style="background-color: unset"
-            >
-              <v-tab-item v-for="nav in premises_nav" :key="nav">
-                <div class="mt-5 mb-n5 text-h5">Детские команды</div>
-                <v-row dense class="mx-n4 mt-5">
-                  <v-col
-                    cols="12"
-                    v-for="(item, i) in team_items"
-                    :key="i"
-                  >
-                    <router-link to="/teamname" class="undo-link-default">
-                      <v-card color="transparent" elevation="0">
-                        <div class="d-flex flex-no-wrap">
-                          <v-avatar class="ma-3" size="125" tile>
-                            <v-img
-                              :src="require('@/assets' + item + '.jpg')"
-                            ></v-img>
-                          </v-avatar>
-                          <v-card-text>
-                            <div
-                              class="body-1 blue--text mb-2"
-                              style="text-decoration: none"
-                            >
-                              Москва
-                            </div>
-                            <div class="text-h5 mb-2">Название команды</div>
-                            <div class="body-1 grey--text">
-                              Краткое описание
-                            </div>
-                          </v-card-text>
-                        </div>
-                      </v-card>
-                    </router-link>
-                  </v-col>
-                </v-row>
-                <div class="mt-5 mb-n5 text-h5">Юношеские команды</div>
-                <v-row dense class="mx-n4 mt-5">
-                  <v-col
-                    cols="12"
-                    v-for="(item, i) in team_items"
-                    :key="i"
-                  >
-                    <router-link to="/teamname" class="undo-link-default">
-                      <v-card color="transparent" elevation="0">
-                        <div class="d-flex flex-no-wrap">
-                          <v-avatar class="ma-3" size="125" tile>
-                            <v-img
-                              :src="require('@/assets' + item + '.jpg')"
-                            ></v-img>
-                          </v-avatar>
-                          <v-card-text>
-                            <div
-                              class="body-1 blue--text mb-2"
-                              style="text-decoration: none"
-                            >
-                              Москва
-                            </div>
-                            <div class="text-h5 mb-2">Название команды</div>
-                            <div class="body-1 grey--text">
-                              Краткое описание
-                            </div>
-                          </v-card-text>
-                        </div>
-                      </v-card>
-                    </router-link>
-                  </v-col>
-                </v-row>
-              </v-tab-item>
-            </v-tabs-items>
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
+    <v-tabs-items v-model="premises_tab" style="background-color: unset">
+      <v-tab-item v-for="i in 4" :key="i">
+        <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 0">
+          <v-col cols="12" v-for="(item, i) in teams" :key="i">
+            <router-link to="/teamname" class="undo-link-default">
+              <v-card color="transparent" elevation="0">
+                <div class="d-flex flex-no-wrap">
+                  <v-avatar class="ma-3" size="125" tile>
+                    <v-img :src="require('@/assets/team_room_1.jpg')"></v-img>
+                  </v-avatar>
+                  <v-card-text>
+                    <div
+                      class="body-1 blue--text mb-2"
+                      style="text-decoration: none"
+                    >
+                      {{ item.city }}
+                    </div>
+                    <div class="text-h5 mb-2">{{ item.title }}</div>
+                    <div class="body-1 grey--text">
+                      {{ item.miniDescription | descriptionLength }}
+                    </div>
+                  </v-card-text>
+                </div>
+              </v-card>
+            </router-link>
+          </v-col>
+        </v-row>
+        <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 1">
+          <v-col cols="12" v-for="(item, i) in children_team" :key="i">
+            <router-link to="/teamname" class="undo-link-default">
+              <v-card color="transparent" elevation="0">
+                <div class="d-flex flex-no-wrap">
+                  <v-avatar class="ma-3" size="125" tile>
+                    <v-img :src="require('@/assets/team_room_1.jpg')"></v-img>
+                  </v-avatar>
+                  <v-card-text>
+                    <div
+                      class="body-1 blue--text mb-2"
+                      style="text-decoration: none"
+                    >
+                      {{ item.city }}
+                    </div>
+                    <div class="text-h5 mb-2">{{ item.title }}</div>
+                    <div class="body-1 grey--text">
+                      {{ item.miniDescription | descriptionLength }}
+                    </div>
+                  </v-card-text>
+                </div>
+              </v-card>
+            </router-link>
+          </v-col>
+        </v-row>
+        <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 2">
+          <v-col cols="12" v-for="(item, i) in youth_team" :key="i">
+            <router-link to="/teamname" class="undo-link-default">
+              <v-card color="transparent" elevation="0">
+                <div class="d-flex flex-no-wrap">
+                  <v-avatar class="ma-3" size="125" tile>
+                    <v-img :src="require('@/assets/team_room_1.jpg')"></v-img>
+                  </v-avatar>
+                  <v-card-text>
+                    <div
+                      class="body-1 blue--text mb-2"
+                      style="text-decoration: none"
+                    >
+                      {{ item.city }}
+                    </div>
+                    <div class="text-h5 mb-2">{{ item.title }}</div>
+                    <div class="body-1 grey--text">
+                      {{ item.miniDescription | descriptionLength }}
+                    </div>
+                  </v-card-text>
+                </div>
+              </v-card>
+            </router-link>
+          </v-col>
+        </v-row>
+        <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 3">
+          <v-col cols="12" v-for="(item, i) in adult_team" :key="i">
+            <router-link to="/teamname" class="undo-link-default">
+              <v-card color="transparent" elevation="0">
+                <div class="d-flex flex-no-wrap">
+                  <v-avatar class="ma-3" size="125" tile>
+                    <v-img :src="require('@/assets/team_room_1.jpg')"></v-img>
+                  </v-avatar>
+                  <v-card-text>
+                    <div
+                      class="body-1 blue--text mb-2"
+                      style="text-decoration: none"
+                    >
+                      {{ item.city }}
+                    </div>
+                    <div class="text-h5 mb-2">{{ item.title }}</div>
+                    <div class="body-1 grey--text">
+                      {{ item.miniDescription | descriptionLength }}
+                    </div>
+                  </v-card-text>
+                </div>
+              </v-card>
+            </router-link>
+          </v-col>
+        </v-row>
+      </v-tab-item>
+    </v-tabs-items>
   </div>
 </template>
 
 <script>
+import { mapState, mapGetters } from "vuex";
 export default {
+  computed: {
+    ...mapState(["teams"]),
+    ...mapGetters(["children_team", "youth_team", "adult_team"]),
+  },
+  filters: {
+    descriptionLength(value) {
+      if (value.length < 30) return value;
+      return value.slice(0, 30) + "...";
+    },
+  },
   data() {
     return {
       name: "ArenaTeamList",
@@ -188,42 +138,10 @@ export default {
         "Юношеские команды",
         "Взрослые команды",
       ],
-      breadcrumb_items: [
-        {
-          text: "Москва",
-          disabled: false,
-          href: "breadcrumbs_link_1",
-        },
-        {
-          text: "Название арены",
-          disabled: true,
-          href: "breadcrumbs_dashboard",
-        },
-      ],
-      sidebar_items: [
-        { text: "Информация", link: "/arenaname" },
-        { text: "Платные услуги", link: "/payment_portal" },
-        { text: "Расписание мероприятий", link: "/event_schedule" },
-        { text: "Список команд", link: "/list_teams" },
-        { text: "Тренерский состав", link: "/training_staff" },
-      ],
-      team_items: [
-        "/team_room_1",
-        "/team_room_2",
-        "/team_room_3",
-      ],
-      price_list: [
-        { interval: "06:00–08:30", weekday: "8 000", weekend: "10 000" },
-        { interval: "08:30–15:00", weekday: "8 000", weekend: "10 000" },
-        { interval: "15:00–17:00", weekday: "8 000", weekend: "10 000" },
-        { interval: "17:00–19:00", weekday: "10 000", weekend: "10 000" },
-        { interval: "19:00–22:30", weekday: "12 000", weekend: "10 000" },
-        { interval: "22:30–00:00", weekday: "10 000", weekend: "10 000" },
-      ],
+
+      team_items: ["/team_room_1", "/team_room_2", "/team_room_3"],
     };
   },
-  computed: {
-  }
 };
 </script>
 

@@ -10,7 +10,7 @@
       <v-container>
         <v-row class="ma-2">
           <v-btn
-            @click.stop="openCard"
+            @click.stop="openCardMap"
             class="rounded-lg white"
             small
             elevation="0"
@@ -44,6 +44,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "ArenaCard",
   props: {
@@ -58,9 +60,14 @@ export default {
   methods: {
     goToArena() {
       const arenaId = this.arena.id;
-      this.$router.push({ path: `/arenaname/${arenaId}`});
+      this.$router.push({ path: `/arenaname/${arenaId}/information` });
     },
-    openCard() {},
+    openCardMap() {
+      console.log(this.arena);
+      this.$store
+        .dispatch("displayMapOne", [this.arena])
+        .then(() => this.$router.push({ path: "/arena_maps" }));
+    },
     selectToggle() {
       this.selected = !this.selected;
     },
@@ -72,6 +79,7 @@ export default {
     },
   },
   computed: {
+    ...mapState(["arenasMapIdentifier"]),
     checkPlus() {
       return this.selected ? "mdi-check" : "mdi-plus";
     },

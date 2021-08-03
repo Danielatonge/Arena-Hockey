@@ -71,7 +71,13 @@
         </div>
       </v-container>
     </v-img>
-    <v-container class="mt-14">
+    <v-container class="">
+      <div>
+        <v-breadcrumbs
+          :items="breadcrumb_event_page"
+          class="px-0"
+        ></v-breadcrumbs>
+      </div>
       <p class="text-h4">Расписание мероприятий</p>
       <div class="rounded-lg white">
         <v-sheet tile height="54" class="d-flex" color="#EBF5FB">
@@ -149,20 +155,26 @@
 
 <script>
 export default {
+  mounted() {
+    let UrlString = this.$route.path;
+    let returnUrl = UrlString.split("/");
+    this.breadcrumb_event_page = [
+      {
+        text: "Ледовая арена",
+        disabled: false,
+        to: { path: `/${returnUrl[1]}/${returnUrl[2]}/information` },
+        exact: true
+      },
+      {
+        text: "Расписание мероприятий",
+        disabled: true,
+        href: "/event_schedule",
+      },
+    ];
+  },
   data() {
     return {
-      breadcrumb_items: [
-        {
-          text: "Ледовые дворцы и арены",
-          disabled: false,
-          href: "/",
-        },
-        {
-          text: "Расписание мероприятий",
-          disabled: true,
-          href: "/event_schedule",
-        },
-      ],
+      breadcrumb_event_page: null,
       currentDay: "23.09.2021, пн",
       mode: "column",
       mode_lesson: ["0", "1", "2"],

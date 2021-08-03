@@ -63,10 +63,9 @@
               height="48px"
               width="100%"
               color="primary"
+              @click="goToMapAll"
             >
-              <router-link to="/arena_maps" class="reset-link">
-                На карте
-              </router-link>
+              На карте
             </v-btn>
           </v-col>
 
@@ -101,18 +100,19 @@
           cols="12"
           md="4"
           xl="3"
-          v-for="(arena, i) in list_arenas"
+          v-for="(arena, i) in displayedArenas"
           :key="i"
         >
-          <ArenaCard :arena="arena"  />
-        </v-col>        
+          <ArenaCard :arena="arena" />
+        </v-col>
       </v-row>
     </v-container>
+    {{ page }}
     <div class="text-center py-10">
       <v-pagination
         color="grey"
         v-model="page"
-        :length="15"
+        :length="paginationLength"
         :total-visible="7"
       ></v-pagination>
     </div>
@@ -127,11 +127,32 @@ export default {
   name: "Home",
   computed: {
     ...mapState(["list_arenas"]),
+    displayedArenas() {
+      return this.paginate(this.list_arenas);
+    },
   },
-  methods: {},
+  methods: {
+    goToMapAll() {
+      this.$store
+        .dispatch("displayMapAll")
+        .then(() => this.$router.push({ path: "/arena_maps" }));
+    },
+    setPaginationLength() {
+      this.paginationLength = Math.ceil(this.list_arenas.length / this.perPage);
+    },
+    paginate(items) {
+      const cpage = this.page;
+      const perPage = this.perPage;
+      const from = cpage * perPage - perPage;
+      const to = cpage * perPage;
+      return items.slice(from, to);
+    },
+  },
   data() {
     return {
       page: 1,
+      perPage: 3,
+      paginationLength: 10,
       team_tags: ["Москва", "Казань"],
       team_items: [
         "/arena_1",
@@ -150,7 +171,9 @@ export default {
   components: { ArenaCard },
   mounted() {
     this.$store.dispatch("getAllArenas");
+    this.setPaginationLength();
   },
+  watch: {},
 };
 </script>
 
