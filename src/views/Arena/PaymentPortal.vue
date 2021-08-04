@@ -8,7 +8,7 @@
     </v-tabs>
 
     <v-tabs-items v-model="premises_tab" style="background-color: unset">
-      <v-tab-item v-for="i in 3" :key="i">
+      <v-tab-item v-for="i in 2" :key="i">
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 0">
           <v-col cols="12" v-for="(item, i) in katok_services" :key="i">
             <v-card color="transparent" elevation="0">
@@ -27,14 +27,6 @@
                   <v-card-actions class="pl-4 bottom">
                     <v-btn class="px-6" color="primary" x-large elevation="0">
                       Забронировать
-                    </v-btn>
-                    <v-btn
-                      class="px-6"
-                      color="grey lighten-2"
-                      x-large
-                      elevation="0"
-                    >
-                      Подробнее
                     </v-btn>
                   </v-card-actions>
                 </div>
@@ -61,14 +53,7 @@
                     <v-btn class="px-6" color="primary" x-large elevation="0">
                       Забронировать
                     </v-btn>
-                    <v-btn
-                      class="px-6"
-                      color="grey lighten-2"
-                      x-large
-                      elevation="0"
-                    >
-                      Подробнее
-                    </v-btn>
+                    
                   </v-card-actions>
                 </div>
               </div>
@@ -135,7 +120,7 @@ export default {
     return {
       name: "PaymentPortal",
       premises_tab: null,
-      premises_nav: ["Катки", "Бросковые зоны", "Спортивные залы"],
+      premises_nav: ["Катки", "Другие"],
 
       price_list: [
         { interval: "06:00–08:30", weekday: "8 000", weekend: "10 000" },

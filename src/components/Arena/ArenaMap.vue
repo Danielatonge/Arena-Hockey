@@ -1,7 +1,6 @@
 <template>
   <yandex-map
     :coords="coords"
-    :controls="[]"
     :zoom="zoom"
     @map-was-initialized="initHandler"
     :options="{

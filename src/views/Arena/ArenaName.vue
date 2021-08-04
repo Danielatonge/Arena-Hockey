@@ -100,7 +100,7 @@ export default {
         { icon: "mdi-whatsapp", link: `${data.whatsApp}` },
         { icon: "mdi-instagram", link: `${data.instagram}` },
         { icon: "mdi-vk", link: `${data.vk}` },
-        { icon: "mdi-web", link: `${data.web}` },
+        { icon: "mdi-web", link: `${data.website}` },
       ];
     });
     this.$store.dispatch("getTeamsAll");
