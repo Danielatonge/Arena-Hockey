@@ -1,6 +1,16 @@
 <template>
   <div class="grey lighten-4">
-    <v-container class="pt-8 pb-0">
+    <v-container class="pt-5 pb-0">
+      <v-row class="">
+        <div>
+          <v-breadcrumbs :items="breadcrumb_items" class="px-3"></v-breadcrumbs>
+        </div>
+      </v-row>
+      <v-row class="">
+          <v-col>
+            <span class="text-h5">Мои спортивные комплексы</span>
+          </v-col>
+        </v-row>
       <div class="pb-16">
         <v-row dense>
           <v-col class="d-flex" cols="12" md="2">
@@ -47,11 +57,6 @@
                 Расписание мероприятий
               </router-link>
             </v-btn>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <span class="text-h5">Ледовые дворцы и арены</span>
           </v-col>
         </v-row>
         <v-row>
@@ -149,6 +154,28 @@ export default {
   },
   data() {
     return {
+      breadcrumb_items: [
+        {
+          text: "Личный кабинет",
+          disabled: false,
+          href: "breadcrumbs_link_1",
+        },
+        {
+          text: "Мои спортивные комплексы",
+          disabled: false,
+          href: "breadcrumbs_dashboard",
+        },
+        {
+          text: "Название комплекса",
+          disabled: false,
+          href: "/admin/name_complex/edit",
+        },
+        {
+          text: "Информация",
+          disabled: true,
+          href: "breadcrumbs_dashboard",
+        },
+      ],
       page: 1,
       perPage: 3,
       paginationLength: 10,

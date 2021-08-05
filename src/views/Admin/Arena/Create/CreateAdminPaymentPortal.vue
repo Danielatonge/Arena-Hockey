@@ -16,50 +16,53 @@
             Посмотреть страницу арены
           </v-btn>
         </div>
-        <v-tabs v-model="value_tab" class=" mt-6 d-flex flex-no-wrap rounded-lg">
+        <v-tabs v-model="value_tab" class="mt-6 d-flex flex-no-wrap rounded-lg">
           <v-tab class="px-6" v-for="item in service_nav" :key="item">
             {{ item }}
           </v-tab>
         </v-tabs>
-        <div>
-          <div v-for="i in 3" :key="i">
-            <p class="text-h4 mt-10 mb-0">Название катка {{ i }}</p>
-            <p class="grey--text">Краткое описание катка</p>
-            <v-row>
-              <v-col
-                cols="2"
-                class="text-center border"
-                v-for="(item, indx) in price_list"
-                :key="indx"
-              >
-                <div class="mb-3 grey--text">{{ item.interval }}</div>
-                <div class="right-border mr-n3">
-                  <p class="mb-0">{{ item.weekday }}</p>
-                  <p class="primary--text">{{ item.weekend }}</p>
-                </div>
-              </v-col>
-            </v-row>
-            <div class="mt-n8">
-              <span class="mr-5 font-weight-bold">
-                <v-icon style="font-size: 70px" color="#000" class="">
-                  mdi-circle-small
-                </v-icon>
-                <span class="ml-n5">Будни</span>
-              </span>
-              <span class="font-weight-bold primary--text">
-                <v-icon style="font-size: 70px" color="primary" class="">
-                  mdi-circle-small
-                </v-icon>
-                <span class="ml-n5"> Выходные </span>
-              </span>
+        <v-tabs-items v-model="value_tab" style="background-color: unset">
+          <v-tab-item v-for="i in 2" :key="i">
+            <div>
+              <p class="text-h4 mt-10 mb-0">Название катка {{ i }}</p>
+              <p class="grey--text">Краткое описание катка</p>
+              <v-row>
+                <v-col
+                  cols="2"
+                  lg="1"
+                  class="text-center border"
+                  v-for="(item, indx) in price_list"
+                  :key="indx"
+                >
+                  <div class="mb-3 grey--text">{{ item.interval }}</div>
+                  <div class="right-border mr-n3">
+                    <p class="mb-0">{{ item.weekday }}</p>
+                    <p class="primary--text">{{ item.weekend }}</p>
+                  </div>
+                </v-col>
+              </v-row>
+              <div class="mt-n8">
+                <span class="mr-5 font-weight-bold">
+                  <v-icon style="font-size: 70px" color="#000" class="">
+                    mdi-circle-small
+                  </v-icon>
+                  <span class="ml-n5">Будни</span>
+                </span>
+                <span class="font-weight-bold primary--text">
+                  <v-icon style="font-size: 70px" color="primary" class="">
+                    mdi-circle-small
+                  </v-icon>
+                  <span class="ml-n5"> Выходные </span>
+                </span>
+              </div>
+              <div class="">
+                <v-btn color="primary" elevation="0">
+                  Перейти к Бронированию
+                </v-btn>
+              </div>
             </div>
-            <div class="">
-              <v-btn color="primary" elevation="0" >
-                Перейти к Бронированию
-              </v-btn>
-            </div>
-          </div>
-        </div>
+          </v-tab-item>
+        </v-tabs-items>
       </div>
     </v-container>
   </div>

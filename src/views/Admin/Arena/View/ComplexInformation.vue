@@ -148,7 +148,7 @@
               <v-sheet
                 color="grey lighten-3"
                 elevation="0"
-                height="100"
+                height="150"
                 width="100%"
               >
               </v-sheet>

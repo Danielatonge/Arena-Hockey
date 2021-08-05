@@ -15,21 +15,24 @@ import JoinTeam from "../views/Arena/JoinTeam.vue";
 import ArenaMapAll from "../views/Arena/ArenaMapAll.vue";
 import BookRoom from "../views/LockerRoom/BookRoom.vue";
 import SubstituteBench from "../views/Bench/SubstituteBench.vue";
-import NameComplex from "../views/Admin/NameComplex.vue";
-import ComplexInformation from "../views/Admin/ComplexInformation.vue";
-import AdminScheduleEvent from "../views/Admin/AdminScheduleEvent.vue";
-import AdminTeamList from "../views/Admin/AdminTeamList.vue";
-import AdminTrainStaff from "../views/Admin/AdminTrainStaff.vue";
-import AdminManager from "../views/Admin/AdminManager.vue";
-import AdminPaymentPortal from "../views/Admin/AdminPaymentPortal.vue";
 
-import EditAdminPaymentPortal from "../views/Admin/Edit/EditAdminPaymentPortal.vue";
-import EditNameComplex from "../views/Admin/Edit/EditNameComplex.vue";
-import EditComplexInformation from "../views/Admin/Edit/EditComplexInformation.vue";
-import EditAdminScheduleEvent from "../views/Admin/Edit/EditAdminScheduleEvent.vue";
-import EditAdminTeamList from "../views/Admin/Edit/EditAdminTeamList.vue";
-import EditAdminTrainStaff from "../views/Admin/Edit/EditAdminTrainStaff.vue";
-import EditAdminManager from "../views/Admin/Edit/EditAdminManager.vue";
+import AdminSportComplex from "../views/Admin/Arena/AdminSportComplex.vue";
+
+import NameComplex from "../views/Admin/Arena/View/NameComplex.vue";
+import ComplexInformation from "../views/Admin/Arena/View/ComplexInformation.vue";
+import AdminScheduleEvent from "../views/Admin/Arena/View/AdminScheduleEvent.vue";
+import AdminTeamList from "../views/Admin/Arena/View/AdminTeamList.vue";
+import AdminTrainStaff from "../views/Admin/Arena/View/AdminTrainStaff.vue";
+import AdminManager from "../views/Admin/Arena/View/AdminManager.vue";
+import AdminPaymentPortal from "../views/Admin/Arena/View/AdminPaymentPortal.vue";
+
+import EditAdminPaymentPortal from "../views/Admin/Arena/Edit/EditAdminPaymentPortal.vue";
+import EditNameComplex from "../views/Admin/Arena/Edit/EditNameComplex.vue";
+import EditComplexInformation from "../views/Admin/Arena/Edit/EditComplexInformation.vue";
+import EditAdminScheduleEvent from "../views/Admin/Arena/Edit/EditAdminScheduleEvent.vue";
+import EditAdminTeamList from "../views/Admin/Arena/Edit/EditAdminTeamList.vue";
+import EditAdminTrainStaff from "../views/Admin/Arena/Edit/EditAdminTrainStaff.vue";
+import EditAdminManager from "../views/Admin/Arena/Edit/EditAdminManager.vue";
 
 Vue.use(VueRouter);
 
@@ -181,6 +184,11 @@ const routes = [
     path: "/admin/name_complex/management_staff/edit",
     name: "EditAdminManager",
     component: EditAdminManager,
+  },
+  {
+    path: "/admin/sport_complex",
+    name: "AdminSportComplex",
+    component: AdminSportComplex,
   },
 ];
 

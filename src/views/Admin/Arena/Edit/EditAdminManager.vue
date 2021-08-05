@@ -232,7 +232,7 @@ export default {
         {
           text: "Название комплекса",
           disabled: false,
-          href: "/admin/name_complex",
+          href: "/admin/name_complex/edit",
         },
         {
           text: "Список команд",

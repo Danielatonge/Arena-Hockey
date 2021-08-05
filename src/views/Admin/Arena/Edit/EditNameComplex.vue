@@ -18,20 +18,29 @@
         <v-col
           class="pa-4"
           cols="4"
-          md="2"
+          md="4"
           v-for="(section, i) in sections"
           :key="i"
         >
-          <v-sheet
-            color="grey lighten-3"
-            elevation="0"
-            height="60"
-            width="100%"
-          >
-            <div class="text-center py-2">
-              {{ section.text }}
-            </div>
-          </v-sheet>
+          <router-link :to="`${section.link}`" class="reset-link">
+            <v-sheet
+              color="grey lighten-3"
+              elevation="0"
+              height="90"
+              width="100%"
+              class="
+                font-weight-bold
+                d-flex
+                justify-center
+                align-center
+                rounded-lg
+              "
+            >
+              <div class="pa-4">
+                {{ section.text }}
+              </div>
+            </v-sheet>
+          </router-link>
         </v-col>
       </v-row>
     </v-container>
@@ -63,27 +72,27 @@ export default {
       sections: [
         {
           text: "Информация",
-          link: "",
+          link: "/admin/name_complex/information/edit",
         },
         {
           text: "Платные услуги",
-          link: "",
+          link: "/admin/name_complex/payment_portal/edit",
         },
         {
           text: "Расписание мероприятий",
-          link: "",
+          link: "/admin/name_complex/schedule_event/edit",
         },
         {
           text: "Список команд",
-          link: "",
+          link: "/admin/name_complex/team_list/edit",
         },
         {
           text: "Тренерский состав",
-          link: "",
+          link: "/admin/name_complex/training_staff/edit",
         },
         {
           text: "Состав руководства",
-          link: "",
+          link: "/admin/name_complex/management_staff/edit",
         },
       ],
     };

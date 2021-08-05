@@ -8,76 +8,79 @@
       </v-row>
       <div>
         <div class="text-h5 py-5">Информация</div>
+        <div>
+          <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
+            Редактировать
+          </v-btn>
+          <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
+            Посмотреть страницу арены
+          </v-btn>
+        </div>
 
-        <div class="text-h6">Основная информация</div>
+        <div class="text-h6 my-4">Основная информация</div>
         <div class="mb-4">
-          <v-text-field
-            label="Полное название катка"
-            single-line
-            solo
-            flat
-            dense
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-text-field>
-        </div>
-        <div class="mb-4">
-          <v-text-field
-            label="Сокращенное название катка"
-            single-line
-            solo
-            flat
-            dense
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-text-field>
-        </div>
-        <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-2 grey--text">
-            Основное изображение арены
+          <div class="body-2 font-weight-bold mb-1 grey--text">Наименование катка (полное)</div>
+          <div>
+            Lobortis urna purus velit auctor donec libero volutpat mollis sit
           </div>
-          <v-sheet
-            color="white"
-            class="rounded-lg"
-            elevation="0"
-            height="100"
-            width="300"
-          ></v-sheet>
-        </div>
-        <v-textarea
-          solo
-          name=""
-          flat
-          label="Описание"
-          elevation="0"
-        ></v-textarea>
-        <div class="mb-4">
-          <v-text-field
-            label="Адрес катка"
-            solo
-            flat
-            dense
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-text-field>
-        </div>
-        <div class="mb-4" style="width: 50%">
-          <v-img src="https://via.placeholder.com/200x100"></v-img>
         </div>
         <div class="mb-4">
-          <v-text-field
-            label="Как проехать"
-            solo
-            flat
-            dense
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-text-field>
-        </div>
-        <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">
-            Социальные сети
+          <div class="body-2 font-weight-bold mb-1 grey--text">Наименование катка (полное)</div>
+          <div>
+            Lobortis urna purus velit auctor donec libero volutpat mollis sit
           </div>
+        </div>
+        <div class="mb-6">
+          <div class="body-2 font-weight-bold mb-4 grey--text">Основное изображение арены</div>
+          <div style="width: 25%"><v-img src="https://via.placeholder.com/140x80"></v-img></div>
+        </div>
+        <div class="mb-4">
+          <div class="body-2 font-weight-bold mb-1 grey--text">Описание катка</div>
+          <p>
+            «Академия «Спартак» - это новый современный многофункциональный
+            хоккейный комплекс, площадью 10 000 м2. Располагается в парке
+            «Сокольники» и граничит с особо охраняемой природной территорией
+            регионального значения «природно-исторический парк «Сокольники». Это
+            место было выбрано не случайно. Еще в 18 веке Сокольники были
+            центром притяжения народных гуляний и спортивных потех. Здесь любили
+            проводить время русские цари и московская знать. Уже к 20 столетию к
+            рекреационной функции парка была добавлена еще и спортивная. Здесь
+            стали проводить спортивные праздники и спартакиады, соревнования по
+            различным видам спорта на первенство города и страны.
+          </p>
+          <p>
+            В окружении многочисленных водоемов, фонтанов и смешанного леса вас
+            ничто не будет отвлекать от занятий спортом. Здесь нет суеты
+            большого города, только великолепная природа и свежий воздух.
+            Сокольники - это место побед и спортивного духа. И мы продолжаем эти
+            традиции!
+          </p>
+          <p>
+            Хоккейный комплекс «Академия «Спартак» отвечает всем современным
+            требованиям и оборудован высококлассной техникой для качественной
+            организации тренировочного процесса и проведения спортивных
+            мероприятий разного уровня. Только самое новейшее оборудование и
+            тренажеры, инновационные материалы – все для комплексной подготовки
+            профессионалов и любителей.
+          </p>
+        </div>
+        <div class="mb-4">
+          <div class="body-2 font-weight-bold mb-1 grey--text">Адрес</div>
+          <p>
+            Lobortis urna purus velit auctor donec libero volutpat mollis sit
+          </p>
+          <div style="width: 40%"><v-img src="https://via.placeholder.com/140x80"></v-img></div>
+        </div>
+        <div class="mb-4">
+          <div class="body-2 font-weight-bold mb-1 grey--text">Как проехать</div>
+          <p>
+            Turpis turpis blandit auctor risus. Ultricies rutrum interdum
+            placerat nisl eleifend quis ornare tortor, velit. Nunc, viverra ut
+            nunc velit metus ipsum. Urna consequat facilisis fringilla nunc.
+          </p>
+        </div>
+        <div class="mb-4">
+          <div class="body-2 font-weight-bold mb-1 grey--text">Социальные сети</div>
           <div class="pr-3 my-auto">
             <v-btn
               elevation="0"
@@ -86,7 +89,7 @@
               height="40px"
               class="mr-1"
             >
-              <v-icon>mdi-whatsapp</v-icon>
+              <v-icon >mdi-whatsapp</v-icon>
             </v-btn>
             <v-btn
               elevation="0"
@@ -95,7 +98,7 @@
               height="40px"
               class="mx-1"
             >
-              <v-icon>mdi-instagram</v-icon>
+              <v-icon >mdi-instagram</v-icon>
             </v-btn>
             <v-btn
               elevation="0"
@@ -104,7 +107,7 @@
               height="40px"
               class="mx-1"
             >
-              <v-icon>mdi-vk</v-icon>
+              <v-icon >mdi-vk</v-icon>
             </v-btn>
             <v-btn
               elevation="0"
@@ -145,7 +148,7 @@
               <v-sheet
                 color="grey lighten-3"
                 elevation="0"
-                height="100"
+                height="150"
                 width="100%"
               >
               </v-sheet>

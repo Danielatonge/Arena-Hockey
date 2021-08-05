@@ -25,7 +25,7 @@
               Добавить в избранное
             </v-btn>
             <v-btn class="mb-2" color="grey lighten-2" elevation="0">
-              Редактировать
+              Удалить
             </v-btn>
           </div>
           <div>
@@ -42,22 +42,29 @@
         <v-col
           class="pa-4"
           cols="4"
-          md="2"
+          md="4"
           v-for="(section, i) in sections"
           :key="i"
         >
-          <v-sheet
-            color="grey lighten-3"
-            elevation="0"
-            height="60"
-            width="100%"
-          >
           <router-link :to="`${section.link}`" class="reset-link">
-            <div class="text-center py-2">
-              {{ section.text }}
-            </div>
+            <v-sheet
+              color="grey lighten-3"
+              elevation="0"
+              height="90"
+              width="100%"
+              class="
+                font-weight-bold
+                d-flex
+                justify-center
+                align-center
+                rounded-lg
+              "
+            >
+              <div class="pa-4">
+                {{ section.text }}
+              </div>
+            </v-sheet>
           </router-link>
-          </v-sheet>
         </v-col>
       </v-row>
     </v-container>
