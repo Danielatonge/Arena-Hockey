@@ -7,176 +7,333 @@
         </div>
       </v-row>
       <div>
-        <div class="text-h5 py-5">Информация</div>
-        <div>
-          <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
-            Редактировать
-          </v-btn>
-          <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
-            Посмотреть страницу арены
-          </v-btn>
-        </div>
-
-        <div class="text-h6 my-4">Основная информация</div>
+        <div class="text-h4 pb-3 pt-5">Создать арену</div>
+        <div class="text-h6 mb-4">Основная информация</div>
         <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">Наименование катка (полное)</div>
-          <div>
-            Lobortis urna purus velit auctor donec libero volutpat mollis sit
-          </div>
+          <v-text-field
+            label="Полное название арены"
+            outlined
+            flat
+            hide-details="auto"
+            class="rounded-lg"
+          ></v-text-field>
         </div>
         <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">Наименование катка (полное)</div>
-          <div>
-            Lobortis urna purus velit auctor donec libero volutpat mollis sit
-          </div>
+          <v-text-field
+            label="Сокращенное название арены"
+            outlined
+            flat
+            hide-details="auto"
+            class="rounded-lg"
+          ></v-text-field>
         </div>
         <div class="mb-6">
-          <div class="body-2 font-weight-bold mb-4 grey--text">Основное изображение арены</div>
-          <div style="width: 25%"><v-img src="https://via.placeholder.com/140x80"></v-img></div>
+          <v-text-field
+            label="Адрес арены"
+            outlined
+            flat
+            hide-details="auto"
+            class="rounded-lg"
+          ></v-text-field>
+        </div>
+        <div class="mb-4" style="width: 40%">
+          <v-img src="https://via.placeholder.com/200x100"></v-img>
+        </div>
+        <div class="mb-6">
+          <div class="text-h6 mb-2">Описание</div>
+          <v-textarea
+            solo
+            placeholder="Напишите о арене"
+            name=""
+            flat
+            elevation="0"
+          ></v-textarea>
+          <!-- <v-text-field
+            label="Теги"
+            outlined
+            flat
+            hide-details="auto"
+            class="rounded-lg"
+          ></v-text-field> -->
         </div>
         <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">Описание катка</div>
-          <p>
-            «Академия «Спартак» - это новый современный многофункциональный
-            хоккейный комплекс, площадью 10 000 м2. Располагается в парке
-            «Сокольники» и граничит с особо охраняемой природной территорией
-            регионального значения «природно-исторический парк «Сокольники». Это
-            место было выбрано не случайно. Еще в 18 веке Сокольники были
-            центром притяжения народных гуляний и спортивных потех. Здесь любили
-            проводить время русские цари и московская знать. Уже к 20 столетию к
-            рекреационной функции парка была добавлена еще и спортивная. Здесь
-            стали проводить спортивные праздники и спартакиады, соревнования по
-            различным видам спорта на первенство города и страны.
-          </p>
-          <p>
-            В окружении многочисленных водоемов, фонтанов и смешанного леса вас
-            ничто не будет отвлекать от занятий спортом. Здесь нет суеты
-            большого города, только великолепная природа и свежий воздух.
-            Сокольники - это место побед и спортивного духа. И мы продолжаем эти
-            традиции!
-          </p>
-          <p>
-            Хоккейный комплекс «Академия «Спартак» отвечает всем современным
-            требованиям и оборудован высококлассной техникой для качественной
-            организации тренировочного процесса и проведения спортивных
-            мероприятий разного уровня. Только самое новейшее оборудование и
-            тренажеры, инновационные материалы – все для комплексной подготовки
-            профессионалов и любителей.
-          </p>
-        </div>
-        <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">Адрес</div>
-          <p>
-            Lobortis urna purus velit auctor donec libero volutpat mollis sit
-          </p>
-          <div style="width: 40%"><v-img src="https://via.placeholder.com/140x80"></v-img></div>
-        </div>
-        <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">Как проехать</div>
-          <p>
-            Turpis turpis blandit auctor risus. Ultricies rutrum interdum
-            placerat nisl eleifend quis ornare tortor, velit. Nunc, viverra ut
-            nunc velit metus ipsum. Urna consequat facilisis fringilla nunc.
-          </p>
-        </div>
-        <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">Социальные сети</div>
-          <div class="pr-3 my-auto">
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="mr-1"
-            >
-              <v-icon >mdi-whatsapp</v-icon>
-            </v-btn>
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="mx-1"
-            >
-              <v-icon >mdi-instagram</v-icon>
-            </v-btn>
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="mx-1"
-            >
-              <v-icon >mdi-vk</v-icon>
-            </v-btn>
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="ml-1"
-            >
-              <v-icon>mdi-web</v-icon>
-            </v-btn>
-          </div>
-        </div>
-        <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">Контакты</div>
-          <div>
-            <p>
-              Касса: +7 495 964-39-69 <br />
-              Кафе: +7 977 815-61-97 <br />
-              Магазин: +7 495 369-19-77 <br />
-              Отдел продаж: +7 925 278-77-41 <br />
-              Ресепшн: +7 495 964-39-69 <br />
-              Приемная директора: +7 495 964-39-69 <br />
-            </p>
-            <p>
-              Администратор: Васильева Татьяна Михайловна <br />
-              +7 495 964-39-69
-            </p>
-            <p>
-              Email: office@spartak-academy.ru <br />
-              Адрес: г. Москва, м. Сокольники, ул. Большая Тихоновская, д. 2.
-            </p>
-          </div>
-        </div>
-        <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">Галерея</div>
-          <v-row class="mx-n4 pb-10">
-            <v-col class="pa-4" cols="4" md="2" v-for="i in 8" :key="i">
-              <v-sheet
-                color="grey lighten-3"
+          <div class="text-h6 mb-2">Социальные сети</div>
+          <v-dialog v-model="social_media_dialog" max-width="600">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                class="mr-2 mb-2"
+                color="primary"
+                large
                 elevation="0"
-                height="150"
-                width="100%"
+                v-bind="attrs"
+                v-on="on"
               >
-              </v-sheet>
-            </v-col>
-          </v-row>
+                Добавить профиль соцсети
+              </v-btn>
+            </template>
+
+            <v-card class="py-3">
+              <v-card-title class="justify-space-between">
+                <div class="text-h5 black--text">Добавить социальную сеть</div>
+                <div class="mb-4">
+                  <v-icon @click.stop="social_media_dialog = false"
+                    >mdi-close</v-icon
+                  >
+                </div>
+              </v-card-title>
+              <v-card-text>
+                <div class="mb-6">
+                  <v-btn
+                    elevation="0"
+                    x-small
+                    color="grey"
+                    height="40px"
+                    class="mr-2"
+                  >
+                    <v-icon>mdi-vk</v-icon>
+                  </v-btn>
+                  <v-btn
+                    elevation="0"
+                    x-small
+                    color="grey"
+                    height="40px"
+                    class="mr-2"
+                  >
+                    <v-icon>mdi-whatsapp</v-icon>
+                  </v-btn>
+                  <v-btn
+                    elevation="0"
+                    x-small
+                    color="grey"
+                    height="40px"
+                    class="mr-2"
+                  >
+                    <v-icon>mdi-instagram</v-icon>
+                  </v-btn>
+                </div>
+                <div class="mb-2">
+                  <v-text-field
+                    label="Ссылка на социальную сеть"
+                    outlined
+                    flat
+                    hide-details="auto"
+                    class="rounded-lg"
+                  ></v-text-field>
+                </div>
+              </v-card-text>
+              <v-card-actions class="mt-n3">
+                <v-btn
+                  class="body-2"
+                  @click="social_media_dialog = false"
+                  elevation="0"
+                >
+                  Назад
+                </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn
+                  elevation="0"
+                  color="primary"
+                  class="body-2"
+                  @click="social_media_dialog = false"
+                >
+                  Добавить
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </div>
+        <!-- <div class="mb-4">
+          <div class="body-2 font-weight-bold mb-4 grey--text">Контакты</div>
+          <v-btn class="mr-2 mb-2" color="primary" large elevation="0">
+            Добавить контакт
+          </v-btn>
+        </div> -->
       </div>
       <div class="mb-8">
-        <div class="mb-2 text-h5">Список катков</div>
-        <div class>
+        <div class="mb-2 text-h5">Катки</div>
+        <div class="mb-4">
           <v-data-table
             :headers="headers"
             :items="desserts"
             :items-per-page="5"
-            class="elevation-1"
-          ></v-data-table>
+            class="elevation-0"
+          >
+            <template v-slot:item.icon="{ item }">
+              <v-icon small class="mr-6" @click="editItem(item)">
+                mdi-pencil
+              </v-icon>
+              <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+            </template>
+          </v-data-table>
         </div>
+
+        <v-dialog v-model="katok_dialog" max-width="600">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              class="mr-2 mb-2"
+              color="primary"
+              large
+              elevation="0"
+              v-bind="attrs"
+              v-on="on"
+            >
+              Добавить Каток
+            </v-btn>
+          </template>
+
+          <v-card class="py-3">
+            <v-card-title class="justify-space-between">
+              <div class="text-h5 black--text">Добавить каток</div>
+              <div class="mb-4">
+                <v-icon @click.stop="katok_dialog = false">mdi-close</v-icon>
+              </div>
+            </v-card-title>
+            <v-card-text>
+              <div class="mb-6">
+                <v-text-field
+                  label="Название"
+                  outlined
+                  flat
+                  hide-details="auto"
+                  class="rounded-lg"
+                ></v-text-field>
+              </div>
+              <div class="mb-2">
+                <v-text-field
+                  label="Размер поля"
+                  outlined
+                  flat
+                  hide-details="auto"
+                  class="rounded-lg"
+                ></v-text-field>
+              </div>
+              <div class="">
+                <v-checkbox v-model="checkbox">
+                  <template v-slot:label>
+                    <div>Крытое поле</div>
+                  </template>
+                </v-checkbox>
+              </div>
+            </v-card-text>
+            <v-card-actions class="mt-n6">
+              <v-btn
+                class="body-2 px-4"
+                @click="katok_dialog = false"
+                elevation="0"
+              >
+                Назад
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn
+                elevation="0"
+                color="primary"
+                class="body-2 px-4"
+                @click="katok_dialog = false"
+              >
+                Добавить
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </div>
-      <div>
-        <div class="mb-2 text-h5">Список помещений</div>
-        <div class>
+      <div class="mb-15">
+        <div class="mb-2 text-h5">Другие виды помещений</div>
+        <div class="mb-4">
           <v-data-table
             :headers="headers"
             :items="desserts"
             :items-per-page="5"
-            class="elevation-1"
-          ></v-data-table>
+            class="elevation-0"
+          >
+            <template v-slot:item.icon="{ item }">
+              <v-icon small class="mr-6" @click="editItem(item)">
+                mdi-pencil
+              </v-icon>
+              <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+            </template>
+          </v-data-table>
         </div>
+        <v-dialog v-model="service_dialog" max-width="600">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              class="mr-2 mb-2"
+              color="primary"
+              large
+              elevation="0"
+              v-bind="attrs"
+              v-on="on"
+            >
+              Добавить другой вид помещения
+            </v-btn>
+          </template>
+
+          <v-card class="py-3">
+            <v-card-title class="justify-space-between">
+              <div class="text-h5 black--text">
+                Добавить другой вид помещения
+              </div>
+              <div class="mb-4">
+                <v-icon @click.stop="service_dialog = false">mdi-close</v-icon>
+              </div>
+            </v-card-title>
+            <v-card-text>
+              <div class="mb-5">
+                <v-text-field
+                  label="Название"
+                  outlined
+                  flat
+                  hide-details="auto"
+                  class="rounded-lg"
+                ></v-text-field>
+              </div>
+              <div class="mb-5">
+                <v-text-field
+                  label="Размер поля"
+                  outlined
+                  flat
+                  hide-details="auto"
+                  class="rounded-lg"
+                ></v-text-field>
+              </div>
+              <div class="mb-5">
+                <v-text-field
+                  label="Площадь"
+                  outlined
+                  flat
+                  hide-details="auto"
+                  class="rounded-lg"
+                ></v-text-field>
+              </div>
+            </v-card-text>
+            <v-card-actions class="mt-n6">
+              <v-btn
+                class="body-2 px-4"
+                @click="service_dialog = false"
+                elevation="0"
+              >
+                Назад
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn
+                elevation="0"
+                color="primary"
+                class="body-2 px-4"
+                @click="service_dialog = false"
+              >
+                Добавить
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </div>
+      <div class="d-flex">
+        <v-btn color="grey lighten-2" large class="body-2 px-6" elevation="0">
+          Отменить
+        </v-btn>
+        <v-spacer></v-spacer>
+        <v-btn large elevation="0" color="primary" class="body-2 px-6">
+          Сохранить
+        </v-btn>
       </div>
     </v-container>
   </div>
@@ -187,6 +344,9 @@ export default {
   data() {
     return {
       checkbox: null,
+      service_dialog: false,
+      social_media_dialog: false,
+      katok_dialog: false,
       breadcrumb_items: [
         {
           text: "Личный кабинет",
@@ -196,17 +356,12 @@ export default {
         {
           text: "Мои спортивные комплексы",
           disabled: false,
-          href: "breadcrumbs_dashboard",
+          href: "/admin/sport_complex",
         },
         {
-          text: "Название комплекса",
-          disabled: false,
-          href: "/admin/name_complex",
-        },
-        {
-          text: "Информация",
+          text: "Создать арену",
           disabled: true,
-          href: "breadcrumbs_dashboard",
+          href: "",
         },
       ],
       headers: [
@@ -216,39 +371,16 @@ export default {
           sortable: false,
           value: "name",
         },
-        { text: "Описание", value: "description" },
         { text: "Размер", value: "size" },
         { text: "Тип", value: "type" },
-        { text: "Мероприятия", value: "event" },
+        { text: "", value: "icon", sortable: false },
       ],
       desserts: [
         {
           name: "Название катка",
-          description: "Краткое описание катка",
           size: "50х50м",
           type: "Крытое",
-          event: "Посмотреть календарь мероприятий",
-        },
-        {
-          name: "Название катка",
-          description: "Краткое описание катка",
-          size: "50х50м",
-          type: "Крытое",
-          event: "Посмотреть календарь мероприятий",
-        },
-        {
-          name: "Название катка",
-          description: "Краткое описание катка",
-          size: "50х50м",
-          type: "Крытое",
-          event: "Посмотреть календарь мероприятий",
-        },
-        {
-          name: "Название катка",
-          description: "Краткое описание катка",
-          size: "50х50м",
-          type: "Крытое",
-          event: "Посмотреть календарь мероприятий",
+          icon: "",
         },
       ],
     };
