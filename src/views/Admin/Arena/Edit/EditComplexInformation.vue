@@ -9,7 +9,12 @@
       <div>
         <div class="text-h5 pb-3 pt-5">Информация</div>
         <div class="mb-4">
-          <v-btn class="mr-2 mb-2" color="primary" elevation="0">
+          <v-btn
+            class="mr-2 mb-2"
+            color="primary"
+            @click="updateArenaDetails"
+            elevation="0"
+          >
             Сохранить
           </v-btn>
           <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
@@ -23,6 +28,7 @@
         <div class="mb-4">
           <v-text-field
             label="Наименование арены (полное)"
+            v-model="arena.title"
             outlined
             flat
             hide-details="auto"
@@ -32,6 +38,7 @@
         <div class="mb-6">
           <v-text-field
             label="Наименование арены (сокращенное)"
+            v-model="arena.title"
             outlined
             flat
             hide-details="auto"
@@ -50,10 +57,17 @@
         </div>
         <div class="mb-6">
           <div class="text-h6 mb-2">Описание</div>
-          <v-textarea solo name="" flat elevation="0"></v-textarea>
+          <v-textarea
+            solo
+            v-model="arena.description"
+            name=""
+            flat
+            elevation="0"
+          ></v-textarea>
           <v-text-field
             label="Теги"
             outlined
+            v-model="arena.tags"
             flat
             hide-details="auto"
             class="rounded-lg"
@@ -64,6 +78,7 @@
           <v-text-field
             label="Адрес арены"
             outlined
+            v-model="arena.address"
             flat
             hide-details="auto"
             class="rounded-lg"
@@ -76,6 +91,7 @@
           <v-text-field
             label="Как проехать"
             outlined
+            v-model="arena.route"
             flat
             hide-details="auto"
             class="rounded-lg"
@@ -365,7 +381,9 @@
 
           <v-card class="py-3">
             <v-card-title class="justify-space-between">
-              <div class="text-h5 black--text">Добавить другой вид помещения</div>
+              <div class="text-h5 black--text">
+                Добавить другой вид помещения
+              </div>
               <div class="mb-4">
                 <v-icon @click.stop="service_dialog = false">mdi-close</v-icon>
               </div>
@@ -425,9 +443,13 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
+  mounted() {},
   data() {
     return {
+      arena: this.$store.getters.current_arena,
       checkbox: null,
       service_dialog: false,
       social_media_dialog: false,
@@ -502,6 +524,19 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    updateArenaDetails() {
+      console.log(this.arena);
+      const id = this.arena.id;
+      axios
+        .post(`/arena/${id}`, this.arena)
+        .then(() => {
+          this.$router.push({path: `/admin/sport_complex/${id}/information`})
+          // commit("SET_TEAMS", response.data);
+        })
+        .catch((err) => console.log(err));
+    },
   },
 };
 </script>

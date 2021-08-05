@@ -9,8 +9,8 @@
       <div class="mb-4">
         <div class="my-6 text-h5">Редактирование спортивного комплекса</div>
         <div class="mb-8">
-          <div class="text-h6">Название комплекса</div>
-          <div>ул. Лермонтова, д. 14, пом. 3, г. Чита</div>
+          <div class="text-h6">{{ arena.title }}</div>
+          <div>{{ arena.address }}</div>
         </div>
       </div>
       <div class="mb-4 text-h6">Разделы арены</div>
@@ -49,9 +49,42 @@
 
 <script>
 export default {
+  mounted() {
+    const arena = this.$store.getters.current_arena;
+    const id = arena.id;
+    this.arena = arena;
+    const sections = [
+      {
+        text: "Информация",
+        link: `/admin/sport_complex/${id}/information/edit`,
+      },
+      {
+        text: "Платные услуги",
+        link: `/admin/sport_complex/${id}/payment_portal/edit`,
+      },
+      {
+        text: "Расписание мероприятий",
+        link: `/admin/sport_complex/${id}/schedule_event/edit`,
+      },
+      {
+        text: "Список команд",
+        link: `/admin/sport_complex/${id}/team_list/edit`,
+      },
+      {
+        text: "Тренерский состав",
+        link: `/admin/sport_complex/${id}/training_staff/edit`,
+      },
+      {
+        text: "Состав руководства",
+        link: `/admin/sport_complex/${id}/management_staff/edit`,
+      },
+    ];
+    this.sections = sections;
+  },
   data() {
     return {
       checkbox: null,
+      arena: null,
       breadcrumb_items: [
         {
           text: "Личный кабинет",
@@ -69,32 +102,7 @@ export default {
           href: "breadcrumbs_dashboard",
         },
       ],
-      sections: [
-        {
-          text: "Информация",
-          link: "/admin/name_complex/information/edit",
-        },
-        {
-          text: "Платные услуги",
-          link: "/admin/name_complex/payment_portal/edit",
-        },
-        {
-          text: "Расписание мероприятий",
-          link: "/admin/name_complex/schedule_event/edit",
-        },
-        {
-          text: "Список команд",
-          link: "/admin/name_complex/team_list/edit",
-        },
-        {
-          text: "Тренерский состав",
-          link: "/admin/name_complex/training_staff/edit",
-        },
-        {
-          text: "Состав руководства",
-          link: "/admin/name_complex/management_staff/edit",
-        },
-      ],
+      sections: null,
     };
   },
 };

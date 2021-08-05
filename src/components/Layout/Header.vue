@@ -27,7 +27,7 @@
           depressed
           color="primary"
         >
-          <router-link to="/admin/name_complex" class="reset-link"> Личный кабинет </router-link>
+          <router-link to="/admin/sport_complex" class="reset-link"> Личный кабинет </router-link>
         </v-btn>
       </div>
     </v-toolbar>

@@ -19,34 +19,35 @@
 
         <div class="text-h6 my-4">Основная информация</div>
         <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">Наименование катка (полное)</div>
+          <div class="body-2 font-weight-bold mb-1 grey--text">
+            Наименование катка (полное)
+          </div>
           <div>
-            Lobortis urna purus velit auctor donec libero volutpat mollis sit
+            {{current_arena.title}}
           </div>
         </div>
         <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">Наименование катка (полное)</div>
+          <div class="body-2 font-weight-bold mb-1 grey--text">
+            Наименование катка (полное)
+          </div>
           <div>
-            Lobortis urna purus velit auctor donec libero volutpat mollis sit
+            {{current_arena.title}}
           </div>
         </div>
         <div class="mb-6">
-          <div class="body-2 font-weight-bold mb-4 grey--text">Основное изображение арены</div>
-          <div style="width: 25%"><v-img src="https://via.placeholder.com/140x80"></v-img></div>
+          <div class="body-2 font-weight-bold mb-4 grey--text">
+            Основное изображение арены
+          </div>
+          <div style="width: 25%">
+            <v-img src="https://via.placeholder.com/140x80"></v-img>
+          </div>
         </div>
         <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">Описание катка</div>
+          <div class="body-2 font-weight-bold mb-1 grey--text">
+            Описание катка
+          </div>
           <p>
-            «Академия «Спартак» - это новый современный многофункциональный
-            хоккейный комплекс, площадью 10 000 м2. Располагается в парке
-            «Сокольники» и граничит с особо охраняемой природной территорией
-            регионального значения «природно-исторический парк «Сокольники». Это
-            место было выбрано не случайно. Еще в 18 веке Сокольники были
-            центром притяжения народных гуляний и спортивных потех. Здесь любили
-            проводить время русские цари и московская знать. Уже к 20 столетию к
-            рекреационной функции парка была добавлена еще и спортивная. Здесь
-            стали проводить спортивные праздники и спартакиады, соревнования по
-            различным видам спорта на первенство города и страны.
+            {{current_arena.description}}
           </p>
           <p>
             В окружении многочисленных водоемов, фонтанов и смешанного леса вас
@@ -67,20 +68,23 @@
         <div class="mb-4">
           <div class="body-2 font-weight-bold mb-1 grey--text">Адрес</div>
           <p>
-            Lobortis urna purus velit auctor donec libero volutpat mollis sit
-          </p>
-          <div style="width: 40%"><v-img src="https://via.placeholder.com/140x80"></v-img></div>
+{{current_arena.address}}          </p>
+          <div style="width: 40%">
+            <v-img src="https://via.placeholder.com/140x80"></v-img>
+          </div>
         </div>
         <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">Как проехать</div>
+          <div class="body-2 font-weight-bold mb-1 grey--text">
+            Как проехать
+          </div>
           <p>
-            Turpis turpis blandit auctor risus. Ultricies rutrum interdum
-            placerat nisl eleifend quis ornare tortor, velit. Nunc, viverra ut
-            nunc velit metus ipsum. Urna consequat facilisis fringilla nunc.
+            {{current_arena.route}}
           </p>
         </div>
         <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">Социальные сети</div>
+          <div class="body-2 font-weight-bold mb-1 grey--text">
+            Социальные сети
+          </div>
           <div class="pr-3 my-auto">
             <v-btn
               elevation="0"
@@ -89,7 +93,7 @@
               height="40px"
               class="mr-1"
             >
-              <v-icon >mdi-whatsapp</v-icon>
+              <v-icon>mdi-whatsapp</v-icon>
             </v-btn>
             <v-btn
               elevation="0"
@@ -98,7 +102,7 @@
               height="40px"
               class="mx-1"
             >
-              <v-icon >mdi-instagram</v-icon>
+              <v-icon>mdi-instagram</v-icon>
             </v-btn>
             <v-btn
               elevation="0"
@@ -107,7 +111,7 @@
               height="40px"
               class="mx-1"
             >
-              <v-icon >mdi-vk</v-icon>
+              <v-icon>mdi-vk</v-icon>
             </v-btn>
             <v-btn
               elevation="0"
@@ -183,7 +187,15 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
+  computed: {
+    ...mapState(["current_arena"]),
+  },
+  mounted() {
+    const arena = this.$store.getters.current_arena;
+    this.$store.dispatch("updateCurrentArena", arena.id);
+  },
   data() {
     return {
       checkbox: null,
@@ -196,12 +208,12 @@ export default {
         {
           text: "Мои спортивные комплексы",
           disabled: false,
-          href: "breadcrumbs_dashboard",
+          href: "/admin/sport_complex/",
         },
         {
           text: "Название комплекса",
           disabled: false,
-          href: "/admin/name_complex",
+          href: "/admin/sport_complex/",
         },
         {
           text: "Информация",

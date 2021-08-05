@@ -12,12 +12,15 @@
         </v-col>
         <v-col cols="8">
           <div class="mb-16">
-            <div class="text-h5">Название комплекса</div>
-            <div>ул. Лермонтова, д. 14, пом. 3, г. Чита</div>
+            <div class="text-h5">{{ arena.title }}</div>
+            <div>{{ arena.address }}</div>
           </div>
           <div>
             <v-btn class="mr-2 mb-2" color="primary" elevation="0">
-              <router-link to="/admin/name_complex/edit" class="reset-link">
+              <router-link
+                :to="`/admin/sport_complex/${arena.id}/edit`"
+                class="reset-link"
+              >
                 Редактировать
               </router-link>
             </v-btn>
@@ -73,9 +76,42 @@
 
 <script>
 export default {
+  mounted() {
+    const arena = this.$store.getters.current_arena;
+    const id = arena.id;
+    this.arena = arena;
+    const sections = [
+      {
+        text: "Информация",
+        link: `/admin/sport_complex/${id}/information`,
+      },
+      {
+        text: "Платные услуги",
+        link: `/admin/sport_complex/${id}/payment_portal`,
+      },
+      {
+        text: "Расписание мероприятий",
+        link: `/admin/sport_complex/${id}/schedule_event`,
+      },
+      {
+        text: "Список команд",
+        link: `/admin/sport_complex/${id}/team_list`,
+      },
+      {
+        text: "Тренерский состав",
+        link: `/admin/sport_complex/${id}/training_staff`,
+      },
+      {
+        text: "Состав руководства",
+        link: `/admin/sport_complex/${id}/management_staff`,
+      },
+    ];
+    this.sections = sections;
+  },
   data() {
     return {
       checkbox: null,
+      arena: this.$store.state.current_arena,
       breadcrumb_items: [
         {
           text: "Личный кабинет",
@@ -85,7 +121,7 @@ export default {
         {
           text: "Мои спортивные комплексы",
           disabled: false,
-          href: "breadcrumbs_dashboard",
+          href: "/admin/sport_complex",
         },
         {
           text: "Название комплекса",
@@ -93,32 +129,7 @@ export default {
           href: "breadcrumbs_dashboard",
         },
       ],
-      sections: [
-        {
-          text: "Информация",
-          link: "/admin/name_complex/information",
-        },
-        {
-          text: "Платные услуги",
-          link: "/admin/name_complex/payment_portal",
-        },
-        {
-          text: "Расписание мероприятий",
-          link: "/admin/name_complex/schedule_event",
-        },
-        {
-          text: "Список команд",
-          link: "/admin/name_complex/team_list",
-        },
-        {
-          text: "Тренерский состав",
-          link: "/admin/name_complex/training_staff",
-        },
-        {
-          text: "Состав руководства",
-          link: "/admin/name_complex/management_staff",
-        },
-      ],
+      sections: null,
     };
   },
 };

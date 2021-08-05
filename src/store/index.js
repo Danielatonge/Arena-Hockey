@@ -19,27 +19,30 @@ export default new Vuex.Store({
     current_contact: {},
     services: [],
     arenasMapIdentifier: [],
-    teams: []
+    teams: [],
   },
   getters: {
+    current_arena(state) {
+      return state.current_arena;
+    },
     icon_contacts(state) {
       const { whatsApp, website, vk, instagram } = state.current_contact;
       return { whatsApp, website, vk, instagram };
     },
     katok_services(state) {
-      return state.services.filter((x)=> x.type == "Каток")
+      return state.services.filter((x) => x.type == "Каток");
     },
     others_services(state) {
-      return state.services.filter((x)=> x.type != "Каток")
+      return state.services.filter((x) => x.type != "Каток");
     },
     children_team(state) {
-      return state.teams.filter((x)=> x.level == "Детские")
+      return state.teams.filter((x) => x.level == "Детские");
     },
     youth_team(state) {
-      return state.teams.filter((x)=> x.level == "Юношеские")
+      return state.teams.filter((x) => x.level == "Юношеские");
     },
     adult_team(state) {
-      return state.teams.filter((x)=> x.level == "Взрослые")
+      return state.teams.filter((x) => x.level == "Взрослые");
     },
   },
   mutations: {
@@ -100,6 +103,9 @@ export default new Vuex.Store({
       console.log(item[0]);
       commit("SET_CURRENT_ARENA", item[0]);
     },
+    setCurrentArena({commit}, arena) {
+      commit("SET_CURRENT_ARENA", arena);
+    },
     getContactById({ commit }, payload) {
       return new Promise((resolve) => {
         axios
@@ -124,15 +130,18 @@ export default new Vuex.Store({
         .get(`/services`)
         .then((response) => {
           commit("SET_SERVICES", response.data);
-        }).catch((err) => console.log(err));
+        })
+        .catch((err) => console.log(err));
     },
     getTeamsAll({ commit }) {
       axios
         .get(`/teams`)
         .then((response) => {
           commit("SET_TEAMS", response.data);
-        }).catch((err) => console.log(err));
+        })
+        .catch((err) => console.log(err));
     },
+
   },
   modules: {},
   plugins: [vuexLocal.plugin],

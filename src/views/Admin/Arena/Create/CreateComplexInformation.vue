@@ -12,6 +12,7 @@
         <div class="mb-4">
           <v-text-field
             label="Полное название арены"
+            v-model="arena_name_full"
             outlined
             flat
             hide-details="auto"
@@ -21,6 +22,7 @@
         <div class="mb-4">
           <v-text-field
             label="Сокращенное название арены"
+            v-model="arena_name_short"
             outlined
             flat
             hide-details="auto"
@@ -30,6 +32,7 @@
         <div class="mb-6">
           <v-text-field
             label="Адрес арены"
+            v-model="arena_address"
             outlined
             flat
             hide-details="auto"
@@ -44,17 +47,11 @@
           <v-textarea
             solo
             placeholder="Напишите о арене"
+            v-model="arena_description"
             name=""
             flat
             elevation="0"
           ></v-textarea>
-          <!-- <v-text-field
-            label="Теги"
-            outlined
-            flat
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-text-field> -->
         </div>
         <div class="mb-4">
           <div class="text-h6 mb-2">Социальные сети</div>
@@ -142,12 +139,6 @@
             </v-card>
           </v-dialog>
         </div>
-        <!-- <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-4 grey--text">Контакты</div>
-          <v-btn class="mr-2 mb-2" color="primary" large elevation="0">
-            Добавить контакт
-          </v-btn>
-        </div> -->
       </div>
       <div class="mb-8">
         <div class="mb-2 text-h5">Катки</div>
@@ -331,7 +322,13 @@
           Отменить
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn large elevation="0" color="primary" class="body-2 px-6">
+        <v-btn
+          @click="saveNewArena"
+          large
+          elevation="0"
+          color="primary"
+          class="body-2 px-6"
+        >
           Сохранить
         </v-btn>
       </div>
@@ -340,9 +337,15 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
+      arena_name_full: null,
+      arena_name_short: null,
+      arena_address: null,
+      arena_description: null,
       checkbox: null,
       service_dialog: false,
       social_media_dialog: false,
@@ -384,6 +387,20 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    saveNewArena() {
+      axios
+        .post(`/arena`, {
+          title: this.arena_name_full,
+          address: this.arena_address,
+          description: this.arena_description,
+        })
+        .then((response) => {
+          this.$router.push({ path: `/admin/sport_complex/${response.data.id}` });
+        })
+        .catch((err) => console.log(err));
+    },
   },
 };
 </script>
