@@ -107,7 +107,6 @@
         </v-col>
       </v-row>
     </v-container>
-    {{ page }}
     <div class="text-center py-10">
       <v-pagination
         color="grey"
