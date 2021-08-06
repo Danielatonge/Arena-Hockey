@@ -85,8 +85,10 @@
           <v-spacer></v-spacer>
           <v-col cols="6" md="4" lg="3" xl="2">
             <v-select
+              v-model="display_item"
               :items="display_items"
-              value="Показывать по 12"
+              item-text="state"
+              item-value="value"
               solo
               flat
               hide-details="auto"
@@ -130,6 +132,12 @@ export default {
       return this.paginate(this.list_arenas);
     },
   },
+  watch: {
+    display_item(val) {
+      this.perPage = val;
+      this.paginationLength = Math.ceil(this.list_arenas.length / this.perPage);
+    },
+  },
   methods: {
     goToMapAll() {
       this.$store
@@ -150,7 +158,7 @@ export default {
   data() {
     return {
       page: 1,
-      perPage: 3,
+      perPage: 5,
       paginationLength: 10,
       team_tags: ["Москва", "Казань"],
       team_items: [
@@ -164,7 +172,13 @@ export default {
         "/arena_2",
       ],
       sort_by_team: ["По популярности", "По именни"],
-      display_items: ["Показывать по 12", "Показывать по 25"],
+      display_item: { state: "Показывать по 5", value: 5 },
+      display_items: [
+        { state: "Показывать по 5", value: 5 },
+        { state: "Показывать по 9", value: 9 },
+        { state: "Показывать по 12", value: 12 },
+        { state: "Показывать по 24", value: 24 },
+      ],
     };
   },
   components: { ArenaCard },
@@ -172,7 +186,6 @@ export default {
     this.$store.dispatch("getAllArenas");
     this.setPaginationLength();
   },
-  watch: {},
 };
 </script>
 
