@@ -55,6 +55,32 @@
         </div>
         <div class="mb-4">
           <div class="text-h6 mb-2">Социальные сети</div>
+          <v-row class="mb-2">
+            <v-col cols="6" md="4">
+              <v-row>
+                <v-col
+                  cols="12"
+                  class="d-flex align-center"
+                  v-for="(item, i) in social_media_links"
+                  :key="i"
+                >
+                  <v-btn
+                    elevation="0"
+                    x-small
+                    color="grey"
+                    height="40px"
+                    class="mr-2"
+                  >
+                    <v-icon>{{ item.icon }}</v-icon>
+                  </v-btn>
+                  <div>{{ item.link }}</div>
+                  <v-icon class="ml-4" @click="removeSocialMedia(i)"
+                    >mdi-close</v-icon
+                  >
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
           <v-dialog v-model="social_media_dialog" max-width="600">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
@@ -80,38 +106,27 @@
               </v-card-title>
               <v-card-text>
                 <div class="mb-6">
-                  <v-btn
-                    elevation="0"
-                    x-small
-                    color="grey"
-                    height="40px"
-                    class="mr-2"
-                  >
-                    <v-icon>mdi-vk</v-icon>
-                  </v-btn>
-                  <v-btn
-                    elevation="0"
-                    x-small
-                    color="grey"
-                    height="40px"
-                    class="mr-2"
-                  >
-                    <v-icon>mdi-whatsapp</v-icon>
-                  </v-btn>
-                  <v-btn
-                    elevation="0"
-                    x-small
-                    color="grey"
-                    height="40px"
-                    class="mr-2"
-                  >
-                    <v-icon>mdi-instagram</v-icon>
-                  </v-btn>
+                  <v-btn-toggle v-model="toggle_social_media" mandatory>
+                    <v-btn
+                      elevation="0"
+                      x-small
+                      color="grey"
+                      height="40px"
+                      class="mr-2"
+                      v-for="item in social_icons"
+                      :key="item"
+                    >
+                      <v-icon> {{ item }} </v-icon>
+                    </v-btn>
+                  </v-btn-toggle>
                 </div>
                 <div class="mb-2">
                   <v-text-field
+                    v-model="social_media_text"
                     label="Ссылка на социальную сеть"
                     outlined
+                    :hint="errMessage"
+                    persistent-hint
                     flat
                     hide-details="auto"
                     class="rounded-lg"
@@ -131,7 +146,7 @@
                   elevation="0"
                   color="primary"
                   class="body-2"
-                  @click="social_media_dialog = false"
+                  @click="addSocialMedia"
                 >
                   Добавить
                 </v-btn>
@@ -347,9 +362,23 @@ export default {
       arena_address: null,
       arena_description: null,
       checkbox: null,
+      errMessage: "",
       service_dialog: false,
       social_media_dialog: false,
+      toggle_social_media: null,
+      social_media_text: "",
       katok_dialog: false,
+      social_media_links: [
+        {
+          icon: "mdi-instagram",
+          link: "https://www.instagram.com/p/B6hJFmkFvHG/",
+        },
+        {
+          icon: "mdi-web",
+          link: "https://www.google.com",
+        },
+      ],
+      social_icons: ["mdi-vk", "mdi-whatsapp", "mdi-web", "mdi-instagram"],
       breadcrumb_items: [
         {
           text: "Личный кабинет",
@@ -389,6 +418,27 @@ export default {
     };
   },
   methods: {
+    removeSocialMedia(index) {
+      if (index > -1) {
+        this.social_media_links.splice(index, 1);
+      }
+    },
+    addSocialMedia() {
+      const check = this.social_media_links.filter(
+        (x) => x.icon === this.social_icons[this.toggle_social_media]
+      );
+      if (check.length == 0) {
+        const link = {
+          icon: this.social_icons[this.toggle_social_media],
+          link: this.social_media_text,
+        };
+        this.social_media_links.push(link);
+        this.social_media_dialog = false;
+      } else {
+        this.errMessage = "A link already exist";
+      }
+      this.social_media_text = "";
+    },
     saveNewArena() {
       axios
         .post(`/arena`, {
@@ -397,7 +447,9 @@ export default {
           description: this.arena_description,
         })
         .then((response) => {
-          this.$router.push({ path: `/admin/sport_complex/${response.data.id}` });
+          this.$router.push({
+            path: `/admin/sport_complex/${response.data.id}`,
+          });
         })
         .catch((err) => console.log(err));
     },
