@@ -5,7 +5,7 @@ import VuexPersistence from "vuex-persist";
 
 Vue.use(Vuex);
 // "https://api-hockey-io.herokuapp.com";
-axios.defaults.baseURL = "http://localhost:8090";
+axios.defaults.baseURL = "https://api-hockey-io.herokuapp.com";
 
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage,
