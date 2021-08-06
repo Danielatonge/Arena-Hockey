@@ -54,7 +54,7 @@ export default new Vuex.Store({
         ({ id, lat, lan, title, city, address }) => ({
           id,
           address,
-          coords: lat.toString() + ", " + lan.toString(),
+          coords: lat && lan ? lat.toString() + ", " + lan.toString(): "55.55,37.32",
           title,
           city,
         })
