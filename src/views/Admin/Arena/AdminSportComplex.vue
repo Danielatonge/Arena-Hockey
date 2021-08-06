@@ -150,7 +150,7 @@ export default {
         },
       ],
       page: 1,
-      perPage: 3,
+      perPage: 5,
       paginationLength: 10,
       team_tags: ["Москва", "Казань"],
       team_items: [

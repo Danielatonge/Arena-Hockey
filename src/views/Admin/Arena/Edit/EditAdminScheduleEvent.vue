@@ -61,7 +61,7 @@ export default {
         {
           text: "Название комплекса",
           disabled: false,
-          href: "/admin/name_complex/edit",
+          href: "/admin/sport_complex/edit",
         },
         {
           text: "Расписание мероприятий",
