@@ -37,17 +37,18 @@
       <v-row>
         <v-col cols="6" sm="4" class="d-flex d-md-none">
           <v-text-field
-          label="Поиск"
-          single-line
-          prepend-inner-icon="mdi-magnify"
-          dense
-          dark
-          hide-details="auto"
-          class="rounded-lg"></v-text-field>
+            label="Поиск"
+            single-line
+            prepend-inner-icon="mdi-magnify"
+            dense
+            dark
+            hide-details="auto"
+            class="rounded-lg"
+          ></v-text-field>
         </v-col>
-        
+
         <v-spacer></v-spacer>
-        
+
         <v-col cols="3" sm="2" md="1" class="d-flex d-md-none">
           <v-btn plain color="transparent">
             <v-icon large color="white">mdi-account-outline</v-icon>
@@ -84,7 +85,7 @@
 
 <script>
 export default {
-  name: 'Navbar',
+  name: "Navbar",
   data() {
     return {
       drawer: null,
@@ -92,7 +93,7 @@ export default {
       items: [
         { text: "Ледовые дворцы и арены", route: "/" },
         { text: "Лиги и турниры", route: "/league" },
-        { text: "Детские турниры", route: "/about" },
+        { text: "Детские турниры", route: "/kids_tournement" },
         { text: "Раздевалка", route: "/room" },
         { text: "Скамейка запасных", route: "/subs_bench" },
         { text: "Школы", route: "/school" },

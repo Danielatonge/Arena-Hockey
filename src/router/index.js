@@ -41,6 +41,7 @@ import CreateAdminScheduleEvent from "../views/Admin/Arena/Create/CreateAdminSch
 import CreateAdminTeamList from "../views/Admin/Arena/Create/CreateAdminTeamList.vue";
 import CreateAdminTrainStaff from "../views/Admin/Arena/Create/CreateAdminTrainStaff.vue";
 import CreateAdminManager from "../views/Admin/Arena/Create/CreateAdminManager.vue";
+import KidsTournaments from '../views/KidsTournaments/Home.vue';
 
 Vue.use(VueRouter);
 
@@ -49,6 +50,11 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+  },
+  {
+    path: "/kids_tournement",
+    name: "KidsTournaments",
+    component: KidsTournaments
   },
   {
     path: "/arena_maps",
@@ -232,7 +238,7 @@ const routes = [
     path: "/admin/sport_complex/management_staff/create",
     name: "CreateAdminManager",
     component: CreateAdminManager,
-  },
+  }
 ];
 
 const router = new VueRouter({

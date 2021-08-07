@@ -246,16 +246,16 @@
         <div class="mb-2 text-h5">Другие виды помещений</div>
         <div class="mb-4">
           <v-data-table
-            :headers="headers"
-            :items="desserts"
+            :headers="headers_services"
+            :items="promises"
             :items-per-page="5"
             class="elevation-0"
           >
             <template v-slot:item.icon="{ item }">
-              <v-icon small class="mr-6" @click="editItem(item)">
+              <v-icon small class="mr-6" @click="editPromise(item)">
                 mdi-pencil
               </v-icon>
-              <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+              <v-icon small @click="deletePromise(item)"> mdi-delete </v-icon>
             </template>
           </v-data-table>
         </div>
@@ -279,7 +279,13 @@
                 Добавить другой вид помещения
               </div>
               <div class="mb-4">
-                <v-icon @click.stop="service_dialog = false">mdi-close</v-icon>
+                <v-icon
+                  @click.stop="
+                    service_dialog = false;
+                    editingPromise = false;
+                  "
+                  >mdi-close</v-icon
+                >
               </div>
             </v-card-title>
             <v-card-text>
@@ -290,6 +296,7 @@
                   flat
                   hide-details="auto"
                   class="rounded-lg"
+                  v-model="promise.name"
                 ></v-text-field>
               </div>
               <div class="mb-5">
@@ -299,6 +306,7 @@
                   flat
                   hide-details="auto"
                   class="rounded-lg"
+                  v-model="promise.size"
                 ></v-text-field>
               </div>
               <div class="mb-5">
@@ -308,6 +316,7 @@
                   flat
                   hide-details="auto"
                   class="rounded-lg"
+                  v-model="promise.place"
                 ></v-text-field>
               </div>
             </v-card-text>
@@ -324,9 +333,10 @@
                 elevation="0"
                 color="primary"
                 class="body-2 px-4"
-                @click="service_dialog = false"
+                @click="add_promise()"
               >
-                Добавить
+                <span v-if="editingPromise">Обновить</span>
+                <span v-else>Добавить</span>
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -407,17 +417,78 @@ export default {
         { text: "Тип", value: "type" },
         { text: "", value: "icon", sortable: false },
       ],
-      desserts: [
+      headers_services: [
+        {
+          text: "Название",
+          align: "start",
+          sortable: false,
+          value: "name",
+        },
+        { text: "Размер", value: "size" },
+        { text: "Площадь", value: "place" },
+        { text: "", value: "icon", sortable: false },
+      ],
+      promises: [
         {
           name: "Название катка",
           size: "50х50м",
-          type: "Крытое",
+          place: "Крытое",
           icon: "",
         },
       ],
+      promise: {
+        name: "Name1",
+        size: "12",
+        place: "something",
+        icon: "",
+      },
+      editingPromise: false,
     };
   },
   methods: {
+    clear_promise() {
+      this.promise = {
+        name: "",
+        size: "",
+        place: "",
+        icon: "",
+      };
+    },
+    add_promise() {
+      if (this.editingPromise) {
+        const index = this.promises.indexOf(this.promise);
+        if (index > -1) {
+          this.promises[index] = this.promise;
+        }
+        this.editingPromise = false;
+      } else {
+        this.promises = [
+          ...this.promises,
+          {
+            id: this.promises.length + 1,
+            name: this.promise.name,
+            size: this.promise.size,
+            place: this.promise.place,
+            icon: "",
+          },
+        ];
+      }
+      this.service_dialog = false;
+      this.clear_promise();
+    },
+    editPromise(item) {
+      this.editingPromise = true;
+      const id = this.promises.indexOf(item);
+      //alert(id);
+      if (id > -1) {
+        this.promise = this.promises[id];
+        this.service_dialog = true;
+      }
+    },
+    deletePromise(item) {
+      const id = this.promises.indexOf(item);
+      if (id > -1) this.promises.splice(id, 1);
+    },
     removeSocialMedia(index) {
       if (index > -1) {
         this.social_media_links.splice(index, 1);
