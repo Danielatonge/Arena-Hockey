@@ -110,7 +110,9 @@ export default {
         { icon: "mdi-web", link: `${data.website}` },
       ];
     });
-    this.$store.dispatch("getTeamsAll");
+    this.$store.dispatch("getAllTeams");
+    this.$store.dispatch("getAllTrainers");
+
   },
   data() {
     return {

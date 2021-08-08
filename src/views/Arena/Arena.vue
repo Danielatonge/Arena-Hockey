@@ -16,6 +16,7 @@
             <v-text-field
               label="Поиск по названию арены, метро, адресу"
               single-line
+              v-model="search"
               prepend-inner-icon="mdi-magnify"
               solo
               flat
@@ -81,7 +82,7 @@
           </v-col>
           <v-col class="my-auto" cols="6" md="4">
             <div class="body-1 grey--text">
-              Найдено: {{ list_arenas.length }} результатов
+              Найдено: {{ searchList.length }} результатов
             </div>
           </v-col>
           <v-spacer></v-spacer>
@@ -131,13 +132,27 @@ export default {
   computed: {
     ...mapState(["list_arenas"]),
     displayedArenas() {
-      return this.paginate(this.list_arenas);
+      return this.paginate(this.searchList);
+    },
+    searchList() {
+      return this.list_arenas.filter((x) => {
+        const term = this.search.toLowerCase();
+        return (
+          (x.title? x.title.toLowerCase().includes(term) : false) ||
+          (x.metro? x.metro.toString().toLowerCase().includes(term): false) ||
+          (x.address? x.address.toLowerCase().includes(term) : false) ||
+          (x.courtSize? x.courtSize == term : false)
+        );
+      });
     },
   },
   watch: {
     display_item(val) {
       this.perPage = val;
-      this.paginationLength = Math.ceil(this.list_arenas.length / this.perPage);
+      this.paginationLength = Math.ceil(this.searchList.length / this.perPage);
+    },
+    search() {
+      this.paginationLength = Math.ceil(this.searchList.length / this.perPage);
     },
   },
   methods: {
@@ -147,7 +162,7 @@ export default {
         .then(() => this.$router.push({ path: "/arena/arena_maps" }));
     },
     setPaginationLength() {
-      this.paginationLength = Math.ceil(this.list_arenas.length / this.perPage);
+      this.paginationLength = Math.ceil(this.searchList.length / this.perPage);
     },
     paginate(items) {
       const cpage = this.page;
@@ -161,6 +176,7 @@ export default {
     return {
       page: 1,
       perPage: 5,
+      search: "",
       paginationLength: 10,
       team_tags: ["Москва", "Казань"],
       team_items: [

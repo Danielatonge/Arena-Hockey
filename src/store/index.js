@@ -22,6 +22,7 @@ export default new Vuex.Store({
     services: [],
     arenasMapIdentifier: [],
     teams: [],
+    trainers: [],
   },
   getters: {
     current_arena(state) {
@@ -31,21 +32,30 @@ export default new Vuex.Store({
       const { whatsApp, website, vk, instagram } = state.current_contact;
       return { whatsApp, website, vk, instagram };
     },
+
     katok_services(state) {
       return state.services.filter((x) => x.type == "Каток");
     },
     others_services(state) {
       return state.services.filter((x) => x.type != "Каток");
     },
+
     children_team(state) {
-      return state.teams.filter((x) => x.level == "Детские");
+      return state.teams.filter((x) => x.type == "Детскaя");
     },
     youth_team(state) {
-      return state.teams.filter((x) => x.level == "Юношеские");
+      return state.teams.filter((x) => x.type == "Юношеская");
     },
     adult_team(state) {
-      return state.teams.filter((x) => x.level == "Взрослые");
+      return state.teams.filter((x) => x.type === "Взрослая");
     },
+
+    kid_trainers(state) {
+      return state.trainers.filter((x) => x.type === "Детскaя");
+    },
+    youth_trainers(state) {
+      return state.trainers.filter((x) => x.type === "Юношеская");
+    }
   },
   mutations: {
     SET_ARENAS(state, arenas) {
@@ -92,6 +102,9 @@ export default new Vuex.Store({
     SET_TEAMS(state, teams) {
       state.teams = teams;
     },
+    SET_TRAINERS(state, trainers) {
+      state.trainers = trainers;
+    }
   },
   actions: {
     getAllArenas({ commit }) {
@@ -141,11 +154,19 @@ export default new Vuex.Store({
         })
         .catch((err) => console.log(err));
     },
-    getTeamsAll({ commit }) {
+    getAllTeams({ commit }) {
       axios
         .get(`/teams`)
         .then((response) => {
           commit("SET_TEAMS", response.data);
+        })
+        .catch((err) => console.log(err));
+    },
+    getAllTrainers({ commit }) {
+      axios
+        .get(`/users`)
+        .then((response) => {
+          commit("SET_TRAINERS", response.data);
         })
         .catch((err) => console.log(err));
     },

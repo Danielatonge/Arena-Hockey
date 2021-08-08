@@ -2,7 +2,7 @@
   <v-app>
     <Header /> 
     <Navbar />
-    <v-main>
+    <v-main class="grey lighten-4">
       <router-view />
     </v-main>
     <Footer />
