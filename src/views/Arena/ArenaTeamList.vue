@@ -11,7 +11,7 @@
       <v-tab-item v-for="i in 4" :key="i">
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 0">
           <v-col cols="12" v-for="(item, i) in teams" :key="i">
-            <router-link to="/teamname" class="undo-link-default">
+            <router-link :to="`/arenaname/${arenaId}/teamname/${item.id}`" class="undo-link-default">
               <v-card color="transparent" elevation="0">
                 <div class="d-flex flex-no-wrap">
                   <v-avatar class="ma-3" size="125" tile>
@@ -36,7 +36,7 @@
         </v-row>
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 1">
           <v-col cols="12" v-for="(item, i) in children_team" :key="i">
-            <router-link to="/teamname" class="undo-link-default">
+            <router-link :to="`/arenaname/${arenaId}/teamname/${item.id}`" class="undo-link-default">
               <v-card color="transparent" elevation="0">
                 <div class="d-flex flex-no-wrap">
                   <v-avatar class="ma-3" size="125" tile>
@@ -61,7 +61,7 @@
         </v-row>
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 2">
           <v-col cols="12" v-for="(item, i) in youth_team" :key="i">
-            <router-link to="/teamname" class="undo-link-default">
+            <router-link :to="`/arenaname/${arenaId}/teamname/${item.id}`" class="undo-link-default">
               <v-card color="transparent" elevation="0">
                 <div class="d-flex flex-no-wrap">
                   <v-avatar class="ma-3" size="125" tile>
@@ -86,7 +86,7 @@
         </v-row>
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 3">
           <v-col cols="12" v-for="(item, i) in adult_team" :key="i">
-            <router-link to="/teamname" class="undo-link-default">
+            <router-link :to="`/arenaname/${arenaId}/teamname/${item.id}`" class="undo-link-default">
               <v-card color="transparent" elevation="0">
                 <div class="d-flex flex-no-wrap">
                   <v-avatar class="ma-3" size="125" tile>
@@ -127,10 +127,15 @@ export default {
       return value.slice(0, 30) + "...";
     },
   },
+  mounted(){
+      const arenaId = this.$route.params.id;
+      this.arenaId = arenaId;
+  },
   data() {
     return {
       name: "ArenaTeamList",
       sidebar_tab: 0,
+      arenaId: null,
       premises_tab: null,
       premises_nav: [
         "Все команды",
@@ -146,13 +151,5 @@ export default {
 </script>
 
 <style>
-.margin-top-big {
-  margin-top: 178px;
-}
 
-@media (max-width: 600px) {
-  .margin-top-big {
-    margin-top: 100px;
-  }
-}
 </style>

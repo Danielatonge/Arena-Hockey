@@ -16,7 +16,9 @@ export default new Vuex.Store({
     items: {},
     list_arenas: [],
     current_arena: {},
+    current_team:{},
     current_contact: {},
+    current_service: {},
     services: [],
     arenasMapIdentifier: [],
     teams: [],
@@ -77,6 +79,12 @@ export default new Vuex.Store({
     },
     SET_CURRENT_CONTACT(state, contact) {
       state.current_contact = contact;
+    },
+    SET_CURRENT_TEAM(state, team) {
+      state.current_team = team;
+    },
+    SET_CURRENT_SERVICE(state, service) {
+      state.current_service = service;
     },
     SET_SERVICES(state, services) {
       state.services = services;
@@ -141,7 +149,19 @@ export default new Vuex.Store({
         })
         .catch((err) => console.log(err));
     },
-
+    getTeamByID({ commit }, id) {
+      const item = this.state.teams.filter(
+        (team) => team.id === id
+      );
+      console.log(item[0]);
+      commit("SET_CURRENT_TEAM", item[0]);
+    },
+    getServiceById({ commit }, id) {
+      const item = this.state.services.filter(
+        (service) => service.id === id
+      );
+      commit("SET_CURRENT_SERVICE", item[0]);
+    },
   },
   modules: {},
   plugins: [vuexLocal.plugin],

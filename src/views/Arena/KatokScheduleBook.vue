@@ -1,76 +1,5 @@
 <template>
   <div class="grey lighten-4">
-    <v-img
-      color="grey"
-      height="450px"
-      width="100%"
-      src="@/assets/banner-arena.jpg"
-    >
-      <v-container class="pt-8 pb-0">
-        <v-row class="">
-          <div>
-            <v-breadcrumbs
-              dark
-              :items="breadcrumb_items"
-              class="px-3"
-            ></v-breadcrumbs>
-          </div>
-          <v-spacer></v-spacer>
-          <div class="pr-3 my-auto">
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="mr-1"
-            >
-              <v-icon color="white">mdi-whatsapp</v-icon>
-            </v-btn>
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="mx-1"
-            >
-              <v-icon color="white">mdi-instagram</v-icon>
-            </v-btn>
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="mx-1"
-            >
-              <v-icon color="white">mdi-vk</v-icon>
-            </v-btn>
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="ml-1"
-            >
-              <v-icon color="white">mdi-web</v-icon>
-            </v-btn>
-          </div>
-        </v-row>
-        <div class="margin-top-big">
-          <v-row class="mb-3">
-            <v-col cols="12" sm="6" md="7" lg="5">
-              <p class="text-h4 white--text">Название арены</p>
-              <p class="white--text">
-                <v-icon color="white">mdi-map-marker-outline</v-icon> ул.
-                Лермонтова, д. 14, пом. 3, г. Чита
-              </p>
-            </v-col>
-            <v-spacer></v-spacer>
-          </v-row>
-          <v-btn color="primary mr-4 mt-4" elevation="0">Забронировать</v-btn>
-          <v-btn class="mt-4" dark outlined elevation="0">Как проехать?</v-btn>
-        </div>
-      </v-container>
-    </v-img>
     <v-container class="">
       <div>
         <v-breadcrumbs
@@ -78,9 +7,82 @@
           class="px-0"
         ></v-breadcrumbs>
       </div>
-      <p class="text-h4">Расписание мероприятий</p>
+      <div class="text-h4 mb-4">Забронировать</div>
       <div class="rounded-lg white">
-        <v-row class="mt-2 ml-0 mb-0">
+        <v-sheet tile height="74" class="d-flex align-center" color="#EBF5FB">
+          <div style="width: 200px">
+            <v-select
+              v-model="currentDay"
+              dense
+              single-line
+              outlined
+              prepend-inner-icon="mdi-calendar-blank"
+              hide-details
+              class="ma-2 white d-flex"
+              label="23.09.2021, пн"
+            ></v-select>
+          </div>
+          <v-spacer></v-spacer>
+
+          <div style="width: 280px" class="d-flex">
+            <div class="my-auto">Повторять:</div>
+            <v-select
+              v-model="mode"
+              :items="mode_lesson"
+              dense
+              single-line
+              outlined
+              hide-details
+              label="Вторник, четверг"
+              class="ma-2 white"
+            ></v-select>
+          </div>
+          <div style="width: 160px">
+            <v-select
+              v-model="mode"
+              :items="mode_lesson"
+              dense
+              single-line
+              outlined
+              hide-details
+              label="Единоразово"
+              class="ma-2 white"
+            ></v-select>
+          </div>
+        </v-sheet>
+        <v-sheet tile height="54" class="d-flex">
+          <div></div>
+          <v-spacer></v-spacer>
+
+          <v-btn icon class="ma-2" @click="$refs.calendar.prev()">
+            <v-icon>mdi-chevron-left</v-icon>
+          </v-btn>
+          <v-btn icon class="ma-2" @click="$refs.calendar.next()">
+            <v-icon>mdi-chevron-right</v-icon>
+          </v-btn>
+        </v-sheet>
+        <v-sheet height="600" class="px-4">
+          <v-calendar
+            ref="calendar"
+            v-model="value"
+            :weekdays="weekday"
+            :type="'week'"
+            :events="events"
+            :event-overlap-mode="mode"
+            :event-overlap-threshold="30"
+          ></v-calendar>
+        </v-sheet>
+        <div class="pa-4">
+          <v-btn class="mr-3" color="primary" elevation="0">
+            Забронировать за 16 000 РУБ
+          </v-btn>
+          <v-btn elevation="0">Расписание мероприятий</v-btn>
+        </div>
+      </div>
+
+      <p class="text-h4 mt-16 mb-8">Расписание мероприятий</p>
+      <div class="rounded-lg white">
+        <v-row class="ml-0 mb-0">
           <v-tabs v-model="value" class="d-flex flex-no-wrap rounded-lg">
             <v-tab class="px-10" v-for="item in schedule_nav" :key="item">
               {{ item }}
@@ -161,28 +163,34 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   watch: {
-    value(x){
-      this.type = (x==1) ? 'week': 'day'; 
+    value(x) {
+      this.type = x == 1 ? "week" : "day";
     },
   },
+  computed: {
+    ...mapState({ service: "current_service" }),
+  },
   mounted() {
-    let UrlString = this.$route.path;
-    let returnUrl = UrlString.split("/");
+    let arenaId = this.$route.params.arenaId;
+    let serviceId = this.$route.params.serviceId;
     this.breadcrumb_event_page = [
       {
-        text: "Ледовая арена",
+        text: "Название арены",
         disabled: false,
-        to: { path: `/${returnUrl[1]}/${returnUrl[2]}/information` },
+        to: { path: `/arenaname/${arenaId}/information` },
         exact: true,
       },
       {
-        text: "Расписание мероприятий",
+        text: "Бронирование",
         disabled: true,
         href: "/event_schedule",
       },
     ];
+
+    this.$store.dispatch("getServiceById", serviceId);
   },
   data() {
     return {

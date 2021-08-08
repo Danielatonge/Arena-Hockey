@@ -11,6 +11,8 @@ import ArenaTrainingStaff from "../views/Arena/ArenaTrainingStaff.vue";
 import ArenaPremises from "../views/Arena/ArenaPremises.vue";
 import EventScheduleAll from "../views/Arena/EventScheduleAll.vue";
 import EventSchedule from "../views/Arena/EventSchedule.vue";
+import KatokScheduleBook from "../views/Arena/KatokScheduleBook.vue";
+
 import JoinTeam from "../views/Arena/JoinTeam.vue";
 import ArenaMapAll from "../views/Arena/ArenaMapAll.vue";
 import BookRoom from "../views/LockerRoom/BookRoom.vue";
@@ -94,7 +96,12 @@ const routes = [
     component: EventSchedule,
   },
   {
-    path: "/arena_premises",
+    path: "/arenaname/:arenaId/event_schedule/:serviceId",
+    name: "KatokScheduleBook",
+    component: KatokScheduleBook,
+  },
+  {
+    path: "/arenaname/:arenaId/service/:serviceId",
     name: "ArenaPremises",
     component: ArenaPremises,
   },
@@ -109,7 +116,7 @@ const routes = [
     component: Room,
   },
   {
-    path: "/teamname",
+    path: "/arenaname/:arenaId/teamname/:teamId",
     name: "TeamName",
     component: TeamName,
   },

@@ -27,7 +27,7 @@
       cluster-name="1"
       :balloon-template="mapBalloon(billboard)"
       :coords="billboard.coords.split(',')"
-      :icon="{ content: billboard.id }"
+      :icon="{ content: billboard.title }"
     ></ymap-marker>
   </yandex-map>
 </template>
@@ -85,7 +85,7 @@ export default {
     },
     mapBalloon(billboard) {
       return `
-      <div><h1>${billboard.id}</h1>
+      <div><h1>${billboard.title}</h1>
       <div><strong>City</strong>: ${billboard.city}</div>
       <div><strong>Address</strong>: ${billboard.address}</div>
       </div>

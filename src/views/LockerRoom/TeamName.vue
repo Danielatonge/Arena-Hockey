@@ -43,12 +43,10 @@
       </v-row>
       <v-row class="mb-3">
         <v-col cols="8" sm="6" md="7" lg="5">
-          <p class="text-h5 blue--text">Москва</p>
-          <p class="text-h4">Название команды</p>
+          <p class="text-h5 blue--text">{{ team.city }}</p>
+          <p class="text-h4">{{ team.title }}</p>
           <p class="grey--text">
-            Sapien, aliquet amet, libero enim, id amet in in habitasse amet
-            augue et risus tincidunt dolor consequat urna, odio ridiculus nisl
-            at
+            {{ team.miniDescription }}
           </p>
         </v-col>
         <v-spacer></v-spacer>
@@ -64,24 +62,25 @@
     </v-container>
     <v-container class="mt-10">
       <p class="text-h5">Описание</p>
-      <div>
-        <p class="text-justify">
-          Хоккейный клуб «А-Линия» без преувеличения можно назвать старейшим
-          клубом Москвы. Он был образован в далеком 1998 году, и вырос из
-          обыкновенной дворовой команды: в районе Бирюлево Западное, построили
-          ледовый каток. В те годы, когда развитие массового спорта не входило в
-          число приоритетных направлений государственной политики, это
-          воспринималось как подарок судьбы. Хоккейные площадки Москвы были
-          наперечет.
-        </p>
-        <p class="text-justify">
-          Молодые люди, играющие до этого только в зимний сезон на открытых
-          площадках, пришли к директору катка с просьбой арендовать лед. Им было
-          отказано. Тогда они обратились к Бородаевой Алине , как к депутату.
-          Алина Юрьевна, занимающая активную жизненную
+      <div v-if="team.description.length < 580">
+        <p class="">
+          {{ team.description }}
         </p>
       </div>
-      <v-btn color="grey lighten-2" elevation="0">Раскрыть описание</v-btn>
+      <div v-else>
+        <p class="" v-if="!readMoreActivated">
+          {{ team.description.slice(0, 580) + "..." }}
+        </p>
+        <p class="" v-else v-text="team.description"></p>
+      </div>
+      <v-btn
+        color="grey lighten-2"
+        v-show="team.description.length > 580"
+        elevation="0"
+        @click="readMoreActivated = !readMoreActivated"
+      >
+        {{ readMoreActivated ? "Cкрыть описание" : "Раскрыть описание" }}
+      </v-btn>
     </v-container>
     <v-container class="mt-10">
       <p class="text-h5">Место проведения тренировок</p>
@@ -227,9 +226,8 @@
         <v-col cols="12" md="6">
           <v-card elevation="0" class="pa-5">
             <div class="d-flex flex-no-wrap">
-              
               <v-avatar class="ma-3" size="100" tile>
-                <v-img src="@/assets/advert_1.jpg"></v-img>
+                <v-img :src="require('@/assets/advert_1.jpg')"></v-img>
               </v-avatar>
               <v-card-text>
                 <div class="body-1 grey--text">19 апреля 2021</div>
@@ -256,7 +254,7 @@
           <v-card elevation="0" class="pa-5">
             <div class="d-flex flex-no-wrap">
               <v-avatar class="ma-3" size="100" tile>
-                <v-img src="@/assets/advert_2.jpg"></v-img>
+                <v-img :src="require('@/assets/advert_2.jpg')"></v-img>
               </v-avatar>
               <v-card-text>
                 <div class="body-1 grey--text">19 апреля 2021</div>
@@ -285,15 +283,15 @@
     <v-container class="mt-10">
       <p class="text-h5">Галерея</p>
       <v-row>
-        <v-col
-          cols="6"
-          md="4"
-          lg="3"
-          v-for="(item, i) in gallery_items"
-          :key="i"
-        >
-          <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
+        <v-col cols="6" md="4" lg="3" v-for="(item, i) in media" :key="i">
+          <v-img :src="item.src" @click="openGallery(i)"></v-img>
         </v-col>
+        <LightBox
+          ref="lightbox"
+          :media="media"
+          :show-caption="true"
+          :show-light-box="false"
+        />
       </v-row>
     </v-container>
     <v-container class="mt-10 pb-15">
@@ -321,30 +319,54 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import LightBox from "vue-image-lightbox";
+import { media } from "@/data/dummy";
+
 export default {
   name: "TeamName",
+  components: {
+    LightBox,
+  },
+  computed: {
+    ...mapState({ team: "current_team" }),
+  },
+  mounted() {
+    const teamId = this.$route.params.teamId;
+    const arenaId = this.$route.params.arenaId;
+
+    this.$store.dispatch("getTeamByID", teamId);
+    this.breadcrumb_items = [
+      {
+        text: "Название арены",
+        disabled: false,
+        href: `/arenaname/${arenaId}/information`,
+      },
+      {
+        text: "Список команд",
+        disabled: false,
+        href: `/arenaname/${arenaId}/list_teams`,
+      },
+      {
+        text: "Название команды",
+        disabled: true,
+        href: "breadcrumbs_link_2",
+      },
+    ];
+  },
+  methods: {
+    openGallery(index) {
+      this.$refs.lightbox.showImage(index);
+    },
+  },
   data() {
     return {
       value: 0,
       advert_nav: ["Команда ищет игроков", "Команда ищет тренера"],
       player_items: ["/player_1", "/player_2"],
-      breadcrumb_items: [
-        {
-          text: "Название арены",
-          disabled: false,
-          href: "breadcrumbs_dashboard",
-        },
-        {
-          text: "Список команд",
-          disabled: false,
-          href: "breadcrumbs_link_1",
-        },
-        {
-          text: "Название команды",
-          disabled: true,
-          href: "breadcrumbs_link_2",
-        },
-      ],
+      advert_items:["/advert_1","/advert_2"],
+      readMoreActivated: false,
+      breadcrumb_items: null,
       gallery_items: [
         "/gallery_1",
         "/gallery_2",
@@ -355,6 +377,7 @@ export default {
         "/gallery_7",
         "/gallery_8",
       ],
+      media,
     };
   },
 };

@@ -13,7 +13,9 @@
                 width="100%"
                 color="primary"
               >
+              <router-link to="/" class="reset-link">
                 Списком
+              </router-link>
               </v-btn>
             </v-col>
             <v-col cols="6">

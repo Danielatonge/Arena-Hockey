@@ -58,8 +58,8 @@
         <div class="margin-top-big">
           <v-row class="mb-3">
             <v-col cols="12" sm="6" md="7" lg="5">
-              <p class="text-h4 white--text">Название помещения</p>
-              <p class="white--text">Краткое описание помещения</p>
+              <p class="text-h4 white--text">{{ service.title }}</p>
+              <p class="white--text">{{ service.miniDescription }}</p>
             </v-col>
             <v-spacer></v-spacer>
           </v-row>
@@ -145,20 +145,26 @@
             </div>
 
             <p class="text-h4 mt-10">Описание</p>
-            <p class="">
-              Следж-хоккей или хоккей на санях — командная спортивная игра на
-              льду, паралимпийская версия классического хоккея. Игра заключается
-              в противоборстве на специальных санях двух команд, которые,
-              передавая шайбу клюшками, стремятся забросить её наибольшее
-              количество раз в ворота соперника и не пропустить в свои.
-              Побеждает команда, забросившая наибольшее количество шайб в ворота
-              соперника. Следж-хоккей входит в программу зимних Паралимпийских
-              игр.
-            </p>
-            <p>
-              Следж-хоккей играют очень важную роль в социальной реабилитации
-              детей и молодежи с различными нарушениями здоровья.
-            </p>
+
+            <div v-if="service.description.length < 480">
+              <p class="">
+                {{ service.description }}
+              </p>
+            </div>
+            <div v-else>
+              <p class="" v-if="!readMore">
+                {{ service.description.slice(0, 480) + "..." }}
+              </p>
+              <p class="" v-else v-text="service.description"></p>
+            </div>
+            <v-btn
+              color="grey lighten-2"
+              v-show="service.description.length > 480"
+              elevation="0"
+              @click="readMore = !readMore"
+            >
+              {{ readMore ? "Закрыть" : "Подробнее" }}
+            </v-btn>
 
             <v-row class="mt-10">
               <v-col
@@ -190,18 +196,18 @@
             </div>
             <p class="text-h5 font-weight-bold mt-10">Галерея</p>
             <v-row>
-              <v-col
-                cols="6"
-                md="4"
-                lg="3"
-                v-for="(item, i) in gallery_items"
-                :key="i"
-              >
-                <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
+              <v-col cols="6" md="4" lg="3" v-for="(item, i) in media" :key="i">
+                <v-img :src="item.src" @click="openGallery(i)"></v-img>
               </v-col>
+              <LightBox
+                ref="lightbox"
+                :media="media"
+                :show-caption="true"
+                :show-light-box="false"
+              />
             </v-row>
 
-            <p class="text-h5 font-weight-bold mt-10">Другие помещений</p>
+            <p class="text-h5 font-weight-bold mt-15">Другие помещений</p>
             <v-tabs
               v-model="premises_tab"
               class="d-flex flex-no-wrap rounded-lg"
@@ -215,9 +221,14 @@
               v-model="premises_tab"
               style="background-color: unset"
             >
-              <v-tab-item v-for="item in premises_nav" :key="item">
-                <v-row dense class="mx-n4 mt-5">
-                  <v-col cols="12" v-for="i in 3" :key="i">
+              <v-tab-item v-for="i in 2" :key="i">
+                <v-row dense class="mt-5" v-show="premises_tab == 0">
+                  <v-col
+                    cols="12"
+                    class="mb-4"
+                    v-for="(item, i) in katok_services"
+                    :key="i"
+                  >
                     <v-card color="transparent" elevation="0">
                       <div class="d-flex flex-no-wrap">
                         <div class="ma-3" width="282px" height="186px">
@@ -225,12 +236,12 @@
                         </div>
                         <div class="description">
                           <v-card-text>
-                            <div class="text-h4 mb-4">Название катка 1</div>
+                            <div class="text-h4 mb-4">{{ item.title }}</div>
                             <div class="body-1 grey--text mb-3">
-                              Краткое описание катка
+                              {{ item.miniDescription | descriptionLength }}
                             </div>
                             <div class="body-1 blue--text">
-                              +7 (123) 234-15-23
+                              {{ item.phone }}
                             </div>
                           </v-card-text>
                           <v-card-actions class="pl-4 bottom">
@@ -240,20 +251,30 @@
                               x-large
                               elevation="0"
                             >
-                              Забронировать
-                            </v-btn>
-                            <v-btn
-                              class="px-6"
-                              color="grey lighten-2"
-                              x-large
-                              elevation="0"
-                            >
-                              Подробнее
+                              <router-link
+                                :to="`/arenaname/${item.arenaId}/event_schedule/${item.id}`"
+                                class="reset-link"
+                              >
+                                Забронировать
+                              </router-link>
                             </v-btn>
                           </v-card-actions>
                         </div>
                       </div>
                     </v-card>
+                  </v-col>
+                </v-row>
+                <v-row dense class="mt-5" v-show="premises_tab != 0">
+                  <v-col
+                    cols="12"
+                    class="mb-2"
+                    v-for="(item, i) in others_services"
+                    :key="i"
+                  >
+                    <ArenaServiceCard
+                      :data="item"
+                      :arenaId="arenaId"
+                    ></ArenaServiceCard>
                   </v-col>
                 </v-row>
               </v-tab-item>
@@ -266,29 +287,51 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from "vuex";
+import ArenaServiceCard from "@/components/Arena/ArenaServiceCard";
+import { media } from "@/data/dummy";
+import LightBox from "vue-image-lightbox";
+
 export default {
+  components: {
+    ArenaServiceCard,
+    LightBox,
+  },
+  computed: {
+    ...mapGetters(["katok_services", "others_services"]),
+    ...mapState({ service: "current_service" }),
+  },
+  mounted() {
+    let arenaId = this.$route.params.arenaId;
+    let serviceId = this.$route.params.serviceId;
+    this.breadcrumb_items = [
+      {
+        text: "Москва",
+        disabled: false,
+        to: { path: `/arenaname` },
+        exact: true,
+      },
+      {
+        text: "Название арены",
+        disabled: false,
+        to: { path: `/arenaname/${arenaId}/information` },
+        exact: true,
+      },
+      {
+        text: "Название помещения",
+        disabled: true,
+        href: "/",
+      },
+    ];
+    this.$store.dispatch("getServiceById", serviceId);
+  },
   data() {
     return {
       name: "ArenaTeamList",
       premises_tab: null,
-      premises_nav: ["Катки", "Бросковые зоны", "Спортивные залы"],
-      breadcrumb_items: [
-        {
-          text: "Москва",
-          disabled: false,
-          href: "breadcrumbs_link_1",
-        },
-        {
-          text: "Название арены",
-          disabled: false,
-          href: "breadcrumbs_dashboard",
-        },
-        {
-          text: "Название помещения",
-          disabled: true,
-          href: "",
-        },
-      ],
+      premises_nav: ["Катки", "Другие"],
+      breadcrumb_items: null,
+      readMore: null,
       gallery_items: [
         "/gallery_1",
         "/gallery_2",
@@ -332,6 +375,7 @@ export default {
         "Conference",
         "Party",
       ],
+      media,
     };
   },
   methods: {},
