@@ -26,15 +26,31 @@
           <div class="text-h5">Ледовые дворцы</div>
         </v-col>
         <v-col>
-          <div class="grey--text lighten-1 text-right">
-            Посмотреть все арены
-            <v-icon size="28" color="grey lighten-1"> mdi-arrow-right </v-icon>
-          </div>
+          <router-link to="/arena">
+            <div class="grey--text lighten-1 text-right">
+              Посмотреть все арены
+              <v-icon size="28" color="grey lighten-1">
+                mdi-arrow-right
+              </v-icon>
+            </div>
+          </router-link>
         </v-col>
       </v-row>
       <v-row class="d-flex">
-        <v-col v-for="(item, i) in arenas" :key="i" cols="12" md="4" lg="3">
-          <v-card :loading="false" class="my-3">
+        <v-col
+          v-for="(item, i) in displayedArena"
+          :key="i"
+          cols="12"
+          md="4"
+          lg="3"
+        >
+          <v-card
+            @click="goToArena(item.id)"
+            elevation="0"
+            color="#FFF"
+            :loading="false"
+            class="my-3"
+          >
             <template slot="progress">
               <v-progress-linear
                 color="deep-purple"
@@ -43,13 +59,15 @@
               ></v-progress-linear>
             </template>
 
-            <v-img height="250" :src="require('@/assets' + item.image)"></v-img>
+            <v-img height="250" :src="require('@/assets/arena_1.jpg')"></v-img>
 
-            <v-card-title> {{ item.name }}</v-card-title>
+            <v-card-title>
+              {{ item.title || "Los Angeles Clippers" }}</v-card-title
+            >
 
             <v-card-text>
               <div>
-                {{ item.address }}
+                {{ item.address | addressDescription }}
               </div>
             </v-card-text>
           </v-card>
@@ -57,13 +75,8 @@
       </v-row>
     </v-container>
     <v-row class="mb-10">
-      <v-img
-        color="grey"
-        height="300"
-        width="100%"
-        src="@/assets/banner-arena.jpg"
-      >
-        <v-container class="pt-8 my-10">
+      <v-img color="grey" class="about-us" src="@/assets/banner-arena.jpg">
+        <v-container class="pt-3 px-5 my-10">
           <v-row class="white--text justify-center">
             <v-col cols="12" md="3" lg="2" class="text-left mr-lg-10">
               <div class="text-h5">О проекте</div>
@@ -82,7 +95,7 @@
                 </v-col>
               </v-row>
             </v-col>
-            <v-col cols="12" md="5" lg="7" class="text-left">
+            <v-col cols="12" md="9" lg="7" class="text-left">
               Спортивно-информационный портал hockeyarena.com объединяет
               предложения по аренде всех ледовых дворцов и спортивных арен в
               одном общем информационном пространстве. Единое информационное
@@ -179,13 +192,97 @@
       </v-row>
     </v-container>
 
-    <v-row class="mb-10">
+    <v-row>
       <v-img
         color="grey"
-        height="500"
+        class="px-20 px-sm-10"
         width="100%"
         src="@/assets/banner-arena.jpg"
-      ></v-img>
+      >
+        <v-container>
+          <v-row>
+            <v-col class="text-h5 white--text mt-5">
+              Разделы информационного портала
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" lg="8" md="8">
+              <v-img
+                color="grey"
+                width="100%"
+                height="250"
+                style="border-radius: 12px"
+                src="@/assets/home_arena_3.png"
+              >
+                <v-row
+                  no-gutters
+                  align="end"
+                  class="pl-5 white--text pb-5 gradient-over"
+                  style="height: 100%"
+                >
+                  <v-col>
+                    <div class="font-weight-bold text-h5">Раздевалка</div>
+                    <div class="">
+                      Полный список всех команд и игроков, зарегистрировавшихся
+                      на портале
+                    </div>
+                  </v-col>
+                </v-row>
+              </v-img>
+            </v-col>
+            <v-col cols="12" lg="4" md="4">
+              <v-img
+                color="grey"
+                width="100%"
+                height="250"
+                style="border-radius: 12px"
+                src="@/assets/home_arena_2.png"
+              >
+                <v-row
+                  no-gutters
+                  align="end"
+                  class="pl-5 white--text pb-5 gradient-over"
+                  style="height: 100%"
+                >
+                  <v-col>
+                    <div class="font-weight-bold text-h5">Раздевалка</div>
+                    <div class="">
+                      Полный список всех команд и игроков, зарегистрировавшихся
+                      на портале
+                    </div>
+                  </v-col>
+                </v-row>
+              </v-img>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col v-for="(item, i) in information" :key="i">
+              <v-img
+                color="grey"
+                width="100%"
+                height="250"
+                style="border-radius: 12px"
+                :src="require('@/assets' + item + '.png')"
+              >
+                <v-row
+                  no-gutters
+                  align="end"
+                  class="pl-5 white--text pb-5 gradient-over"
+                  style="height: 100%"
+                >
+                  <v-col>
+                    <div class="font-weight-bold text-h5">Раздевалка</div>
+                    <div class="">
+                      Полный список всех команд и игроков, зарегистрировавшихся
+                      на портале
+                    </div>
+                  </v-col>
+                </v-row>
+              </v-img>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-img>
     </v-row>
   </div>
 </template>
@@ -196,13 +293,17 @@ import { mapState } from "vuex";
 export default {
   name: "Home",
   computed: {
-    ...mapState(["items"]),
+    ...mapState(["list_arenas"]),
+    displayedArena() {
+      return this.list_arenas.slice(0, 4);
+    },
   },
   mounted() {
-    this.$store.dispatch("loadItems");
+    this.$store.dispatch("getAllArenas");
   },
   data() {
     return {
+      information: ["/home_arena_1", "/home_arena_2", "/home_arena_3"],
       pupular_leagues: [
         "/home_1",
         "/team_room_2",
@@ -240,7 +341,17 @@ export default {
       ],
     };
   },
-  methods: {},
+  methods: {
+    goToArena(arenaId) {
+      this.$router.push({ path: `/arena/${arenaId}/information` });
+    },
+  },
+  filters: {
+    addressDescription: (value) => {
+      if (!value) return "";
+      return value.slice(0, 34);
+    },
+  },
 };
 </script>
 
@@ -258,5 +369,17 @@ export default {
   background: url("../../assets/home_slide_1.png") no-repeat center center;
   background-size: contain;
   width: 100%;
+}
+.gradient-over {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 48.9%, #000000 95.78%);
+}
+.about-us {
+  height: 300px;
+  width: "100%";
+}
+@media screen and (max-width: 950px) {
+  .about-us {
+    height: 39%;
+  }
 }
 </style>
