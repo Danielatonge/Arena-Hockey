@@ -42,10 +42,16 @@ import CreateAdminTeamList from "../views/Admin/Arena/Create/CreateAdminTeamList
 import CreateAdminTrainStaff from "../views/Admin/Arena/Create/CreateAdminTrainStaff.vue";
 import CreateAdminManager from "../views/Admin/Arena/Create/CreateAdminManager.vue";
 import KidsTournaments from '../views/KidsTournaments/Home.vue';
+import Main from '../views/Home/Home.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path: "/home",
+    name: "Main",
+    component: Main,
+  },
   {
     path: "/",
     name: "Home",

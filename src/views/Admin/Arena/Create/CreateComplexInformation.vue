@@ -160,15 +160,15 @@
         <div class="mb-4">
           <v-data-table
             :headers="headers"
-            :items="desserts"
+            :items="rollers"
             :items-per-page="5"
             class="elevation-0"
           >
             <template v-slot:item.icon="{ item }">
-              <v-icon small class="mr-6" @click="editItem(item)">
+              <v-icon small class="mr-6" @click="editRoller(item)">
                 mdi-pencil
               </v-icon>
-              <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+              <v-icon small @click="deleteRoller(item)"> mdi-delete </v-icon>
             </template>
           </v-data-table>
         </div>
@@ -202,6 +202,7 @@
                   flat
                   hide-details="auto"
                   class="rounded-lg"
+                  v-model="edited_roller.name"
                 ></v-text-field>
               </div>
               <div class="mb-2">
@@ -211,10 +212,14 @@
                   flat
                   hide-details="auto"
                   class="rounded-lg"
+                  v-model="edited_roller.size"
                 ></v-text-field>
               </div>
               <div class="">
-                <v-checkbox v-model="checkbox">
+                <v-checkbox
+                  v-model="edited_roller.type"
+                  :value="edited_roller.type ? 'Крытое поле' : 'Не крытое поле'"
+                >
                   <template v-slot:label>
                     <div>Крытое поле</div>
                   </template>
@@ -234,9 +239,10 @@
                 elevation="0"
                 color="primary"
                 class="body-2 px-4"
-                @click="katok_dialog = false"
+                @click="saveRoller"
               >
-                Добавить
+                <span v-if="edited_roller_index > -1">Обновить</span>
+                <span v-else>Добавить</span>
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -443,10 +449,69 @@ export default {
         icon: "",
       },
       editingPromise: false,
+      rollers: [],
+      edited_roller: {
+        name: "",
+        size: "",
+        type: "",
+        icon: "",
+      },
+      default_roller: {
+        name: "",
+        size: "",
+        type: "",
+        icon: "",
+      },
+      edited_roller_index: -1,
     };
   },
   methods: {
-    clear_promise() {
+    saveRoller() {
+      if (this.edited_roller_index > -1) {
+        Object.assign(
+          this.rollers[this.edited_roller_index],
+          this.edited_roller
+        );
+      } else {
+        this.rollers.push(this.edited_roller);
+      }
+      this.closeRoller();
+    },
+
+    editRoller(item) {
+      this.edited_roller_index = this.rollers.indexOf(item);
+      this.edited_roller = Object.assign({}, item);
+      this.katok_dialog = true;
+    },
+    deleteRoller(item) {
+      this.edited_roller_index = this.rollers.indexOf(item);
+      this.edited_roller = Object.assign({}, item);
+      this.katok_dialog = true;
+      this.deleteRollerConfirm();
+    },
+
+    deleteRollerConfirm() {
+      this.rollers.splice(this.edited_roller, 1);
+      this.closeDelete();
+    },
+
+    closeRoller() {
+      this.katok_dialog = false;
+      this.$nextTick(() => {
+        this.edited_roller = Object.assign({}, this.defaultItem);
+        this.edited_roller_index = -1;
+      });
+    },
+
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+    closePromiseDialog() {
+      this.service_dialog = false;
       this.promise = {
         name: "",
         size: "",
@@ -473,8 +538,7 @@ export default {
           },
         ];
       }
-      this.service_dialog = false;
-      this.clear_promise();
+      this.closePromiseDialog();
     },
     editPromise(item) {
       this.editingPromise = true;

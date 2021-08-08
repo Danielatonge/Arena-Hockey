@@ -133,15 +133,15 @@
           </v-col>
         </v-row>
       </div>
-      <v-row dense class="mx-n4 pl-4">
-        <v-col class="" cols="12" v-for="(item, i) in team_items" :key="i">
+      <v-row dense class="mx-n4 pr-4">
+        <v-col class="mb-3" cols="12" v-for="(item, i) in team_items" :key="i">
           <router-link to="/teamname" class="undo-link-default d-flex">
             <div>
               <v-avatar class="ma-3" size="180" tile>
                 <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
               </v-avatar>
             </div>
-            <v-row class="">
+            <v-row class="pt-3">
               <v-col class="d-flex flex-wrap justify-space-between">
                 <div>
                   <div class="grey--text lighten-3--text text-h6 mb-2">
