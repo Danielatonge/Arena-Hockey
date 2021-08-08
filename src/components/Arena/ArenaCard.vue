@@ -66,7 +66,7 @@ export default {
       console.log(this.arena);
       this.$store
         .dispatch("displayMapOne", [this.arena])
-        .then(() => this.$router.push({ path: "/arena_maps" }));
+        .then(() => this.$router.push({ path: "/arena/arena_maps" }));
     },
     selectToggle() {
       this.selected = !this.selected;

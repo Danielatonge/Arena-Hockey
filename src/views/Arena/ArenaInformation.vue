@@ -83,9 +83,9 @@
 
     <p class="text-h6 mt-10 mb-0">Прайс-лист</p>
     <p class="grey--text">Цены указаны за 1 час аренды</p>
-    <div v-for="i in 3" :key="i">
-      <p class="text-h4 mt-8 mb-0">Название катка {{ i }}</p>
-      <p class="grey--text">Краткое описание катка</p>
+    <div v-for="(item, i) in katok_services" :key="i">
+      <p class="text-h4 mt-8 mb-0">{{ item.title }}</p>
+      <p class="grey--text">{{ item.miniDescription }}</p>
       <v-row>
         <v-col
           cols="2"
