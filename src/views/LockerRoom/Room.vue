@@ -5,10 +5,7 @@
         <div class="text-h4">Раздевалка</div>
         <v-row class="mt-2">
           <v-col cols="6" sm="4" lg="3">
-            <v-tabs
-              v-model="value"
-              class="d-flex flex-no-wrap rounded-lg"
-            >
+            <v-tabs v-model="value" class="d-flex flex-no-wrap rounded-lg">
               <v-tab class="px-6" v-for="item in room_nav" :key="item">
                 {{ item }}
               </v-tab>
@@ -209,7 +206,7 @@
 import { mapState } from "vuex";
 
 export default {
-  name: 'Room',
+  name: "Room",
   computed: {
     ...mapState(["items"]),
   },
