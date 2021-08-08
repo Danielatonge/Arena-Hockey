@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Arena/Home.vue";
+import Arena from "../views/Arena/Arena.vue";
 import Room from "../views/LockerRoom/Room.vue";
 import TeamName from "../views/LockerRoom/TeamName.vue";
 import ArenaName from "../views/Arena/ArenaName.vue";
@@ -44,20 +44,22 @@ import CreateAdminTeamList from "../views/Admin/Arena/Create/CreateAdminTeamList
 import CreateAdminTrainStaff from "../views/Admin/Arena/Create/CreateAdminTrainStaff.vue";
 import CreateAdminManager from "../views/Admin/Arena/Create/CreateAdminManager.vue";
 import KidsTournaments from '../views/KidsTournaments/Home.vue';
+
+
 import Main from '../views/Home/Home.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/home",
+    path: "/",
     name: "Main",
     component: Main,
   },
   {
-    path: "/",
-    name: "Home",
-    component: Home,
+    path: "/arena",
+    name: "Arena",
+    component: Arena,
   },
   {
     path: "/kids_tournement",
@@ -65,7 +67,7 @@ const routes = [
     component: KidsTournaments
   },
   {
-    path: "/arena_maps",
+    path: "/arena/arena_maps",
     name: "ArenaMapAll",
     component: ArenaMapAll,
   },
@@ -75,7 +77,7 @@ const routes = [
     component: EventScheduleAll,
   },
   {
-    path: "/arenaname/:id",
+    path: "/arena/:id",
     name: "ArenaName",
     component: ArenaName,
     children: [
@@ -103,17 +105,17 @@ const routes = [
     ],
   },
   {
-    path: "/arenaname/:id/event_schedule",
+    path: "/arena/:id/event_schedule",
     name: "EventSchedule",
     component: EventSchedule,
   },
   {
-    path: "/arenaname/:arenaId/event_schedule/:serviceId",
+    path: "/arena/:arenaId/event_schedule/:serviceId",
     name: "KatokScheduleBook",
     component: KatokScheduleBook,
   },
   {
-    path: "/arenaname/:arenaId/service/:serviceId",
+    path: "/arena/:arenaId/service/:serviceId",
     name: "ArenaPremises",
     component: ArenaPremises,
   },
@@ -128,7 +130,7 @@ const routes = [
     component: Room,
   },
   {
-    path: "/arenaname/:arenaId/teamname/:teamId",
+    path: "/arena/:arenaId/teamname/:teamId",
     name: "TeamName",
     component: TeamName,
   },

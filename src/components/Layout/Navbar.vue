@@ -91,7 +91,7 @@ export default {
       drawer: null,
       tab: "/room",
       items: [
-        { text: "Ледовые дворцы и арены", route: "/" },
+        { text: "Ледовые дворцы и арены", route: "/arena" },
         { text: "Лиги и турниры", route: "/league" },
         { text: "Детские турниры", route: "/kids_tournement" },
         { text: "Раздевалка", route: "/room" },

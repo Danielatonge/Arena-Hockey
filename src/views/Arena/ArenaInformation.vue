@@ -159,7 +159,7 @@
                   <v-card-actions class="pl-4 bottom">
                     <v-btn class="px-6" color="primary" x-large elevation="0">
                       <router-link
-                        :to="`/arenaname/${arena.id}/event_schedule/${item.id}`"
+                        :to="`/arena/${arena.id}/event_schedule/${item.id}`"
                         class="reset-link"
                       >
                         Забронировать

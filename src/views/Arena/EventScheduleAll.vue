@@ -96,7 +96,7 @@ export default {
         {
           text: "Ледовые дворцы и арены",
           disabled: false,
-          href: "/",
+          href: "/arena",
         },
         {
           text: "Расписание мероприятий",

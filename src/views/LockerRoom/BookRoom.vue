@@ -141,7 +141,7 @@ export default {
         {
           text: "Название арены",
           disabled: false,
-          href: "/arenaname",
+          href: "/arena",
         },
         {
           text: "Бронирование",

@@ -51,22 +51,22 @@ export default {
         {
           text: "Личный кабинет",
           disabled: false,
-          href: "breadcrumbs_link_1",
+          href: "/",
         },
         {
           text: "Мои спортивные комплексы",
           disabled: false,
-          href: "breadcrumbs_dashboard",
+          href: "/admin/sport_complex",
         },
         {
           text: "Название комплекса",
           disabled: false,
-          href: "/admin/sport_complex/edit",
+          href: "/admin/sport_complex",
         },
         {
           text: "Расписание мероприятий",
           disabled: true,
-          href: "breadcrumbs_dashboard",
+          href: "",
         },
       ],
       headers: [

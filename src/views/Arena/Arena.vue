@@ -144,7 +144,7 @@ export default {
     goToMapAll() {
       this.$store
         .dispatch("displayMapAll")
-        .then(() => this.$router.push({ path: "/arena_maps" }));
+        .then(() => this.$router.push({ path: "/arena/arena_maps" }));
     },
     setPaginationLength() {
       this.paginationLength = Math.ceil(this.list_arenas.length / this.perPage);

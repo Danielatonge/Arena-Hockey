@@ -340,12 +340,12 @@ export default {
       {
         text: "Название арены",
         disabled: false,
-        href: `/arenaname/${arenaId}/information`,
+        href: `/arena/${arenaId}/information`,
       },
       {
         text: "Список команд",
         disabled: false,
-        href: `/arenaname/${arenaId}/list_teams`,
+        href: `/arena/${arenaId}/list_teams`,
       },
       {
         text: "Название команды",

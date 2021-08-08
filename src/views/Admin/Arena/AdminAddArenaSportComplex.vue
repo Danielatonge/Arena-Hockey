@@ -129,17 +129,17 @@ export default {
         {
           text: "Личный кабинет",
           disabled: false,
-          href: "breadcrumbs_link_1",
+          href: "/",
         },
         {
           text: "Мои спортивные комплексы",
           disabled: false,
-          href: "breadcrumbs_dashboard",
+          href: "/admin/sport_complex",
         },
         {
           text: "Добавить арену",
           disabled: true,
-          href: "breadcrumbs_dashboard",
+          href: "/",
         },
       ],
       page: 1,

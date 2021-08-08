@@ -89,17 +89,17 @@ export default {
         {
           text: "Личный кабинет",
           disabled: false,
-          href: "breadcrumbs_link_1",
+          href: "/",
         },
         {
           text: "Мои спортивные комплексы",
           disabled: false,
-          href: "breadcrumbs_dashboard",
+          href: "/admin/sport_complex",
         },
         {
           text: "Название комплекса",
           disabled: true,
-          href: "breadcrumbs_dashboard",
+          href: "/admin/sport_complex/id",
         },
       ],
       sections: null,

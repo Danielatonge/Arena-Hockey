@@ -252,7 +252,7 @@
                               elevation="0"
                             >
                               <router-link
-                                :to="`/arenaname/${item.arenaId}/event_schedule/${item.id}`"
+                                :to="`/arena/${item.arenaId}/event_schedule/${item.id}`"
                                 class="reset-link"
                               >
                                 Забронировать
@@ -308,13 +308,13 @@ export default {
       {
         text: "Москва",
         disabled: false,
-        to: { path: `/arenaname` },
+        to: { path: `/arena` },
         exact: true,
       },
       {
         text: "Название арены",
         disabled: false,
-        to: { path: `/arenaname/${arenaId}/information` },
+        to: { path: `/arena/${arenaId}/information` },
         exact: true,
       },
       {

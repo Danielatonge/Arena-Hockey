@@ -545,7 +545,7 @@ export default {
         {
           text: "Личный кабинет",
           disabled: false,
-          href: "breadcrumbs_link_1",
+          href: "/",
         },
         {
           text: "Мои спортивные комплексы",
@@ -560,7 +560,7 @@ export default {
         {
           text: "Информация",
           disabled: true,
-          href: "breadcrumbs_dashboard",
+          href: "",
         },
       ],
       headers: [

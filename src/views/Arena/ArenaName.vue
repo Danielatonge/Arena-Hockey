@@ -86,19 +86,19 @@ export default {
     const arenaId = this.$route.params.id;
     this.$store.dispatch("getArenaGivenID", arenaId);
     this.sidebar_items = [
-      { text: "Информация", link: `/arenaname/${arenaId}/information` },
+      { text: "Информация", link: `/arena/${arenaId}/information` },
       {
         text: "Платные услуги",
-        link: `/arenaname/${arenaId}/payment_portal`,
+        link: `/arena/${arenaId}/payment_portal`,
       },
       {
         text: "Расписание мероприятий",
-        link: `/arenaname/${arenaId}/event_schedule`,
+        link: `/arena/${arenaId}/event_schedule`,
       },
-      { text: "Список команд", link: `/arenaname/${arenaId}/list_teams` },
+      { text: "Список команд", link: `/arena/${arenaId}/list_teams` },
       {
         text: "Тренерский состав",
-        link: `/arenaname/${arenaId}/training_staff`,
+        link: `/arena/${arenaId}/training_staff`,
       },
     ];
     this.$store.dispatch("getServicesAll");
@@ -123,12 +123,12 @@ export default {
         {
           text: "Москва",
           disabled: false,
-          href: "breadcrumbs_link_1",
+          href: "/",
         },
         {
           text: "Название арены",
           disabled: true,
-          href: "breadcrumbs_dashboard",
+          href: "/arena/id",
         },
       ],
       selectedItem: 0,

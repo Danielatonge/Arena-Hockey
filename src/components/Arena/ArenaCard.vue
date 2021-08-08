@@ -60,7 +60,7 @@ export default {
   methods: {
     goToArena() {
       const arenaId = this.arena.id;
-      this.$router.push({ path: `/arenaname/${arenaId}/information` });
+      this.$router.push({ path: `/arena/${arenaId}/information` });
     },
     openCardMap() {
       console.log(this.arena);

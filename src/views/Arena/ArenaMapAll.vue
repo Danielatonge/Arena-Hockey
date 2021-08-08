@@ -13,7 +13,7 @@
                 width="100%"
                 color="primary"
               >
-              <router-link to="/" class="reset-link">
+              <router-link to="/arena" class="reset-link">
                 Списком
               </router-link>
               </v-btn>

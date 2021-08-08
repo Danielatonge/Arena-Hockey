@@ -203,7 +203,7 @@ export default {
         {
           text: "Личный кабинет",
           disabled: false,
-          href: "breadcrumbs_link_1",
+          href: "/",
         },
         {
           text: "Мои спортивные комплексы",
@@ -213,12 +213,12 @@ export default {
         {
           text: "Название комплекса",
           disabled: false,
-          href: "/admin/sport_complex/",
+          href: "/admin/sport_complex/id",
         },
         {
           text: "Информация",
           disabled: true,
-          href: "breadcrumbs_dashboard",
+          href: "",
         },
       ],
       headers: [

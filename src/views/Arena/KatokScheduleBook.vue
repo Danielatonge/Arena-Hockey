@@ -180,7 +180,7 @@ export default {
       {
         text: "Название арены",
         disabled: false,
-        to: { path: `/arenaname/${arenaId}/information` },
+        to: { path: `/arena/${arenaId}/information` },
         exact: true,
       },
       {

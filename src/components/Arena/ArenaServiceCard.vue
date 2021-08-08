@@ -51,12 +51,12 @@ export default {
   methods: {
     goToService() {
       this.$router.push({
-        path: `/arenaname/${this.data.arenaId}/service/${this.data.id}`,
+        path: `/arena/${this.data.arenaId}/service/${this.data.id}`,
       });
     },
     goToBookService() {
       this.$router.push({
-        path: `/arenaname/${this.data.arenaId}/service/${this.data.id}`,
+        path: `/arena/${this.data.arenaId}/service/${this.data.id}`,
       });
     },
   },
