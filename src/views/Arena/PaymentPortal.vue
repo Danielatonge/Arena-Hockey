@@ -45,7 +45,12 @@
           </v-col>
         </v-row>
         <v-row dense class="mt-5" v-show="premises_tab != 0">
-          <v-col cols="12" class="mb-2" v-for="(item, i) in others_services" :key="i">
+          <v-col
+            cols="12"
+            class="mb-2"
+            v-for="(item, i) in others_services"
+            :key="i"
+          >
             <ArenaServiceCard
               :data="item"
               :arenaId="arenaId"
@@ -57,10 +62,9 @@
     <p class="text-h6 mt-10">Прайс-лист</p>
     <p class="grey--text">Цены указаны за 1 час аренды</p>
 
-    <div v-for="(item, i) in katok_services"
-            :key="i">
-      <p class="text-h4 mt-8 mb-0"> {{item.title}} </p>
-      <p class="grey--text"> {{item.miniDescription}} </p>
+    <div v-for="(item, i) in katok_services" :key="i">
+      <p class="text-h4 mt-8 mb-0">{{ item.title }}</p>
+      <p class="grey--text">{{ item.miniDescription }}</p>
       <v-row>
         <v-col
           cols="2"
@@ -92,7 +96,14 @@
     </div>
 
     <div class="mt-5">
-      <v-btn color="primary" elevation="0" class="mr-3"> Забронировать </v-btn>
+      <v-btn color="primary" elevation="0" class="mr-3">
+        <router-link
+          :to="`/arena/${arenaId}/event_schedule`"
+          class="reset-link"
+        >
+          Забронировать
+        </router-link>
+      </v-btn>
     </div>
   </div>
 </template>
@@ -131,5 +142,4 @@ export default {
 </script>
 
 <style>
-
 </style>

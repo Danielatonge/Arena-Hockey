@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import Main from '../views/Home/Home.vue';
 import Arena from "../views/Arena/Arena.vue";
 import Room from "../views/LockerRoom/Room.vue";
 import TeamName from "../views/LockerRoom/TeamName.vue";
@@ -46,7 +47,6 @@ import CreateAdminManager from "../views/Admin/Arena/Create/CreateAdminManager.v
 import KidsTournaments from '../views/KidsTournaments/Home.vue';
 
 
-import Main from '../views/Home/Home.vue';
 
 Vue.use(VueRouter);
 

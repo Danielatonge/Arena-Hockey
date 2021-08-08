@@ -116,8 +116,22 @@
       </div>
     </div>
     <div class="mt-5">
-      <v-btn color="primary" elevation="0" class="mr-3"> Забронировать </v-btn>
-      <v-btn color="grey lighten-2" elevation="0"> Посмотреть катки </v-btn>
+      <v-btn color="primary" elevation="0" class="mr-3">
+        <router-link
+          :to="`/arena/${arena.id}/event_schedule`"
+          class="reset-link"
+        >
+          Забронировать
+        </router-link>
+      </v-btn>
+      <v-btn color="grey lighten-2" elevation="0">
+        <router-link
+          :to="`/arena/${arena.id}/event_schedule`"
+          class="reset-link"
+        >
+          Посмотреть катки
+        </router-link>
+      </v-btn>
     </div>
     <p class="text-h5 font-weight-bold mt-10">Галерея</p>
     <v-row>
