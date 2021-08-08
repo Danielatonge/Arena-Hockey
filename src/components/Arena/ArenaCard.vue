@@ -6,7 +6,14 @@
     @mouseout="elevation = '0'"
     @click="goToArena"
   >
-    <v-img :src="require('@/assets/arena_1.jpg')" height="200px">
+    <v-img
+      :src="
+        require('@/assets' +
+          (arena.profilePicture ? arena.profilePicture + '.png' : '/team_room_1.jpg'))
+      "
+      
+      height="200px"
+    >
       <v-container>
         <v-row class="ma-2">
           <v-btn

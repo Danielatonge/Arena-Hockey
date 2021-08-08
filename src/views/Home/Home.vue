@@ -26,7 +26,7 @@
           <div class="text-h5">Ледовые дворцы</div>
         </v-col>
         <v-col>
-          <router-link to="/arena">
+          <router-link to="/arena" class="reset-link">
             <div class="grey--text lighten-1 text-right">
               Посмотреть все арены
               <v-icon size="28" color="grey lighten-1">
@@ -59,7 +59,7 @@
               ></v-progress-linear>
             </template>
 
-            <v-img height="250" :src="require('@/assets/arena_1.jpg')"></v-img>
+            <v-img height="250" :src="require('@/assets/team_room_1.jpg')"></v-img>
 
             <v-card-title>
               {{ item.title || "Los Angeles Clippers" }}</v-card-title

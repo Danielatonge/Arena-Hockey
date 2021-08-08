@@ -35,10 +35,11 @@
         <div class="d-flex margin-top-big mb-2">
           <div class="pr-4">
             <v-img
-              src="@/assets/team_room_1.jpg"
+              :src="require('@/assets' + (arena.profilePicture? arena.profilePicture + '.png' : '/team_room_1.jpg' ) )"
               height="180px"
               width="180px"
               class="rounded-xl"
+              contain
             ></v-img>
           </div>
           <div class="my-auto">
