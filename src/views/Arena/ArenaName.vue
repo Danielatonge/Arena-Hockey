@@ -31,19 +31,26 @@
             </v-btn>
           </div>
         </v-row>
-        <div class="margin-top-big">
-          <v-row class="mb-3">
-            <v-col cols="12">
-              <p class="text-h4 white--text">{{ arena.title }}</p>
-              <p class="white--text">
-                <v-icon color="white">mdi-map-marker-outline</v-icon>
-                {{ arena.address }}
-              </p>
-            </v-col>
-          </v-row>
-          <v-btn color="primary mr-4 mt-4" elevation="0">Забронировать</v-btn>
-          <v-btn class="mt-4" dark outlined elevation="0">Как проехать?</v-btn>
+
+        <div class="d-flex margin-top-big mb-2">
+          <div class="pr-4">
+            <v-img
+              src="@/assets/team_room_1.jpg"
+              height="180px"
+              width="180px"
+              class="rounded-xl"
+            ></v-img>
+          </div>
+          <div class="my-auto">
+            <p class="text-h4 white--text">{{ arena.title }}</p>
+            <p class="white--text">
+              <v-icon color="white">mdi-map-marker-outline</v-icon>
+              {{ arena.address }}
+            </p>
+          </div>
         </div>
+        <v-btn color="primary mr-4 mt-4" elevation="0">Забронировать</v-btn>
+        <v-btn class="mt-4" dark outlined elevation="0">Как проехать?</v-btn>
       </v-container>
     </v-img>
     <v-container>
@@ -172,9 +179,6 @@ export default {
 .border:last-child .right-border {
   border-right: unset;
 }
-.margin-top-big {
-  margin-top: 178px;
-}
 .wrapper-map {
   background-color: #ccc;
   height: 600px;
@@ -183,9 +187,5 @@ export default {
   margin: 10px auto;
 }
 
-@media (max-width: 600px) {
-  .margin-top-big {
-    margin-top: 100px;
-  }
-}
+
 </style>

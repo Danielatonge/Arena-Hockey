@@ -9,8 +9,13 @@
 
     <v-tabs-items v-model="premises_tab" style="background-color: unset">
       <v-tab-item v-for="i in 2" :key="i">
-        <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 0">
-          <v-col cols="12" v-for="(item, i) in katok_services" :key="i">
+        <v-row dense class="mt-5" v-show="premises_tab == 0">
+          <v-col
+            cols="12"
+            class="mb-4"
+            v-for="(item, i) in katok_services"
+            :key="i"
+          >
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
                 <div class="ma-3" width="282px" height="186px">
@@ -26,7 +31,12 @@
                   </v-card-text>
                   <v-card-actions class="pl-4 bottom">
                     <v-btn class="px-6" color="primary" x-large elevation="0">
-                      Забронировать
+                      <router-link
+                        :to="`/arenaname/${arenaId}/event_schedule/${item.id}`"
+                        class="reset-link"
+                      >
+                        Забронировать
+                      </router-link>
                     </v-btn>
                   </v-card-actions>
                 </div>
@@ -34,30 +44,12 @@
             </v-card>
           </v-col>
         </v-row>
-        <v-row dense class="mx-n4 mt-5" v-show="premises_tab != 0">
-          <v-col cols="12" v-for="(item, i) in others_services" :key="i">
-            <v-card color="transparent" elevation="0">
-              <div class="d-flex flex-no-wrap">
-                <div class="ma-3" width="282px" height="186px">
-                  <v-img src="@/assets/preview_arena_1.jpg"></v-img>
-                </div>
-                <div class="description">
-                  <v-card-text>
-                    <div class="text-h4 mb-4">{{ item.title }}</div>
-                    <div class="body-1 grey--text mb-3">
-                      {{ item.miniDescription | descriptionLength }}
-                    </div>
-                    <div class="body-1 blue--text">{{ item.phone }}</div>
-                  </v-card-text>
-                  <v-card-actions class="pl-4 bottom">
-                    <v-btn class="px-6" color="primary" x-large elevation="0">
-                      Забронировать
-                    </v-btn>
-                    
-                  </v-card-actions>
-                </div>
-              </div>
-            </v-card>
+        <v-row dense class="mt-5" v-show="premises_tab != 0">
+          <v-col cols="12" class="mb-2" v-for="(item, i) in others_services" :key="i">
+            <ArenaServiceCard
+              :data="item"
+              :arenaId="arenaId"
+            ></ArenaServiceCard>
           </v-col>
         </v-row>
       </v-tab-item>
@@ -106,22 +98,24 @@
 
 <script>
 import { mapGetters } from "vuex";
+import ArenaServiceCard from "@/components/Arena/ArenaServiceCard";
 export default {
+  components: {
+    ArenaServiceCard,
+  },
   computed: {
     ...mapGetters(["katok_services", "others_services"]),
   },
-  filters: {
-    descriptionLength(value) {
-      if (value.length < 30) return value;
-      return value.slice(0, 30) + "...";
-    },
+  mounted() {
+    this.arenaId = this.$route.params.id;
   },
+  name: "PaymentPortal",
   data() {
     return {
-      name: "PaymentPortal",
       premises_tab: null,
       premises_nav: ["Катки", "Другие"],
-
+      elevation: 0,
+      arenaId: "",
       price_list: [
         { interval: "06:00–08:30", weekday: "8 000", weekend: "10 000" },
         { interval: "08:30–15:00", weekday: "8 000", weekend: "10 000" },
@@ -136,13 +130,5 @@ export default {
 </script>
 
 <style>
-.margin-top-big {
-  margin-top: 178px;
-}
 
-@media (max-width: 600px) {
-  .margin-top-big {
-    margin-top: 100px;
-  }
-}
 </style>
