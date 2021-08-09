@@ -14,8 +14,8 @@
             <router-link :to="`/arena/${arenaId}/teamname/${item.id}`" class="undo-link-default">
               <v-card color="transparent" elevation="0">
                 <div class="d-flex flex-no-wrap">
-                  <v-avatar class="ma-3" size="125" tile>
-                    <v-img :src="require('@/assets/team_room_1.jpg')"></v-img>
+                  <v-avatar class="ma-3 rounded-lg" size="125" tile>
+                    <v-img :src="require('@/assets' + (item.profilePicture ? item.profilePicture : '/team_room_1.jpg'))"></v-img>
                   </v-avatar>
                   <v-card-text>
                     <div

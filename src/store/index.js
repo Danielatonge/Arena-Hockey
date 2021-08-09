@@ -51,10 +51,10 @@ export default new Vuex.Store({
     },
 
     kid_trainers(state) {
-      return state.trainers.filter((x) => x.type === "Детскaя");
+      return state.trainers.filter((x) => x.qualification === "Детскaя");
     },
     youth_trainers(state) {
-      return state.trainers.filter((x) => x.type === "Юношеская");
+      return state.trainers.filter((x) => x.qualification === "Юношеская");
     }
   },
   mutations: {
@@ -164,7 +164,7 @@ export default new Vuex.Store({
     },
     getAllTrainers({ commit }) {
       axios
-        .get(`/users`)
+        .get(`/user?role=TRAINER`)
         .then((response) => {
           commit("SET_TRAINERS", response.data);
         })
