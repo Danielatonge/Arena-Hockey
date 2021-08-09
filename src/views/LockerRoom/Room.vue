@@ -62,7 +62,7 @@
             ></v-select>
           </v-col>
           <v-col class="my-auto" cols="6" md="4">
-            <div class="body-1 grey--text">Найдено: 160 результатов</div>
+            <div class="body-1 grey--text">Найдено: {{teams.length}} результатов</div>
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="6" md="4" lg="3" xl="2">
@@ -77,12 +77,12 @@
         </v-row>
       </div>
       <v-row dense class="mx-n4">
-        <v-col cols="12" md="6" v-for="(item, i) in team_items" :key="i">
-          <router-link to="/teamname" class="undo-link-default">
+        <v-col cols="12" md="6" v-for="(item, i) in teams" :key="i">
+          <router-link :to="`/arena/d5132ff1-674e-4a1f-948e-8833937b0fa4/teamname/${item.id}`" class="undo-link-default">
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
                 <v-avatar class="ma-3" size="125" tile>
-                  <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
+                    <v-img :src="require('@/assets' + (item.profilePicture ? item.profilePicture : '/team_room_1.jpg'))"></v-img>
                 </v-avatar>
                 <v-card-text>
                   <div
@@ -91,8 +91,8 @@
                   >
                     Москва
                   </div>
-                  <div class="text-h5 mb-2">Название команды</div>
-                  <div class="body-1 grey--text">Краткое описание</div>
+                  <div class="text-h5 mb-2"> {{item.title}} </div>
+                  <div class="body-1 grey--text"> {{item.miniDescription | descriptionLength}} </div>
                 </v-card-text>
               </div>
             </v-card>
@@ -208,10 +208,17 @@ import { mapState } from "vuex";
 export default {
   name: "Room",
   computed: {
-    ...mapState(["items"]),
+    ...mapState(["teams", "players"]),
+  },
+  filters: {
+    descriptionLength(value) {
+      if (value.length < 30) return value;
+      return value.slice(0, 30) + "...";
+    },
   },
   mounted() {
-    this.$store.dispatch("loadItems");
+    this.$store.dispatch("getAllTeams");
+    this.$store.dispatch("getAllPlayers");
   },
   data() {
     return {
