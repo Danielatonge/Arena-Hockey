@@ -50,13 +50,16 @@
           </p>
         </v-col>
         <v-spacer></v-spacer>
-        <div class="px-3">
+        <v-avatar class="px-3 rounded-lg" size="200" tile>
           <v-img
-            src="@/assets/team_room_1.jpg"
-            height="180px"
-            width="180px"
+            :src="
+              require('@/assets' +
+                (team.profilePicture
+                  ? team.profilePicture
+                  : '/team_room_1.jpg'))
+            "
           ></v-img>
-        </div>
+        </v-avatar>
       </v-row>
       <v-btn color="primary" elevation="0">Вступить в команду</v-btn>
     </v-container>
@@ -89,13 +92,20 @@
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
               <div class="ma-3" width="282px" height="186px">
-                <v-img src="@/assets/preview_arena_1.jpg"></v-img>
+                <v-img
+                  :src="
+                    require('@/assets' +
+                      (arena.profilePicture
+                        ? arena.profilePicture + '.png'
+                        : '/preview_arena_1.jpg'))
+                  "
+                ></v-img>
               </div>
               <div class="description">
                 <v-card-text>
-                  <div class="text-h5 mb-4">Название команды</div>
+                  <div class="text-h5 mb-4">{{ arena.title }}</div>
                   <div class="body-1 grey--text">
-                    2464 Royal Ln. Mesa, New Jersey 45463
+                    {{ arena.address | descriptionLength }}
                   </div>
                 </v-card-text>
                 <v-card-actions class="pl-4 bottom">
@@ -105,7 +115,12 @@
                     x-large
                     elevation="0"
                   >
-                    Подробнее
+                    <router-link
+                      :to="`/arena/${arenaId}/information`"
+                      class="reset-link"
+                    >
+                      Подробнее
+                    </router-link>
                   </v-btn>
                 </v-card-actions>
               </div>
@@ -139,17 +154,26 @@
       <p class="text-h5">Состав</p>
       <p class="text-h6">Тренеры, сотрудники</p>
       <v-row dense class="mx-n4">
-        <v-col cols="12" md="6" v-for="(item, i) in player_items" :key="i">
+        <v-col cols="12" md="6" v-for="(item, i) in trainers" :key="i">
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
               <v-avatar class="ma-3" size="125" tile>
-                <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
+                <v-img
+                  :src="
+                    require('@/assets' +
+                      (item.level ? item.level : '/player_2.jpg'))
+                  "
+                ></v-img>
               </v-avatar>
               <v-card-text>
-                <div class="text-h5 mb-2">Фамилия Имя Отчество</div>
-                <div class="body-1 blue--text mb-2">Возраст, город</div>
+                <div class="text-h5 mb-2">
+                  {{ item.name + " " + item.middleName + " " + item.surname }}
+                </div>
+                <div class="body-1 blue--text mb-2">
+                  {{ item.age }}, {{ item.city }}
+                </div>
 
-                <div class="body-1 grey--text">Директор команды</div>
+                <div class="body-1 grey--text">{{ item.position }}</div>
               </v-card-text>
             </div>
           </v-card>
@@ -158,60 +182,70 @@
 
       <p class="text-h6 mt-8">Вратари</p>
       <v-row dense class="mx-n4">
-        <v-col cols="12" md="6" v-for="(item, i) in player_items" :key="i">
+        <v-col cols="12" md="6" v-for="(item, i) in players" :key="i">
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
               <v-avatar class="ma-3" size="125" tile>
-                <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
+                <v-img
+                  :src="
+                    require('@/assets' +
+                      (item.level ? item.level : '/player_1.jpg'))
+                  "
+                ></v-img>
               </v-avatar>
               <v-card-text>
-                <div class="text-h5 mb-2">Фамилия Имя Отчество</div>
-                <div class="body-1 blue--text mb-2">Возраст, город</div>
+                <div class="text-h5 mb-2">
+                  {{ item.name + " " + item.middleName + " " + item.surname }}
+                </div>
+                <div class="body-1 blue--text mb-2">
+                  {{ item.age }}, {{ item.city }}
+                </div>
 
-                <div class="body-1 grey--text">Позиция</div>
+                <div class="body-1 grey--text">{{ item.position }}</div>
               </v-card-text>
             </div>
           </v-card>
         </v-col>
       </v-row>
+      <div v-show="false">
+        <p class="text-h6 mt-8">Защитники</p>
+        <v-row dense class="mx-n4">
+          <v-col cols="12" md="6" v-for="(item, i) in player_items" :key="i">
+            <v-card color="transparent" elevation="0">
+              <div class="d-flex flex-no-wrap">
+                <v-avatar class="ma-3" size="125" tile>
+                  <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
+                </v-avatar>
+                <v-card-text>
+                  <div class="text-h5 mb-2">Фамилия Имя Отчество</div>
+                  <div class="body-1 blue--text mb-2">Возраст, город</div>
 
-      <p class="text-h6 mt-8">Защитники</p>
-      <v-row dense class="mx-n4">
-        <v-col cols="12" md="6" v-for="(item, i) in player_items" :key="i">
-          <v-card color="transparent" elevation="0">
-            <div class="d-flex flex-no-wrap">
-              <v-avatar class="ma-3" size="125" tile>
-                <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
-              </v-avatar>
-              <v-card-text>
-                <div class="text-h5 mb-2">Фамилия Имя Отчество</div>
-                <div class="body-1 blue--text mb-2">Возраст, город</div>
+                  <div class="body-1 grey--text">Позиция</div>
+                </v-card-text>
+              </div>
+            </v-card>
+          </v-col>
+        </v-row>
 
-                <div class="body-1 grey--text">Позиция</div>
-              </v-card-text>
-            </div>
-          </v-card>
-        </v-col>
-      </v-row>
+        <p class="text-h6 mt-8">Нападающие</p>
+        <v-row dense class="mx-n4">
+          <v-col cols="12" md="6" v-for="(item, i) in player_items" :key="i">
+            <v-card color="transparent" elevation="0">
+              <div class="d-flex flex-no-wrap">
+                <v-avatar class="ma-3" size="125" tile>
+                  <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
+                </v-avatar>
+                <v-card-text>
+                  <div class="text-h5 mb-2">Фамилия Имя Отчество</div>
+                  <div class="body-1 blue--text mb-2">Возраст, город</div>
 
-      <p class="text-h6 mt-8">Нападающие</p>
-      <v-row dense class="mx-n4">
-        <v-col cols="12" md="6" v-for="(item, i) in player_items" :key="i">
-          <v-card color="transparent" elevation="0">
-            <div class="d-flex flex-no-wrap">
-              <v-avatar class="ma-3" size="125" tile>
-                <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
-              </v-avatar>
-              <v-card-text>
-                <div class="text-h5 mb-2">Фамилия Имя Отчество</div>
-                <div class="body-1 blue--text mb-2">Возраст, город</div>
-
-                <div class="body-1 grey--text">Позиция</div>
-              </v-card-text>
-            </div>
-          </v-card>
-        </v-col>
-      </v-row>
+                  <div class="body-1 grey--text">Позиция</div>
+                </v-card-text>
+              </div>
+            </v-card>
+          </v-col>
+        </v-row>
+      </div>
     </v-container>
     <v-container class="mt-10">
       <p class="text-h5">Активные объявления</p>
@@ -328,14 +362,24 @@ export default {
   components: {
     LightBox,
   },
+  filters: {
+    descriptionLength(value) {
+      if (value.length < 30) return value;
+      return value.slice(0, 30) + "...";
+    },
+  },
   computed: {
     ...mapState({ team: "current_team" }),
+    ...mapState({ arena: "current_arena" }),
+    ...mapState(["trainers", "players"]),
   },
   mounted() {
     const teamId = this.$route.params.teamId;
     const arenaId = this.$route.params.arenaId;
-
+    this.arenaId = arenaId;
     this.$store.dispatch("getTeamByID", teamId);
+    this.$store.dispatch("getArenaGivenID", arenaId);
+    this.$store.dispatch("getAllPlayers");
     this.breadcrumb_items = [
       {
         text: "Название арены",
@@ -362,9 +406,10 @@ export default {
   data() {
     return {
       value: 0,
+      arenaId: null,
       advert_nav: ["Команда ищет игроков", "Команда ищет тренера"],
       player_items: ["/player_1", "/player_2"],
-      advert_items:["/advert_1","/advert_2"],
+      advert_items: ["/advert_1", "/advert_2"],
       readMoreActivated: false,
       breadcrumb_items: null,
       gallery_items: [

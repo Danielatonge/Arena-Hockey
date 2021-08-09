@@ -23,6 +23,7 @@ export default new Vuex.Store({
     arenasMapIdentifier: [],
     teams: [],
     trainers: [],
+    players: [],
   },
   getters: {
     current_arena(state) {
@@ -104,6 +105,9 @@ export default new Vuex.Store({
     },
     SET_TRAINERS(state, trainers) {
       state.trainers = trainers;
+    },
+    SET_PLAYERS(state, players) {
+      state.players = players;
     }
   },
   actions: {
@@ -167,6 +171,14 @@ export default new Vuex.Store({
         .get(`/user?role=TRAINER`)
         .then((response) => {
           commit("SET_TRAINERS", response.data);
+        })
+        .catch((err) => console.log(err));
+    },
+    getAllPlayers({ commit }) {
+      axios
+        .get(`/user?role=PLAYER`)
+        .then((response) => {
+          commit("SET_PLAYERS", response.data);
         })
         .catch((err) => console.log(err));
     },
