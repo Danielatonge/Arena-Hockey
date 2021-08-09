@@ -81,7 +81,7 @@
           <router-link :to="`/arena/d5132ff1-674e-4a1f-948e-8833937b0fa4/teamname/${item.id}`" class="undo-link-default">
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
-                <v-avatar class="ma-3" size="125" tile>
+                <v-avatar class="ma-3 rounded-lg" size="125" tile>
                     <v-img :src="require('@/assets' + (item.profilePicture ? item.profilePicture : '/team_room_1.jpg'))"></v-img>
                 </v-avatar>
                 <v-card-text>
@@ -148,7 +148,7 @@
             ></v-select>
           </v-col>
           <v-col class="my-auto" cols="6" md="4">
-            <div class="body-1 grey--text">Найдено: 160 результатов</div>
+            <div class="body-1 grey--text">Найдено: {{players.length}} результатов</div>
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="6" md="4" lg="3" xl="2">
@@ -163,18 +163,22 @@
         </v-row>
       </div>
       <v-row dense class="mx-n4">
-        <v-col cols="12" md="6" v-for="(item, i) in player_items" :key="i">
+        <v-col cols="12" md="6" v-for="(item, i) in players" :key="i">
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
-              <v-avatar class="ma-3" size="125" tile>
-                <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
-              </v-avatar>
+              <v-avatar class="ma-3 rounded-lg" size="125" tile>
+                    <v-img :src="require('@/assets' + (item.level ? item.level : '/team_room_1.jpg'))"></v-img>
+                </v-avatar>
               <v-card-text>
-                <div class="text-h5 mb-2">Фамилия Имя Отчество</div>
-                <div class="body-1 blue--text mb-2">Возраст, город</div>
+                <div class="text-h5 mb-2">
+                  {{ item.name + " " + item.middleName + " " + item.surname }}
+                </div>
+                <div class="body-1 blue--text mb-2">
+                  {{ item.age }}, {{ item.city }}
+                </div>
                 <div class="d-flex">
                   <div class="body-2 grey--text">Хват: правый</div>
-                  <div class="body-2 grey--text ml-12">Амплуа: защитник</div>
+                  <div class="body-2 grey--text ml-12">Амплуа: {{item.position}}</div>
                 </div>
 
                 <div class="body-2 grey--text">Уровень: профессионал</div>
