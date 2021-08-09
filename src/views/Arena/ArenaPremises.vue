@@ -130,10 +130,12 @@
                   ref="calendar"
                   v-model="value"
                   :weekdays="weekday"
+                  :weekday-format="myDayFormat"
                   :type="'week'"
                   :events="events"
                   :event-overlap-mode="mode"
                   :event-overlap-threshold="30"
+                  :interval-format="intervalFormat"
                 ></v-calendar>
               </v-sheet>
               <div class="pa-4">
@@ -378,7 +380,29 @@ export default {
       media,
     };
   },
-  methods: {},
+  methods: {
+    intervalFormat(interval){
+      return interval.time;
+    },
+    myDayFormat(day) {
+      switch (day.weekday) {
+        case 0:
+          return "ПН";
+        case 1:
+          return "ВТ";
+        case 2:
+          return "СР";
+        case 3:
+          return "ЧТ";
+        case 4:
+          return "ПТ";
+        case 5:
+          return "СБ";
+        case 6:
+          return "ВС";
+      }
+    },
+  },
 };
 </script>
 

@@ -78,6 +78,7 @@
             :event-overlap-mode="mode"
             :event-overlap-threshold="30"
             :event-color="getEventColor"
+            :interval-format="intervalFormat"
             @change="getEvents"
           ></v-calendar>
         </v-sheet>
@@ -133,6 +134,9 @@ export default {
     };
   },
   methods: {
+    intervalFormat(interval) {
+      return interval.time;
+    },
     getEvents({ start, end }) {
       const events = [];
 

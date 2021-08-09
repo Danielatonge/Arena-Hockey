@@ -152,6 +152,7 @@
             :event-overlap-mode="mode"
             :event-overlap-threshold="30"
             :event-color="getEventColor"
+            :interval-format="intervalFormat"
             @change="getEvents"
           ></v-calendar>
         </v-sheet>
@@ -163,8 +164,8 @@
 <script>
 export default {
   watch: {
-    value(x){
-      this.type = (x==1) ? 'week': 'day'; 
+    value(x) {
+      this.type = x == 1 ? "week" : "day";
     },
   },
   mounted() {
@@ -217,6 +218,9 @@ export default {
     };
   },
   methods: {
+    intervalFormat(interval){
+      return interval.time;
+    },
     getEvents({ start, end }) {
       const events = [];
 
@@ -242,6 +246,24 @@ export default {
       }
 
       this.events = events;
+    },
+    myDayFormat(day) {
+      switch (day.weekday) {
+        case 0:
+          return "ПН";
+        case 1:
+          return "ВТ";
+        case 2:
+          return "СР";
+        case 3:
+          return "ЧТ";
+        case 4:
+          return "ПТ";
+        case 5:
+          return "СБ";
+        case 6:
+          return "ВС";
+      }
     },
     getEventColor(event) {
       return event.color;
