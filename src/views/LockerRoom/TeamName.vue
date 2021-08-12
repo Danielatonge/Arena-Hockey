@@ -6,38 +6,17 @@
           <v-breadcrumbs :items="breadcrumb_items" class="px-3"></v-breadcrumbs>
         </div>
         <v-spacer></v-spacer>
-        <div class="pr-3">
+        <div class="pr-3" v-if="team.contact">
           <v-btn
             elevation="0"
             x-small
             color="grey lighten-2"
             height="40px"
             class="mr-1"
-            ><v-icon color="grey lighten-0">mdi-whatsapp</v-icon></v-btn
-          >
-          <v-btn
-            elevation="0"
-            x-small
-            color="grey lighten-2"
-            height="40px"
-            class="mx-1"
-            ><v-icon color="grey lighten-0">mdi-instagram</v-icon></v-btn
-          >
-          <v-btn
-            elevation="0"
-            x-small
-            color="grey lighten-2"
-            height="40px"
-            class="mx-1"
-            ><v-icon color="grey lighten-0">mdi-vk</v-icon></v-btn
-          >
-          <v-btn
-            elevation="0"
-            x-small
-            color="grey lighten-2"
-            height="40px"
-            class="ml-1"
-            ><v-icon color="grey lighten-0">mdi-web</v-icon></v-btn
+            v-for="(item, id) in getContactlist"
+            :key="id"
+            :href="item.link"
+            ><v-icon color="grey lighten-0">{{ item.icon }}</v-icon></v-btn
           >
         </div>
       </v-row>
@@ -85,9 +64,9 @@
         {{ readMoreActivated ? "Cкрыть описание" : "Раскрыть описание" }}
       </v-btn>
     </v-container>
-    <v-container class="mt-10">
+    <v-container class="mt-10" v-if="!!team.arenas">
       <p class="text-h5">Место проведения тренировок</p>
-      <v-row dense class="mx-n4">
+      <v-row dense class="mx-n4" v-for="(arena, id) in team.arenas" :key="id">
         <v-col cols="12" md="7">
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
@@ -328,25 +307,20 @@
         />
       </v-row>
     </v-container>
-    <v-container class="mt-10 pb-15">
+    <v-container>
       <p class="text-h5">Контакты</p>
-      <div>
-        <p>
-          Касса: +7 495 964-39-69 <br />
-          Кафе: +7 977 815-61-97 <br />
-          Магазин: +7 495 369-19-77 <br />
-          Отдел продаж: +7 925 278-77-41 <br />
-          Ресепшн: +7 495 964-39-69 <br />
-          Приемная директора: +7 495 964-39-69 <br />
+      <div v-if="team.contact" class="mt-10 pb-15">
+        <p v-if="team.contact.phones">
+          <span v-for="(phone, id) in team.contact.phones" :key="id">
+            {{ phone }} <br />
+          </span>
         </p>
-        <p>
-          Администратор: Васильева Татьяна Михайловна <br />
-          +7 495 964-39-69
+        <p v-if="team.contact.mails">
+          <span v-for="(email, id) in team.contact.mails" :key="id">
+            {{ email }} <br />
+          </span>
         </p>
-        <p>
-          Email: office@spartak-academy.ru <br />
-          Адрес: г. Москва, м. Сокольники, ул. Большая Тихоновская, д. 2.
-        </p>
+        Адрес: г. Москва, м. Сокольники, ул. Большая Тихоновская, д. 2.
       </div>
     </v-container>
   </div>
@@ -364,6 +338,7 @@ export default {
   },
   filters: {
     descriptionLength(value) {
+      if (!value) return "";
       if (value.length < 30) return value;
       return value.slice(0, 30) + "...";
     },
@@ -372,17 +347,34 @@ export default {
     ...mapState({ team: "current_team" }),
     ...mapState({ arena: "current_arena" }),
     ...mapState(["trainers", "players"]),
+    getContactlist() {
+      if (!this.team.contact) return [];
+      const toRet = [
+        { icon: "mdi-whatsapp", link: `${this.team.contact.whatsApp}` },
+        { icon: "mdi-instagram", link: `${this.team.contact.instagram}` },
+        { icon: "mdi-vk", link: `${this.team.contact.vk}` },
+        { icon: "mdi-web", link: `${this.team.contact.website}` },
+        { icon: "mdi-youtube", link: `${this.team.contact.youtube}` },
+        { icon: "mdi-twitter", link: `${this.team.contact.twitter}` },
+        //{ icon: "mdi-tiktok", link: `${this.team.contact.tiktok}` },
+      ];
+
+      return toRet.filter((item) => !!item.link);
+    },
   },
   mounted() {
     const teamId = this.$route.params.teamId;
     const arenaId = this.$route.params.arenaId;
+    console.log("arena", this.arena);
     this.arenaId = arenaId;
     this.$store.dispatch("getTeamByID", teamId);
     this.$store.dispatch("getArenaGivenID", arenaId);
     this.$store.dispatch("getAllPlayers");
+    this.$store.dispatch("getCurrentTeamArenas", teamId);
+    this.$store.dispatch("getTeamContacts", teamId);
     this.breadcrumb_items = [
       {
-        text: "Название арены",
+        text: this.arena.title, //"Название арены",
         disabled: false,
         href: `/arena/${arenaId}/information`,
       },
@@ -392,7 +384,7 @@ export default {
         href: `/arena/${arenaId}/list_teams`,
       },
       {
-        text: "Название команды",
+        text: this.team.title, //"Название команды",
         disabled: true,
         href: "breadcrumbs_link_2",
       },

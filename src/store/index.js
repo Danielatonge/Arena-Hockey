@@ -16,7 +16,7 @@ export default new Vuex.Store({
     items: {},
     list_arenas: [],
     current_arena: {},
-    current_team:{},
+    current_team: {},
     current_contact: {},
     current_service: {},
     services: [],
@@ -50,7 +50,9 @@ export default new Vuex.Store({
     adult_team(state) {
       return state.teams.filter((x) => x.type === "Взрослая");
     },
-
+    female_team(state) {
+      return state.teams.filter((x) => x.type === "Женская");
+    },
     kid_trainers(state) {
       return state.trainers.filter((x) => x.qualification === "Детскaя");
     },
@@ -67,7 +69,7 @@ export default new Vuex.Store({
         ({ id, lat, lan, title, city, address }) => ({
           id,
           address,
-          coords: lat && lan ? lat.toString() + ", " + lan.toString(): "55.55,37.32",
+          coords: lat && lan ? lat.toString() + ", " + lan.toString() : "55.55,37.32",
           title,
           city,
         })
@@ -108,6 +110,22 @@ export default new Vuex.Store({
     },
     SET_PLAYERS(state, players) {
       state.players = players;
+    },
+    SET_CURRENT_ARENA_TEAM(state, data) {
+      const arenas = data.map((item) => item.arena)
+      const current_team = { ...state.current_team, arenas: arenas };
+      state.current_team = current_team
+      const id = state.teams.findIndex(item => item.id == state.current_team.id)
+      if (id > -1) {
+        state.teams[id]["arenas"] = arenas;
+      }
+    },
+    SET_TEAM_CONTACT(state, contact) {
+      state.current_team["contact"] = contact
+      const id = state.teams.findIndex(item => item.id == contact.teamId)
+      if (id > -1) {
+        state.teams[id]["contact"] = contact;
+      }
     }
   },
   actions: {
@@ -128,7 +146,7 @@ export default new Vuex.Store({
       console.log(item[0]);
       commit("SET_CURRENT_ARENA", item[0]);
     },
-    setCurrentArena({commit}, arena) {
+    setCurrentArena({ commit }, arena) {
       commit("SET_CURRENT_ARENA", arena);
     },
     getContactById({ commit }, payload) {
@@ -179,6 +197,24 @@ export default new Vuex.Store({
         .get(`/user?role=PLAYER`)
         .then((response) => {
           commit("SET_PLAYERS", response.data);
+        })
+        .catch((err) => console.log(err));
+    },
+    getCurrentTeamArenas({ commit }, id) {
+      axios
+        .get(`/team/${id}/arenas`)
+        .then((response) => {
+          console.log("SET_CURRENT_ARENA_TEAM", response.data);
+          commit("SET_CURRENT_ARENA_TEAM", response.data);
+        })
+        .catch((err) => console.log(err));
+    },
+    getTeamContacts({ commit }, id) {
+      axios
+        .get(`/team/${id}/contact`)
+        .then((response) => {
+          console.log("SET_TEAM_CONTACT", response.data);
+          commit("SET_TEAM_CONTACT", response.data);
         })
         .catch((err) => console.log(err));
     },

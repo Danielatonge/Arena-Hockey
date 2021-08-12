@@ -35,7 +35,12 @@
         <div class="d-flex margin-top-big mb-2">
           <div class="pr-4">
             <v-img
-              :src="require('@/assets' + (arena.profilePicture? arena.profilePicture + '.png' : '/team_room_1.jpg' ) )"
+              :src="
+                require('@/assets' +
+                  (arena.profilePicture
+                    ? arena.profilePicture + '.png'
+                    : '/team_room_1.jpg'))
+              "
               height="180px"
               width="180px"
               class="rounded-xl"
@@ -51,7 +56,14 @@
           </div>
         </div>
         <v-btn color="primary mr-4 mt-4" elevation="0">Забронировать</v-btn>
-        <v-btn class="mt-4" dark outlined elevation="0">Как проехать?</v-btn>
+        <v-btn
+          class="mt-4"
+          :href="`/arena/${arena.id}/information#map`"
+          dark
+          outlined
+          elevation="0"
+          >Как проехать?</v-btn
+        >
       </v-container>
     </v-img>
     <v-container>
@@ -113,7 +125,6 @@ export default {
     });
     this.$store.dispatch("getAllTeams");
     this.$store.dispatch("getAllTrainers");
-
   },
   data() {
     return {
@@ -189,6 +200,4 @@ export default {
   position: relative;
   margin: 10px auto;
 }
-
-
 </style>

@@ -11,11 +11,21 @@
       <v-tab-item v-for="i in 4" :key="i">
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 0">
           <v-col cols="12" v-for="(item, i) in teams" :key="i">
-            <router-link :to="`/arena/${arenaId}/teamname/${item.id}`" class="undo-link-default">
+            <router-link
+              :to="`/arena/${arenaId}/teamname/${item.id}`"
+              class="undo-link-default"
+            >
               <v-card color="transparent" elevation="0">
                 <div class="d-flex flex-no-wrap">
                   <v-avatar class="ma-3 rounded-lg" size="125" tile>
-                    <v-img :src="require('@/assets' + (item.profilePicture ? item.profilePicture : '/team_room_1.jpg'))"></v-img>
+                    <v-img
+                      :src="
+                        require('@/assets' +
+                          (item.profilePicture
+                            ? item.profilePicture
+                            : '/team_room_1.jpg'))
+                      "
+                    ></v-img>
                   </v-avatar>
                   <v-card-text>
                     <div
@@ -36,11 +46,21 @@
         </v-row>
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 1">
           <v-col cols="12" v-for="(item, i) in children_team" :key="i">
-            <router-link :to="`/arena/${arenaId}/teamname/${item.id}`" class="undo-link-default">
+            <router-link
+              :to="`/arena/${arenaId}/teamname/${item.id}`"
+              class="undo-link-default"
+            >
               <v-card color="transparent" elevation="0">
                 <div class="d-flex flex-no-wrap">
                   <v-avatar class="ma-3 rounded-lg" size="125" tile>
-                    <v-img :src="require('@/assets' + (item.profilePicture ? item.profilePicture : '/team_room_1.jpg'))"></v-img>
+                    <v-img
+                      :src="
+                        require('@/assets' +
+                          (item.profilePicture
+                            ? item.profilePicture
+                            : '/team_room_1.jpg'))
+                      "
+                    ></v-img>
                   </v-avatar>
                   <v-card-text>
                     <div
@@ -61,11 +81,21 @@
         </v-row>
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 2">
           <v-col cols="12" v-for="(item, i) in youth_team" :key="i">
-            <router-link :to="`/arena/${arenaId}/teamname/${item.id}`" class="undo-link-default">
+            <router-link
+              :to="`/arena/${arenaId}/teamname/${item.id}`"
+              class="undo-link-default"
+            >
               <v-card color="transparent" elevation="0">
                 <div class="d-flex flex-no-wrap">
                   <v-avatar class="ma-3 rounded-lg" size="125" tile>
-                    <v-img :src="require('@/assets' + (item.profilePicture ? item.profilePicture : '/team_room_1.jpg'))"></v-img>
+                    <v-img
+                      :src="
+                        require('@/assets' +
+                          (item.profilePicture
+                            ? item.profilePicture
+                            : '/team_room_1.jpg'))
+                      "
+                    ></v-img>
                   </v-avatar>
                   <v-card-text>
                     <div
@@ -86,11 +116,21 @@
         </v-row>
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 3">
           <v-col cols="12" v-for="(item, i) in adult_team" :key="i">
-            <router-link :to="`/arena/${arenaId}/teamname/${item.id}`" class="undo-link-default">
+            <router-link
+              :to="`/arena/${arenaId}/teamname/${item.id}`"
+              class="undo-link-default"
+            >
               <v-card color="transparent" elevation="0">
                 <div class="d-flex flex-no-wrap">
                   <v-avatar class="ma-3 rounded-lg" size="125" tile>
-                    <v-img :src="require('@/assets' + (item.profilePicture ? item.profilePicture : '/team_room_1.jpg'))"></v-img>
+                    <v-img
+                      :src="
+                        require('@/assets' +
+                          (item.profilePicture
+                            ? item.profilePicture
+                            : '/team_room_1.jpg'))
+                      "
+                    ></v-img>
                   </v-avatar>
                   <v-card-text>
                     <div
@@ -119,7 +159,7 @@ import { mapState, mapGetters } from "vuex";
 export default {
   computed: {
     ...mapState(["teams"]),
-    ...mapGetters(["children_team", "youth_team", "adult_team"]),
+    ...mapGetters(["children_team", "youth_team", "adult_team", "female_team"]),
   },
   filters: {
     descriptionLength(value) {
@@ -127,9 +167,9 @@ export default {
       return value.slice(0, 30) + "...";
     },
   },
-  mounted(){
-      const arenaId = this.$route.params.id;
-      this.arenaId = arenaId;
+  mounted() {
+    const arenaId = this.$route.params.id;
+    this.arenaId = arenaId;
   },
   data() {
     return {
@@ -142,6 +182,7 @@ export default {
         "Детские команды",
         "Юношеские команды",
         "Взрослые команды",
+        "Женская команда",
       ],
 
       team_items: ["/team_room_1", "/team_room_2", "/team_room_3"],
@@ -151,5 +192,4 @@ export default {
 </script>
 
 <style>
-
 </style>

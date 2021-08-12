@@ -38,7 +38,7 @@
       {{ arena.address }}
     </p>
 
-    <p class="text-h6 mt-10">Как проехать?</p>
+    <p id="map" class="text-h6 mt-10">Как проехать?</p>
     <p class="grey--text">
       {{ arena.route }}
     </p>
