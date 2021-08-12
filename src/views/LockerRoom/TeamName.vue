@@ -350,12 +350,13 @@ export default {
     getContactlist() {
       if (!this.team.contact) return [];
       const toRet = [
-        { icon: "mdi-whatsapp", link: `${this.team.contact.whatsApp}` },
-        { icon: "mdi-instagram", link: `${this.team.contact.instagram}` },
-        { icon: "mdi-vk", link: `${this.team.contact.vk}` },
-        { icon: "mdi-web", link: `${this.team.contact.website}` },
-        { icon: "mdi-youtube", link: `${this.team.contact.youtube}` },
-        { icon: "mdi-twitter", link: `${this.team.contact.twitter}` },
+        { icon: "mdi-whatsapp", link: this.team.contact.whatsApp },
+        { icon: "mdi-instagram", link: this.team.contact.instagram },
+        { icon: "mdi-vk", link: this.team.contact.vk },
+        { icon: "mdi-web", link: this.team.contact.website },
+        { icon: "mdi-youtube", link: this.team.contact.youtube },
+        { icon: "mdi-twitter", link: this.team.contact.twitter },
+        { icon: "mdi-facebook", link: this.team.contact.facebook },
         //{ icon: "mdi-tiktok", link: `${this.team.contact.tiktok}` },
       ];
 

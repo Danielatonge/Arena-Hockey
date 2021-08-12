@@ -1,8 +1,5 @@
 <template>
-  <nav
-    :hidden="hidden_screen.find((route) => route == this.$route.name)"
-    class="primary"
-  >
+  <nav class="primary">
     <v-container class="d-lg-none d-xl-none">
       <v-navigation-drawer
         v-model="drawer"
@@ -93,7 +90,7 @@ export default {
     console.log("CURRENT component name", this.$route.name);
     return {
       drawer: null,
-      hidden_screen: ["Main"],
+      // hidden_screen: ["Main"],
       tab: "/room",
       items: [
         { text: "Ледовые дворцы и арены", route: "/arena" },
