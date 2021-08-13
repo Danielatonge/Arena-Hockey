@@ -126,6 +126,20 @@ export default new Vuex.Store({
       if (id > -1) {
         state.teams[id]["contact"] = contact;
       }
+    },
+    SET_ARENA_TEAM(state, payload) {
+      const pos = state.list_arenas.findIndex(item => item.id = payload.arena_id)
+      if (pos > -1) {
+        const arena = state.list_arenas[pos]
+        arena["teams"] = payload.data
+      }
+    },
+    SET_ARENA_TRAINER(state, payload) {
+      const pos = state.list_arenas.findIndex(item => item.id = payload.arena_id)
+      if (pos > -1) {
+        const arena = state.list_arenas[pos]
+        arena["trainers"] = payload.data
+      }
     }
   },
   actions: {
@@ -231,6 +245,34 @@ export default new Vuex.Store({
       );
       commit("SET_CURRENT_SERVICE", item[0]);
     },
+    getArenaTeams({ commit }, arena_id) {
+      return new Promise((resolve) => {
+        axios
+          .get(`/arena/${arena_id}/teams`)
+          .then((response) => {
+            console.log("SET_ARENA_TEAM", { arena_id, data: response.data });
+            commit("SET_ARENA_TEAM", response.data);
+            resolve(response.data)
+          })
+          .catch((err) =>
+            console.log(err)
+          );
+      })
+    },
+    getArenaTrainer({ commit }, arena_id) {
+      return new Promise((resolve) => {
+        axios
+          .get(`/arena/${arena_id}/users`)
+          .then((response) => {
+            console.log("SET_ARENA_TRAINER", { arena_id, data: response.data });
+            commit("SET_ARENA_TRAINER", response.data);
+            resolve(response.data)
+          })
+          .catch((err) =>
+            console.log(err)
+          );
+      })
+    }
   },
   modules: {},
   plugins: [vuexLocal.plugin],
