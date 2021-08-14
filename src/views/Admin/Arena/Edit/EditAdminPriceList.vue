@@ -9,11 +9,11 @@
       <div>
         <div class="text-h5 py-5">Изменить прайс-лист</div>
         <div class="mb-4">
-          <v-row>
-            <v-col>
+          <div>
+            <div>
               <div>8:30 - 12:00</div>
-            </v-col>
-            <v-col>
+            </div>
+            <div>
               <v-text-field
                 label="Ссылка на альбом"
                 outlined
@@ -21,8 +21,8 @@
                 hide-details="auto"
                 class="rounded-lg"
               ></v-text-field>
-            </v-col>
-            <v-col>
+            </div>
+            <div>
               <v-text-field
                 label="Ссылка на альбом"
                 outlined
@@ -30,8 +30,8 @@
                 hide-details="auto"
                 class="rounded-lg"
               ></v-text-field>
-            </v-col>
-          </v-row>
+            </div>
+          </div>
         </div>
       </div>
     </v-container>
