@@ -51,7 +51,9 @@ export default new Vuex.Store({
     adult_team(state) {
       return state.teams.filter((x) => x.type === "Взрослая");
     },
-
+    female_team(state) {
+      return state.teams.filter((x) => x.type === "Женская");
+    },
     kid_trainers(state) {
       return state.trainers.filter((x) => x.qualification === "Детскaя");
     },
@@ -68,8 +70,7 @@ export default new Vuex.Store({
         ({ id, lat, lan, title, city, address }) => ({
           id,
           address,
-          coords:
-            lat && lan ? lat.toString() + ", " + lan.toString() : "55.55,37.32",
+          coords: lat && lan ? lat.toString() + ", " + lan.toString() : "55.55,37.32",
           title,
           city,
         })
@@ -113,6 +114,36 @@ export default new Vuex.Store({
     },
     SETPRICELIST(state, sPriceList) {
       state.katokPL = sPriceList;
+    },
+    SET_CURRENT_ARENA_TEAM(state, data) {
+      const arenas = data.map((item) => item.arena)
+      const current_team = { ...state.current_team, arenas: arenas };
+      state.current_team = current_team
+      const id = state.teams.findIndex(item => item.id == state.current_team.id)
+      if (id > -1) {
+        state.teams[id]["arenas"] = arenas;
+      }
+    },
+    SET_TEAM_CONTACT(state, contact) {
+      state.current_team["contact"] = contact
+      const id = state.teams.findIndex(item => item.id == contact.teamId)
+      if (id > -1) {
+        state.teams[id]["contact"] = contact;
+      }
+    },
+    SET_ARENA_TEAM(state, payload) {
+      const pos = state.list_arenas.findIndex(item => item.id = payload.arena_id)
+      if (pos > -1) {
+        const arena = state.list_arenas[pos]
+        arena["teams"] = payload.data
+      }
+    },
+    SET_ARENA_TRAINER(state, payload) {
+      const pos = state.list_arenas.findIndex(item => item.id = payload.arena_id)
+      if (pos > -1) {
+        const arena = state.list_arenas[pos]
+        arena["trainers"] = payload.data
+      }
     }
   },
   actions: {
@@ -187,6 +218,24 @@ export default new Vuex.Store({
         })
         .catch((err) => console.log(err));
     },
+    getCurrentTeamArenas({ commit }, id) {
+      axios
+        .get(`/team/${id}/arenas`)
+        .then((response) => {
+          console.log("SET_CURRENT_ARENA_TEAM", response.data);
+          commit("SET_CURRENT_ARENA_TEAM", response.data);
+        })
+        .catch((err) => console.log(err));
+    },
+    getTeamContacts({ commit }, id) {
+      axios
+        .get(`/team/${id}/contact`)
+        .then((response) => {
+          console.log("SET_TEAM_CONTACT", response.data);
+          commit("SET_TEAM_CONTACT", response.data);
+        })
+        .catch((err) => console.log(err));
+    },
     getTeamByID({ commit }, id) {
       const item = this.state.teams.filter((team) => team.id === id);
       console.log(item[0]);
@@ -227,6 +276,34 @@ export default new Vuex.Store({
         commit("SETPRICELIST", final)
       })
     },
+    getArenaTeams({ commit }, arena_id) {
+      return new Promise((resolve) => {
+        axios
+          .get(`/arena/${arena_id}/teams`)
+          .then((response) => {
+            console.log("SET_ARENA_TEAM", { arena_id, data: response.data });
+            commit("SET_ARENA_TEAM", response.data);
+            resolve(response.data)
+          })
+          .catch((err) =>
+            console.log(err)
+          );
+      })
+    },
+    getArenaTrainer({ commit }, arena_id) {
+      return new Promise((resolve) => {
+        axios
+          .get(`/arena/${arena_id}/users`)
+          .then((response) => {
+            console.log("SET_ARENA_TRAINER", { arena_id, data: response.data });
+            commit("SET_ARENA_TRAINER", response.data);
+            resolve(response.data)
+          })
+          .catch((err) =>
+            console.log(err)
+          );
+      })
+    }
   },
   modules: {},
   plugins: [vuexLocal.plugin],

@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Header /> 
+    <Header />
     <Navbar />
     <v-main class="grey lighten-4">
       <router-view />
@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import Navbar from './components/Layout/Navbar.vue'
-import Header from './components/Layout/Header.vue'
-import Footer from './components/Layout/Footer.vue'
+import Navbar from "./components/Layout/Navbar.vue";
+import Header from "./components/Layout/Header.vue";
+import Footer from "./components/Layout/Footer.vue";
 import "vue-image-lightbox/dist/vue-image-lightbox.min.css";
 
 export default {
@@ -22,8 +22,8 @@ export default {
 
 <style>
 .margin-top-big {
-    margin-top: 120px;
-  }
+  margin-top: 120px;
+}
 @media (max-width: 600px) {
   .margin-top-big {
     margin-top: 100px;

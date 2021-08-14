@@ -51,6 +51,7 @@
 export default {
   mounted() {
     const arena = this.$store.getters.current_arena;
+    console.log("GETTER", arena);
     const id = arena.id;
     this.arena = arena;
     const sections = [

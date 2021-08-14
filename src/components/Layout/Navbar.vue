@@ -88,6 +88,7 @@
 export default {
   name: "Navbar",
   data() {
+    console.log("CURRENT component name", this.$route.name);
     return {
       drawer: null,
       tab: null,
