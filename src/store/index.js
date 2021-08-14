@@ -16,7 +16,7 @@ export default new Vuex.Store({
     items: {},
     list_arenas: [],
     current_arena: {},
-    current_team:{},
+    current_team: {},
     current_contact: {},
     current_service: {},
     services: [],
@@ -24,6 +24,7 @@ export default new Vuex.Store({
     teams: [],
     trainers: [],
     players: [],
+    katokPL: [],
   },
   getters: {
     current_arena(state) {
@@ -56,7 +57,7 @@ export default new Vuex.Store({
     },
     youth_trainers(state) {
       return state.trainers.filter((x) => x.qualification === "Юношеская");
-    }
+    },
   },
   mutations: {
     SET_ARENAS(state, arenas) {
@@ -67,7 +68,8 @@ export default new Vuex.Store({
         ({ id, lat, lan, title, city, address }) => ({
           id,
           address,
-          coords: lat && lan ? lat.toString() + ", " + lan.toString(): "55.55,37.32",
+          coords:
+            lat && lan ? lat.toString() + ", " + lan.toString() : "55.55,37.32",
           title,
           city,
         })
@@ -108,6 +110,9 @@ export default new Vuex.Store({
     },
     SET_PLAYERS(state, players) {
       state.players = players;
+    },
+    SETPRICELIST(state, sPriceList) {
+      state.katokPL = sPriceList;
     }
   },
   actions: {
@@ -128,13 +133,13 @@ export default new Vuex.Store({
       console.log(item[0]);
       commit("SET_CURRENT_ARENA", item[0]);
     },
-    setCurrentArena({commit}, arena) {
+    setCurrentArena({ commit }, arena) {
       commit("SET_CURRENT_ARENA", arena);
     },
     getContactById({ commit }, payload) {
       return new Promise((resolve) => {
         axios
-          .get(`/contact/arena/${payload}`)
+          .get(`/arena/${payload}/contacts`)
           .then((response) => {
             commit("SET_CURRENT_CONTACT", response.data);
             resolve(response.data);
@@ -183,17 +188,44 @@ export default new Vuex.Store({
         .catch((err) => console.log(err));
     },
     getTeamByID({ commit }, id) {
-      const item = this.state.teams.filter(
-        (team) => team.id === id
-      );
+      const item = this.state.teams.filter((team) => team.id === id);
       console.log(item[0]);
       commit("SET_CURRENT_TEAM", item[0]);
     },
     getServiceById({ commit }, id) {
-      const item = this.state.services.filter(
-        (service) => service.id === id
-      );
+      const item = this.state.services.filter((service) => service.id === id);
       commit("SET_CURRENT_SERVICE", item[0]);
+    },
+    getPriceListKatok({ commit }) {
+      let priceList = [];
+      let katokService = this.state.services.filter((x) => x.type == "Каток");
+      let final = [];
+      katokService.forEach((x) => {
+        priceList.push(
+          new Promise((resolve, reject) => {
+            axios
+              .get(`/service/${x.id}/price-list`)
+              .then((response) => {
+                
+                let nItem = {
+                  ...x, price: response.data
+                };
+                final.push(nItem);
+                resolve(response.data);
+              })
+              .catch((err) => {
+                console.log(err);
+                reject(err);
+              });
+          })
+        );
+      });
+
+      Promise.all(priceList).then((response) => {
+        console.log(response);
+        console.log(final)
+        commit("SETPRICELIST", final)
+      })
     },
   },
   modules: {},

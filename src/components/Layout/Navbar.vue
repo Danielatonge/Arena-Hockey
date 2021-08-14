@@ -68,6 +68,7 @@
       background-color="transparent"
       class="hidden-md-and-down"
       grow
+      optional
     >
       <v-tabs-slider color="white"></v-tabs-slider>
       <v-tab
@@ -89,7 +90,7 @@ export default {
   data() {
     return {
       drawer: null,
-      tab: "/room",
+      tab: null,
       items: [
         { text: "Ледовые дворцы и арены", route: "/arena" },
         { text: "Лиги и турниры", route: "/league" },

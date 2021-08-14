@@ -29,7 +29,8 @@
               <v-row>
                 <v-col
                   cols="2"
-                  lg="1"
+                  lg="2"
+                  xl="1"
                   class="text-center border"
                   v-for="(item, indx) in price_list"
                   :key="indx"

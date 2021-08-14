@@ -62,20 +62,20 @@
     <p class="text-h6 mt-10">Прайс-лист</p>
     <p class="grey--text">Цены указаны за 1 час аренды</p>
 
-    <div v-for="(item, i) in katok_services" :key="i">
+    <div v-for="(item, i) in katokPL" :key="i">
       <p class="text-h4 mt-8 mb-0">{{ item.title }}</p>
       <p class="grey--text">{{ item.miniDescription }}</p>
       <v-row>
         <v-col
           cols="2"
           class="text-center border"
-          v-for="(item, indx) in price_list"
+          v-for="(itm, indx) in item.price"
           :key="indx"
         >
-          <div class="mb-3 grey--text">{{ item.interval }}</div>
+          <div class="mb-3 grey--text">{{ itm.startTime + ' - ' + itm.endTime }}</div>
           <div class="right-border mr-n3">
-            <p class="mb-0">{{ item.weekday }}</p>
-            <p class="primary--text">{{ item.weekend }}</p>
+            <p class="mb-0">{{ itm.weekdayPrice }}</p>
+            <p class="primary--text">{{ itm.holidayPrice }}</p>
           </div>
         </v-col>
       </v-row>
@@ -109,7 +109,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import ArenaServiceCard from "@/components/Arena/ArenaServiceCard";
 export default {
   components: {
@@ -117,8 +117,10 @@ export default {
   },
   computed: {
     ...mapGetters(["katok_services", "others_services"]),
+    ...mapState(['katokPL'])
   },
   mounted() {
+    this.$store.dispatch("getPriceListKatok")
     this.arenaId = this.$route.params.id;
   },
   name: "PaymentPortal",
