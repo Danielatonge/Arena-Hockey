@@ -68,6 +68,7 @@
       background-color="transparent"
       class="hidden-md-and-down"
       grow
+      optional
     >
       <v-tabs-slider color="white"></v-tabs-slider>
       <v-tab
@@ -90,8 +91,7 @@ export default {
     console.log("CURRENT component name", this.$route.name);
     return {
       drawer: null,
-      // hidden_screen: ["Main"],
-      tab: "/room",
+      tab: null,
       items: [
         { text: "Ледовые дворцы и арены", route: "/arena" },
         { text: "Лиги и турниры", route: "/league" },

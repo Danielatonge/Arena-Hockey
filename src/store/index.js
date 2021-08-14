@@ -24,6 +24,7 @@ export default new Vuex.Store({
     teams: [],
     trainers: [],
     players: [],
+    katokPL: [],
   },
   getters: {
     current_arena(state) {
@@ -114,6 +115,9 @@ export default new Vuex.Store({
     SET_PLAYERS(state, players) {
       state.players = players;
     },
+    SETPRICELIST(state, sPriceList) {
+      state.katokPL = sPriceList;
+    },
     SET_CURRENT_ARENA_TEAM(state, data) {
       const arenas = data.map((item) => item.arena)
       const current_team = { ...state.current_team, arenas: arenas };
@@ -169,7 +173,7 @@ export default new Vuex.Store({
     getContactById({ commit }, payload) {
       return new Promise((resolve) => {
         axios
-          .get(`/contact/arena/${payload}`)
+          .get(`/arena/${payload}/contacts`)
           .then((response) => {
             commit("SET_CURRENT_CONTACT", response.data);
             resolve(response.data);
@@ -249,17 +253,44 @@ export default new Vuex.Store({
       })
     },
     getTeamByID({ commit }, id) {
-      const item = this.state.teams.filter(
-        (team) => team.id === id
-      );
+      const item = this.state.teams.filter((team) => team.id === id);
       console.log(item[0]);
       commit("SET_CURRENT_TEAM", item[0]);
     },
     getServiceById({ commit }, id) {
-      const item = this.state.services.filter(
-        (service) => service.id === id
-      );
+      const item = this.state.services.filter((service) => service.id === id);
       commit("SET_CURRENT_SERVICE", item[0]);
+    },
+    getPriceListKatok({ commit }) {
+      let priceList = [];
+      let katokService = this.state.services.filter((x) => x.type == "Каток");
+      let final = [];
+      katokService.forEach((x) => {
+        priceList.push(
+          new Promise((resolve, reject) => {
+            axios
+              .get(`/service/${x.id}/price-list`)
+              .then((response) => {
+                
+                let nItem = {
+                  ...x, price: response.data
+                };
+                final.push(nItem);
+                resolve(response.data);
+              })
+              .catch((err) => {
+                console.log(err);
+                reject(err);
+              });
+          })
+        );
+      });
+
+      Promise.all(priceList).then((response) => {
+        console.log(response);
+        console.log(final)
+        commit("SETPRICELIST", final)
+      })
     },
     getArenaTeams({ commit }, arena_id) {
       return new Promise((resolve) => {

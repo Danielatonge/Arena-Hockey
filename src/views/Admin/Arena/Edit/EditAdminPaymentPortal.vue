@@ -23,14 +23,15 @@
         </v-tabs>
         <v-tabs-items v-model="value_tab" style="background-color: unset">
           <v-tab-item v-for="i in 2" :key="i">
-            <div v-show="value_tab==0">
+            <div v-show="value_tab == 0">
               <div v-for="x in 2" :key="x">
                 <p class="text-h4 mt-10 mb-0">Название катка {{ x }}</p>
                 <p class="grey--text">Краткое описание катка</p>
                 <v-row>
                   <v-col
                     cols="2"
-                    lg="1"
+                    lg="2"
+                    xl="1"
                     class="text-center border"
                     v-for="(item, indx) in price_list"
                     :key="indx"
@@ -73,14 +74,15 @@
                 </div>
               </div>
             </div>
-            <div v-show="value_tab==1">
+            <div v-show="value_tab == 1">
               <div v-for="x in 2" :key="x">
                 <p class="text-h4 mt-10 mb-0">Название помещения {{ x }}</p>
                 <p class="grey--text">Краткое описание помещения</p>
                 <v-row>
                   <v-col
                     cols="2"
-                    lg="1"
+                    lg="2"
+                    xl="1"
                     class="text-center border"
                     v-for="(item, indx) in price_list"
                     :key="indx"
