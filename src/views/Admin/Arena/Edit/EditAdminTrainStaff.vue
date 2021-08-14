@@ -95,15 +95,24 @@
           </v-row>
         </div>
         <v-row dense class="mx-n4">
-          <v-col cols="12" lg="6" v-for="(item, i) in player_items" :key="i">
+          <v-col cols="12" lg="6" v-for="(item, i) in displayTrainers" :key="i">
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
                 <v-avatar class="ma-3" size="128" tile>
-                  <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
+                  <v-img
+                    :src="
+                      require('@/assets' +
+                        (item.level ? item.level : '/player_2.jpg'))
+                    "
+                  ></v-img>
                 </v-avatar>
                 <v-card-text>
-                  <div class="text-h5 mb-2">Фамилия Имя Отчество</div>
-                  <div class="body-1 blue--text mb-1">Возраст, город</div>
+                  <div class="text-h5 mb-2">
+                    {{ item.name + " " + item.middleName + " " + item.surname }}
+                  </div>
+                  <div class="body-1 blue--text mb-1">
+                    {{ item.age }}, {{ item.city }}
+                  </div>
                   <div class="body-2 grey--text">Уровень: профессионал</div>
                   <v-row no-gutters class="align-center">
                     <v-col cols="12" md="4" lg="7">
@@ -143,8 +152,8 @@
     </v-container>
     <div class="mb-4">
       <v-dialog v-model="add_trainer_dialog" max-width="600">
-        <v-card class="py-3 grey lighten-5">
-          <v-card-title class="">
+        <v-card :loading="adding" class="grey lighten-5">
+          <v-card-title class="py-3">
             <v-row>
               <v-col cols="11">
                 <div class="text-h5 black--text">Добавить тренера</div>
@@ -159,15 +168,27 @@
             </v-row>
           </v-card-title>
           <v-card-text>
-            <v-text-field
-              label="Поиск тренера"
-              single-line
-              prepend-inner-icon="mdi-magnify"
+            <v-autocomplete
+              v-model="selected_user"
+              :items="search_items"
+              :loading="is_searching"
+              :search-input.sync="search_text"
+              color="white"
               solo
               flat
+              single-line
+              hide-selected
+              hide-no-data
+              item-text="fullname"
+              item-value="id"
+              label="Поиск тренера"
+              placeholder="Поиск тренера"
+              prepend-inner-icon="mdi-magnify"
+              return-object
               hide-details="auto"
               class="rounded-lg"
-            ></v-text-field>
+            ></v-autocomplete>
+            <v-checkbox label="Скрыть тренера" class="" />
           </v-card-text>
           <v-card-actions class="mt-3">
             <v-btn
@@ -182,7 +203,7 @@
               elevation="0"
               color="primary"
               class="body-2"
-              @click="deleteTrainer"
+              @click="addTrainer"
             >
               Добавить
             </v-btn>
@@ -230,6 +251,9 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import axios from "axios";
+
 export default {
   mounted() {
     const arena_id = this.$route.params.id;
@@ -241,6 +265,7 @@ export default {
       this.arena_trainers = data;
       this.setPaginationLength();
     });
+    this.$store.dispatch("getAllTrainers");
     this.breadcrumb_items = [
       {
         text: "Личный кабинет",
@@ -265,15 +290,24 @@ export default {
     ];
   },
   computed: {
+    ...mapState({ arena: "current_arena" }),
+    ...mapState({ trainers: "trainers" }),
     displayTrainers() {
+      console.log("XXXX", this.trainers);
       return this.paginate(this.filteredTrainers);
     },
     filteredTrainers() {
-      return this.arena_trainers;
+      return this.arena_trainers.map((item) => item.user);
+    },
+    filteredUsers() {
+      return this.trainers.map((x) => ({
+        ...x,
+        fullname: x.name + " " + x.middleName + " " + x.surname,
+      }));
     },
   },
   watch: {
-    display_item(val) {
+    display_x(val) {
       this.perPage = val;
       this.paginationLength = Math.ceil(
         this.filteredTrainers.length / this.perPage
@@ -289,13 +323,37 @@ export default {
         this.filteredTrainers.length / this.perPage
       );
     },
+    search_text(val) {
+      // Items have already been loaded
+      //if (this.search_items.length > 0) return;
+      if (!val) return this.filteredUsers;
+
+      // Items have already been requested
+      //if (this.is_searching) return;
+
+      //this.is_searching = true;
+      const value = val.toLowerCase();
+      console.log(this.filteredUsers);
+      this.search_items = this.filteredUsers.filter((x) => {
+        return x.fullname ? x.fullname.toLowerCase().includes(value) : false;
+      });
+    },
   },
   methods: {
     deleteTrainer() {
       this.confirm_dialog = false;
       if (this.current_team != -1) {
-        this.arena_trainers.splice(this.current_team, 1);
-        console.log("DELETE TEAM");
+        const arena_id = this.$route.params.id;
+        const user_id = this.arena_trainers[this.current_team].id;
+        axios
+          .delete(`/arena/${arena_id}/user/${user_id}`)
+          .then((response) => {
+            console.log("RESPONSE_DELETE_TEAM", response);
+            this.arena_trainers.splice(this.current_team, 1);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     },
     setPaginationLength() {
@@ -312,6 +370,29 @@ export default {
       const from = cpage * perPage - perPage;
       const to = cpage * perPage;
       return items.slice(from, to);
+    },
+    addTrainer() {
+      this.adding = true;
+      console.log("SELECTED", this.selected_user);
+      const arena_id = this.$route.params.id;
+      const data = {
+        arenaId: arena_id,
+        userId: this.selected_user.id,
+        visible: this.hide_team,
+      };
+      axios
+        .post("/arena/user", data)
+        .then((response) => {
+          console.log("RESPONSE", response);
+          this.arena_trainers.push({ user: this.selected_user });
+          this.add_trainer_dialog = false;
+          this.selected_user = null;
+          this.search_items = [];
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => (this.adding = false));
     },
   },
   data() {
@@ -336,6 +417,13 @@ export default {
       sort_by_team: ["По популярности", "По именни"],
       type_team: ["возрасту", "город"],
       display_items: ["Показывать по 12", "Показывать по 25"],
+      search_items: [],
+      hide_team: false,
+      selected_user: null,
+      is_searching: false,
+      adding_player: false,
+      search_text: "",
+      adding: false,
     };
   },
 };

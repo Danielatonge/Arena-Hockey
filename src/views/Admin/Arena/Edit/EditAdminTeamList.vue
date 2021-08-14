@@ -28,7 +28,8 @@
             <v-col class="d-flex" cols="12" md="2">
               <v-select
                 :items="team_tags"
-                value="Москва"
+                item-text="text"
+                item-value="value"
                 v-model="filter_city"
                 solo
                 flat
@@ -51,6 +52,8 @@
                 :items="type_teams"
                 value="Тип команды"
                 v-model="filter_type"
+                item-text="text"
+                item-value="value"
                 solo
                 flat
                 hide-details="auto"
@@ -159,8 +162,8 @@
     </v-container>
     <div class="mb-4">
       <v-dialog v-model="add_team_dialog" max-width="600">
-        <v-card class="py-3 grey lighten-5">
-          <v-card-title class="">
+        <v-card :loading="adding_team" class="grey lighten-5">
+          <v-card-title class="py-3">
             <v-row>
               <v-col cols="11">
                 <div class="text-h5 black--text">Добавить команду</div>
@@ -175,15 +178,27 @@
             </v-row>
           </v-card-title>
           <v-card-text>
-            <v-text-field
-              label="Поиск команды"
-              single-line
-              prepend-inner-icon="mdi-magnify"
+            <v-autocomplete
+              v-model="selected_team"
+              :items="search_items"
+              :loading="is_searching"
+              :search-input.sync="search_text"
+              color="white"
               solo
               flat
+              single-line
+              hide-selected
+              hide-no-data
+              item-text="title"
+              item-value="id"
+              label="Поиск команды"
+              placeholder="Поиск команды"
+              prepend-inner-icon="mdi-magnify"
+              return-object
               hide-details="auto"
               class="rounded-lg"
-            ></v-text-field>
+            ></v-autocomplete>
+            <v-checkbox v-model="hide_team" label="Скрыть команду" class="" />
           </v-card-text>
           <v-card-actions class="mt-3">
             <v-btn
@@ -198,7 +213,8 @@
               elevation="0"
               color="primary"
               class="body-2"
-              @click="deleteTeam"
+              @click="addTeam"
+              :disabled="adding_team"
             >
               Добавить
             </v-btn>
@@ -247,21 +263,24 @@
 
 <script>
 import { mapState } from "vuex";
+import axios from "axios";
 
 export default {
   computed: {
     ...mapState({ arena: "current_arena" }),
+    ...mapState({ teams: "teams" }),
     displayTeams() {
-      console.log("XXXXX", this.arena_teams);
+      console.log("XXXXX", this.teams);
       return this.paginate(this.filteredTeams);
     },
     filteredTeams() {
       let arenas = this.arena_teams.map((item) => item.team);
-      if (this.filter_type != "Тип команды") {
+      if (this.filter_type) {
         arenas = arenas.filter((x) => {
-          return x.type == this.filter_type && x.city == this.filter_city;
+          return x.type == this.filter_type;
         });
-      } else {
+      }
+      if (this.filter_city) {
         arenas = arenas.filter((x) => {
           return x.city == this.filter_city;
         });
@@ -288,11 +307,25 @@ export default {
         this.filteredTeams.length / this.perPage
       );
     },
+    search_text(val) {
+      // Items have already been loaded
+      if (!val) return [];
+      if (this.search_items.length > 0) return;
+
+      // Items have already been requested
+      //if (this.is_searching) return;
+
+      //this.is_searching = true;
+      const value = val.toLowerCase();
+      this.search_items = this.teams.filter((x) => {
+        return x.title ? x.title.toLowerCase().includes(value) : false;
+      });
+    },
   },
   mounted() {
-    const arena = this.$store.getters.current_arena;
-    this.arena = arena;
-    const arena_id = arena.id;
+    //const arena = this.$store.getters.current_arena;
+    const arena_id = this.$route.params.id;
+    this.$store.dispatch("getAllTeams");
     this.$store.dispatch("getArenaTeams", arena_id).then((data) => {
       console.log("getArenaTeams", data);
       this.arena_teams = data;
@@ -301,6 +334,7 @@ export default {
   },
   data() {
     return {
+      search_text: "",
       page: 1,
       perPage: 5,
       arena_teams: [],
@@ -330,17 +364,21 @@ export default {
           href: "",
         },
       ],
-      team_tags: ["Москва", "Казань"],
+      team_tags: [
+        { value: null, text: "Город" },
+        { value: "Москва", text: "Москва" },
+        { value: "Казань", text: "Казань" },
+      ],
       sort_by_team: ["По популярности", "По именни"],
       type_teams: [
-        "Тип команды",
-        "Детскaя",
-        "Юношеская",
-        "Взрослая",
-        "Женская",
+        { value: null, text: "Тип команды" },
+        { value: "Детскaя", text: "Детскaя" },
+        { value: "Взрослая", text: "Взрослая" },
+        { value: "Юношеская", text: "Юношеская" },
+        { value: "Женская", text: "Женская" },
       ],
-      filter_type: "Тип команды",
-      filter_city: "Москва",
+      filter_type: null,
+      filter_city: null,
       display_item: { state: "Показывать по 5", value: 5 },
       display_items: [
         { state: "Показывать по 5", value: 5 },
@@ -348,14 +386,28 @@ export default {
         { state: "Показывать по 12", value: 12 },
         { state: "Показывать по 24", value: 24 },
       ],
+      search_items: [],
+      hide_team: false,
+      selected_team: null,
+      is_searching: false,
+      adding_team: false,
     };
   },
   methods: {
     deleteTeam() {
       this.confirm_dialog = false;
       if (this.current_team != -1) {
-        this.arena_teams.splice(this.current_team, 1);
-        console.log("DELETE TEAM");
+        const arena_id = this.$route.params.id;
+        const user_id = this.arena_teams[this.current_team].id;
+        axios
+          .delete(`/arena/${arena_id}/team/${user_id}`)
+          .then((response) => {
+            console.log("RESPONSE_DELETE_TEAM", response);
+            this.arena_teams.splice(this.current_team, 1);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     },
     hideTeam(id) {
@@ -372,6 +424,29 @@ export default {
       this.paginationLength = Math.ceil(
         this.filteredTeams.length / this.perPage
       );
+    },
+    addTeam() {
+      this.adding_team = true;
+      console.log("SELECTED", this.selected_team);
+      const arena_id = this.$route.params.id;
+      const data = {
+        arenaId: arena_id,
+        teamId: this.selected_team.id,
+        visible: this.hide_team,
+      };
+      this.$store
+        .dispatch("addTeamToArena", data)
+        .then((response) => {
+          console.log("RESPONSE", response);
+          this.arena_teams.push({ team: this.selected_team });
+          this.add_team_dialog = false;
+          this.selected_team = null;
+          this.search_items = [];
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => (this.adding_team = false));
     },
   },
 };

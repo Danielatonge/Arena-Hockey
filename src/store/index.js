@@ -58,6 +58,9 @@ export default new Vuex.Store({
     },
     youth_trainers(state) {
       return state.trainers.filter((x) => x.qualification === "Юношеская");
+    },
+    female_trainer(state) {
+      return state.trainers.filter((x) => x.qualification === "Женская");
     }
   },
   mutations: {
@@ -224,13 +227,26 @@ export default new Vuex.Store({
         .catch((err) => console.log(err));
     },
     getTeamContacts({ commit }, id) {
-      axios
-        .get(`/team/${id}/contact`)
-        .then((response) => {
-          console.log("SET_TEAM_CONTACT", response.data);
-          commit("SET_TEAM_CONTACT", response.data);
-        })
-        .catch((err) => console.log(err));
+      return new Promise((resolve) => {
+        axios
+          .get(`/team/${id}/contact`)
+          .then((response) => {
+            commit("SET_TEAM_CONTACT", response.data);
+            resolve(response.data)
+          })
+          .catch((err) => console.log(err));
+      })
+    },
+    getTeamUsers({ commit }, id) {
+      return new Promise((resolve) => {
+        axios
+          .get(`/team/${id}/users`)
+          .then((response) => {
+            //commit("SET_TEAM_CONTACT", response.data);
+            resolve(response.data)
+          })
+          .catch((err) => console.log(err));
+      })
     },
     getTeamByID({ commit }, id) {
       const item = this.state.teams.filter(
@@ -271,6 +287,17 @@ export default new Vuex.Store({
           .catch((err) =>
             console.log(err)
           );
+      })
+    },
+    addTeamToArena({ commit }, data) {
+      return new Promise((resolve) => {
+        axios.post(`/arena/team`, data)
+          .then((response) => {
+            resolve(response)
+          })
+          .catch((err) => {
+            console.log(err);
+          })
       })
     }
   },

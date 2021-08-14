@@ -6,13 +6,13 @@
           <v-breadcrumbs :items="breadcrumb_items" class="px-3"></v-breadcrumbs>
         </div>
         <v-spacer></v-spacer>
-        <div class="pr-3" v-if="team.contact">
+        <div class="pr-3">
           <v-btn
             elevation="0"
             x-small
             color="grey lighten-2"
             height="40px"
-            class="mr-1"
+            class="mr-1 mb-2"
             v-for="(item, id) in getContactlist"
             :key="id"
             :href="item.link"
@@ -189,17 +189,26 @@
       <div v-show="false">
         <p class="text-h6 mt-8">Защитники</p>
         <v-row dense class="mx-n4">
-          <v-col cols="12" md="6" v-for="(item, i) in player_items" :key="i">
+          <v-col cols="12" md="6" v-for="(item, i) in defenders" :key="i">
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
                 <v-avatar class="ma-3" size="125" tile>
-                  <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
+                  <v-img
+                    :src="
+                      require('@/assets' +
+                        (item.level ? item.level : '/player_1.jpg'))
+                    "
+                  ></v-img>
                 </v-avatar>
                 <v-card-text>
-                  <div class="text-h5 mb-2">Фамилия Имя Отчество</div>
-                  <div class="body-1 blue--text mb-2">Возраст, город</div>
+                  <div class="text-h5 mb-2">
+                    {{ item.name + " " + item.middleName + " " + item.surname }}
+                  </div>
+                  <div class="body-1 blue--text mb-2">
+                    {{ item.age }}, {{ item.city }}
+                  </div>
 
-                  <div class="body-1 grey--text">Позиция</div>
+                  <div class="body-1 grey--text">{{ item.position }}</div>
                 </v-card-text>
               </div>
             </v-card>
@@ -208,17 +217,26 @@
 
         <p class="text-h6 mt-8">Нападающие</p>
         <v-row dense class="mx-n4">
-          <v-col cols="12" md="6" v-for="(item, i) in player_items" :key="i">
+          <v-col cols="12" md="6" v-for="(item, i) in forwards" :key="i">
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
                 <v-avatar class="ma-3" size="125" tile>
-                  <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
+                  <v-img
+                    :src="
+                      require('@/assets' +
+                        (item.level ? item.level : '/player_1.jpg'))
+                    "
+                  ></v-img>
                 </v-avatar>
                 <v-card-text>
-                  <div class="text-h5 mb-2">Фамилия Имя Отчество</div>
-                  <div class="body-1 blue--text mb-2">Возраст, город</div>
+                  <div class="text-h5 mb-2">
+                    {{ item.name + " " + item.middleName + " " + item.surname }}
+                  </div>
+                  <div class="body-1 blue--text mb-2">
+                    {{ item.age }}, {{ item.city }}
+                  </div>
 
-                  <div class="body-1 grey--text">Позиция</div>
+                  <div class="body-1 grey--text">{{ item.position }}</div>
                 </v-card-text>
               </div>
             </v-card>
@@ -309,14 +327,14 @@
     </v-container>
     <v-container>
       <p class="text-h5">Контакты</p>
-      <div v-if="team.contact" class="mt-10 pb-15">
-        <p v-if="team.contact.phones">
-          <span v-for="(phone, id) in team.contact.phones" :key="id">
+      <div v-if="contact" class="mt-10 pb-15">
+        <p v-if="contact.phones">
+          <span v-for="(phone, id) in contact.phones" :key="id">
             {{ phone }} <br />
           </span>
         </p>
-        <p v-if="team.contact.mails">
-          <span v-for="(email, id) in team.contact.mails" :key="id">
+        <p v-if="contact.mails">
+          <span v-for="(email, id) in contact.mails" :key="id">
             {{ email }} <br />
           </span>
         </p>
@@ -346,18 +364,30 @@ export default {
   computed: {
     ...mapState({ team: "current_team" }),
     ...mapState({ arena: "current_arena" }),
-    ...mapState(["trainers", "players"]),
+    //...mapState(["trainers"]),
+    trainers() {
+      return this.users.filter((x) => x.role == "TRAINER");
+    },
+    players() {
+      return this.users.filter((x) => x.role == "Player");
+    },
+    forwards() {
+      return this.users.filter((x) => x.role == "FORWARD");
+    },
+    defenders() {
+      return this.users.filter((x) => x.role == "DEFENDER");
+    },
     getContactlist() {
-      if (!this.team.contact) return [];
+      if (!this.contact) return [];
       const toRet = [
-        { icon: "mdi-whatsapp", link: this.team.contact.whatsApp },
-        { icon: "mdi-instagram", link: this.team.contact.instagram },
-        { icon: "mdi-vk", link: this.team.contact.vk },
-        { icon: "mdi-web", link: this.team.contact.website },
-        { icon: "mdi-youtube", link: this.team.contact.youtube },
-        { icon: "mdi-twitter", link: this.team.contact.twitter },
-        { icon: "mdi-facebook", link: this.team.contact.facebook },
-        //{ icon: "mdi-tiktok", link: `${this.team.contact.tiktok}` },
+        { icon: "mdi-whatsapp", link: this.contact.whatsApp },
+        { icon: "mdi-instagram", link: this.contact.instagram },
+        { icon: "mdi-vk", link: this.contact.vk },
+        { icon: "mdi-web", link: this.contact.website },
+        { icon: "mdi-youtube", link: this.contact.youtube },
+        { icon: "mdi-twitter", link: this.contact.twitter },
+        { icon: "mdi-facebook", link: this.contact.facebook },
+        //{ icon: "mdi-tiktok", link: `${this.contact.tiktok}` },
       ];
 
       return toRet.filter((item) => !!item.link);
@@ -372,7 +402,20 @@ export default {
     this.$store.dispatch("getArenaGivenID", arenaId);
     this.$store.dispatch("getAllPlayers");
     this.$store.dispatch("getCurrentTeamArenas", teamId);
-    this.$store.dispatch("getTeamContacts", teamId);
+
+    this.$store.dispatch("getTeamContacts", teamId).then((data) => {
+      this.contact = data;
+    });
+    this.$store.dispatch("getTeamUsers", teamId).then((data) => {
+      this.users = data.map((x) => {
+        if (x.user.level == "string") {
+          // just to avoid the app to crash to be removed in the future.
+          x.user.level = "/player_1.jpg";
+        }
+        return x.user;
+      });
+      console.log("USERS", this.users);
+    });
     this.breadcrumb_items = [
       {
         text: this.arena.title, //"Название арены",
@@ -398,6 +441,8 @@ export default {
   },
   data() {
     return {
+      users: [],
+      contact: null,
       value: 0,
       arenaId: null,
       advert_nav: ["Команда ищет игроков", "Команда ищет тренера"],

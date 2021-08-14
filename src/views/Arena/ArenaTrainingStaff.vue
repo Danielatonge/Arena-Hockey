@@ -84,6 +84,31 @@
             </v-card>
           </v-col>
         </v-row>
+        <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 3">
+          <v-col cols="12" v-for="(item, i) in female_trainer" :key="i">
+            <v-card color="transparent" elevation="0">
+              <div class="d-flex flex-no-wrap">
+                <v-avatar class="ma-3 rounded-lg" size="125" tile>
+                  <v-img
+                    :src="
+                      require('@/assets' +
+                        (item.level ? item.level : '/player_2.jpg'))
+                    "
+                  ></v-img>
+                </v-avatar>
+                <v-card-text>
+                  <div class="text-h5 mb-2">
+                    {{ item.name + " " + item.middleName + " " + item.surname }}
+                  </div>
+                  <div class="body-1 blue--text mb-2">
+                    {{ item.age }}, {{ item.city }}
+                  </div>
+                  <div class="body-2 grey--text">{{ item.position }}</div>
+                </v-card-text>
+              </div>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-tab-item>
     </v-tabs-items>
   </div>
@@ -93,14 +118,38 @@
 import { mapState, mapGetters } from "vuex";
 export default {
   computed: {
-    ...mapState(["trainers"]),
-    ...mapGetters(["kid_trainers", "youth_trainers"]),
+    //...mapState(["trainers"]),
+    kid_trainers() {
+      return this.trainers.filter((x) => x.qualification === "Детскaя");
+    },
+    youth_trainers() {
+      return this.trainers.filter((x) => x.qualification === "Юношеская");
+    },
+    female_trainer() {
+      return this.trainers.filter((x) => x.qualification === "Женская");
+    },
+  },
+  mounted() {
+    const arenaId = this.$route.params.id;
+    this.arenaId = arenaId;
+    this.$store.dispatch("getArenaTrainer", arenaId).then((data) => {
+      console.log("Trainers", data);
+      this.trainers = data.map((x) => x.user);
+    });
+    this.teams = this.current_arena.teams || [];
   },
   data() {
     return {
+      arenaId: null,
+      trainers: [],
       name: "ArenaTeamList",
       premises_tab: null,
-      premises_nav: ["Все тренеры", "Детские тренеры", "Юношеские тренеры"],
+      premises_nav: [
+        "Все тренеры",
+        "Детские тренеры",
+        "Юношеские тренеры",
+        "Женские тренеры",
+      ],
       player_items: ["/player_1", "/player_2", "/player_3"],
     };
   },
