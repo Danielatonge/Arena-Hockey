@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Main from '../views/Home/Home.vue';
+import Main from "../views/Home/Home.vue";
 import Arena from "../views/Arena/Arena.vue";
 import Room from "../views/LockerRoom/Room.vue";
 import TeamName from "../views/LockerRoom/TeamName.vue";
@@ -37,6 +37,7 @@ import EditAdminScheduleEvent from "../views/Admin/Arena/Edit/EditAdminScheduleE
 import EditAdminTeamList from "../views/Admin/Arena/Edit/EditAdminTeamList.vue";
 import EditAdminTrainStaff from "../views/Admin/Arena/Edit/EditAdminTrainStaff.vue";
 import EditAdminManager from "../views/Admin/Arena/Edit/EditAdminManager.vue";
+import EditAdminPriceList from "../views/Admin/Arena/Edit/EditAdminPriceList.vue";
 
 import CreateAdminPaymentPortal from "../views/Admin/Arena/Create/CreateAdminPaymentPortal.vue";
 import CreateComplexInformation from "../views/Admin/Arena/Create/CreateComplexInformation.vue";
@@ -44,9 +45,7 @@ import CreateAdminScheduleEvent from "../views/Admin/Arena/Create/CreateAdminSch
 import CreateAdminTeamList from "../views/Admin/Arena/Create/CreateAdminTeamList.vue";
 import CreateAdminTrainStaff from "../views/Admin/Arena/Create/CreateAdminTrainStaff.vue";
 import CreateAdminManager from "../views/Admin/Arena/Create/CreateAdminManager.vue";
-import KidsTournaments from '../views/KidsTournaments/Home.vue';
-
-
+import KidsTournaments from "../views/KidsTournaments/Home.vue";
 
 Vue.use(VueRouter);
 
@@ -64,7 +63,7 @@ const routes = [
   {
     path: "/kids_tournement",
     name: "KidsTournaments",
-    component: KidsTournaments
+    component: KidsTournaments,
   },
   {
     path: "/arena/arena_maps",
@@ -253,7 +252,12 @@ const routes = [
     path: "/admin/sport_complex/management_staff/create",
     name: "CreateAdminManager",
     component: CreateAdminManager,
-  }
+  },
+  {
+    path: "/admin/sport_complex/payment_portal/price_list",
+    name: "EditAdminPriceList",
+    component: EditAdminPriceList,
+  },
 ];
 
 const router = new VueRouter({
