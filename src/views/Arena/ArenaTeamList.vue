@@ -149,7 +149,7 @@
             </router-link>
           </v-col>
         </v-row>
-         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 4">
+        <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 4">
           <v-col cols="12" v-for="(item, i) in female_team" :key="i">
             <router-link
               :to="`/arena/${arenaId}/teamname/${item.id}`"
@@ -190,7 +190,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState } from "vuex";
 export default {
   computed: {
     ...mapState(["current_arena"]),
