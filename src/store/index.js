@@ -247,6 +247,7 @@ export default new Vuex.Store({
           .get(`/team/${id}/users`)
           .then((response) => {
             //commit("SET_TEAM_CONTACT", response.data);
+            console.log(commit);
             resolve(response.data)
           })
           .catch((err) => console.log(err));
@@ -271,7 +272,7 @@ export default new Vuex.Store({
             axios
               .get(`/service/${x.id}/price-list`)
               .then((response) => {
-                
+
                 let nItem = {
                   ...x, price: response.data
                 };
@@ -321,6 +322,7 @@ export default new Vuex.Store({
       })
     },
     addTeamToArena({ commit }, data) {
+      console.log(commit);
       return new Promise((resolve) => {
         axios.post(`/arena/team`, data)
           .then((response) => {
