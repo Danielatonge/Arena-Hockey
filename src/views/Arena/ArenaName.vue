@@ -38,7 +38,7 @@
               :src="
                 require('@/assets' +
                   (arena.profilePicture
-                    ? arena.profilePicture + '.png'
+                    ? arena.profilePicture
                     : '/team_room_1.jpg'))
               "
               height="180px"
@@ -125,6 +125,18 @@ export default {
     });
     this.$store.dispatch("getAllTeams");
     this.$store.dispatch("getAllTrainers");
+    this.breadcrumb_items = [
+        {
+          text: "Москва",
+          disabled: false,
+          href: "/",
+        },
+        {
+          text: `${this.arena.title}`,
+          disabled: true,
+          href: "/arena/id",
+        },
+      ];
   },
   data() {
     return {
@@ -133,18 +145,7 @@ export default {
       sidebar_tab: 0,
       premises_tab: null,
       premises_nav: ["Катки", "Бросковые зоны", "Спортивные залы"],
-      breadcrumb_items: [
-        {
-          text: "Москва",
-          disabled: false,
-          href: "/",
-        },
-        {
-          text: "Название арены",
-          disabled: true,
-          href: "/arena/id",
-        },
-      ],
+      breadcrumb_items: null,
       selectedItem: 0,
       gallery_items: [
         "/gallery_1",
