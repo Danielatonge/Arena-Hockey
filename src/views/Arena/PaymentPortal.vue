@@ -72,10 +72,10 @@
           v-for="(itm, indx) in item.price"
           :key="indx"
         >
-          <div class="mb-3 grey--text">{{ itm.startTime + ' - ' + itm.endTime }}</div>
+          <div class="mb-3 grey--text">{{ itm.price.startTime + ' - ' + itm.price.endTime }}</div>
           <div class="right-border mr-n3">
-            <p class="mb-0">{{ itm.weekdayPrice }}</p>
-            <p class="primary--text">{{ itm.holidayPrice }}</p>
+            <p class="mb-0">{{ itm.price.weekdayPrice }}</p>
+            <p class="primary--text">{{ itm.price.holidayPrice }}</p>
           </div>
         </v-col>
       </v-row>
@@ -130,14 +130,7 @@ export default {
       premises_nav: ["Катки", "Другие"],
       elevation: 0,
       arenaId: "",
-      price_list: [
-        { interval: "06:00–08:30", weekday: "8 000", weekend: "10 000" },
-        { interval: "08:30–15:00", weekday: "8 000", weekend: "10 000" },
-        { interval: "15:00–17:00", weekday: "8 000", weekend: "10 000" },
-        { interval: "17:00–19:00", weekday: "10 000", weekend: "10 000" },
-        { interval: "19:00–22:30", weekday: "12 000", weekend: "10 000" },
-        { interval: "22:30–00:00", weekday: "10 000", weekend: "10 000" },
-      ],
+      
     };
   },
 };

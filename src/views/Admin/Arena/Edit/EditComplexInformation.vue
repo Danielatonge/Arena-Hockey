@@ -45,15 +45,34 @@
             class="rounded-lg"
           ></v-text-field>
         </div>
-        <div class="mb-6">
-          <div class="text-h6 mb-2">Основное изображение арены</div>
-          <v-sheet
-            color="white"
-            class="rounded-lg"
-            elevation="0"
-            height="100"
-            width="300"
-          ></v-sheet>
+        <div class="mb-4">
+          <div class="text-h6 mb-4">Основное изображение арены</div>
+          <v-row>
+            <v-col cols="3">
+              <admin-image-uploader v-model="avatar">
+                <div slot="activator">
+                  <v-avatar
+                    size="200px"
+                    v-ripple
+                    tile
+                    v-if="!avatar"
+                    class="grey lighten-3 mb-3 rounded-lg"
+                  >
+                    <span><v-icon large>mdi-upload</v-icon></span>
+                  </v-avatar>
+                  <v-avatar
+                    size="200px"
+                    tile
+                    v-ripple
+                    v-else
+                    class="mb-3 rounded-lg"
+                  >
+                    <img :src="avatar.imageURL" alt="avatar" />
+                  </v-avatar>
+                </div>
+              </admin-image-uploader>
+            </v-col>
+          </v-row>
         </div>
         <div class="mb-6">
           <div class="text-h6 mb-2">Описание</div>
@@ -84,8 +103,36 @@
             class="rounded-lg"
           ></v-text-field>
         </div>
-        <div class="mb-4" style="width: 50%">
-          <v-img src="https://via.placeholder.com/200x100"></v-img>
+        <div class="mb-4">
+          <v-row>
+            <v-col>
+              <v-sheet height="350px">
+                <arena-map
+                  :coords="coords"
+                  :surfaces="surfaces"
+                  :zoom="zoom"
+                ></arena-map>
+              </v-sheet>
+            </v-col>
+            <v-col class="d-flex">
+              <v-text-field
+                label="широта"
+                outlined
+                v-model="coordinate.lat"
+                flat
+                hide-details="auto"
+                class="rounded-lg mr-3"
+              ></v-text-field>
+              <v-text-field
+                label="Долгота"
+                outlined
+                v-model="coordinate.lon"
+                flat
+                hide-details="auto"
+                class="rounded-lg ml-3"
+              ></v-text-field>
+            </v-col>
+          </v-row>
         </div>
         <div class="mb-4">
           <v-text-field
@@ -200,17 +247,43 @@
         </div>
         <div class="mb-4">
           <div class="body-2 font-weight-bold mb-4 grey--text">Контакты</div>
+          <v-row v-show="contact.tel.length">
+            <v-col cols="12" class="">Телефоны: </v-col>
+            <v-col
+              cols="12"
+              class="mt-n4 my-auto"
+              v-for="(item, i) in contact.tel"
+              :key="i"
+            >
+              <span class="mr-4 grey--text">{{ item }}</span>
+            </v-col>
+          </v-row>
+          <v-row v-show="contact.mail.length">
+            <v-col cols="12" class="">Почты: </v-col>
+            <v-col
+              cols="12"
+              class="mt-n4 my-auto"
+              v-for="(item, i) in contact.mail"
+              :key="i"
+            >
+              <span class="mr-4 grey--text">{{ item }}</span>
+            </v-col>
+          </v-row>
           <v-dialog v-model="contact_dialog" max-width="600">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
-                class="mr-2 mb-2"
+                class="mr-2 mt-4"
                 color="primary"
                 large
                 elevation="0"
                 v-bind="attrs"
                 v-on="on"
               >
-                Добавить контакт
+                {{
+                  contact.tel.length || contact.mail.length
+                    ? "Изменить контакт"
+                    : "Добавить контакт"
+                }}
               </v-btn>
             </template>
 
@@ -224,36 +297,65 @@
                 </div>
               </v-card-title>
               <v-card-text class="mb-4">
-                <div class="mb-2">
-                  <v-text-field
-                    label="ФИО"
-                    outlined
-                    flat
-                    hide-details="auto"
-                    class="rounded-lg"
-                  ></v-text-field>
-                </div>
-                <div class="mb-2">
-                  <v-select
-                    :items="contact_options"
-                    value="Электронная почта"
-                    solo
-                    flat
-                    outlined
-                    hide-details="auto"
-                  ></v-select>
-                </div>
-                <div class="mb-2">
-                  <v-text-field
-                    placeholder="masdsdnhinn@mail.ru"
-                    outlined
-                    flat
-                    hide-details="auto"
-                    class="rounded-lg"
-                  ></v-text-field>
-                </div>
+                <v-row>
+                  <v-col cols="12" class="text-h6 mb-n4">Телефоны</v-col>
+                  <v-col
+                    cols="12"
+                    class="mb-n2 my-auto"
+                    v-for="(item, i) in contact.tel"
+                    :key="i"
+                  >
+                    <span class="mr-4">{{ item }}</span>
+                    <v-icon class="" @click="removeTelephoneItem(i)">
+                      mdi-delete
+                    </v-icon>
+                  </v-col>
+                  <v-col class="mb-2 d-flex">
+                    <v-text-field
+                      label="служба :- номер телефона"
+                      outlined
+                      flat
+                      dense
+                      v-model="telephone"
+                      hide-details="auto"
+                      class="rounded-lg"
+                    ></v-text-field>
+                    <v-icon class="ml-4" @click="addContactTelephone">
+                      mdi-plus
+                    </v-icon>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <v-col cols="12" class="text-h6 mb-n4">Почты</v-col>
+                  <v-col
+                    cols="12"
+                    class="mb-n2 my-auto"
+                    v-for="(item, i) in contact.mail"
+                    :key="i"
+                  >
+                    <span class="mr-4">{{ item }}</span>
+                    <v-icon class="" @click="removeMailItem(i)">
+                      mdi-delete
+                    </v-icon>
+                  </v-col>
+                  <v-col class="mb-2 d-flex">
+                    <v-text-field
+                      label="служба :- Почта"
+                      outlined
+                      flat
+                      v-model="email"
+                      dense
+                      hide-details="auto"
+                      class="rounded-lg"
+                    ></v-text-field>
+                    <v-icon class="ml-4" @click="addContactMail">
+                      mdi-plus
+                    </v-icon>
+                  </v-col>
+                </v-row>
               </v-card-text>
-              <v-card-actions class="mt-n6">
+              <v-card-actions class="mt-n6 mx-2">
                 <v-btn
                   class="body-2 px-4"
                   @click="contact_dialog = false"
@@ -262,7 +364,12 @@
                   Назад
                 </v-btn>
                 <v-spacer></v-spacer>
-                <v-btn elevation="0" color="primary" class="body-2 px-4">
+                <v-btn
+                  elevation="0"
+                  color="primary"
+                  class="body-2 px-4"
+                  @click="saveContacts"
+                >
                   Добавить
                 </v-btn>
               </v-card-actions>
@@ -514,22 +621,63 @@
 
 <script>
 import axios from "axios";
+import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
+import ArenaMap from "@/components/Arena/ArenaMap.vue";
 
 export default {
+  components: { AdminImageUploader, ArenaMap },
   mounted() {},
+  watch: {
+    avatar: {
+      handler: function () {
+        this.saved = false;
+      },
+      deep: true,
+    },
+  },
+  computed: {
+    surfaces() {
+      let surface = [
+        {
+          id: "1",
+          city: this.arena.city,
+          address: this.arena.address,
+          coords: `${this.coordinate.lat}, ` + `${this.coordinate.lon}`,
+        },
+      ];
+      return surface;
+    },
+    coords() {
+      let coordinate = [this.coordinate.lat, this.coordinate.lon];
+      return coordinate;
+    },
+  },
+  
   data() {
     return {
-      arena: this.$store.getters.current_arena,
+      arena: this.$store.getters.current_arena, 
       checkbox: null,
+      contact: {
+        tel: [],
+        mail: [],
+      },
+      telephone: "",
+      coordinate: {
+        lat: "",
+        lon: "",
+      },
+      email: "",
       errMessage: "",
+      avatar: null,
+      saving: false,
+      saved: false,
       service_dialog: false,
       social_media_dialog: false,
       toggle_social_media: null,
       social_media_text: "",
       katok_dialog: false,
       contact_dialog: false,
-      contact_options: ["Электронная почта"],
-      album_dialog: true,
+      album_dialog: false,
       social_media_links: [
         {
           icon: "mdi-instagram",
@@ -610,9 +758,35 @@ export default {
           event: "Посмотреть календарь мероприятий",
         },
       ],
+      zoom: 16,
     };
   },
   methods: {
+    saveContacts() {
+      this.contact_dialog = false;
+    },
+    addContactTelephone() {
+      this.contact.tel.push(this.telephone);
+      this.telephone = "";
+    },
+    removeTelephoneItem(idx) {
+      this.contact.tel.splice(idx, 1);
+    },
+    addContactMail() {
+      this.contact.mail.push(this.email);
+      this.email = "";
+    },
+    removeMailItem(idx) {
+      this.contact.mail.splice(idx, 1);
+    },
+    uploadImage() {
+      this.saving = true;
+      setTimeout(() => this.savedAvatar(), 1000);
+    },
+    savedAvatar() {
+      this.saving = false;
+      this.saved = true;
+    },
     removeSocialMedia(index) {
       if (index > -1) {
         this.social_media_links.splice(index, 1);
