@@ -955,7 +955,7 @@ export default {
         city: "string",
         lat: Number(this.coordinate.lat),
         lan: Number(this.coordinate.lon),
-        profilePicture: this.profilePicture,
+        profilePicture: "/" + this.profilePicture,
         gallery: ["string"],
       };
       axios
