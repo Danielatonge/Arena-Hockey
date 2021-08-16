@@ -9,9 +9,8 @@
     <v-img
       :src="
         require('@/assets' +
-          (arena.profilePicture ? arena.profilePicture + '.png' : '/team_room_1.jpg'))
+          (arena.profilePicture ? arena.profilePicture : '/team_room_1.jpg'))
       "
-      
       height="200px"
     >
       <v-container>
@@ -43,8 +42,8 @@
     </v-card-title>
     <v-card-subtitle>
       {{
-        arena.address ||
-        "ул. Лермонтова, д. 14, пом. 3, г. Чита" | addressDescription
+        (arena.address ||
+        "ул. Лермонтова, д. 14, пом. 3, г. Чита") | addressDescription
       }}
     </v-card-subtitle>
   </v-card>
@@ -82,7 +81,7 @@ export default {
   filters: {
     addressDescription: (value) => {
       if (!value) return "";
-      return value.slice(0, 45);
+      return value.slice(0, 35);
     },
   },
   computed: {

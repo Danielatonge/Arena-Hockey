@@ -19,12 +19,14 @@ export default new Vuex.Store({
     current_team: {},
     current_contact: {},
     current_service: {},
+    currentPL: [],
     services: [],
     arenasMapIdentifier: [],
     teams: [],
     trainers: [],
     players: [],
     katokPL: [],
+    othersPL: [],
   },
   getters: {
     current_arena(state) {
@@ -70,7 +72,8 @@ export default new Vuex.Store({
         ({ id, lat, lan, title, city, address }) => ({
           id,
           address,
-          coords: lat && lan ? lat.toString() + ", " + lan.toString() : "55.55,37.32",
+          coords:
+            lat && lan ? lat.toString() + ", " + lan.toString() : "55.55,37.32",
           title,
           city,
         })
@@ -115,36 +118,60 @@ export default new Vuex.Store({
     SETPRICELIST(state, sPriceList) {
       state.katokPL = sPriceList;
     },
+    SET_PRICE_LIST_OTHERS(state, priceList) {
+      state.othersPL = priceList;
+    },
+    SET_CURRENT_PL(state, priceList) {
+      state.currentPL = priceList;
+    },
     SET_CURRENT_ARENA_TEAM(state, data) {
-      const arenas = data.map((item) => item.arena)
+      const arenas = data.map((item) => item.arena);
       const current_team = { ...state.current_team, arenas: arenas };
-      state.current_team = current_team
-      const id = state.teams.findIndex(item => item.id == state.current_team.id)
+      state.current_team = current_team;
+      const id = state.teams.findIndex(
+        (item) => item.id == state.current_team.id
+      );
       if (id > -1) {
         state.teams[id]["arenas"] = arenas;
       }
     },
     SET_TEAM_CONTACT(state, contact) {
-      state.current_team["contact"] = contact
-      const id = state.teams.findIndex(item => item.id == contact.teamId)
+      state.current_team["contact"] = contact;
+      const id = state.teams.findIndex((item) => item.id == contact.teamId);
       if (id > -1) {
         state.teams[id]["contact"] = contact;
       }
     },
     SET_ARENA_TEAM(state, payload) {
-      const pos = state.list_arenas.findIndex(item => item.id = payload.arena_id)
+      const pos = state.list_arenas.findIndex(
+        (item) => (item.id = payload.arena_id)
+      );
       if (pos > -1) {
-        const arena = state.list_arenas[pos]
-        arena["teams"] = payload.data
+        const arena = state.list_arenas[pos];
+        arena["teams"] = payload.data;
       }
     },
     SET_ARENA_TRAINER(state, payload) {
-      const pos = state.list_arenas.findIndex(item => item.id = payload.arena_id)
+      const pos = state.list_arenas.findIndex(
+        (item) => (item.id = payload.arena_id)
+      );
       if (pos > -1) {
-        const arena = state.list_arenas[pos]
-        arena["trainers"] = payload.data
+        const arena = state.list_arenas[pos];
+        arena["trainers"] = payload.data;
       }
-    }
+    },
+    UPDATE_PRICE_LIST(state, service) {
+      state.katokPL.forEach((x) => {
+        if (x.serviceId === service.serviceId) {
+          x.price = service.price;
+        }
+      });
+      state.othersPL.forEach((x) => {
+        if (x.serviceId === service.serviceId) {
+          x.price = service.price;
+        }
+      });
+    },
   },
   actions: {
     getAllArenas({ commit }) {
@@ -255,9 +282,9 @@ export default new Vuex.Store({
             axios
               .get(`/service/${x.id}/price-list`)
               .then((response) => {
-                
                 let nItem = {
-                  ...x, price: response.data
+                  ...x,
+                  price: response.data,
                 };
                 final.push(nItem);
                 resolve(response.data);
@@ -272,9 +299,40 @@ export default new Vuex.Store({
 
       Promise.all(priceList).then((response) => {
         console.log(response);
-        console.log(final)
-        commit("SETPRICELIST", final)
-      })
+        console.log(final);
+        commit("SETPRICELIST", final);
+      });
+    },
+    getPriceListOthers({ commit }) {
+      let priceList = [];
+      let otherService = this.state.services.filter((x) => x.type != "Каток");
+      let final = [];
+      otherService.forEach((x) => {
+        priceList.push(
+          new Promise((resolve, reject) => {
+            axios
+              .get(`/service/${x.id}/price-list`)
+              .then((response) => {
+                let nItem = {
+                  ...x,
+                  price: response.data,
+                };
+                final.push(nItem);
+                resolve(response.data);
+              })
+              .catch((err) => {
+                console.log(err);
+                reject(err);
+              });
+          })
+        );
+      });
+
+      Promise.all(priceList).then((response) => {
+        console.log(response);
+        console.log(final);
+        commit("SET_PRICE_LIST_OTHERS", final);
+      });
     },
     getArenaTeams({ commit }, arena_id) {
       return new Promise((resolve) => {
@@ -283,12 +341,10 @@ export default new Vuex.Store({
           .then((response) => {
             console.log("SET_ARENA_TEAM", { arena_id, data: response.data });
             commit("SET_ARENA_TEAM", response.data);
-            resolve(response.data)
+            resolve(response.data);
           })
-          .catch((err) =>
-            console.log(err)
-          );
-      })
+          .catch((err) => console.log(err));
+      });
     },
     getArenaTrainer({ commit }, arena_id) {
       return new Promise((resolve) => {
@@ -297,13 +353,40 @@ export default new Vuex.Store({
           .then((response) => {
             console.log("SET_ARENA_TRAINER", { arena_id, data: response.data });
             commit("SET_ARENA_TRAINER", response.data);
-            resolve(response.data)
+            resolve(response.data);
           })
-          .catch((err) =>
-            console.log(err)
-          );
-      })
-    }
+          .catch((err) => console.log(err));
+      });
+    },
+    setCurrentPL({ commit }, priceList) {
+      commit("SET_CURRENT_PL", priceList);
+    },
+    adminAddPrice({ commit }, price) {
+      return new Promise((resolve) => {
+        axios
+          .post(`/price`, price)
+          .then((response) => {
+            console.log("SET_PRICE", response.data);
+            commit(response.data);
+            resolve(response.data);
+          })
+          .catch((err) => console.log(err));
+      });
+    },
+    savePriceList({ commit }, service) {
+      return new Promise((resolve) => {
+        commit("UPDATE_PRICE_LIST", service);
+        resolve();
+        // axios
+        //   .post(`/price`, price)
+        //   .then((response) => {
+        //     console.log("SET_PRICE", response.data);
+        //     commit(response.data)
+        //     resolve(response.data);
+        //   })
+        //   .catch((err) => console.log(err));
+      });
+    },
   },
   modules: {},
   plugins: [vuexLocal.plugin],

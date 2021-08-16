@@ -24,31 +24,32 @@
         <v-tabs-items v-model="value_tab" style="background-color: unset">
           <v-tab-item v-for="i in 2" :key="i">
             <div v-show="value_tab == 0">
-              <div v-for="x in 2" :key="x">
-                <p class="text-h4 mt-10 mb-0">Название катка {{ x }}</p>
-                <p class="grey--text">Краткое описание катка</p>
-                <v-row>
+              <div v-for="(item, i) in katokPL" :key="i">
+                <p class="text-h4 mt-8 mb-0">{{ item.title }}</p>
+                <p class="grey--text">{{ item.miniDescription }}</p>
+
+                <v-row v-show="item.price.length">
                   <v-col
                     cols="2"
-                    lg="2"
-                    xl="1"
                     class="text-center border"
-                    v-for="(item, indx) in price_list"
+                    v-for="(itm, indx) in item.price"
                     :key="indx"
                   >
-                    <div class="mb-3 grey--text">{{ item.interval }}</div>
+                    <div class="mb-3 grey--text">
+                      {{ itm.price.startTime + " - " + itm.price.endTime }}
+                    </div>
                     <div class="right-border mr-n3">
-                      <p class="mb-0">{{ item.weekday }}</p>
-                      <p class="primary--text">{{ item.weekend }}</p>
+                      <p class="mb-0">{{ itm.price.weekdayPrice }}</p>
+                      <p class="primary--text">{{ itm.price.holidayPrice }}</p>
                     </div>
                   </v-col>
                 </v-row>
-                <div class="mt-n8">
+                <div class="mt-n8" v-show="item.price.length">
                   <span class="mr-5 font-weight-bold">
                     <v-icon style="font-size: 70px" color="#000" class="">
                       mdi-circle-small
                     </v-icon>
-                    <span class="ml-n5">Будни</span>
+                    <span class="ml-n5"> Будни </span>
                   </span>
                   <span class="font-weight-bold primary--text">
                     <v-icon style="font-size: 70px" color="primary" class="">
@@ -57,49 +58,48 @@
                     <span class="ml-n5"> Выходные </span>
                   </span>
                 </div>
-                <div class="">
-                  <v-btn color="primary" elevation="0">
-                    ИЗМЕНИТЬ ПРАЙС-ЛИСТ
-                  </v-btn>
-                </div>
-              </div>
-              <div v-for="i in 2" :key="i">
-                <p class="text-h4 mt-10 mb-0">Название катка {{ i }}</p>
-                <p class="grey--text">Краткое описание катка</p>
-
-                <div class="">
-                  <v-btn color="primary" elevation="0">
-                    ДОБАВИТЬ ПРАЙС-ЛИСТ
+                {{item.price}}
+                <div class="mt-4">
+                  <v-btn
+                    color="primary"
+                    elevation="0"
+                    @click="goToModifyList(item.price)"
+                  >
+                    {{
+                      item.price.length
+                        ? "ИЗМЕНИТЬ ПРАЙС-ЛИСТ"
+                        : "ДОБАВИТЬ ПРАЙС-ЛИСТ"
+                    }}
                   </v-btn>
                 </div>
               </div>
             </div>
             <div v-show="value_tab == 1">
-              <div v-for="x in 2" :key="x">
-                <p class="text-h4 mt-10 mb-0">Название помещения {{ x }}</p>
-                <p class="grey--text">Краткое описание помещения</p>
-                <v-row>
+              <div v-for="(item, i) in othersPL" :key="i">
+                <p class="text-h4 mt-8 mb-0">{{ item.title }}</p>
+                <p class="grey--text">{{ item.miniDescription }}</p>
+                <v-row v-show="item.price.length">
                   <v-col
                     cols="2"
-                    lg="2"
-                    xl="1"
                     class="text-center border"
-                    v-for="(item, indx) in price_list"
+                    v-for="(itm, indx) in item.price"
                     :key="indx"
                   >
-                    <div class="mb-3 grey--text">{{ item.interval }}</div>
+                    <div class="mb-3 grey--text">
+                      {{ itm.price.startTime + " - " + itm.price.endTime }}
+                    </div>
                     <div class="right-border mr-n3">
-                      <p class="mb-0">{{ item.weekday }}</p>
-                      <p class="primary--text">{{ item.weekend }}</p>
+                      <p class="mb-0">{{ itm.price.weekdayPrice }}</p>
+                      <p class="primary--text">{{ itm.price.holidayPrice }}</p>
                     </div>
                   </v-col>
                 </v-row>
-                <div class="mt-n8">
+                <div class="mt-n8" v-show="item.price.length">
                   <span class="mr-5 font-weight-bold">
                     <v-icon style="font-size: 70px" color="#000" class="">
                       mdi-circle-small
                     </v-icon>
-                    <span class="ml-n5">Будни</span>
+                    <span class="ml-n5"> Будни </span>
                   </span>
                   <span class="font-weight-bold primary--text">
                     <v-icon style="font-size: 70px" color="primary" class="">
@@ -108,19 +108,13 @@
                     <span class="ml-n5"> Выходные </span>
                   </span>
                 </div>
-                <div class="">
+                <div class="mt-4">
                   <v-btn color="primary" elevation="0">
-                    ИЗМЕНИТЬ ПРАЙС-ЛИСТ
-                  </v-btn>
-                </div>
-              </div>
-              <div v-for="i in 2" :key="i">
-                <p class="text-h4 mt-10 mb-0">Название помещения {{ i }}</p>
-                <p class="grey--text">Краткое описание помещения</p>
-
-                <div class="">
-                  <v-btn color="primary" elevation="0">
-                    ДОБАВИТЬ ПРАЙС-ЛИСТ
+                    {{
+                      item.price.length
+                        ? "ИЗМЕНИТЬ ПРАЙС-ЛИСТ"
+                        : "ДОБАВИТЬ ПРАЙС-ЛИСТ"
+                    }}
                   </v-btn>
                 </div>
               </div>
@@ -133,11 +127,22 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
+  computed: {
+    ...mapState(["katokPL", "othersPL"]),
+  },
+  mounted() {
+    this.$store.dispatch("getPriceListKatok");
+    this.$store.dispatch("getPriceListOthers");
+    this.arenaId = this.$route.params.id;
+  },
   data() {
     return {
       value_tab: 0,
       service_nav: ["Катки", "Другие помещения"],
+      arenaId: "",
       breadcrumb_items: [
         {
           text: "Личный кабинет",
@@ -169,6 +174,14 @@ export default {
         { interval: "22:30–00:00", weekday: "10 000", weekend: "10 000" },
       ],
     };
+  },
+  methods: {
+    goToModifyList(service) {
+      this.$store.dispatch("setCurrentPL", service);
+      this.$router.push({
+        path: `/admin/sport_complex/${this.arenaId}/payment_portal/price_list/${service.serviceId}`,
+      });
+    },
   },
 };
 </script>

@@ -83,20 +83,20 @@
 
     <p class="text-h6 mt-10 mb-0">Прайс-лист</p>
     <p class="grey--text">Цены указаны за 1 час аренды</p>
-    <div v-for="(item, i) in katok_services" :key="i">
+    <div v-for="(item, i) in katokPL" :key="i">
       <p class="text-h4 mt-8 mb-0">{{ item.title }}</p>
       <p class="grey--text">{{ item.miniDescription }}</p>
       <v-row>
         <v-col
           cols="2"
           class="text-center border"
-          v-for="(item, indx) in price_list"
+          v-for="(itm, indx) in item.price"
           :key="indx"
         >
-          <div class="mb-3 grey--text">{{ item.interval }}</div>
+          <div class="mb-3 grey--text">{{ itm.price.startTime + ' - ' + itm.price.endTime }}</div>
           <div class="right-border mr-n3">
-            <p class="mb-0">{{ item.weekday }}</p>
-            <p class="primary--text">{{ item.weekend }}</p>
+            <p class="mb-0">{{ itm.price.weekdayPrice }}</p>
+            <p class="primary--text">{{ itm.price.holidayPrice }}</p>
           </div>
         </v-col>
       </v-row>
@@ -244,6 +244,7 @@ export default {
   },
   computed: {
     ...mapState({ arena: "current_arena" }),
+    ...mapState(["katokPL"]),
     ...mapGetters(["katok_services", "others_services"]),
   },
   mounted() {},

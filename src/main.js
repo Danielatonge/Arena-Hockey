@@ -4,9 +4,12 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import VueLazyLoad from 'vue-lazyload';
+import { Plugin } from 'vue-fragment';
+
 
 Vue.config.productionTip = false;
 Vue.use(VueLazyLoad)
+Vue.use(Plugin);
 
 new Vue({
   router,

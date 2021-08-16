@@ -254,7 +254,7 @@ const routes = [
     component: CreateAdminManager,
   },
   {
-    path: "/admin/sport_complex/payment_portal/price_list",
+    path: "/admin/sport_complex/:arenaId/payment_portal/price_list/:serviceId",
     name: "EditAdminPriceList",
     component: EditAdminPriceList,
   },
