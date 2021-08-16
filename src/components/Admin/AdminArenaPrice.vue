@@ -1,5 +1,5 @@
 <template>
-  <fragment>
+  <fragment v-show="data">
     <v-col cols="3" md="2" class="my-auto">
       <div>{{ data.startTime + " - " + data.endTime }}</div>
     </v-col>
@@ -17,7 +17,7 @@
     <v-col cols="5" md="3" class="d-flex">
       <v-text-field
         placeholder="5000 p"
-        v-model="data.holidayPrice"
+        v-model="data.HolidayPrice"
         outlined
         dense
         flat

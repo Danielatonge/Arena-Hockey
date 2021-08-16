@@ -64,7 +64,7 @@ export default new Vuex.Store({
     },
     female_trainer(state) {
       return state.trainers.filter((x) => x.qualification === "Женская");
-    }
+    },
   },
   mutations: {
     SET_ARENAS(state, arenas) {
@@ -163,18 +163,19 @@ export default new Vuex.Store({
         arena["trainers"] = payload.data;
       }
     },
-    UPDATE_PRICE_LIST(state, service) {
-      state.katokPL.forEach((x) => {
-        if (x.id === service.serviceId) {
-          x.price = service.price;
-        }
-      });
-      state.othersPL.forEach((x) => {
-        if (x.id === service.serviceId) {
-          x.price = service.price;
-        }
-      });
-    },
+    // UPDATE_PRICE_LIST(state, service) {
+    //   state.katokPL.forEach((x) => {
+    //     if (x.id == service[0].serviceId) {
+    //       x.price = service;
+    //       console.log("SET__");
+    //     }
+    //   });
+    //   state.othersPL.forEach((x) => {
+    //     if (x.id === service.serviceId) {
+    //       x.price = service.price;
+    //     }
+    //   });
+    // },
   },
   actions: {
     getAllArenas({ commit }) {
@@ -263,10 +264,10 @@ export default new Vuex.Store({
           .get(`/team/${id}/contact`)
           .then((response) => {
             commit("SET_TEAM_CONTACT", response.data);
-            resolve(response.data)
+            resolve(response.data);
           })
           .catch((err) => console.log(err));
-      })
+      });
     },
     getTeamUsers({ commit }, id) {
       return new Promise((resolve) => {
@@ -275,10 +276,10 @@ export default new Vuex.Store({
           .then((response) => {
             //commit("SET_TEAM_CONTACT", response.data);
             console.log(commit);
-            resolve(response.data)
+            resolve(response.data);
           })
           .catch((err) => console.log(err));
-      })
+      });
     },
     getTeamByID({ commit }, id) {
       const item = this.state.teams.filter((team) => team.id === id);
@@ -299,7 +300,6 @@ export default new Vuex.Store({
             axios
               .get(`/service/${x.id}/price-list`)
               .then((response) => {
-
                 let nItem = {
                   ...x,
                   price: response.data,
@@ -315,9 +315,7 @@ export default new Vuex.Store({
         );
       });
 
-      Promise.all(priceList).then((response) => {
-        console.log(response);
-        console.log(final);
+      Promise.all(priceList).then(() => {
         commit("SETPRICELIST", final);
       });
     },
@@ -357,7 +355,6 @@ export default new Vuex.Store({
         axios
           .get(`/arena/${arena_id}/teams`)
           .then((response) => {
-            console.log("SET_ARENA_TEAM", { arena_id, data: response.data });
             commit("SET_ARENA_TEAM", response.data);
             resolve(response.data);
           })
@@ -369,7 +366,6 @@ export default new Vuex.Store({
         axios
           .get(`/arena/${arena_id}/users`)
           .then((response) => {
-            console.log("SET_ARENA_TRAINER", { arena_id, data: response.data });
             commit("SET_ARENA_TRAINER", response.data);
             resolve(response.data);
           })
@@ -379,30 +375,33 @@ export default new Vuex.Store({
     setCurrentPL({ commit }, priceList) {
       commit("SET_CURRENT_PL", priceList);
     },
-    adminAddPrice({ commit }, price) {
-      return new Promise((resolve) => {
-        axios
-          .post(`/price`, price)
-          .then((response) => {
-            console.log("SET_PRICE", response.data);
-            commit(response.data);
-            resolve(response.data);
+
+    savePriceList({ commit }, {prices, serviceId}) {
+      console.log({prices, serviceId});
+      let priceList = [];
+      commit("UPDATE_PRICE_LIST");
+      prices.forEach((x) => {
+        priceList.push(
+          new Promise((resolve, reject) => {
+            axios
+              .post(`/pricelist`, {
+                priceId: x.id,
+                serviceId: serviceId
+              })
+              .then((response) => {
+                resolve(response.data);
+              })
+              .catch((err) => {
+                console.log(err);
+                reject(err);
+              });
           })
-          .catch((err) => console.log(err));
+        );
       });
-    },
-    savePriceList({ commit }, service) {
-      return new Promise((resolve) => {
-        commit("UPDATE_PRICE_LIST", service);
-        resolve();
-        // axios
-        //   .post(`/price`, price)
-        //   .then((response) => {
-        //     console.log("SET_PRICE", response.data);
-        //     commit(response.data)
-        //     resolve(response.data);
-        //   })
-        //   .catch((err) => console.log(err));
+
+      Promise.all(priceList).then((response) => {
+        console.log(response);
+        // commit("SET_PRICE_LIST", final);
       });
     },
   },

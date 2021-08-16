@@ -18,11 +18,12 @@
               <div class="body-2 grey--text">Цена в выходные дни (за час)</div>
             </v-col>
           </v-row>
-          <v-row class="mt-n4" v-for="(item, i) in currentPL" :key="i">
+          {{ prices }}
+          <v-row class="mt-n4" v-for="(item, i) in prices" :key="i">
             <admin-arena-price
               @deleteTimeframe="deleteTimeframe"
               :position="i"
-              :data="item.price"
+              :data="item"
             ></admin-arena-price>
           </v-row>
           <v-row>
@@ -151,6 +152,8 @@
 <script>
 import AdminArenaPrice from "@/components/Admin/AdminArenaPrice.vue";
 import { mapState } from "vuex";
+import axios from "axios";
+
 export default {
   components: { AdminArenaPrice },
   computed: {
@@ -204,41 +207,52 @@ export default {
           href: "",
         },
       ],
+      prices: [],
     };
   },
   methods: {
     deleteTimeframe(position) {
-      this.currentPL.splice(position, 1);
+      const price = this.prices[position];
+      axios
+        .delete(`/price/${price.id}`, price)
+        .then(() => {
+          console.log("DELETED");
+          this.prices.splice(position, 1);
+        })
+        .catch((err) => console.log(err));
     },
     addTimeInterval() {
       const data = this.timeframe;
       const price = {
-        serviceId: this.serviceId,
-        price: {
-          startTime: data.begin,
-          endTime: data.end,
-          weekdayPrice: Number(data.weekday),
-          holidayPrice: Number(data.weekend),
-        },
+        startTime: data.begin,
+        endTime: data.end,
+        weekdayPrice: Number(data.weekday),
+        HolidayPrice: Number(data.weekend),
       };
-      this.currentPL.push(price);
-      this.dialog = false;
+      // this.currentPL.push(price);
+      // this.dialog = false;
       console.log(price);
-      // this.$store.dispatch("adminAddPrice", price).then((res) => {
-      //   console.log("adminAddPrice", res.data)
-      //   this.currentPL.push(price);
-      //   this.dialog = false;
-      // });
+      axios
+        .post(`/price`, price)
+        .then((response) => {
+          console.log("SET_PRICE", response.data);
+          this.prices.push(price);
+          this.dialog = false;
+        })
+        .catch((err) => console.log(err));
+      this.timeframe = {
+        begin: "",
+        end: "",
+        weekday: "",
+        weekend: "",
+      };
     },
     savePriceList() {
-      const currentPL = this.currentPL;
-      this.$store
-        .dispatch("savePriceList", currentPL)
-        .then(() => {
-          this.$router.push({
-            path: `/admin/sport_complex/${this.arenaId}/payment_portal/edit`,
-          });
+      this.$store.dispatch("savePriceList", {prices : this.prices, serviceId: this.serviceId}).then(() => {
+        this.$router.push({
+          path: `/admin/sport_complex/${this.arenaId}/payment_portal/edit`,
         });
+      });
     },
   },
 };

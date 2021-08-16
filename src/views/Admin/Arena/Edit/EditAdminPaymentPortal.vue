@@ -121,6 +121,7 @@
           </v-tab-item>
         </v-tabs-items>
       </div>
+      {{katokPL}}
     </v-container>
   </div>
 </template>
