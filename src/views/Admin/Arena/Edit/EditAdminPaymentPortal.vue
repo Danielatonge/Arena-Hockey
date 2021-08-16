@@ -58,12 +58,12 @@
                     <span class="ml-n5"> Выходные </span>
                   </span>
                 </div>
-                {{item.price}}
+                {{item}}
                 <div class="mt-4">
                   <v-btn
                     color="primary"
                     elevation="0"
-                    @click="goToModifyList(item.price)"
+                    @click="goToModifyList(item)"
                   >
                     {{
                       item.price.length
@@ -177,9 +177,9 @@ export default {
   },
   methods: {
     goToModifyList(service) {
-      this.$store.dispatch("setCurrentPL", service);
+      this.$store.dispatch("setCurrentPL", service.price);
       this.$router.push({
-        path: `/admin/sport_complex/${this.arenaId}/payment_portal/price_list/${service.serviceId}`,
+        path: `/admin/sport_complex/${this.arenaId}/payment_portal/price_list/${service.id}`,
       });
     },
   },

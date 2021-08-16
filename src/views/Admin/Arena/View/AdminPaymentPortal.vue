@@ -35,11 +35,11 @@
                     :key="indx"
                   >
                     <div class="mb-3 grey--text">
-                      {{ itm.startTime + " - " + itm.endTime }}
+                      {{ itm.price.startTime + " - " + itm.price.endTime }}
                     </div>
                     <div class="right-border mr-n3">
-                      <p class="mb-0">{{ itm.weekdayPrice }}</p>
-                      <p class="primary--text">{{ itm.holidayPrice }}</p>
+                      <p class="mb-0">{{ itm.price.weekdayPrice }}</p>
+                      <p class="primary--text">{{ itm.price.holidayPrice }}</p>
                     </div>
                   </v-col>
                 </v-row>
@@ -76,11 +76,11 @@
                     :key="indx"
                   >
                     <div class="mb-3 grey--text">
-                      {{ itm.startTime + " - " + itm.endTime }}
+                      {{ itm.price.startTime + " - " + itm.price.endTime }}
                     </div>
                     <div class="right-border mr-n3">
-                      <p class="mb-0">{{ itm.weekdayPrice }}</p>
-                      <p class="primary--text">{{ itm.holidayPrice }}</p>
+                      <p class="mb-0">{{ itm.price.weekdayPrice }}</p>
+                      <p class="primary--text">{{ itm.price.holidayPrice }}</p>
                     </div>
                   </v-col>
                 </v-row>

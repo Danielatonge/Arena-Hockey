@@ -22,7 +22,7 @@
             <admin-arena-price
               @deleteTimeframe="deleteTimeframe"
               :position="i"
-              :data="item"
+              :data="item.price"
             ></admin-arena-price>
           </v-row>
           <v-row>
@@ -143,7 +143,6 @@
             ></v-select>
           </div>
         </div>
-        {{currentPL}}
       </div>
     </v-container>
   </div>
@@ -214,11 +213,13 @@ export default {
     addTimeInterval() {
       const data = this.timeframe;
       const price = {
-        startTime: data.begin,
-        endTime: data.end,
-        weekdayPrice: Number(data.weekday),
-        HolidayPrice: Number(data.weekend),
         serviceId: this.serviceId,
+        price: {
+          startTime: data.begin,
+          endTime: data.end,
+          weekdayPrice: Number(data.weekday),
+          holidayPrice: Number(data.weekend),
+        },
       };
       this.currentPL.push(price);
       this.dialog = false;
@@ -232,9 +233,11 @@ export default {
     savePriceList() {
       const currentPL = this.currentPL;
       this.$store
-        .dispatch("savePriceList", {price: currentPL, serviceId: this.serviceId })
+        .dispatch("savePriceList", currentPL)
         .then(() => {
-          this.$router.push({path: `/admin/sport_complex/${this.arenaId}/payment_portal/edit`});
+          this.$router.push({
+            path: `/admin/sport_complex/${this.arenaId}/payment_portal/edit`,
+          });
         });
     },
   },

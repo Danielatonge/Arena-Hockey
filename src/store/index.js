@@ -165,12 +165,12 @@ export default new Vuex.Store({
     },
     UPDATE_PRICE_LIST(state, service) {
       state.katokPL.forEach((x) => {
-        if (x.serviceId === service.serviceId) {
+        if (x.id === service.serviceId) {
           x.price = service.price;
         }
       });
       state.othersPL.forEach((x) => {
-        if (x.serviceId === service.serviceId) {
+        if (x.id === service.serviceId) {
           x.price = service.price;
         }
       });

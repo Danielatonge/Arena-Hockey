@@ -17,7 +17,7 @@
     <v-col cols="5" md="3" class="d-flex">
       <v-text-field
         placeholder="5000 p"
-        v-model="data.HolidayPrice"
+        v-model="data.holidayPrice"
         outlined
         dense
         flat
