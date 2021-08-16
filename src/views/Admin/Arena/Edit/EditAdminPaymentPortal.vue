@@ -58,7 +58,6 @@
                     <span class="ml-n5"> Выходные </span>
                   </span>
                 </div>
-                {{item}}
                 <div class="mt-4">
                   <v-btn
                     color="primary"
