@@ -54,15 +54,20 @@
           <v-col class="d-flex" cols="6" md="4" lg="3" xl="2">
             <v-select
               :items="sort_by_team"
-              value="По популярности"
+              v-model="sort_model"
+              value="0"
               solo
               flat
+              item-text="value"
+              item-value="key"
               prepend-icon="mdi-sort"
               hide-details="auto"
             ></v-select>
           </v-col>
           <v-col class="my-auto" cols="6" md="4">
-            <div class="body-1 grey--text">Найдено: {{teams.length}} результатов</div>
+            <div class="body-1 grey--text">
+              Найдено: {{ teams.length }} результатов
+            </div>
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="6" md="4" lg="3" xl="2">
@@ -77,12 +82,22 @@
         </v-row>
       </div>
       <v-row dense class="mx-n4">
-        <v-col cols="12" md="6" v-for="(item, i) in teams" :key="i">
-          <router-link :to="`/arena/d5132ff1-674e-4a1f-948e-8833937b0fa4/teamname/${item.id}`" class="undo-link-default">
+        <v-col cols="12" md="6" v-for="(item, i) in displayedTeam" :key="i">
+          <router-link
+            :to="`/arena/d5132ff1-674e-4a1f-948e-8833937b0fa4/teamname/${item.id}`"
+            class="undo-link-default"
+          >
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
                 <v-avatar class="ma-3 rounded-lg" size="125" tile>
-                    <v-img :src="require('@/assets' + (item.profilePicture ? item.profilePicture : '/team_room_1.jpg'))"></v-img>
+                  <v-img
+                    :src="
+                      require('@/assets' +
+                        (item.profilePicture
+                          ? item.profilePicture
+                          : '/team_room_1.jpg'))
+                    "
+                  ></v-img>
                 </v-avatar>
                 <v-card-text>
                   <div
@@ -91,8 +106,10 @@
                   >
                     Москва
                   </div>
-                  <div class="text-h5 mb-2"> {{item.title}} </div>
-                  <div class="body-1 grey--text"> {{item.miniDescription | descriptionLength}} </div>
+                  <div class="text-h5 mb-2">{{ item.title }}</div>
+                  <div class="body-1 grey--text">
+                    {{ item.miniDescription | descriptionLength }}
+                  </div>
                 </v-card-text>
               </div>
             </v-card>
@@ -148,7 +165,9 @@
             ></v-select>
           </v-col>
           <v-col class="my-auto" cols="6" md="4">
-            <div class="body-1 grey--text">Найдено: {{players.length}} результатов</div>
+            <div class="body-1 grey--text">
+              Найдено: {{ players.length }} результатов ss
+            </div>
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="6" md="4" lg="3" xl="2">
@@ -167,8 +186,13 @@
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
               <v-avatar class="ma-3 rounded-lg" size="125" tile>
-                    <v-img :src="require('@/assets' + (item.level ? item.level : '/team_room_1.jpg'))"></v-img>
-                </v-avatar>
+                <v-img
+                  :src="
+                    require('@/assets' +
+                      (item.level ? item.level : '/team_room_1.jpg'))
+                  "
+                ></v-img>
+              </v-avatar>
               <v-card-text>
                 <div class="text-h5 mb-2">
                   {{ item.name + " " + item.middleName + " " + item.surname }}
@@ -178,7 +202,9 @@
                 </div>
                 <div class="d-flex">
                   <div class="body-2 grey--text">Хват: правый</div>
-                  <div class="body-2 grey--text ml-12">Амплуа: {{item.position}}</div>
+                  <div class="body-2 grey--text ml-12">
+                    Амплуа: {{ item.position }}
+                  </div>
                 </div>
 
                 <div class="body-2 grey--text">Уровень: профессионал</div>
@@ -213,11 +239,66 @@ export default {
   name: "Room",
   computed: {
     ...mapState(["teams", "players"]),
+    displayedTeam() {
+      console.log("Display");
+      return this.teams.map((item) => {
+        if (item.profilePicture == "string") {
+          item.profilePicture = null;
+        }
+        return item;
+      });
+    },
   },
   filters: {
     descriptionLength(value) {
       if (value.length < 30) return value;
       return value.slice(0, 30) + "...";
+    },
+  },
+  watch: {
+    sort_model() {
+      console.log(this.sort_model);
+      if (this.sort_model == 0) {
+        this.displayedTeam.sort((item1, item2) => {
+          console.log(item1, item2);
+          if (item1.title < item2.title) {
+            return -1;
+          }
+          if (item1.title > item2.title) {
+            return 1;
+          }
+          return 0;
+        });
+        this.players.sort((item1, item2) => {
+          console.log(item1, item2);
+          if (item1.name < item2.name) {
+            return -1;
+          }
+          if (item1.name > item2.name) {
+            return 1;
+          }
+          return 0;
+        });
+      } else {
+        this.displayedTeam.sort(function (item1, item2) {
+          if (item1.title < item2.title) {
+            return 1;
+          }
+          if (item1.title > item2.title) {
+            return -1;
+          }
+          return 0;
+        });
+        this.players.sort(function (item1, item2) {
+          if (item1.name < item2.name) {
+            return 1;
+          }
+          if (item1.name > item2.name) {
+            return -1;
+          }
+          return 0;
+        });
+      }
     },
   },
   mounted() {
@@ -226,6 +307,7 @@ export default {
   },
   data() {
     return {
+      sort_model: null,
       player_room: false,
       team_room: true,
       page: 1,
@@ -252,9 +334,12 @@ export default {
       ],
       team_tags: ["Москва", "Казань"],
       player_tags: [""],
-      sort_by_team: ["По популярности", "По именни"],
       sort_by_player: ["По возрасту", "По город"],
       display_items: ["Показывать по 12", "Показывать по 25"],
+      sort_by_team: [
+        { key: 0, value: "По именни (от А до Я)" },
+        { key: 1, value: "По именни (от Я до А)" },
+      ],
     };
   },
   methods: {

@@ -73,9 +73,12 @@
           <v-col class="d-flex" cols="6" md="4" lg="3" xl="2">
             <v-select
               :items="sort_by_team"
+              v-model="sort_model"
               value="По популярности"
               solo
               flat
+              item-text="value"
+              item-value="key"
               prepend-icon="mdi-sort"
               hide-details="auto"
             ></v-select>
@@ -120,6 +123,45 @@
         :total-visible="7"
       ></v-pagination>
     </div>
+
+    <v-dialog v-model="filter_dialog" max-width="600">
+      <v-card class="grey lighten-5">
+        <v-card-title class="py-3">
+          <v-row>
+            <v-col cols="11">
+              <div class="text-h5 black--text">Фильтры</div>
+            </v-col>
+            <v-col>
+              <div class="mb-4">
+                <v-icon @click.stop="filter_dialog = false">mdi-close</v-icon>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-title>
+        <v-card-text>
+          <v-row>
+            <v-col>
+              <div class="black--text font-weight-bold">Сортировка</div>
+              <v-select
+                :items="sort_by_alphabet"
+                value="По алфавиту (от А до Я)"
+                solo
+                flat
+                prepend-icon="mdi-swap"
+                hide-details="auto"
+              ></v-select>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-actions class="mt-3">
+          <v-btn class="body-2" @click="filter_dialog = false" elevation="0">
+            Назад
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn elevation="0" color="primary" class="body-2"> Добавить </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -153,6 +195,31 @@ export default {
     },
     search() {
       this.paginationLength = Math.ceil(this.searchList.length / this.perPage);
+    },
+    sort_model() {
+      console.log(this.sort_model);
+      if (this.sort_model == 0) {
+        this.displayedArenas.sort((item1, item2) => {
+          console.log(item1, item2);
+          if (item1.title < item2.title) {
+            return -1;
+          }
+          if (item1.title > item2.title) {
+            return 1;
+          }
+          return 0;
+        });
+      } else {
+        this.displayedArenas.sort(function (item1, item2) {
+          if (item1.title < item2.title) {
+            return 1;
+          }
+          if (item1.title > item2.title) {
+            return -1;
+          }
+          return 0;
+        });
+      }
     },
   },
   methods: {
@@ -189,7 +256,15 @@ export default {
         "/arena_7",
         "/arena_2",
       ],
-      sort_by_team: ["По популярности", "По именни"],
+      sort_by_team: [
+        { key: 0, value: "По именни (от Я до А)" },
+        { key: 1, value: "По именни (от А до Я)" },
+      ],
+      sort_model: null,
+      sort_by_alphabet: [
+        { key: 0, value: "По алфавиту (от А до Я)" },
+        { key: 1, value: "По алфавиту (от Я до А)" },
+      ],
       display_item: { state: "Показывать по 5", value: 5 },
       display_items: [
         { state: "Показывать по 5", value: 5 },
@@ -197,6 +272,7 @@ export default {
         { state: "Показывать по 12", value: 12 },
         { state: "Показывать по 24", value: 24 },
       ],
+      filter_dialog: false,
     };
   },
   components: { ArenaCard },
