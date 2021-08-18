@@ -125,10 +125,14 @@ export default {
       { icon: "mdi-instagram", link: `${arenaItem.instagram}` },
       { icon: "mdi-vk", link: `${arenaItem.vk}` },
       { icon: "mdi-web", link: `${arenaItem.website}` },
+      { icon: "mdi-music-note-outline", link: `${arenaItem.tiktok}` },
+      { icon: "mdi-twitter", link: `${arenaItem.twitter}` },
+      { icon: "mdi-youtube", link: `${arenaItem.youtube}` },
+      { icon: "mdi-facebook", link: `${arenaItem.facebook}` },
     ];
 
-    this.$store.dispatch("getAllTeams");
-    this.$store.dispatch("getAllTrainers");
+    // this.$store.dispatch("getAllTeams");
+    // this.$store.dispatch("getAllTrainers");
     this.breadcrumb_items = [
       {
         text: "Москва",
@@ -144,8 +148,9 @@ export default {
   },
   data() {
     return {
-      name: "ArenaName",
+      name: "ArenaLeadership",
       contact_list: null,
+      arenaId: null,
       sidebar_tab: 0,
       premises_tab: null,
       premises_nav: ["Катки", "Бросковые зоны", "Спортивные залы"],

@@ -225,7 +225,7 @@
 </template>
 
 <script>
-//import { mapState, mapGetters } from "vuex";
+import { mapState } from "vuex";
 export default {
   filters: {
     descriptionLength(value) {
@@ -238,6 +238,7 @@ export default {
   },
   computed: {
     //...mapState(["trainers"]),
+    ...mapState(["current_arena"]),
     kid_trainers() {
       return this.trainers.filter((x) => x.level === "Детскaя");
     },
@@ -316,7 +317,7 @@ export default {
         "Юношеские тренеры",
         "Женские тренеры",
       ],
-
+      breadcrumb_items: null,
       player_items: ["/player_1", "/player_2", "/player_3"],
     };
   },
