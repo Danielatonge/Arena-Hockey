@@ -42,8 +42,8 @@
     </v-card-title>
     <v-card-subtitle>
       {{
-        (arena.address ||
-        "ул. Лермонтова, д. 14, пом. 3, г. Чита") | addressDescription
+        (arena.address || "ул. Лермонтова, д. 14, пом. 3, г. Чита")
+          | addressDescription
       }}
     </v-card-subtitle>
   </v-card>

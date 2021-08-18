@@ -43,10 +43,9 @@
               depressed
               height="48px"
               width="100%"
+              @click="$router.push({ path: '/event_schedule_all' })"
             >
-              <router-link to="/event_schedule_all" class="reset-link">
-                Расписание мероприятий
-              </router-link>
+              Расписание мероприятий
             </v-btn>
           </v-col>
         </v-row>

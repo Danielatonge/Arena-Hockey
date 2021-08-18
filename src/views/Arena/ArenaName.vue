@@ -2,7 +2,7 @@
   <div class="grey lighten-4">
     <v-img
       color="grey"
-      height="450px"
+      height="350px"
       width="100%"
       src="@/assets/banner-arena.jpg"
     >
@@ -25,21 +25,18 @@
               class="mx-1"
               v-for="(item, index) in contact_list"
               :key="index"
-              ><a :href="`${item.link}`" class="reset-link">
-                <v-icon color="white"> {{ item.icon }}</v-icon>
-              </a>
+              @click="$router.push({ path: `${item.link}` })"
+            >
+              <v-icon color="white"> {{ item.icon }}</v-icon>
             </v-btn>
           </div>
         </v-row>
 
-        <div class="d-flex margin-top-big mb-2">
+        <div class="d-flex mt-5 mb-2">
           <div class="pr-4">
             <v-img
               :src="
-                require('@/assets' +
-                  (arena.profilePicture
-                    ? arena.profilePicture
-                    : '/team_room_1.jpg'))
+                require('@/assets' + '/team_room_1.jpg')
               "
               height="180px"
               width="180px"
@@ -48,22 +45,23 @@
             ></v-img>
           </div>
           <div class="my-auto">
-            <p class="text-h4 white--text">{{ arena.title }}</p>
+            <p class="text-h4 white--text">{{ current_arena.title }}</p>
             <p class="white--text">
               <v-icon color="white">mdi-map-marker-outline</v-icon>
-              {{ arena.address }}
+              {{ current_arena.address }}
             </p>
           </div>
         </div>
         <v-btn color="primary mr-4 mt-4" elevation="0">Забронировать</v-btn>
         <v-btn
           class="mt-4"
-          :href="`/arena/${arena.id}/information#map`"
+          @click="$router.push({ path: `/arena/${current_arena.id}/information#map` })"
           dark
           outlined
           elevation="0"
-          >Как проехать?</v-btn
         >
+          Как проехать?
+        </v-btn>
       </v-container>
     </v-img>
     <v-container>
@@ -93,10 +91,11 @@ import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState({ arena: "current_arena" }),
+    ...mapState(["current_arena"]),
   },
   mounted() {
     const arenaId = this.$route.params.id;
+    console.log("ARENA-ID", arenaId);
     this.$store.dispatch("getArenaGivenID", arenaId);
     this.sidebar_items = [
       { text: "Информация", link: `/arena/${arenaId}/information` },
@@ -113,30 +112,35 @@ export default {
         text: "Тренерский состав",
         link: `/arena/${arenaId}/training_staff`,
       },
+      {
+        text: "Состав руководства",
+        link: `/arena/${arenaId}/leadership`,
+      },
     ];
     this.$store.dispatch("getServicesAll");
-    this.$store.dispatch("getContactById", arenaId).then((data) => {
-      this.contact_list = [
-        { icon: "mdi-whatsapp", link: `${data.whatsApp}` },
-        { icon: "mdi-instagram", link: `${data.instagram}` },
-        { icon: "mdi-vk", link: `${data.vk}` },
-        { icon: "mdi-web", link: `${data.website}` },
-      ];
-    });
+    const arenaItem = this.current_arena;
+
+    this.contact_list = [
+      { icon: "mdi-whatsapp", link: `${arenaItem.whatsApp}` },
+      { icon: "mdi-instagram", link: `${arenaItem.instagram}` },
+      { icon: "mdi-vk", link: `${arenaItem.vk}` },
+      { icon: "mdi-web", link: `${arenaItem.website}` },
+    ];
+
     this.$store.dispatch("getAllTeams");
     this.$store.dispatch("getAllTrainers");
     this.breadcrumb_items = [
-        {
-          text: "Москва",
-          disabled: false,
-          href: "/",
-        },
-        {
-          text: `${this.arena.title}`,
-          disabled: true,
-          href: "/arena/id",
-        },
-      ];
+      {
+        text: "Москва",
+        disabled: false,
+        href: "/",
+      },
+      {
+        text: `${this.current_arena.title}`,
+        disabled: true,
+        href: "/arena/id",
+      },
+    ];
   },
   data() {
     return {

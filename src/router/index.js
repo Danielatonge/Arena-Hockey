@@ -12,6 +12,7 @@ import ArenaTrainingStaff from "../views/Arena/ArenaTrainingStaff.vue";
 import ArenaPremises from "../views/Arena/ArenaPremises.vue";
 import EventScheduleAll from "../views/Arena/EventScheduleAll.vue";
 import EventSchedule from "../views/Arena/EventSchedule.vue";
+import ArenaLeadership from "../views/Arena/ArenaLeadership.vue";
 import KatokScheduleBook from "../views/Arena/KatokScheduleBook.vue";
 
 import JoinTeam from "../views/Arena/JoinTeam.vue";
@@ -76,37 +77,40 @@ const routes = [
     component: EventScheduleAll,
   },
   {
-    path: "/arena/:id",
+    path: "/arena/:id/",
     name: "ArenaName",
     component: ArenaName,
-    children: [
-      {
-        path: "information",
-        name: "ArenaInformation",
-        component: ArenaInformation,
-      },
-      {
-        path: "payment_portal",
-        name: "PaymentPortal",
-        component: PaymentPortal,
-      },
+  },
+  {
+    path: "/arena/:id/information",
+    name: "ArenaInformation",
+    component: ArenaInformation,
+  },
+  {
+    path: "/arena/:id/payment_portal",
+    name: "PaymentPortal",
+    component: PaymentPortal,
+  },
 
-      {
-        path: "list_teams",
-        name: "ArenaTeamList",
-        component: ArenaTeamList,
-      },
-      {
-        path: "training_staff",
-        name: "ArenaTrainingStaff",
-        component: ArenaTrainingStaff,
-      },
-    ],
+  {
+    path: "/arena/:id/list_teams",
+    name: "ArenaTeamList",
+    component: ArenaTeamList,
+  },
+  {
+    path: "/arena/:id/training_staff",
+    name: "ArenaTrainingStaff",
+    component: ArenaTrainingStaff,
   },
   {
     path: "/arena/:id/event_schedule",
     name: "EventSchedule",
     component: EventSchedule,
+  },
+  {
+    path: "/arena/:id/leadership",
+    name: "ArenaLeadership",
+    component: ArenaLeadership,
   },
   {
     path: "/arena/:arenaId/event_schedule/:serviceId",

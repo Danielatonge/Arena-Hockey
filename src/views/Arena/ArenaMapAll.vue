@@ -12,10 +12,9 @@
                 height="48px"
                 width="100%"
                 color="primary"
+                @click="$router.push({path: `/arena`})"
               >
-              <router-link to="/arena" class="reset-link">
                 Списком
-              </router-link>
               </v-btn>
             </v-col>
             <v-col cols="6">
@@ -60,11 +59,11 @@
             depressed
             height="48px"
             width="100%"
+            @click="$router.push({path: `/event_schedule`})"
           >
-            <router-link to="/event_schedule" class="reset-link">
               Расписание
               <span v-show="$vuetify.breakpoint.lgAndUp">мероприятий</span>
-            </router-link>
+            
           </v-btn>
         </v-col>
       </v-row>

@@ -252,13 +252,13 @@
                               color="primary"
                               x-large
                               elevation="0"
+                              @click="
+                                $router.push({
+                                  path: `/arena/${item.arenaId}/event_schedule/${item.id}`,
+                                })
+                              "
                             >
-                              <router-link
-                                :to="`/arena/${item.arenaId}/event_schedule/${item.id}`"
-                                class="reset-link"
-                              >
-                                Забронировать
-                              </router-link>
+                              Забронировать
                             </v-btn>
                           </v-card-actions>
                         </div>
@@ -381,7 +381,7 @@ export default {
     };
   },
   methods: {
-    intervalFormat(interval){
+    intervalFormat(interval) {
       return interval.time;
     },
     myDayFormat(day) {

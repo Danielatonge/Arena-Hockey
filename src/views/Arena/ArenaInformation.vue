@@ -1,225 +1,189 @@
 <template>
-  <div>
-    <p class="text-h4">Информация</p>
-    <div class="ml-n2 mb-3">
-      <v-chip
-        color="primary"
-        class="ma-2"
-        label
-        v-for="(tag, i) in arena.tags"
-        :key="i"
-      >
-        {{ tag }}
-      </v-chip>
-    </div>
-
-    <div v-if="arena.description.length < 480">
-      <p class="">
-        {{ arena.description }}
-      </p>
-    </div>
-    <div v-else>
-      <p class="" v-if="!readMoreInfo">
-        {{ arena.description.slice(0, 480) + "..." }}
-      </p>
-      <p class="" v-else v-text="arena.description"></p>
-    </div>
-    <v-btn
-      color="grey lighten-2"
-      v-show="arena.description.length > 480"
-      elevation="0"
-      @click="readMoreInfo = !readMoreInfo"
+  <div class="grey lighten-4">
+    <v-img
+      color="grey"
+      height="350px"
+      width="100%"
+      src="@/assets/banner-arena.jpg"
     >
-      {{ readMoreInfo ? "Закрыть" : "Подробнее" }}
-    </v-btn>
+      <v-container class="pt-8 pb-0">
+        <v-row class="">
+          <div>
+            <v-breadcrumbs
+              dark
+              :items="breadcrumb_items"
+              class="px-3"
+            ></v-breadcrumbs>
+          </div>
+          <v-spacer></v-spacer>
+          <div class="pr-3 my-auto">
+            <a v-for="(item, index) in contact_list" class="reset-link"
+              :key="index"  :href="item.link" target="_blank">
+            <v-btn
+              elevation="0"
+              x-small
+              color="transparent"
+              height="40px"
+              class="mx-1"
+            >
+              <v-icon color="white"> {{ item.icon }}</v-icon>
+            </v-btn>
+            </a>
+          </div>
+        </v-row>
 
-    <p class="text-h6 mt-10">Адрес</p>
-    <p class="blue--text text-h5">
-      {{ arena.address }}
-    </p>
-
-    <p id="map" class="text-h6 mt-10">Как проехать?</p>
-    <p class="grey--text">
-      {{ arena.route }}
-    </p>
-
-    <p lass="mt-5">
-      Ближайшие станции метро: <br />
-      <span class="mr-3" v-for="(metro, i) in arena.metro" :key="i">
-        {{ metro }}
-      </span>
-    </p>
-
-    <section class="wrapper-map">
-      <ArenaMap
-        :coords="coords"
-        :surfaces="surfaces"
-        :zoom="zoom"
-        @set-coords="coords = $event"
-      />
-    </section>
-    <div v-show="arena.sledgeHockey != null">
-      <p class="text-h6 mt-10">Следж-хоккей</p>
-      <div v-if="sledgeHockey.length < 480">
-        <p class="">
-          {{ sledgeHockey }}
-        </p>
-      </div>
-      <div v-else>
-        <p class="" v-if="!readMoreActivated">
-          {{ sledgeHockey.slice(0, 480) + "..." }}
-        </p>
-        <p class="" v-else v-text="sledgeHockey"></p>
-      </div>
-      <v-btn
-        color="grey lighten-2"
-        v-show="sledgeHockey.length > 480"
-        elevation="0"
-        @click="readMoreActivated = !readMoreActivated"
-      >
-        {{ readMoreActivated ? "Закрыть" : "Подробнее" }}
-      </v-btn>
-    </div>
-
-    <p class="text-h6 mt-10 mb-0">Прайс-лист</p>
-    <p class="grey--text">Цены указаны за 1 час аренды</p>
-    <div v-for="(item, i) in katokPL" :key="i">
-      <p class="text-h4 mt-8 mb-0">{{ item.title }}</p>
-      <p class="grey--text">{{ item.miniDescription }}</p>
-      <v-row>
-        <v-col
-          cols="2"
-          class="text-center border"
-          v-for="(itm, indx) in item.price"
-          :key="indx"
+        <div class="d-flex mt-5 mb-2">
+          <div class="pr-4">
+            <v-img
+              :src="require('@/assets' + '/team_room_1.jpg')"
+              height="180px"
+              width="180px"
+              class="rounded-xl"
+              contain
+            ></v-img>
+          </div>
+          <div class="my-auto">
+            <p class="text-h4 white--text">{{ current_arena.title }}</p>
+            <p class="white--text">
+              <v-icon color="white">mdi-map-marker-outline</v-icon>
+              {{ current_arena.address }}
+            </p>
+          </div>
+        </div>
+        <v-btn color="primary mr-4 mt-4" elevation="0">Забронировать</v-btn>
+        <v-btn
+          class="mt-4"
+          @click="
+            $router.push({ path: `/arena/${current_arena.id}/information#map` })
+          "
+          dark
+          outlined
+          elevation="0"
         >
-          <div class="mb-3 grey--text">{{ itm.price.startTime + ' - ' + itm.price.endTime }}</div>
-          <div class="right-border mr-n3">
-            <p class="mb-0">{{ itm.price.weekdayPrice }}</p>
-            <p class="primary--text">{{ itm.price.holidayPrice }}</p>
+          Как проехать?
+        </v-btn>
+      </v-container>
+    </v-img>
+    <v-container>
+      <v-row class="mt-5">
+        <v-col cols="5" md="3">
+          <v-tabs vertical class="pl-4 rounded-lg my-sidetabs" v-model="sidebar_tab">
+            <v-tab
+              v-for="(item, i) in sidebar_items"
+              :key="i"
+              router
+              :to="item.link"
+            >
+              {{ item.text }}
+            </v-tab>
+          </v-tabs>
+        </v-col>
+        <v-col cols="7" md="9">
+
+          <div>
+            <p class="text-h4">{{ current_arena.fullTitle }}</p>
+            <p class="text-h6">Информация</p>
+            <div class="ml-n2 mb-3">
+              <v-chip
+                color="primary"
+                class="ma-2"
+                label
+                v-for="(tag, i) in current_arena.tags"
+                :key="i"
+              >
+                {{ tag }}
+              </v-chip>
+            </div>
+
+            <div v-if="current_arena.description.length < 480">
+              <p class="text-justify" v-html="current_arena.description"></p>
+            </div>
+            <div v-else>
+              <p class="" v-if="!readMoreInfo">
+                {{ current_arena.description.slice(0, 480) + "..." }}
+              </p>
+              <p class="" v-else v-html="current_arena.description"></p>
+            </div>
+
+            <p class="text-h6 mt-10">Адрес</p>
+            <p class="blue--text">
+              {{ current_arena.address }}
+            </p>
+
+            <p id="map" class="text-h6 mt-10">Как проехать?</p>
+            <p class="grey--text text-justify">
+              {{ current_arena.route }}
+            </p>
+
+            <p lass="mt-5">
+              Ближайшие станции метро: <br />
+              <span class="mr-3" v-for="(metro, i) in current_arena.metro" :key="i">
+                {{ metro }}
+              </span>
+            </p>
+
+            <section class="wrapper-map">
+              <ArenaMap
+                :coords="coords"
+                :surfaces="surfaces"
+                :zoom="zoom"
+                @set-coords="coords = $event"
+              />
+            </section>
+
+            <div class="mt-5">
+              <v-btn
+                color="primary"
+                elevation="0"
+                class="mr-3"
+                @click="
+                  $router.push({ path: `/arena/${current_arena.id}/event_schedule` })
+                "
+              >
+                Забронировать
+              </v-btn>
+              <v-btn
+                color="grey lighten-2"
+                elevation="0"
+                @click="
+                  $router.push({ path: `/arena/${current_arena.id}/event_schedule` })
+                "
+              >
+                Посмотреть катки
+              </v-btn>
+            </div>
+            <p class="text-h5 font-weight-bold mt-10">Галерея</p>
+            <v-row>
+              <v-col cols="6" md="4" lg="3" v-for="(item, i) in media" :key="i">
+                <v-img :src="item.src" @click="openGallery(i)"></v-img>
+              </v-col>
+              <LightBox
+                ref="lightbox"
+                :media="media"
+                :show-caption="true"
+                :show-light-box="false"
+              />
+            </v-row>
+
+            <p class="text-h5 font-weight-bold mt-10">Контакты</p>
+            <div>
+              <p v-if="current_arena.phones">
+                <span v-for="x in current_arena.phones" :key="x"> {{ x }} <br /></span>
+            
+              </p>
+              <p>
+                Администратор: Васильева Татьяна Михайловна <br />
+                +7 495 964-39-69
+              </p>
+              <p>
+                Email: {{ current_arena.mails ? current_arena.mails[0] : "" }} <br />
+                Адрес: {{current_arena.address}}
+              </p>
+            </div>
           </div>
         </v-col>
       </v-row>
-      <div class="mt-n8">
-        <span class="mr-5 font-weight-bold">
-          <v-icon style="font-size: 70px" color="#000" class="">
-            mdi-circle-small
-          </v-icon>
-          <span class="ml-n5">Будни</span>
-        </span>
-        <span class="font-weight-bold primary--text">
-          <v-icon style="font-size: 70px" color="primary" class="">
-            mdi-circle-small
-          </v-icon>
-          <span class="ml-n5"> Выходные </span>
-        </span>
-      </div>
-    </div>
-    <div class="mt-5">
-      <v-btn color="primary" elevation="0" class="mr-3">
-        <router-link
-          :to="`/arena/${arena.id}/event_schedule`"
-          class="reset-link"
-        >
-          Забронировать
-        </router-link>
-      </v-btn>
-      <v-btn color="grey lighten-2" elevation="0">
-        <router-link
-          :to="`/arena/${arena.id}/event_schedule`"
-          class="reset-link"
-        >
-          Посмотреть катки
-        </router-link>
-      </v-btn>
-    </div>
-    <p class="text-h5 font-weight-bold mt-10">Галерея</p>
-    <v-row>
-      <v-col cols="6" md="4" lg="3" v-for="(item, i) in media" :key="i">
-        <v-img :src="item.src" @click="openGallery(i)"></v-img>
-      </v-col>
-      <LightBox
-        ref="lightbox"
-        :media="media"
-        :show-caption="true"
-        :show-light-box="false"
-      />
-    </v-row>
-
-    <p class="text-h5 font-weight-bold mt-10">Список помещений</p>
-    <v-tabs v-model="premises_tab" class="d-flex flex-no-wrap rounded-lg">
-      <v-tab v-for="item in premises_nav" :key="item">
-        {{ item }}
-      </v-tab>
-    </v-tabs>
-
-    <v-tabs-items v-model="premises_tab" style="background-color: unset">
-      <v-tab-item v-for="i in 2" :key="i">
-        <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 0">
-          <v-col cols="12" v-for="(item, i) in katok_services" :key="i">
-            <v-card color="transparent" elevation="0">
-              <div class="d-flex flex-no-wrap">
-                <div class="ma-3" width="282px" height="186px">
-                  <v-img src="@/assets/preview_arena_1.jpg"></v-img>
-                </div>
-                <div class="description">
-                  <v-card-text>
-                    <div class="text-h5 mb-4">{{ item.title }}</div>
-                    <div class="body-1 grey--text mb-3">
-                      {{ item.miniDescription | descriptionLength }}
-                    </div>
-                    <div class="body-1 blue--text">{{ item.phone }}</div>
-                  </v-card-text>
-                  <v-card-actions class="pl-4 bottom">
-                    <v-btn class="px-6" color="primary" x-large elevation="0">
-                      <router-link
-                        :to="`/arena/${arena.id}/event_schedule/${item.id}`"
-                        class="reset-link"
-                      >
-                        Забронировать
-                      </router-link>
-                    </v-btn>
-                  </v-card-actions>
-                </div>
-              </div>
-            </v-card>
-          </v-col>
-        </v-row>
-        <v-row dense class="mt-5" v-show="premises_tab != 0">
-          <v-col
-            cols="12"
-            class="mb-2"
-            v-for="(item, i) in others_services"
-            :key="i"
-          >
-            <ArenaServiceCard
-              :data="item"
-              :arenaId="arenaId"
-            ></ArenaServiceCard>
-          </v-col>
-        </v-row>
-      </v-tab-item>
-    </v-tabs-items>
-
-    <p class="text-h5 font-weight-bold mt-10">Контакты</p>
-    <div>
-      <p>
-        Касса: {{ phoneNum ? phoneNum[0] : "" }} <br />
-        Кафе: +7 977 815-61-97 <br />
-        Магазин: +7 495 369-19-77 <br />
-        Отдел продаж: +7 925 278-77-41 <br />
-        Ресепшн: +7 495 964-39-69 <br />
-        Приемная директора: +7 495 964-39-69 <br />
-      </p>
-      <p>
-        Администратор: Васильева Татьяна Михайловна <br />
-        +7 495 964-39-69
-      </p>
-      <p>
-        Email: {{ mail ? mail[0] : "" }} <br />
-        Адрес: г. Москва, м. Сокольники, ул. Большая Тихоновская, д. 2.
-      </p>
-    </div>
+    </v-container>
   </div>
 </template>
 
@@ -228,13 +192,11 @@ import ArenaMap from "@/components/Arena/ArenaMap";
 import { mapState, mapGetters } from "vuex";
 import LightBox from "vue-image-lightbox";
 import { media, sledgeHockey } from "@/data/dummy";
-import ArenaServiceCard from "@/components/Arena/ArenaServiceCard";
 
 export default {
   components: {
     ArenaMap,
     LightBox,
-    ArenaServiceCard,
   },
   filters: {
     descriptionLength(value) {
@@ -243,35 +205,80 @@ export default {
     },
   },
   computed: {
-    ...mapState({ arena: "current_arena" }),
+    ...mapState(["current_arena"]),
     ...mapState(["katokPL"]),
     ...mapGetters(["katok_services", "others_services"]),
   },
-  mounted() {},
+  mounted() {
+    const arenaId = this.$route.params.id;
+    console.log("ARENA-ID", arenaId);
+    this.$store.dispatch("getArenaGivenID", arenaId);
+    this.sidebar_items = [
+      { text: "Информация", link: `/arena/${arenaId}/information` },
+      {
+        text: "Платные услуги",
+        link: `/arena/${arenaId}/payment_portal`,
+      },
+      {
+        text: "Расписание мероприятий",
+        link: `/arena/${arenaId}/event_schedule`,
+      },
+      { text: "Список команд", link: `/arena/${arenaId}/list_teams` },
+      {
+        text: "Тренерский состав",
+        link: `/arena/${arenaId}/training_staff`,
+      },
+      {
+        text: "Состав руководства",
+        link: `/arena/${arenaId}/leadership`,
+      },
+    ];
+    
+    const arenaItem = this.current_arena;
+
+    this.contact_list = [
+      { icon: "mdi-whatsapp", link: `${arenaItem.whatsApp}` },
+      { icon: "mdi-instagram", link: `${arenaItem.instagram}` },
+      { icon: "mdi-vk", link: `${arenaItem.vk}` },
+      { icon: "mdi-web", link: `${arenaItem.website}` },
+      { icon: "mdi-music-note-outline", link: `${arenaItem.tiktok}` },
+      { icon: "mdi-twitter", link: `${arenaItem.twitter}` },
+      { icon: "mdi-youtube", link: `${arenaItem.youtube}` },
+      { icon: "mdi-facebook", link: `${arenaItem.facebook}` },
+    ];
+    this.breadcrumb_items = [
+      {
+        text: "Москва",
+        disabled: false,
+        href: "/",
+      },
+      {
+        text: `${this.current_arena.title}`,
+        disabled: true,
+        href: "/arena/id",
+      },
+    ];
+  },
   methods: {
+    openContactInTab(link) {
+      let routeData = this.$router.resolve({ name: `/${link}` })
+      window.open(routeData.href, '_blank')
+    },
     openGallery(index) {
       this.$refs.lightbox.showImage(index);
     },
   },
   data() {
     return {
-      name: "ArenaName",
+      contact_list: null,
+      sidebar_tab: 0,
+      sidebar_items: null,
       premises_tab: null,
       premises_nav: ["Катки", "Другие"],
       sledgeHockey,
       readMoreInfo: null,
       selectedItem: 0,
       readMoreActivated: false,
-      gallery_items: [
-        "/gallery_1",
-        "/gallery_2",
-        "/gallery_3",
-        "/gallery_4",
-        "/gallery_5",
-        "/gallery_6",
-        "/gallery_7",
-        "/gallery_8",
-      ],
       price_list: [
         { interval: "06:00–08:30", weekday: "8 000", weekend: "10 000" },
         { interval: "08:30–15:00", weekday: "8 000", weekend: "10 000" },
@@ -296,8 +303,6 @@ export default {
         this.$store.state.current_arena.lat,
         this.$store.state.current_arena.lan,
       ],
-      phoneNum: this.$store.state.current_contact.phones,
-      mail: this.$store.state.current_contact.mails,
       media,
     };
   },
@@ -310,6 +315,9 @@ export default {
 }
 .border:last-child .right-border {
   border-right: unset;
+}
+div.my-sidetabs [role="tab"] {
+  justify-content: flex-start;
 }
 
 .wrapper-map {

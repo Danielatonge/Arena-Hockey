@@ -44,7 +44,10 @@ export default {
   },
   filters: {
     descriptionLength(value) {
-      if (value.length < 30) return value;
+      if (!value) return "";
+      if (value.length < 30) {
+        return value;
+      }
       return value.slice(0, 30) + "...";
     },
   },

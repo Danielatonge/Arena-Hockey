@@ -32,16 +32,12 @@ export default new Vuex.Store({
     current_arena(state) {
       return state.current_arena;
     },
-    icon_contacts(state) {
-      const { whatsApp, website, vk, instagram } = state.current_contact;
-      return { whatsApp, website, vk, instagram };
-    },
 
     katok_services(state) {
-      return state.services.filter((x) => x.type == "Каток");
+      return state.services.filter((x) => x.serviceType === "ICERINK");
     },
     others_services(state) {
-      return state.services.filter((x) => x.type != "Каток");
+      return state.services.filter((x) => x.serviceType !== "ICERINK");
     },
 
     children_team(state) {
@@ -192,24 +188,11 @@ export default new Vuex.Store({
       const item = this.state.list_arenas.filter(
         (arena) => arena.id === payload
       );
-      console.log(item[0]);
+      console.log("SET_CURRENT_ARENA", item[0]);
       commit("SET_CURRENT_ARENA", item[0]);
     },
     setCurrentArena({ commit }, arena) {
       commit("SET_CURRENT_ARENA", arena);
-    },
-    getContactById({ commit }, payload) {
-      return new Promise((resolve) => {
-        axios
-          .get(`/arena/${payload}/contacts`)
-          .then((response) => {
-            commit("SET_CURRENT_CONTACT", response.data);
-            resolve(response.data);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      });
     },
     displayMapAll({ commit }) {
       commit("SET_MAP_COORDINATES");
@@ -292,7 +275,8 @@ export default new Vuex.Store({
     },
     getPriceListKatok({ commit }) {
       let priceList = [];
-      let katokService = this.state.services.filter((x) => x.type == "Каток");
+      let katokService = this.state.services.filter((x) => x.serviceType === "ICERINK");
+      console.log("KATOKSERVICE", katokService);
       let final = [];
       katokService.forEach((x) => {
         priceList.push(
