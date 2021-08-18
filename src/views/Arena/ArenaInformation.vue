@@ -200,7 +200,10 @@ export default {
   },
   filters: {
     descriptionLength(value) {
-      if (value.length < 30) return value;
+      if (!value) return "";
+      if (value.length < 30) {
+        return value;
+      }
       return value.slice(0, 30) + "...";
     },
   },
@@ -209,7 +212,7 @@ export default {
     ...mapState(["katokPL"]),
     ...mapGetters(["katok_services", "others_services"]),
   },
-  mounted() {
+  created() {
     const arenaId = this.$route.params.id;
     console.log("ARENA-ID", arenaId);
     this.$store.dispatch("getArenaGivenID", arenaId);
@@ -270,6 +273,7 @@ export default {
   },
   data() {
     return {
+      breadcrumb_items: null,
       contact_list: null,
       sidebar_tab: 0,
       sidebar_items: null,

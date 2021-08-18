@@ -1,5 +1,5 @@
 <template>
-<div class="grey lighten-4">
+  <div class="grey lighten-4">
     <v-img
       color="grey"
       height="350px"
@@ -79,120 +79,7 @@
           </v-tabs>
         </v-col>
         <v-col cols="7" md="9">
-          
-  <div>
-    <p class="text-h4"> Состав руководства </p>
-    <v-tabs v-model="premises_tab" class="d-flex flex-no-wrap rounded-lg">
-      <v-tab v-for="item in premises_nav" :key="item">
-        {{ item }}
-      </v-tab>
-    </v-tabs>
-
-    <v-tabs-items v-model="premises_tab" style="background-color: unset">
-      <v-tab-item v-for="x in 3" :key="x">
-        <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 0">
-          <v-col cols="12" v-for="(item, i) in trainers" :key="i">
-            <v-card color="transparent" elevation="0">
-              <div class="d-flex flex-no-wrap">
-                <v-avatar class="ma-3 rounded-lg" size="125" tile>
-                  <v-img
-                    :src="
-                      require('@/assets' +
-                        '/player_2.jpg')
-                    "
-                  ></v-img>
-                </v-avatar>
-                <v-card-text>
-                  <div class="text-h5 mb-2">
-                    {{ item.name + " " + item.middleName + " " + item.surname }}
-                  </div>
-                  <div class="body-1 blue--text mb-2">
-                    {{ item.age }}, {{ item.city }}
-                  </div>
-                  <div class="body-2 grey--text">{{ item.position }}</div>
-                </v-card-text>
-              </div>
-            </v-card>
-          </v-col>
-        </v-row>
-        <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 1">
-          <v-col cols="12" v-for="(item, i) in kid_trainers" :key="i">
-            <v-card color="transparent" elevation="0">
-              <div class="d-flex flex-no-wrap">
-                <v-avatar class="ma-3 rounded-lg" size="125" tile>
-                  <v-img
-                    :src="
-                      require('@/assets' +
-                        '/player_2.jpg')
-                    "
-                  ></v-img>
-                </v-avatar>
-                <v-card-text>
-                  <div class="text-h5 mb-2">
-                    {{ item.name + " " + item.middleName + " " + item.surname }}
-                  </div>
-                  <div class="body-1 blue--text mb-2">
-                    {{ item.age }}, {{ item.city }}
-                  </div>
-                  <div class="body-2 grey--text">{{ item.position }}</div>
-                </v-card-text>
-              </div>
-            </v-card>
-          </v-col>
-        </v-row>
-        <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 2">
-          <v-col cols="12" v-for="(item, i) in youth_trainers" :key="i">
-            <v-card color="transparent" elevation="0">
-              <div class="d-flex flex-no-wrap">
-                <v-avatar class="ma-3 rounded-lg" size="125" tile>
-                  <v-img
-                    :src="
-                      require('@/assets' +
-                      '/player_2.jpg')
-                    "
-                  ></v-img>
-                </v-avatar>
-                <v-card-text>
-                  <div class="text-h5 mb-2">
-                    {{ item.name + " " + item.middleName + " " + item.surname }}
-                  </div>
-                  <div class="body-1 blue--text mb-2">
-                    {{ item.age }}, {{ item.city }}
-                  </div>
-                  <div class="body-2 grey--text">{{ item.position }}</div>
-                </v-card-text>
-              </div>
-            </v-card>
-          </v-col>
-        </v-row>
-        <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 3">
-          <v-col cols="12" v-for="(item, i) in female_trainer" :key="i">
-            <v-card color="transparent" elevation="0">
-              <div class="d-flex flex-no-wrap">
-                <v-avatar class="ma-3 rounded-lg" size="125" tile>
-                  <v-img
-                    :src="
-                      require('@/assets' +
-                      '/player_2.jpg')
-                    "
-                  ></v-img>
-                </v-avatar>
-                <v-card-text>
-                  <div class="text-h5 mb-2">
-                    {{ item.name + " " + item.middleName + " " + item.surname }}
-                  </div>
-                  <div class="body-1 blue--text mb-2">
-                    {{ item.age }}, {{ item.city }}
-                  </div>
-                  <div class="body-2 grey--text">{{ item.position }}</div>
-                </v-card-text>
-              </div>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-tab-item>
-    </v-tabs-items>
-  </div>
+          <router-view></router-view>
         </v-col>
       </v-row>
     </v-container>
@@ -200,46 +87,122 @@
 </template>
 
 <script>
-//import { mapState, mapGetters } from "vuex";
+import { mapState } from "vuex";
+
 export default {
   computed: {
-    //...mapState(["trainers"]),
-    kid_trainers() {
-      return this.trainers.filter((x) => x.qualification === "Детскaя");
-    },
-    youth_trainers() {
-      return this.trainers.filter((x) => x.qualification === "Юношеская");
-    },
-    female_trainer() {
-      return this.trainers.filter((x) => x.qualification === "Женская");
-    },
+    ...mapState(["current_arena"]),
   },
-  mounted() {
+  created() {
     const arenaId = this.$route.params.id;
-    this.arenaId = arenaId;
-    this.$store.dispatch("getArenaTrainer", arenaId).then((data) => {
-      console.log("Trainers", data);
-      this.trainers = data.map((x) => x.user);
-    });
-    this.teams = this.current_arena.teams || [];
+    console.log("ARENA-ID", arenaId);
+    this.$store.dispatch("getArenaGivenID", arenaId);
+    this.sidebar_items = [
+      { text: "Информация", link: `/arena/${arenaId}/information` },
+      {
+        text: "Платные услуги",
+        link: `/arena/${arenaId}/payment_portal`,
+      },
+      {
+        text: "Расписание мероприятий",
+        link: `/arena/${arenaId}/event_schedule`,
+      },
+      { text: "Список команд", link: `/arena/${arenaId}/list_teams` },
+      {
+        text: "Тренерский состав",
+        link: `/arena/${arenaId}/training_staff`,
+      },
+      {
+        text: "Состав руководства",
+        link: `/arena/${arenaId}/leadership`,
+      },
+    ];
+    this.$store.dispatch("getServicesAll");
+    const arenaItem = this.current_arena;
+
+    this.contact_list = [
+      { icon: "mdi-whatsapp", link: `${arenaItem.whatsApp}` },
+      { icon: "mdi-instagram", link: `${arenaItem.instagram}` },
+      { icon: "mdi-vk", link: `${arenaItem.vk}` },
+      { icon: "mdi-web", link: `${arenaItem.website}` },
+    ];
+
+    this.$store.dispatch("getAllTeams");
+    this.$store.dispatch("getAllTrainers");
+    this.breadcrumb_items = [
+      {
+        text: "Москва",
+        disabled: false,
+        href: "/",
+      },
+      {
+        text: `${this.current_arena.title}`,
+        disabled: true,
+        href: "/arena/id",
+      },
+    ];
   },
   data() {
     return {
-      arenaId: null,
-      trainers: [],
-      name: "ArenaTeamList",
+      name: "ArenaName",
+      contact_list: null,
+      sidebar_tab: 0,
       premises_tab: null,
-      premises_nav: [
-        "Все тренеры",
-        "Детские тренеры",
-        "Юношеские тренеры",
-        "Женские тренеры",
+      premises_nav: ["Катки", "Бросковые зоны", "Спортивные залы"],
+      breadcrumb_items: null,
+      selectedItem: 0,
+      gallery_items: [
+        "/gallery_1",
+        "/gallery_2",
+        "/gallery_3",
+        "/gallery_4",
+        "/gallery_5",
+        "/gallery_6",
+        "/gallery_7",
+        "/gallery_8",
       ],
-      player_items: ["/player_1", "/player_2", "/player_3"],
+      sidebar_items: null,
+      price_list: [
+        { interval: "06:00–08:30", weekday: "8 000", weekend: "10 000" },
+        { interval: "08:30–15:00", weekday: "8 000", weekend: "10 000" },
+        { interval: "15:00–17:00", weekday: "8 000", weekend: "10 000" },
+        { interval: "17:00–19:00", weekday: "10 000", weekend: "10 000" },
+        { interval: "19:00–22:30", weekday: "12 000", weekend: "10 000" },
+        { interval: "22:30–00:00", weekday: "10 000", weekend: "10 000" },
+      ],
+      zoom: 16,
+      surfaces: [
+        {
+          id: "1",
+          city: this.$store.state.current_arena.city,
+          type: "Mediawall",
+          address: this.$store.state.current_arena.address,
+          coords:
+            `${this.$store.state.current_arena.lat}, ` +
+            `${this.$store.state.current_arena.lan}`,
+        },
+      ],
+      coords: [
+        this.$store.state.current_arena.lat,
+        this.$store.state.current_arena.lan,
+      ],
     };
   },
 };
 </script>
 
 <style>
+.border > .right-border {
+  border-right: 1px solid #ccc;
+}
+.border:last-child .right-border {
+  border-right: unset;
+}
+.wrapper-map {
+  background-color: #ccc;
+  height: 600px;
+  width: 100%;
+  position: relative;
+  margin: 10px auto;
+}
 </style>

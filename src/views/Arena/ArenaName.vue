@@ -93,7 +93,7 @@ export default {
   computed: {
     ...mapState(["current_arena"]),
   },
-  mounted() {
+  created() {
     const arenaId = this.$route.params.id;
     console.log("ARENA-ID", arenaId);
     this.$store.dispatch("getArenaGivenID", arenaId);

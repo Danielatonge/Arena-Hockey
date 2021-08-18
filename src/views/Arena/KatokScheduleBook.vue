@@ -176,7 +176,7 @@ export default {
   computed: {
     ...mapState({ service: "current_service" }),
   },
-  mounted() {
+  created() {
     let arenaId = this.$route.params.arenaId;
     let serviceId = this.$route.params.serviceId;
     this.breadcrumb_event_page = [

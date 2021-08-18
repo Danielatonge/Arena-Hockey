@@ -303,7 +303,7 @@ export default {
     ...mapGetters(["katok_services", "others_services"]),
     ...mapState({ service: "current_service" }),
   },
-  mounted() {
+  created() {
     let arenaId = this.$route.params.arenaId;
     let serviceId = this.$route.params.serviceId;
     this.breadcrumb_items = [

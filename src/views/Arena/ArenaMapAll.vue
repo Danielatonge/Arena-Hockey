@@ -107,7 +107,7 @@ export default {
   computed: {
     ...mapState(["list_arenas", "arenasMapIdentifier"]),
   },
-  mounted() {
+  created() {
 
   },
   methods: {

@@ -284,11 +284,14 @@ export default {
   },
   filters: {
     descriptionLength(value) {
-      if (value.length < 30) return value;
+      if (!value) return "";
+      if (value.length < 30) {
+        return value;
+      }
       return value.slice(0, 30) + "...";
     },
   },
-  mounted() {
+  created() {
     const arenaId = this.$route.params.id;
     this.arenaId = arenaId;
     this.$store.dispatch("getArenaTeams", arenaId).then((data) => {

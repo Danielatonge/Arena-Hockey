@@ -227,19 +227,28 @@
 <script>
 //import { mapState, mapGetters } from "vuex";
 export default {
+  filters: {
+    descriptionLength(value) {
+      if (!value) return "";
+      if (value.length < 30) {
+        return value;
+      }
+      return value.slice(0, 30) + "...";
+    },
+  },
   computed: {
     //...mapState(["trainers"]),
     kid_trainers() {
-      return this.trainers.filter((x) => x.qualification === "Детскaя");
+      return this.trainers.filter((x) => x.level === "Детскaя");
     },
     youth_trainers() {
-      return this.trainers.filter((x) => x.qualification === "Юношеская");
+      return this.trainers.filter((x) => x.level === "Юношеская");
     },
     female_trainer() {
-      return this.trainers.filter((x) => x.qualification === "Женская");
+      return this.trainers.filter((x) => x.level === "Женская");
     },
   },
-  mounted() {
+  created() {
     const arenaId = this.$route.params.id;
     this.arenaId = arenaId;
     this.$store.dispatch("getArenaTrainer", arenaId).then((data) => {
@@ -247,12 +256,59 @@ export default {
       this.trainers = data.map((x) => x.user);
     });
     this.teams = this.current_arena.teams || [];
+    const arenaItem = this.current_arena;
+    this.sidebar_items = [
+      { text: "Информация", link: `/arena/${arenaId}/information` },
+      {
+        text: "Платные услуги",
+        link: `/arena/${arenaId}/payment_portal`,
+      },
+      {
+        text: "Расписание мероприятий",
+        link: `/arena/${arenaId}/event_schedule`,
+      },
+      { text: "Список команд", link: `/arena/${arenaId}/list_teams` },
+      {
+        text: "Тренерский состав",
+        link: `/arena/${arenaId}/training_staff`,
+      },
+      {
+        text: "Состав руководства",
+        link: `/arena/${arenaId}/leadership`,
+      },
+    ];
+    this.breadcrumb_items = [
+      {
+        text: "Москва",
+        disabled: false,
+        href: "/",
+      },
+      {
+        text: `${this.current_arena.title}`,
+        disabled: true,
+        href: "/arena/id",
+      },
+    ];
+    this.contact_list = [
+      { icon: "mdi-whatsapp", link: `${arenaItem.whatsApp}` },
+      { icon: "mdi-instagram", link: `${arenaItem.instagram}` },
+      { icon: "mdi-vk", link: `${arenaItem.vk}` },
+      { icon: "mdi-web", link: `${arenaItem.website}` },
+      { icon: "mdi-music-note-outline", link: `${arenaItem.tiktok}` },
+      { icon: "mdi-twitter", link: `${arenaItem.twitter}` },
+      { icon: "mdi-youtube", link: `${arenaItem.youtube}` },
+      { icon: "mdi-facebook", link: `${arenaItem.facebook}` },
+    ];
   },
   data() {
     return {
+      contact_list: null,
+      sidebar_tab: 0,
+      sidebar_items: null,
       arenaId: null,
       trainers: [],
       name: "ArenaTeamList",
+
       premises_tab: null,
       premises_nav: [
         "Все тренеры",
@@ -260,6 +316,7 @@ export default {
         "Юношеские тренеры",
         "Женские тренеры",
       ],
+
       player_items: ["/player_1", "/player_2", "/player_3"],
     };
   },

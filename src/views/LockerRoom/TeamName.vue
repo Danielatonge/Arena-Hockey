@@ -32,10 +32,7 @@
         <v-avatar class="px-3 rounded-lg" size="200" tile>
           <v-img
             :src="
-              require('@/assets' +
-                (team.profilePicture
-                  ? team.profilePicture
-                  : '/team_room_1.jpg'))
+              require('@/assets' + '/team_room_1.jpg')
             "
           ></v-img>
         </v-avatar>
@@ -55,16 +52,9 @@
         </p>
         <p class="" v-else v-text="team.description"></p>
       </div>
-      <v-btn
-        color="grey lighten-2"
-        v-show="team.description.length > 580"
-        elevation="0"
-        @click="readMoreActivated = !readMoreActivated"
-      >
-        {{ readMoreActivated ? "Cкрыть описание" : "Раскрыть описание" }}
-      </v-btn>
+      
     </v-container>
-    <v-container class="mt-10" v-if="!!team.arenas">
+    <v-container class="mt-10" v-if="team.arenas">
       <p class="text-h5">Место проведения тренировок</p>
       <v-row dense class="mx-n4" v-for="(arena, id) in team.arenas" :key="id">
         <v-col cols="12" md="7">
@@ -73,10 +63,7 @@
               <div class="ma-3" width="282px" height="186px">
                 <v-img
                   :src="
-                    require('@/assets' +
-                      (arena.profilePicture
-                        ? arena.profilePicture + '.png'
-                        : '/preview_arena_1.jpg'))
+                    require('@/assets' + '/preview_arena_1.jpg')
                   "
                 ></v-img>
               </div>
@@ -140,7 +127,7 @@
                 <v-img
                   :src="
                     require('@/assets' +
-                      (item.level ? item.level : '/player_2.jpg'))
+                      '/player_2.jpg')
                   "
                 ></v-img>
               </v-avatar>
@@ -167,8 +154,7 @@
               <v-avatar class="ma-3" size="125" tile>
                 <v-img
                   :src="
-                    require('@/assets' +
-                      (item.level ? item.level : '/player_1.jpg'))
+                    require('@/assets' + '/player_1.jpg')
                   "
                 ></v-img>
               </v-avatar>
@@ -196,7 +182,7 @@
                   <v-img
                     :src="
                       require('@/assets' +
-                        (item.level ? item.level : '/player_1.jpg'))
+                       '/player_1.jpg')
                     "
                   ></v-img>
                 </v-avatar>

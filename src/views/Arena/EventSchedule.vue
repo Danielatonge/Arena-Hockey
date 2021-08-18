@@ -192,14 +192,17 @@ export default {
   },
   filters: {
     descriptionLength(value) {
-      if (value.length < 30) return value;
+      if (!value) return "";
+      if (value.length < 30) {
+        return value;
+      }
       return value.slice(0, 30) + "...";
     },
   },
   computed: {
     ...mapState(["current_arena"]),
   },
-  mounted() {
+  created() {
     const arenaId = this.$route.params.id;
     console.log("ARENA-ID", arenaId);
     this.$store.dispatch("getArenaGivenID", arenaId);

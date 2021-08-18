@@ -240,8 +240,6 @@ export default {
   },
   created() {
     this.$store.dispatch("getServicesAll");
-  },
-  mounted() {
     this.$store.dispatch("getPriceListKatok");
     const arenaId = this.$route.params.id;
     this.arenaId = arenaId;
@@ -277,8 +275,7 @@ export default {
       { icon: "mdi-youtube", link: `${arenaItem.youtube}` },
       { icon: "mdi-facebook", link: `${arenaItem.facebook}` },
     ];
-
-    this.breadcrumb_items = [
+     this.breadcrumb_items = [
       {
         text: "Москва",
         disabled: false,
@@ -296,6 +293,7 @@ export default {
     return {
       contact_list: null,
       sidebar_tab: 0,
+      sidebar_items: null,
       premises_tab: null,
       premises_nav: ["Катки", "Другие"],
       elevation: 0,

@@ -275,7 +275,7 @@ export default {
     };
   },
   components: { ArenaCard },
-  mounted() {
+  created() {
     this.$store.dispatch("getAllArenas");
     this.setPaginationLength();
   },
