@@ -8,7 +8,7 @@ Vue.use(Vuex);
 axios.defaults.baseURL = "https://api-hockey-io.herokuapp.com";
 
 const vuexLocal = new VuexPersistence({
-  storage: window.localStorage,
+  storage: window.sessionStorage,
 });
 
 export default new Vuex.Store({
@@ -143,7 +143,7 @@ export default new Vuex.Store({
     },
     SET_ARENA_TEAM(state, payload) {
       const pos = state.list_arenas.findIndex(
-        (item) => (item.id = payload.arena_id)
+        (item) => (item.id == payload.arena_id)
       );
       if (pos > -1) {
         const arena = state.list_arenas[pos];
@@ -152,7 +152,7 @@ export default new Vuex.Store({
     },
     SET_ARENA_TRAINER(state, payload) {
       const pos = state.list_arenas.findIndex(
-        (item) => (item.id = payload.arena_id)
+        (item) => (item.id == payload.arena_id)
       );
       if (pos > -1) {
         const arena = state.list_arenas[pos];
@@ -185,6 +185,8 @@ export default new Vuex.Store({
         });
     },
     getArenaGivenID({ commit }, payload) {
+      console.log("LIST ARENAS 001", JSON.stringify(this.state.list_arenas, null, 2))
+      console.log("PAYLOAD 002", payload)
       const item = this.state.list_arenas.filter(
         (arena) => arena.id === payload
       );
@@ -192,6 +194,7 @@ export default new Vuex.Store({
       commit("SET_CURRENT_ARENA", item[0]);
     },
     setCurrentArena({ commit }, arena) {
+      console.log("ARENA 003", arena);
       commit("SET_CURRENT_ARENA", arena);
     },
     displayMapAll({ commit }) {

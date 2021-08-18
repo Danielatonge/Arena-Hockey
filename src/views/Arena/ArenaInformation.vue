@@ -17,17 +17,22 @@
           </div>
           <v-spacer></v-spacer>
           <div class="pr-3 my-auto">
-            <a v-for="(item, index) in contact_list" class="reset-link"
-              :key="index"  :href="item.link" target="_blank">
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="mx-1"
+            <a
+              v-for="(item, index) in contact_list"
+              class="reset-link"
+              :key="index"
+              :href="item.link"
+              target="_blank"
             >
-              <v-icon color="white"> {{ item.icon }}</v-icon>
-            </v-btn>
+              <v-btn
+                elevation="0"
+                x-small
+                color="transparent"
+                height="40px"
+                class="mx-1"
+              >
+                <v-icon color="white"> {{ item.icon }}</v-icon>
+              </v-btn>
             </a>
           </div>
         </v-row>
@@ -67,7 +72,11 @@
     <v-container>
       <v-row class="mt-5">
         <v-col cols="5" md="3">
-          <v-tabs vertical class="pl-4 rounded-lg my-sidetabs" v-model="sidebar_tab">
+          <v-tabs
+            vertical
+            class="pl-4 rounded-lg my-sidetabs"
+            v-model="sidebar_tab"
+          >
             <v-tab
               v-for="(item, i) in sidebar_items"
               :key="i"
@@ -79,7 +88,6 @@
           </v-tabs>
         </v-col>
         <v-col cols="7" md="9">
-
           <div>
             <p class="text-h4">{{ current_arena.fullTitle }}</p>
             <p class="text-h6">Информация</p>
@@ -95,65 +103,53 @@
               </v-chip>
             </div>
 
-            <div v-if="current_arena.description.length < 480">
-              <p class="text-justify" v-html="current_arena.description"></p>
-            </div>
-            <div v-else>
-              <p class="" v-if="!readMoreInfo">
-                {{ current_arena.description.slice(0, 480) + "..." }}
-              </p>
-              <p class="" v-else v-html="current_arena.description"></p>
-            </div>
-
-            <p class="text-h6 mt-10">Адрес</p>
-            <p class="blue--text">
-              {{ current_arena.address }}
-            </p>
-
-            <p id="map" class="text-h6 mt-10">Как проехать?</p>
-            <p class="grey--text text-justify">
-              {{ current_arena.route }}
-            </p>
-
-            <p lass="mt-5">
-              Ближайшие станции метро: <br />
-              <span class="mr-3" v-for="(metro, i) in current_arena.metro" :key="i">
-                {{ metro }}
-              </span>
-            </p>
-
-            <section class="wrapper-map">
-              <ArenaMap
-                :coords="coords"
-                :surfaces="surfaces"
-                :zoom="zoom"
-                @set-coords="coords = $event"
-              />
-            </section>
-
-            <div class="mt-5">
-              <v-btn
-                color="primary"
-                elevation="0"
-                class="mr-3"
-                @click="
-                  $router.push({ path: `/arena/${current_arena.id}/event_schedule` })
-                "
-              >
-                Забронировать
-              </v-btn>
-              <v-btn
-                color="grey lighten-2"
-                elevation="0"
-                @click="
-                  $router.push({ path: `/arena/${current_arena.id}/event_schedule` })
-                "
-              >
-                Посмотреть катки
-              </v-btn>
-            </div>
-            <p class="text-h5 font-weight-bold mt-10">Галерея</p>
             <v-row>
+              <v-col cols="12" md="8">
+                <section class="wrapper-map">
+                  <ArenaMap
+                    :coords="coords"
+                    :surfaces="surfaces"
+                    :zoom="zoom"
+                    @set-coords="coords = $event"
+                  />
+                </section>
+              </v-col>
+              <v-col cols="12" md="4">
+                <p class="text-h6 mb-1">Адрес</p>
+                <p class="blue--text">
+                  {{ current_arena.address }}
+                </p>
+                <p class="text-h6 mt-5 mb-1"> Ближайшие станции метро: </p>
+                <span
+                  class="mr-3"
+                  v-for="(metro, i) in current_arena.metro"
+                  :key="i"
+                >
+                  {{ metro }}
+                </span>
+                <p class="text-h6 font-weight-bold mt-10">Контакты</p>
+                <div>
+                  <p v-if="current_arena.phones">
+                    <span v-for="x in current_arena.phones" :key="x">
+                      {{ x }} <br
+                    /></span>
+                  </p>
+                  <p>
+                    Администратор: Васильева Татьяна Михайловна <br />
+                    +7 495 964-39-69
+                  </p>
+                  <p>
+                    Email:
+                    {{ current_arena.mails ? current_arena.mails[0] : "" }}
+                    <br />
+                    Адрес: {{ current_arena.address }}
+                  </p>
+                </div>
+              </v-col>
+            </v-row>
+
+            <p class="text-h5 font-weight-bold mt-10">Галерея</p>
+            <v-row class="mb-10">
               <v-col cols="6" md="4" lg="3" v-for="(item, i) in media" :key="i">
                 <v-img :src="item.src" @click="openGallery(i)"></v-img>
               </v-col>
@@ -164,22 +160,6 @@
                 :show-light-box="false"
               />
             </v-row>
-
-            <p class="text-h5 font-weight-bold mt-10">Контакты</p>
-            <div>
-              <p v-if="current_arena.phones">
-                <span v-for="x in current_arena.phones" :key="x"> {{ x }} <br /></span>
-            
-              </p>
-              <p>
-                Администратор: Васильева Татьяна Михайловна <br />
-                +7 495 964-39-69
-              </p>
-              <p>
-                Email: {{ current_arena.mails ? current_arena.mails[0] : "" }} <br />
-                Адрес: {{current_arena.address}}
-              </p>
-            </div>
           </div>
         </v-col>
       </v-row>
@@ -214,7 +194,7 @@ export default {
   },
   created() {
     const arenaId = this.$route.params.id;
-    console.log("ARENA-ID", arenaId);
+    console.log("ARENA-ID-DIMA", arenaId);
     this.$store.dispatch("getArenaGivenID", arenaId);
     this.sidebar_items = [
       { text: "Информация", link: `/arena/${arenaId}/information` },
@@ -236,7 +216,7 @@ export default {
         link: `/arena/${arenaId}/leadership`,
       },
     ];
-    
+
     const arenaItem = this.current_arena;
 
     this.contact_list = [
@@ -264,14 +244,15 @@ export default {
   },
   methods: {
     openContactInTab(link) {
-      let routeData = this.$router.resolve({ name: `/${link}` })
-      window.open(routeData.href, '_blank')
+      let routeData = this.$router.resolve({ name: `/${link}` });
+      window.open(routeData.href, "_blank");
     },
     openGallery(index) {
       this.$refs.lightbox.showImage(index);
     },
   },
   data() {
+    console.log(this.$store.state);
     return {
       breadcrumb_items: null,
       contact_list: null,
