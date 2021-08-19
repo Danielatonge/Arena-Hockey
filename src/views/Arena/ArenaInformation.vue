@@ -102,7 +102,14 @@
                 {{ tag }}
               </v-chip>
             </div>
-
+            <div
+            class="text-justify mb-5"
+              v-html="
+                current_arena.description
+                  ? current_arena.description.slice(0, 480) + '...'
+                  : ''
+              "
+            ></div>
             <v-row>
               <v-col cols="12" md="8">
                 <section class="wrapper-map">
@@ -119,7 +126,7 @@
                 <p class="blue--text">
                   {{ current_arena.address }}
                 </p>
-                <p class="text-h6 mt-5 mb-1"> Ближайшие станции метро: </p>
+                <p class="text-h6 mt-5 mb-1">Ближайшие станции метро:</p>
                 <span
                   class="mr-3"
                   v-for="(metro, i) in current_arena.metro"
@@ -151,7 +158,11 @@
             <p class="text-h5 font-weight-bold mt-10">Галерея</p>
             <v-row class="mb-10">
               <v-col cols="6" md="4" lg="3" v-for="(item, i) in media" :key="i">
-                <v-img :src="item.src" @click="openGallery(i)"></v-img>
+                <v-img
+                  style="height: 100px"
+                  :src="item.src"
+                  @click="openGallery(i)"
+                ></v-img>
               </v-col>
               <LightBox
                 ref="lightbox"
