@@ -108,13 +108,12 @@
                   <v-col
                     cols="12"
                     class="mb-4"
-                    v-for="(item, i) in katok_services"
+                    v-for="(item, i) in katokPL"
                     :key="i"
                   >
-                    <v-card color="transparent" elevation="0">
+                    <v-card color="transparent" elevation="0" class="mb-5">
                       <div class="d-flex flex-no-wrap">
                         <div class="ma-3">
-                          
                           <v-avatar
                             class="rounded-lg"
                             tile
@@ -126,7 +125,7 @@
                               :src="
                                 item.profilePicture != null
                                   ? item.profilePicture
-                                  : `@/assets/preview_arena_1.jpg`
+                                  : require('@/assets/preview_arena_1.jpg')
                               "
                             ></v-img>
                           </v-avatar>
@@ -135,16 +134,16 @@
                           <v-card-text>
                             <div class="text-h5 mb-4">
                               {{ item.title }}
-                              <span class="body-1 ml-4">
+                              <span
+                                class="body-1 ml-4"
+                                v-show="item.length * item.width"
+                              >
                                 {{ item.length * item.width }}
                               </span>
                               <span class="body-1 ml-4"> {{ item.type }} </span>
                             </div>
                             <div class="body-1 grey--text mb-3">
                               {{ item.description }}
-                            </div>
-                            <div class="body-1 blue--text">
-                              {{ item.phone }}
                             </div>
                           </v-card-text>
                           <v-card-actions class="pl-4 bottom">
@@ -165,6 +164,42 @@
                         </div>
                       </div>
                     </v-card>
+                    <v-row>
+                      <v-col
+                        cols="2"
+                        class="text-center border"
+                        v-for="(itm, indx) in item.price"
+                        :key="indx"
+                      >
+                        <div class="mb-3 grey--text">
+                          {{ itm.price.startTime + " - " + itm.price.endTime }}
+                        </div>
+                        <div class="right-border mr-n3">
+                          <p class="mb-0">{{ itm.price.weekdayPrice }}</p>
+                          <p class="primary--text">
+                            {{ itm.price.holidayPrice }}
+                          </p>
+                        </div>
+                      </v-col>
+                    </v-row>
+                    <div class="mt-n8" v-show="item.price.length">
+                      <span class="mr-5 font-weight-bold">
+                        <v-icon style="font-size: 70px" color="#000" class="">
+                          mdi-circle-small
+                        </v-icon>
+                        <span class="ml-n5">Будни</span>
+                      </span>
+                      <span class="font-weight-bold primary--text">
+                        <v-icon
+                          style="font-size: 70px"
+                          color="primary"
+                          class=""
+                        >
+                          mdi-circle-small
+                        </v-icon>
+                        <span class="ml-n5"> Выходные </span>
+                      </span>
+                    </div>
                   </v-col>
                 </v-row>
                 <v-row dense class="mt-5" v-show="premises_tab != 0">
@@ -182,56 +217,6 @@
                 </v-row>
               </v-tab-item>
             </v-tabs-items>
-            <p class="text-h6 mt-10">Прайс-лист</p>
-            <p class="grey--text">Цены указаны за 1 час аренды</p>
-
-            <div v-for="(item, i) in katokPL" :key="i">
-              <p class="text-h4 mt-8 mb-0">{{ item.title }}</p>
-              <p class="grey--text">{{ item.miniDescription }}</p>
-              <v-row>
-                <v-col
-                  cols="2"
-                  class="text-center border"
-                  v-for="(itm, indx) in item.price"
-                  :key="indx"
-                >
-                  <div class="mb-3 grey--text">
-                    {{ itm.price.startTime + " - " + itm.price.endTime }}
-                  </div>
-                  <div class="right-border mr-n3">
-                    <p class="mb-0">{{ itm.price.weekdayPrice }}</p>
-                    <p class="primary--text">{{ itm.price.holidayPrice }}</p>
-                  </div>
-                </v-col>
-              </v-row>
-              <div class="mt-n8" v-show="item.price.length">
-                <span class="mr-5 font-weight-bold">
-                  <v-icon style="font-size: 70px" color="#000" class="">
-                    mdi-circle-small
-                  </v-icon>
-                  <span class="ml-n5">Будни</span>
-                </span>
-                <span class="font-weight-bold primary--text">
-                  <v-icon style="font-size: 70px" color="primary" class="">
-                    mdi-circle-small
-                  </v-icon>
-                  <span class="ml-n5"> Выходные </span>
-                </span>
-              </div>
-            </div>
-
-            <div class="mt-5">
-              <v-btn
-                color="primary"
-                elevation="0"
-                class="mr-3"
-                @click="
-                  $router.push({ path: `/arena/${arenaId}/event_schedule` })
-                "
-              >
-                Забронировать
-              </v-btn>
-            </div>
           </div>
         </v-col>
       </v-row>
@@ -249,7 +234,6 @@ export default {
   computed: {
     ...mapState(["katokPL", "current_arena"]),
     ...mapGetters(["katok_services", "others_services"]),
-    
   },
   filters: {
     descriptionLength(value) {
