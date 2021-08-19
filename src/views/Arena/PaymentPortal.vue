@@ -113,14 +113,35 @@
                   >
                     <v-card color="transparent" elevation="0">
                       <div class="d-flex flex-no-wrap">
-                        <div class="ma-3" width="282px" height="186px">
-                          <v-img src="@/assets/preview_arena_1.jpg"></v-img>
+                        <div class="ma-3">
+                          
+                          <v-avatar
+                            class="rounded-lg"
+                            tile
+                            width="200px"
+                            height="150px"
+                            contain
+                          >
+                            <v-img
+                              :src="
+                                item.profilePicture != null
+                                  ? item.profilePicture
+                                  : `@/assets/preview_arena_1.jpg`
+                              "
+                            ></v-img>
+                          </v-avatar>
                         </div>
                         <div class="description">
                           <v-card-text>
-                            <div class="text-h5 mb-4">{{ item.title }}<span class="body-1 ml-4"> {{item.length * item.width}} </span><span> {{item.type}} </span></div>
+                            <div class="text-h5 mb-4">
+                              {{ item.title }}
+                              <span class="body-1 ml-4">
+                                {{ item.length * item.width }}
+                              </span>
+                              <span class="body-1 ml-4"> {{ item.type }} </span>
+                            </div>
                             <div class="body-1 grey--text mb-3">
-                              {{ item.miniDescription | descriptionLength }}
+                              {{ item.description }}
                             </div>
                             <div class="body-1 blue--text">
                               {{ item.phone }}
@@ -228,6 +249,7 @@ export default {
   computed: {
     ...mapState(["katokPL", "current_arena"]),
     ...mapGetters(["katok_services", "others_services"]),
+    
   },
   filters: {
     descriptionLength(value) {
@@ -275,7 +297,7 @@ export default {
       { icon: "mdi-youtube", link: `${arenaItem.youtube}` },
       { icon: "mdi-facebook", link: `${arenaItem.facebook}` },
     ];
-     this.breadcrumb_items = [
+    this.breadcrumb_items = [
       {
         text: "Москва",
         disabled: false,
@@ -295,7 +317,7 @@ export default {
       sidebar_tab: 0,
       sidebar_items: null,
       premises_tab: null,
-      premises_nav: ["Катки", "Другие"],
+      premises_nav: ["аренда", "прочее"],
       elevation: 0,
       price_list: [
         { interval: "06:00–08:30", weekday: "8 000", weekend: "10 000" },
