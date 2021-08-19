@@ -18,7 +18,7 @@
           <v-spacer></v-spacer>
           <div class="pr-3 my-auto">
             <a
-              v-for="(item, index) in contact_list"
+              v-for="(item, index) in valid_contact_list"
               class="reset-link"
               :key="index"
               :href="item.link"
@@ -215,6 +215,9 @@ export default {
     ...mapState(["current_arena"]),
     ...mapState(["katokPL"]),
     ...mapGetters(["katok_services", "others_services"]),
+    valid_contact_list(){
+      return this.contact_list.filter((x) => x.link !== "")
+    }
   },
   created() {
     const arenaId = this.$route.params.id;
