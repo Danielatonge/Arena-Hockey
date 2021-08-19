@@ -114,7 +114,11 @@
                         <div class="d-flex flex-no-wrap">
                           <v-avatar class="ma-3 rounded-lg" size="125" tile>
                             <v-img
-                              :src="require('@/assets' + '/team_room_1.jpg')"
+                              :src="
+                                item.team.profilePicture != null
+                                  ? item.team.profilePicture
+                                  : require('@/assets/team_room_1.jpg')
+                              "
                             ></v-img>
                           </v-avatar>
                           <v-card-text>
@@ -122,12 +126,14 @@
                               class="body-1 blue--text mb-2"
                               style="text-decoration: none"
                             >
-                              {{ item.city }}
+                              {{ item.team.city }}
                             </div>
-                            <div class="text-h5 mb-2">{{ item.title }}</div>
-                            <div class="body-1 grey--text">
-                              {{ item.miniDescription | descriptionLength }}
+                            <div class="text-h5 mb-2">
+                              {{ item.team.title }}
                             </div>
+                            <!-- <div class="body-1 grey--text">
+                              {{ item.team.miniDescription | descriptionLength }}
+                            </div> -->
                           </v-card-text>
                         </div>
                       </v-card>
@@ -264,23 +270,12 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 export default {
   computed: {
     ...mapState(["current_arena"]),
-    // ...mapGetters(["youth_team", "adult_team", "female_team"]),
-    children_team() {
-      return this.teams.filter((x) => x.type == "Детскaя");
-    },
-    youth_team() {
-      return this.teams.filter((x) => x.type == "Юношеская");
-    },
-    adult_team() {
-      return this.teams.filter((x) => x.type === "Взрослая");
-    },
-    female_team() {
-      return this.teams.filter((x) => x.type === "Женская");
-    },
+    ...mapState(["teams"]),
+    ...mapGetters(["children_team", "youth_team", "adult_team", "female_team"]),
   },
   filters: {
     descriptionLength(value) {
@@ -294,11 +289,7 @@ export default {
   created() {
     const arenaId = this.$route.params.id;
     this.arenaId = arenaId;
-    this.$store.dispatch("getArenaTeams", arenaId).then((data) => {
-      console.log("Teams", data);
-      this.teams = data.map((x) => x.team);
-    });
-    this.teams = this.current_arena.teams || [];
+    this.$store.dispatch("getArenaTeams", arenaId);
 
     const arenaItem = this.current_arena;
     this.sidebar_items = [
@@ -347,7 +338,6 @@ export default {
   },
   data() {
     return {
-      teams: [],
       contact_list: null,
       name: "ArenaTeamList",
       sidebar_tab: 0,
@@ -361,7 +351,6 @@ export default {
         "Взрослые команды",
         "Женские команда",
       ],
-
       team_items: ["/team_room_1", "/team_room_2", "/team_room_3"],
     };
   },

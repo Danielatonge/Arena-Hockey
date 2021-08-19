@@ -7,71 +7,97 @@
         </div>
         <v-spacer></v-spacer>
         <div class="pr-3">
-          <v-btn
-            elevation="0"
-            x-small
-            color="grey lighten-2"
-            height="40px"
-            class="mr-1 mb-2"
-            v-for="(item, id) in getContactlist"
-            :key="id"
+          <a
+            v-for="(item, index) in valid_contact_list"
+            class="reset-link"
+            :key="index"
             :href="item.link"
-            ><v-icon color="grey lighten-0">{{ item.icon }}</v-icon></v-btn
+            target="_blank"
           >
+            <v-btn
+              elevation="0"
+              x-small
+              color="transparent"
+              height="40px"
+              class="mx-1"
+            >
+              <v-icon color=""> {{ item.icon }}</v-icon>
+            </v-btn>
+          </a>
         </div>
       </v-row>
       <v-row class="mb-3">
         <v-col cols="8" sm="6" md="7" lg="5">
-          <p class="text-h5 blue--text">{{ team.city }}</p>
-          <p class="text-h4">{{ team.title }}</p>
-          <p class="grey--text">
-            {{ team.miniDescription }}
-          </p>
+          <p class="text-h5 blue--text">{{ team.team.city }}</p>
+          <p class="text-h4">{{ team.team.title }}</p>
+          <v-btn class="mt-8" color="primary" elevation="0"
+            >Вступить в команду</v-btn
+          >
         </v-col>
         <v-spacer></v-spacer>
         <v-avatar class="px-3 rounded-lg" size="200" tile>
           <v-img
             :src="
-              require('@/assets' + '/team_room_1.jpg')
+              team.team.profilePicture != null
+                ? team.team.profilePicture
+                : require('@/assets/team_room_1.jpg')
             "
+            contain
           ></v-img>
         </v-avatar>
       </v-row>
-      <v-btn color="primary" elevation="0">Вступить в команду</v-btn>
     </v-container>
     <v-container class="mt-10">
       <p class="text-h5">Описание</p>
-      <div v-if="team.description.length < 580">
-        <p class="">
-          {{ team.description }}
-        </p>
+      <div v-if="team.team.description.length < 580">
+        <p class="text-justify" v-html="team.team.description"></p>
       </div>
       <div v-else>
-        <p class="" v-if="!readMoreActivated">
-          {{ team.description.slice(0, 580) + "..." }}
-        </p>
-        <p class="" v-else v-text="team.description"></p>
+        <p
+          class="text-justify"
+          v-if="!readMoreInfo"
+          v-html="team.team.description.slice(0, 580) + '...'"
+        ></p>
+        <p class="text-justify" v-else v-html="team.team.description"></p>
       </div>
-      
+      <v-btn
+        class="px-6"
+        color="grey lighten-2"
+        x-large
+        elevation="0"
+        @click.stop="readMoreInfo = !readMoreInfo"
+      >
+        {{ readMoreInfo ? "Скрыть" : "Развернуть" }}
+      </v-btn>
     </v-container>
-    <v-container class="mt-10" v-if="team.arenas">
+    <v-container class="mt-10" v-show="team.arenas.length">
       <p class="text-h5">Место проведения тренировок</p>
       <v-row dense class="mx-n4" v-for="(arena, id) in team.arenas" :key="id">
         <v-col cols="12" md="7">
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
-              <div class="ma-3" width="282px" height="186px">
-                <v-img
-                  :src="
-                    require('@/assets' + '/preview_arena_1.jpg')
-                  "
-                ></v-img>
+              <div class="ma-3">
+                <v-avatar
+                  class="rounded-lg"
+                  width="282px"
+                  height="186px"
+                  tile
+                  contain
+                >
+                  <v-img
+                    :src="
+                      arena.profilePicture.length
+                        ? arena.profilePicture
+                        : require('@/assets/team_room_1.jpg')
+                    "
+                  ></v-img>
+                </v-avatar>
               </div>
               <div class="description">
                 <v-card-text>
                   <div class="text-h5 mb-4">{{ arena.title }}</div>
                   <div class="body-1 grey--text">
-                    {{ arena.address | descriptionLength }}
+                    {{ arena.city }}
                   </div>
                 </v-card-text>
                 <v-card-actions class="pl-4 bottom">
@@ -122,51 +148,51 @@
       <v-row dense class="mx-n4">
         <v-col cols="12" md="6" v-for="(item, i) in trainers" :key="i">
           <v-card color="transparent" elevation="0">
+           
             <div class="d-flex flex-no-wrap">
-              <v-avatar class="ma-3" size="125" tile>
-                <v-img
-                  :src="
-                    require('@/assets' +
-                      '/player_2.jpg')
-                  "
-                ></v-img>
+              <v-avatar class="ma-3 rounded-lg" size="125" tile>
+                <v-img :src="
+                      item.user.profilePicture.length
+                        ? item.user.profilePicture
+                        : require('@/assets/team_room_1.jpg')
+                    "></v-img>
               </v-avatar>
               <v-card-text>
                 <div class="text-h5 mb-2">
-                  {{ item.name + " " + item.middleName + " " + item.surname }}
+                  {{ item.user.name + " " + item.user.middleName + " " + item.user.surname }}
                 </div>
-                <div class="body-1 blue--text mb-2">
-                  {{ item.age }}, {{ item.city }}
+                <div class="body-1 blue--text mb-2" v-show="item.user.age && item.user.city">
+                  {{ item.user.age }}, {{ item.user.city }}
                 </div>
 
-                <div class="body-1 grey--text">{{ item.position }}</div>
+                <div class="body-1 grey--text">{{ item.user.position }}</div>
               </v-card-text>
             </div>
           </v-card>
         </v-col>
       </v-row>
 
-      <p class="text-h6 mt-8">Вратари</p>
+      <p class="text-h6 mt-8">Игроки</p>
       <v-row dense class="mx-n4">
-        <v-col cols="12" md="6" v-for="(item, i) in players" :key="i">
+        <v-col cols="12" md="6" v-for="(item, i) in tplayers" :key="i">
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
-              <v-avatar class="ma-3" size="125" tile>
-                <v-img
-                  :src="
-                    require('@/assets' + '/player_1.jpg')
-                  "
-                ></v-img>
+              <v-avatar class="ma-3 rounded-lg" size="125" tile>
+                <v-img :src="
+                      item.user.profilePicture.length
+                        ? item.user.profilePicture
+                        : require('@/assets/team_room_1.jpg')
+                    "></v-img>
               </v-avatar>
               <v-card-text>
                 <div class="text-h5 mb-2">
-                  {{ item.name + " " + item.middleName + " " + item.surname }}
+                  {{ item.user.name + " " + item.user.middleName + " " + item.user.surname }}
                 </div>
                 <div class="body-1 blue--text mb-2">
-                  {{ item.age }}, {{ item.city }}
+                  {{ item.user.age }}, {{ item.user.city }}
                 </div>
 
-                <div class="body-1 grey--text">{{ item.position }}</div>
+                <div class="body-1 grey--text">{{ item.user.position }}</div>
               </v-card-text>
             </div>
           </v-card>
@@ -179,12 +205,7 @@
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
                 <v-avatar class="ma-3" size="125" tile>
-                  <v-img
-                    :src="
-                      require('@/assets' +
-                       '/player_1.jpg')
-                    "
-                  ></v-img>
+                  <v-img :src="require('@/assets' + '/player_1.jpg')"></v-img>
                 </v-avatar>
                 <v-card-text>
                   <div class="text-h5 mb-2">
@@ -350,58 +371,33 @@ export default {
   computed: {
     ...mapState({ team: "current_team" }),
     ...mapState({ arena: "current_arena" }),
-    //...mapState(["trainers"]),
+    ...mapState({ tplayers: "team_players" }),
+    valid_contact_list() {
+      return this.contact_list.filter((x) => x.link !== "");
+    },
     trainers() {
-      return this.users.filter((x) => x.role == "TRAINER");
+      return this.tplayers.filter((x) => x.user.role == "trainer");
     },
-    players() {
-      return this.users.filter((x) => x.role == "Player");
-    },
+    // players() {
+    //   return this.players.filter((x) => x.role == "Player");
+    // },
     forwards() {
-      return this.users.filter((x) => x.role == "FORWARD");
+      return this.tplayers.filter((x) => x.user.role == "FORWARD");
     },
     defenders() {
-      return this.users.filter((x) => x.role == "DEFENDER");
-    },
-    getContactlist() {
-      if (!this.contact) return [];
-      const toRet = [
-        { icon: "mdi-whatsapp", link: this.contact.whatsApp },
-        { icon: "mdi-instagram", link: this.contact.instagram },
-        { icon: "mdi-vk", link: this.contact.vk },
-        { icon: "mdi-web", link: this.contact.website },
-        { icon: "mdi-youtube", link: this.contact.youtube },
-        { icon: "mdi-twitter", link: this.contact.twitter },
-        { icon: "mdi-facebook", link: this.contact.facebook },
-        //{ icon: "mdi-tiktok", link: `${this.contact.tiktok}` },
-      ];
-
-      return toRet.filter((item) => !!item.link);
+      return this.tplayers.filter((x) => x.user.role == "Защитники");
     },
   },
-  mounted() {
+  created() {
     const teamId = this.$route.params.teamId;
     const arenaId = this.$route.params.arenaId;
     console.log("arena", this.arena);
     this.arenaId = arenaId;
     this.$store.dispatch("getTeamByID", teamId);
     this.$store.dispatch("getArenaGivenID", arenaId);
-    this.$store.dispatch("getAllPlayers");
+    this.$store.dispatch("getTeamPlayers", teamId);
     this.$store.dispatch("getCurrentTeamArenas", teamId);
 
-    this.$store.dispatch("getTeamContacts", teamId).then((data) => {
-      this.contact = data;
-    });
-    this.$store.dispatch("getTeamUsers", teamId).then((data) => {
-      this.users = data.map((x) => {
-        if (x.user.level == "string") {
-          // just to avoid the app to crash to be removed in the future.
-          x.user.level = "/player_1.jpg";
-        }
-        return x.user;
-      });
-      console.log("USERS", this.users);
-    });
     this.breadcrumb_items = [
       {
         text: this.arena.title, //"Название арены",
@@ -414,10 +410,22 @@ export default {
         href: `/arena/${arenaId}/list_teams`,
       },
       {
-        text: this.team.title, //"Название команды",
+        text: this.team.team.title, //"Название команды",
         disabled: true,
         href: "breadcrumbs_link_2",
       },
+    ];
+    const teamItem = this.team.team;
+
+    this.contact_list = [
+      { icon: "mdi-whatsapp", link: `${teamItem.whatsApp}` },
+      { icon: "mdi-instagram", link: `${teamItem.instagram}` },
+      { icon: "mdi-vk", link: `${teamItem.vk}` },
+      { icon: "mdi-web", link: `${teamItem.website}` },
+      { icon: "mdi-music-note-outline", link: `${teamItem.tiktok}` },
+      { icon: "mdi-twitter", link: `${teamItem.twitter}` },
+      { icon: "mdi-youtube", link: `${teamItem.youtube}` },
+      { icon: "mdi-facebook", link: `${teamItem.facebook}` },
     ];
   },
   methods: {
@@ -434,7 +442,8 @@ export default {
       advert_nav: ["Команда ищет игроков", "Команда ищет тренера"],
       player_items: ["/player_1", "/player_2"],
       advert_items: ["/advert_1", "/advert_2"],
-      readMoreActivated: false,
+      contact_list: null,
+      readMoreInfo: false,
       breadcrumb_items: null,
       gallery_items: [
         "/gallery_1",
