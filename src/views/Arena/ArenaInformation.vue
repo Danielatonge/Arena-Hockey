@@ -106,8 +106,6 @@
             class="text-justify mb-5"
               v-html="
                 current_arena.description
-                  ? current_arena.description.slice(0, 480) + '...'
-                  : ''
               "
             ></div>
             <v-row>
