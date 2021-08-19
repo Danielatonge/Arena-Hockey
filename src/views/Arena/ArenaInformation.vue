@@ -55,8 +55,15 @@
             </p>
           </div>
         </div>
-        <v-btn color="primary mr-4 mt-4" elevation="0">Забронировать</v-btn>
         <v-btn
+          @click="
+            $router.push({ path: `/arena/${current_arena.id}/event_schedule` })
+          "
+          color="primary mr-4 mt-4"
+          elevation="0"
+          >Забронировать</v-btn
+        >
+        <!-- <v-btn
           class="mt-4"
           @click="
             $router.push({ path: `/arena/${current_arena.id}/information#map` })
@@ -66,7 +73,7 @@
           elevation="0"
         >
           Как проехать?
-        </v-btn>
+        </v-btn> -->
       </v-container>
     </v-img>
     <v-container>
@@ -111,7 +118,11 @@
               <p class="text-justify" v-if="!readMoreInfo">
                 {{ current_arena.description.slice(0, 580) + "..." }}
               </p>
-              <p class="text-justify" v-else v-text="current_arena.description"></p>
+              <p
+                class="text-justify"
+                v-else
+                v-text="current_arena.description"
+              ></p>
             </div>
             <v-btn
               color="grey lighten-2 mb-5"
@@ -141,13 +152,15 @@
 
             <v-row>
               <v-col cols="12" md="8">
-                <section class="wrapper-map">
-                  <ArenaMap
-                    :coords="coords"
-                    :surfaces="surfaces"
-                    :zoom="zoom"
-                    @set-coords="coords = $event"
-                  />
+                <section class="wrapper-map" id="map">
+                  <a name="map" class="reset-link">
+                    <ArenaMap
+                      :coords="coords"
+                      :surfaces="surfaces"
+                      :zoom="zoom"
+                      @set-coords="coords = $event"
+                    />
+                  </a>
                 </section>
               </v-col>
               <v-col cols="12" md="4">
@@ -181,12 +194,11 @@
                     Адрес: {{ current_arena.address }}
                   </p>
                   <a :href="current_arena.website" target="_blank">
-                    {{current_arena.website}}
+                    {{ current_arena.website }}
                   </a>
                 </div>
               </v-col>
             </v-row>
-
           </div>
         </v-col>
       </v-row>
@@ -218,9 +230,9 @@ export default {
     ...mapState(["current_arena"]),
     ...mapState(["katokPL"]),
     ...mapGetters(["katok_services", "others_services"]),
-    valid_contact_list(){
-      return this.contact_list.filter((x) => x.link !== "")
-    }
+    valid_contact_list() {
+      return this.contact_list.filter((x) => x.link !== "");
+    },
   },
   created() {
     const arenaId = this.$route.params.id;

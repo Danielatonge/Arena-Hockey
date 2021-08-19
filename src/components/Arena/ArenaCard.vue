@@ -7,10 +7,12 @@
     @click="goToArena"
   >
     <v-img
-      :src="
-        require('@/assets' +
-          (arena.profilePicture ? arena.profilePicture : '/team_room_1.jpg'))
-      "
+    :src="
+                      arena.profilePicture.length
+                        ? arena.profilePicture
+                        : require('@/assets/team_room_1.jpg')
+                    "
+
       height="200px"
     >
       <v-container>

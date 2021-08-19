@@ -73,7 +73,6 @@
             <v-select
               :items="sort_by_team"
               v-model="sort_model"
-              value="По популярности"
               solo
               flat
               item-text="value"
@@ -259,7 +258,7 @@ export default {
         { key: 0, value: "По именни (от Я до А)" },
         { key: 1, value: "По именни (от А до Я)" },
       ],
-      sort_model: null,
+      sort_model: { key: 0, value: "По именни (от Я до А)" },
       sort_by_alphabet: [
         { key: 0, value: "По алфавиту (от А до Я)" },
         { key: 1, value: "По алфавиту (от Я до А)" },
