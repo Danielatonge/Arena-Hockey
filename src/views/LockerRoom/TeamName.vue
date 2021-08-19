@@ -35,14 +35,14 @@
           >
         </v-col>
         <v-spacer></v-spacer>
-        <v-avatar class="px-3 rounded-lg" size="200" tile>
+        <v-avatar class="rounded-lg" size="200" tile>
           <v-img
+            contain
             :src="
               team.team.profilePicture != null
                 ? team.team.profilePicture
                 : require('@/assets/team_room_1.jpg')
             "
-            contain
           ></v-img>
         </v-avatar>
       </v-row>
@@ -77,14 +77,9 @@
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
               <div class="ma-3">
-                <v-avatar
-                  class="rounded-lg"
-                  width="282px"
-                  height="186px"
-                  tile
-                  contain
-                >
+                <v-avatar class="rounded-lg" width="282px" height="186px" tile>
                   <v-img
+                    contain
                     :src="
                       arena.profilePicture.length
                         ? arena.profilePicture
@@ -151,6 +146,7 @@
             <div class="d-flex flex-no-wrap">
               <v-avatar class="ma-3 rounded-lg" size="125" tile>
                 <v-img
+                contain
                   :src="
                     item.user.profilePicture.length
                       ? item.user.profilePicture
@@ -189,6 +185,7 @@
             <div class="d-flex flex-no-wrap">
               <v-avatar class="ma-3 rounded-lg" size="125" tile>
                 <v-img
+                contain
                   :src="
                     item.user.profilePicture.length
                       ? item.user.profilePicture
@@ -207,7 +204,7 @@
                   }}
                 </div>
                 <div class="body-1 blue--text mb-2">
-                  {{ item.user.age }}, {{ item.user.level }}
+                  {{ item.user.age ? item.user.age + ', ' : ""  }} {{ item.user.level }}
                 </div>
 
                 <div class="body-1 grey--text">{{ item.user.position }}</div>
@@ -339,13 +336,17 @@
                 </div>
                 <p class="bold">Необходимые требования:</p>
                 <div class="d-flex mb-2">
-                  <div class="body-2 blue--text" v-show="item.age">Возраст: {{ item.age }}</div>
+                  <div class="body-2 blue--text" v-show="item.age">
+                    Возраст: {{ item.age }}
+                  </div>
                   <div class="body-2 blue--text ml-16" v-show="item.role">
                     Амплуа: {{ item.role }}
                   </div>
                 </div>
                 <div class="d-flex">
-                  <div class="body-2 blue--text" v-show="item.grip">Хват: {{ item.grip }}</div>
+                  <div class="body-2 blue--text" v-show="item.grip">
+                    Хват: {{ item.grip }}
+                  </div>
                   <div class="body-2 blue--text ml-16" v-show="item.level">
                     Уровень: {{ item.level }}
                   </div>
