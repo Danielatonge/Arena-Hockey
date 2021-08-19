@@ -121,6 +121,24 @@
             >
               {{ readMoreInfo ? "Скрыть" : "Развернуть" }}
             </v-btn>
+
+            <p class="text-h5 font-weight-bold mt-10">Галерея</p>
+            <v-row class="mb-10">
+              <v-col cols="6" md="4" lg="3" v-for="(item, i) in media" :key="i">
+                <v-img
+                  style="height: 100px"
+                  :src="item.src"
+                  @click="openGallery(i)"
+                ></v-img>
+              </v-col>
+              <LightBox
+                ref="lightbox"
+                :media="media"
+                :show-caption="true"
+                :show-light-box="false"
+              />
+            </v-row>
+            
             <v-row>
               <v-col cols="12" md="8">
                 <section class="wrapper-map">
@@ -166,22 +184,6 @@
               </v-col>
             </v-row>
 
-            <p class="text-h5 font-weight-bold mt-10">Галерея</p>
-            <v-row class="mb-10">
-              <v-col cols="6" md="4" lg="3" v-for="(item, i) in media" :key="i">
-                <v-img
-                  style="height: 100px"
-                  :src="item.src"
-                  @click="openGallery(i)"
-                ></v-img>
-              </v-col>
-              <LightBox
-                ref="lightbox"
-                :media="media"
-                :show-caption="true"
-                :show-light-box="false"
-              />
-            </v-row>
           </div>
         </v-col>
       </v-row>
