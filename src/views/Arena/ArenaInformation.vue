@@ -180,6 +180,9 @@
                     <br />
                     Адрес: {{ current_arena.address }}
                   </p>
+                  <a :href="current_arena.website" target="_blank">
+                    {{current_arena.website}}
+                  </a>
                 </div>
               </v-col>
             </v-row>
