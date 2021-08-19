@@ -102,12 +102,25 @@
                 {{ tag }}
               </v-chip>
             </div>
-            <div
-            class="text-justify mb-5"
-              v-html="
-                current_arena.description
-              "
-            ></div>
+            <div v-if="current_arena.description.length < 580">
+              <p class="text-justify">
+                {{ current_arena.description }}
+              </p>
+            </div>
+            <div v-else>
+              <p class="text-justify" v-if="!readMoreInfo">
+                {{ current_arena.description.slice(0, 580) + "..." }}
+              </p>
+              <p class="text-justify" v-else v-text="current_arena.description"></p>
+            </div>
+            <v-btn
+              color="grey lighten-2 mb-5"
+              v-show="current_arena.description.length > 580"
+              elevation="0"
+              @click="readMoreInfo = !readMoreInfo"
+            >
+              {{ readMoreInfo ? "Скрыть" : "Развернуть" }}
+            </v-btn>
             <v-row>
               <v-col cols="12" md="8">
                 <section class="wrapper-map">
