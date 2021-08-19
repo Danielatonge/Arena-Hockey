@@ -134,7 +134,7 @@
                               elevation="0"
                               @click="
                                 $router.push({
-                                  path: `/arena/${arenaId}/event_schedule/${item.id}`,
+                                  path: `/arena/${arenaId}/event_schedule`,
                                 })
                               "
                             >

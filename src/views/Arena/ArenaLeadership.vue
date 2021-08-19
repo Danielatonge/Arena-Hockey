@@ -67,7 +67,7 @@
     <v-container>
       <v-row class="mt-5">
         <v-col cols="5" md="3">
-          <v-tabs vertical class="pl-4 rounded-lg" v-model="sidebar_tab">
+          <v-tabs vertical class="pl-4 rounded-lg my-sidetabs" v-model="sidebar_tab">
             <v-tab
               v-for="(item, i) in sidebar_items"
               :key="i"
