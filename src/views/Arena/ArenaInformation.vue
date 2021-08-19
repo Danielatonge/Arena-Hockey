@@ -40,7 +40,7 @@
         <div class="d-flex mt-5 mb-2">
           <div class="pr-4">
             <v-img
-              :src="require('@/assets' + '/team_room_1.jpg')"
+              :src="require('@/assets' + '/vershina_logo.png')"
               height="180px"
               width="180px"
               class="rounded-xl"
@@ -122,7 +122,7 @@
               {{ readMoreInfo ? "Скрыть" : "Развернуть" }}
             </v-btn>
 
-            <p class="text-h5 font-weight-bold mt-10">Галерея</p>
+            <p class="text-h5 font-weight-bold mt-3">Галерея</p>
             <v-row class="mb-10">
               <v-col cols="6" md="4" lg="3" v-for="(item, i) in media" :key="i">
                 <v-img
@@ -138,7 +138,7 @@
                 :show-light-box="false"
               />
             </v-row>
-            
+
             <v-row>
               <v-col cols="12" md="8">
                 <section class="wrapper-map">
