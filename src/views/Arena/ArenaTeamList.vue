@@ -341,6 +341,7 @@ export default {
       contact_list: null,
       name: "ArenaTeamList",
       sidebar_tab: 0,
+      
       sidebar_items: null,
       arenaId: null,
       premises_tab: null,
