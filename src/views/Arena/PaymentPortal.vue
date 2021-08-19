@@ -118,7 +118,7 @@
                         </div>
                         <div class="description">
                           <v-card-text>
-                            <div class="text-h5 mb-4">{{ item.title }}</div>
+                            <div class="text-h5 mb-4">{{ item.title }}<span class="body-1 ml-4"> {{item.length * item.width}} </span><span> {{item.type}} </span></div>
                             <div class="body-1 grey--text mb-3">
                               {{ item.miniDescription | descriptionLength }}
                             </div>
