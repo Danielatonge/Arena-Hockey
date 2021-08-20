@@ -115,7 +115,7 @@ export default {
   created() {
     const arenaId = this.$route.params.id;
     this.$store.dispatch("getArenaGivenID", arenaId);
-    this.$store.dispatch("getServicesAll");
+    this.$store.dispatch("getArenaServices", arenaId);
     this.$store.dispatch("getArenaTeams", arenaId);
     this.$store.dispatch("getArenaTrainers");
 

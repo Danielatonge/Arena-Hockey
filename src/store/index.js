@@ -196,9 +196,9 @@ export default new Vuex.Store({
     displayMapOne({ commit }, payload) {
       commit("SET_MAP_COORDINATE", payload);
     },
-    getServicesAll({ commit }) {
+    getArenaServices({ commit }, arenaId) {
       axios
-        .get(`/services`)
+        .get(`/arena/${arenaId}/services`)
         .then((response) => {
           commit("SET_SERVICES", response.data);
         })
