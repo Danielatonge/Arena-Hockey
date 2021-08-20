@@ -1,7 +1,8 @@
 <template>
   <fragment>
     <v-card color="transparent" :elevation="elevation" class="rounded-lg mb-4">
-      <div class="d-flex flex-no-wrap" @click="goToService">
+      <div class="d-flex flex-no-wrap">
+      <!-- <div class="d-flex flex-no-wrap" @click="goToService"> -->
         <div class="ml-0" width="282px" height="186px">
           <v-avatar class="rounded-lg" tile width="200px" height="150px">
             <v-img

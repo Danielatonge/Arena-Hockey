@@ -31,7 +31,6 @@ export default new Vuex.Store({
     forums: [],
   },
   getters: {
-    
     current_arena(state) {
       return state.current_arena;
     },
@@ -143,17 +142,11 @@ export default new Vuex.Store({
         state.teams[id]["contact"] = contact;
       }
     },
-    SET_ARENA_TEAM(state, payload) {
+    SET_ARENA_TEAMS(state, payload) {
       state.teams = payload;
     },
-    SET_ARENA_TRAINER(state, payload) {
-      const pos = state.list_arenas.findIndex(
-        (item) => (item.id == payload.arena_id)
-      );
-      if (pos > -1) {
-        const arena = state.list_arenas[pos];
-        arena["trainers"] = payload.data;
-      }
+    SET_ARENA_TRAINERS(state, payload) {
+      state.trainers = payload;
     },
     SET_TEAM_PLAYERS(state, payload) {
       state.team_players = payload;
@@ -171,9 +164,9 @@ export default new Vuex.Store({
     //     }
     //   });
     // },
-    SET_TEAM_FORUMS(state, payload){
+    SET_TEAM_FORUMS(state, payload) {
       state.forums = payload;
-    }
+    },
   },
   actions: {
     getAllArenas({ commit }) {
@@ -277,7 +270,9 @@ export default new Vuex.Store({
     },
     getPriceListKatok({ commit }) {
       let priceList = [];
-      let katokService = this.state.services.filter((x) => x.serviceType === "ICERINK");
+      let katokService = this.state.services.filter(
+        (x) => x.serviceType === "ICERINK"
+      );
       console.log("KATOKSERVICE", katokService);
       let final = [];
       katokService.forEach((x) => {
@@ -341,18 +336,18 @@ export default new Vuex.Store({
         axios
           .get(`/arena/${arena_id}/teams`)
           .then((response) => {
-            commit("SET_ARENA_TEAM", response.data);
+            commit("SET_ARENA_TEAMS", response.data);
             resolve(response.data);
           })
           .catch((err) => console.log(err));
       });
     },
-    getArenaTrainer({ commit }, arena_id) {
+    getArenaTrainers({ commit }, arena_id) {
       return new Promise((resolve) => {
         axios
           .get(`/arena/${arena_id}/users`)
           .then((response) => {
-            commit("SET_ARENA_TRAINER", response.data);
+            commit("SET_ARENA_TRAINERS", response.data);
             resolve(response.data);
           })
           .catch((err) => console.log(err));
@@ -362,8 +357,8 @@ export default new Vuex.Store({
       commit("SET_CURRENT_PL", priceList);
     },
 
-    savePriceList({ commit }, {prices, serviceId}) {
-      console.log({prices, serviceId});
+    savePriceList({ commit }, { prices, serviceId }) {
+      console.log({ prices, serviceId });
       let priceList = [];
       commit("UPDATE_PRICE_LIST");
       prices.forEach((x) => {
@@ -372,7 +367,7 @@ export default new Vuex.Store({
             axios
               .post(`/pricelist`, {
                 priceId: x.id,
-                serviceId: serviceId
+                serviceId: serviceId,
               })
               .then((response) => {
                 resolve(response.data);
@@ -390,7 +385,7 @@ export default new Vuex.Store({
         // commit("SET_PRICE_LIST", final);
       });
     },
-    getTeamForums({commit}, teamId) {
+    getTeamForums({ commit }, teamId) {
       return new Promise((resolve) => {
         axios
           .get(`/team/${teamId}/forums`)

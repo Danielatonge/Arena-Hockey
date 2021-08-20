@@ -80,37 +80,39 @@ const routes = [
     path: "/arena/:id/",
     name: "ArenaName",
     component: ArenaName,
-  },
-  {
-    path: "/arena/:id/information",
-    name: "ArenaInformation",
-    component: ArenaInformation,
-  },
-  {
-    path: "/arena/:id/payment_portal",
-    name: "PaymentPortal",
-    component: PaymentPortal,
-  },
+    children: [
+      {
+        path: "information",
+        name: "ArenaInformation",
+        component: ArenaInformation,
+      },
+      {
+        path: "payment_portal",
+        name: "PaymentPortal",
+        component: PaymentPortal,
+      },
 
-  {
-    path: "/arena/:id/list_teams",
-    name: "ArenaTeamList",
-    component: ArenaTeamList,
-  },
-  {
-    path: "/arena/:id/training_staff",
-    name: "ArenaTrainingStaff",
-    component: ArenaTrainingStaff,
-  },
-  {
-    path: "/arena/:id/event_schedule",
-    name: "EventSchedule",
-    component: EventSchedule,
-  },
-  {
-    path: "/arena/:id/leadership",
-    name: "ArenaLeadership",
-    component: ArenaLeadership,
+      {
+        path: "list_teams",
+        name: "ArenaTeamList",
+        component: ArenaTeamList,
+      },
+      {
+        path: "training_staff",
+        name: "ArenaTrainingStaff",
+        component: ArenaTrainingStaff,
+      },
+      {
+        path: "event_schedule",
+        name: "EventSchedule",
+        component: EventSchedule,
+      },
+      {
+        path: "leadership",
+        name: "ArenaLeadership",
+        component: ArenaLeadership,
+      },
+    ],
   },
   {
     path: "/arena/:arenaId/event_schedule/:serviceId",
