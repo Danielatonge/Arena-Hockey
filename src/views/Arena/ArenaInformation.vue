@@ -49,7 +49,6 @@
         :show-light-box="false"
       />
     </v-row>
-
     <v-row>
       <v-col cols="12" md="8">
         <section class="wrapper-map" id="map">
@@ -102,7 +101,6 @@
 import ArenaMap from "@/components/Arena/ArenaMap";
 import { mapState } from "vuex";
 import LightBox from "vue-image-lightbox";
-import { media } from "@/data/dummy";
 
 export default {
   components: {
@@ -122,6 +120,20 @@ export default {
     ...mapState(["current_arena"]),
     valid_contact_list() {
       return this.contact_list.filter((x) => x.link !== "");
+    },
+    media(){
+      let _media = [];
+      if(this.current_arena.gallery) {
+        this.current_arena.gallery.forEach((x) => {
+          const item = {
+            thumb: x,
+            src: x,
+            caption: "<h4></h4>",
+          }
+          _media.push(item);
+        });
+      }
+      return _media;
     },
   },
   created() {},
@@ -153,7 +165,6 @@ export default {
         this.$store.state.current_arena.lat,
         this.$store.state.current_arena.lan,
       ],
-      media,
     };
   },
 };

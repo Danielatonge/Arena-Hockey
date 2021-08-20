@@ -361,12 +361,12 @@
     <v-container class="mt-10">
       <p class="text-h5">Галерея</p>
       <v-row>
-        <v-col cols="6" md="4" lg="3" v-for="(item, i) in team_media" :key="i">
+        <v-col cols="6" md="4" lg="3" v-for="(item, i) in media" :key="i">
           <v-img :src="item" @click="openGallery(i)"></v-img>
         </v-col>
         <LightBox
           ref="lightbox"
-          :media="team_media"
+          :media="media"
           :show-caption="true"
           :show-light-box="false"
         />
@@ -394,7 +394,6 @@
 <script>
 import { mapState } from "vuex";
 import LightBox from "vue-image-lightbox";
-import { team_media } from "@/data/dummy";
 
 export default {
   name: "TeamName",
@@ -428,6 +427,20 @@ export default {
     // players() {
     //   return this.players.filter((x) => x.role == "Player");
     // },
+    media(){
+      let _media = [];
+      if(this.team.team.gallery) {
+        this.team.team.gallery.forEach((x) => {
+          const item = {
+            thumb: x,
+            src: x,
+            caption: "<h4></h4>",
+          }
+          _media.push(item);
+        });
+      }
+      return _media;
+    },
     forwards() {
       return this.tplayers.filter((x) => x.user.role == "FORWARD");
     },
@@ -507,7 +520,6 @@ export default {
         "/gallery_7",
         "/gallery_8",
       ],
-      team_media,
     };
   },
 };

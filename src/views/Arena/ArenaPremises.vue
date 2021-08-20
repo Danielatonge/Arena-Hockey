@@ -291,7 +291,6 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 import ArenaServiceCard from "@/components/Arena/ArenaServiceCard";
-import { media } from "@/data/dummy";
 import LightBox from "vue-image-lightbox";
 
 export default {
@@ -377,7 +376,6 @@ export default {
         "Conference",
         "Party",
       ],
-      media,
     };
   },
   methods: {

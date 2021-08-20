@@ -39,13 +39,16 @@
 
         <div class="d-flex mt-5 mb-2">
           <div class="pr-4">
-            <v-img
-              :src="require('@/assets' + '/vershina_logo.png')"
-              height="180px"
-              width="180px"
-              class="rounded-xl"
+            <v-avatar class="rounded-lg" tile size="180">
+              <v-img
               contain
-            ></v-img>
+                :src="
+                  current_arena.profilePicture != null
+                    ? current_arena.profilePicture
+                    : require('@/assets/preview_arena_1.jpg')
+                "
+              ></v-img>
+            </v-avatar>
           </div>
           <div class="my-auto">
             <p class="text-h4 white--text">{{ current_arena.title }}</p>
