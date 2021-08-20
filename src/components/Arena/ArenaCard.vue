@@ -83,7 +83,7 @@ export default {
   filters: {
     addressDescription: (value) => {
       if (!value) return "";
-      return value.slice(0, 35);
+      return value.slice(0, 45);
     },
   },
   computed: {
