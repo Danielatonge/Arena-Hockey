@@ -382,7 +382,6 @@ export default new Vuex.Store({
 
       Promise.all(priceList).then((response) => {
         console.log(response);
-        // commit("SET_PRICE_LIST", final);
       });
     },
     getTeamForums({ commit }, teamId) {

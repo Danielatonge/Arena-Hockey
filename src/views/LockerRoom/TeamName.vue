@@ -146,7 +146,7 @@
             <div class="d-flex flex-no-wrap">
               <v-avatar class="ma-3 rounded-lg" size="125" tile>
                 <v-img
-                contain
+                  contain
                   :src="
                     item.user.profilePicture.length
                       ? item.user.profilePicture
@@ -185,7 +185,7 @@
             <div class="d-flex flex-no-wrap">
               <v-avatar class="ma-3 rounded-lg" size="125" tile>
                 <v-img
-                contain
+                  contain
                   :src="
                     item.user.profilePicture.length
                       ? item.user.profilePicture
@@ -204,7 +204,8 @@
                   }}
                 </div>
                 <div class="body-1 blue--text mb-2">
-                  {{ item.user.age ? item.user.age + "  " : ""  }} {{ item.user.level ? item.user.level : "" }}
+                  {{ item.user.age ? item.user.age + "  " : "" }}
+                  {{ item.user.level ? item.user.level : "" }}
                 </div>
 
                 <div class="body-1 grey--text">{{ item.user.position }}</div>
@@ -427,15 +428,15 @@ export default {
     players() {
       return this.tplayers.filter((x) => x.user.role == "PLAYER");
     },
-    media(){
+    media() {
       let _media = [];
-      if(this.team.team.gallery) {
+      if (this.team.team.gallery) {
         this.team.team.gallery.forEach((x) => {
           const item = {
             thumb: x,
             src: x,
             caption: "<h4></h4>",
-          }
+          };
           _media.push(item);
         });
       }
@@ -495,7 +496,14 @@ export default {
     },
     dateFormat(date) {
       let newDate = new Date(date);
-      return newDate.toDateString();
+      let formatter = new Intl.DateTimeFormat("ru", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+      
+      return formatter.format(newDate);
     },
   },
   data() {
