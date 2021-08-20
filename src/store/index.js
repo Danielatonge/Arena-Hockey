@@ -96,7 +96,7 @@ export default new Vuex.Store({
       state.players = players;
     },
     SETPRICELIST(state, sPriceList) {
-      // sPriceList.sort()
+      sPriceList.sort((a, b) => (a.title.toLowerCase() > b.title.toLowerCase()) ? 1 : -1)
       state.katokPL = sPriceList;
     },
     SET_PRICE_LIST_OTHERS(state, priceList) {
