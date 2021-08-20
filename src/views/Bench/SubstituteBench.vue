@@ -88,26 +88,24 @@
         >
           <v-card elevation="0" class="pa-5 rounded-lg">
             <div class="d-flex flex-no-wrap">
-              <v-avatar class="ma-3" size="100" tile>
-                <!-- <v-img :src="require('@/assets' + item + '.jpg')"></v-img> -->
-              </v-avatar>
-              <v-card-text>
-                <div class="body-1 grey--text">19 апреля 2021</div>
-                <div class="text-h5 mb-2">Елизавета Фёдорова</div>
-                <div class="body-2 grey--text">21 год, Иркутск</div>
+              <v-card-text class="px-0">
+                <div class="body-1 grey--text">
+                  {{ dateFormat(item.date) }}
+                </div>
+                <div class="text-h5 mb-2">{{ item.name }}</div>
+                <div class="body-2 grey--text">{{ item.age }} год</div>
               </v-card-text>
             </div>
             <div class="mb-4">
-              Lorem non vitae eu nisl. Faucibus rhoncus est ultrices nisi. Amet
-              est donec habitant sem odio aenean. At euismod euismod le...
+              {{ item.description.slice(0, 290) }}
             </div>
             <p class="bold">Навыки:</p>
             <div class="d-flex mb-2">
-              <div class="body-2 blue--text">Хват: правый</div>
-              <div class="body-2 blue--text ml-16">Амплуа: защитник</div>
+              <div class="body-2 blue--text">Хват: {{ item.grip }}</div>
+              <div class="body-2 blue--text ml-16">Амплуа: {{ item.role }}</div>
             </div>
             <div class="d-flex">
-              <div class="body-2 blue--text">Уровень: профессионал</div>
+              <div class="body-2 blue--text">Уровень: {{ item.level }}</div>
             </div>
           </v-card>
         </v-col>
@@ -281,29 +279,29 @@
           v-for="(item, i) in teamFindPlayer"
           :key="i"
         >
-          <v-card elevation="0" class="pa-5 rounded-lg">
+          <v-card elevation="0" class="pa-5">
             <div class="d-flex flex-no-wrap">
-              <v-avatar class="ma-3" size="100" tile>
-                <!-- <v-img :src="require('@/assets' + item + '.jpg')"></v-img> -->
-              </v-avatar>
-              <v-card-text>
-                <div class="body-1 grey--text">19 апреля 2021</div>
-                <div class="text-h5 mb-2">Toronto Raptors</div>
-                <div class="body-2 grey--text">Участников: 19</div>
+              <v-card-text class="px-0">
+                <div class="body-1 grey--text">
+                  {{ dateFormat(item.date) }}
+                </div>
+                <div class="text-h6 mb-2">{{ item.name }}</div>
+                <!-- <div class="body-2 grey--text">Участников: 19</div> -->
               </v-card-text>
             </div>
-            <div class="mb-4">
-              Lorem non vitae eu nisl. Faucibus rhoncus est ultrices nisi. Amet
-              est donec habitant sem odio aenean. At euismod euismod le...
+            <div class="mb-4 text-justify">
+              {{ item.description.slice(0, 290) }}
             </div>
             <p class="bold">Необходимые требования:</p>
             <div class="d-flex mb-2">
-              <div class="body-2 blue--text">Возраст: 24, 25</div>
-              <div class="body-2 blue--text ml-16">Амплуа: защитник</div>
+              <div class="body-2 blue--text">Возраст: {{ item.age }}</div>
+              <div class="body-2 blue--text ml-16">Амплуа: {{ item.role }}</div>
             </div>
             <div class="d-flex">
-              <div class="body-2 blue--text">Хват: правый</div>
-              <div class="body-2 blue--text ml-16">Уровень: профессионал</div>
+              <div class="body-2 blue--text">Хват: {{ item.grip }}</div>
+              <div class="body-2 blue--text ml-16">
+                Уровень: {{ item.level }}
+              </div>
             </div>
           </v-card>
         </v-col>
@@ -381,26 +379,24 @@
         >
           <v-card elevation="0" class="pa-5 rounded-lg">
             <div class="d-flex flex-no-wrap">
-              <v-avatar class="ma-3" size="100" tile>
-                <!-- <v-img :src="require('@/assets' + item + '.jpg')"></v-img> -->
-              </v-avatar>
-              <v-card-text>
-                <div class="body-1 grey--text">19 апреля 2021</div>
-                <div class="text-h5 mb-2">Елизавета Фёдорова</div>
-                <div class="body-2 grey--text">21 год, Иркутск</div>
+              <v-card-text class="px-0">
+                <div class="body-1 grey--text">
+                  {{ dateFormat(item.date) }}
+                </div>
+                <div class="text-h5 mb-2">{{ item.name }}</div>
+                <div class="body-2 grey--text">{{ item.age }} год</div>
               </v-card-text>
             </div>
             <div class="mb-4">
-              Lorem non vitae eu nisl. Faucibus rhoncus est ultrices nisi. Amet
-              est donec habitant sem odio aenean. At euismod euismod le...
+              {{ item.description.slice(0, 290) }}
             </div>
             <p class="bold">Навыки:</p>
             <div class="d-flex mb-2">
-              <div class="body-2 blue--text">Хват: правый</div>
-              <div class="body-2 blue--text ml-16">Амплуа: защитник</div>
+              <div class="body-2 blue--text">Хват: {{ item.grip }}</div>
+              <div class="body-2 blue--text ml-16">Амплуа: {{ item.role }}</div>
             </div>
             <div class="d-flex">
-              <div class="body-2 blue--text">Уровень: профессионал</div>
+              <div class="body-2 blue--text">Уровень: {{ item.level }}</div>
             </div>
           </v-card>
         </v-col>
@@ -460,20 +456,6 @@ export default {
         "Команда ищет тренера",
         "Тренер ищет команду",
       ],
-      team_items: [
-        "/team_room_1",
-        "/team_room_2",
-        "/team_room_3",
-        "/team_room_4",
-      ],
-      player_items: [
-        "/player_1",
-        "/player_2",
-        "/player_3",
-        "/player_4",
-        "/player_5",
-        "/player_6",
-      ],
       country_tags: ["Россия"],
       sort_by_team: ["По популярности", "По именни", "Сначала новые"],
       sort_by_player: ["По возрасту", "По город"],
@@ -489,7 +471,6 @@ export default {
         month: "long",
         day: "numeric",
       });
-      
       return formatter.format(newDate);
     },
   },

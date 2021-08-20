@@ -24,6 +24,7 @@ export default new Vuex.Store({
     services: [],
     arenasMapIdentifier: [],
     teams: [],
+    team_trainers:[],
     trainers: [],
     players: [],
     katokPL: [],
@@ -40,28 +41,6 @@ export default new Vuex.Store({
     },
     others_services(state) {
       return state.services.filter((x) => x.serviceType !== "RENT");
-    },
-
-    children_team(state) {
-      return state.teams.filter((x) => x.team.type == "CHILDREN");
-    },
-    youth_team(state) {
-      return state.teams.filter((x) => x.team.type == "YOUTH");
-    },
-    adult_team(state) {
-      return state.teams.filter((x) => x.team.type === "ADULT");
-    },
-    female_team(state) {
-      return state.teams.filter((x) => x.team.type === "FEMALE");
-    },
-    kid_trainers(state) {
-      return state.trainers.filter((x) => x.qualification === "Детскaя");
-    },
-    youth_trainers(state) {
-      return state.trainers.filter((x) => x.qualification === "Юношеская");
-    },
-    female_trainer(state) {
-      return state.trainers.filter((x) => x.qualification === "Женская");
     },
   },
   mutations: {

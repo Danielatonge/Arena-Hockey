@@ -171,13 +171,23 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState } from "vuex";
 export default {
   computed: {
     ...mapState(["current_arena"]),
     ...mapState(["teams"]),
-    ...mapGetters(["children_team", "youth_team", "adult_team", "female_team"]),
-    
+    children_team() {
+      return this.teams.filter((x) => x.team.type == "CHILDREN");
+    },
+    youth_team() {
+      return this.teams.filter((x) => x.team.type == "YOUTH");
+    },
+    adult_team() {
+      return this.teams.filter((x) => x.team.type === "ADULT");
+    },
+    female_team() {
+      return this.teams.filter((x) => x.team.type === "FEMALE");
+    },
   },
   filters: {
     descriptionLength(value) {
