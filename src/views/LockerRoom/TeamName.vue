@@ -180,7 +180,7 @@
 
       <p class="text-h6 mt-8">Игроки</p>
       <v-row dense class="mx-n4">
-        <v-col cols="12" md="6" v-for="(item, i) in tplayers" :key="i">
+        <v-col cols="12" md="6" v-for="(item, i) in players" :key="i">
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
               <v-avatar class="ma-3 rounded-lg" size="125" tile>
@@ -204,7 +204,7 @@
                   }}
                 </div>
                 <div class="body-1 blue--text mb-2">
-                  {{ item.user.age ? item.user.age + ', ' : ""  }} {{ item.user.level }}
+                  {{ item.user.age ? item.user.age + "  " : ""  }} {{ item.user.level ? item.user.level : "" }}
                 </div>
 
                 <div class="body-1 grey--text">{{ item.user.position }}</div>
@@ -422,11 +422,11 @@ export default {
       return this.forums.filter((x) => x.type === "TEAMTRAINER");
     },
     trainers() {
-      return this.tplayers.filter((x) => x.user.role == "trainer");
+      return this.tplayers.filter((x) => x.user.role == "TRAINER");
     },
-    // players() {
-    //   return this.players.filter((x) => x.role == "Player");
-    // },
+    players() {
+      return this.tplayers.filter((x) => x.user.role == "PLAYER");
+    },
     media(){
       let _media = [];
       if(this.team.team.gallery) {

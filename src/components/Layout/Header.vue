@@ -1,11 +1,11 @@
 <template>
   <v-container>
     <v-toolbar flat class="my-2">
-      <v-toolbar-side-icon class="mr-4 fix-margin-left">
+      <div class="mr-4 fix-margin-left">
         <router-link to="/" class="reset-link">
         <div class="my-logo"></div>
         </router-link>
-      </v-toolbar-side-icon>
+      </div>
       <v-toolbar-title class="">
         <div class="text-h5">Портал любителей хоккея</div>
         <div class="text-body-2">Вся информация в одном месте</div>

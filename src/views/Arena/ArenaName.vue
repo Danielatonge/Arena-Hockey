@@ -120,7 +120,7 @@ export default {
     this.$store.dispatch("getArenaGivenID", arenaId);
     this.$store.dispatch("getArenaServices", arenaId);
     this.$store.dispatch("getArenaTeams", arenaId);
-    this.$store.dispatch("getArenaTrainers");
+    this.$store.dispatch("getArenaTrainers", arenaId);
 
     this.sidebar_items = [
       { text: "Информация", link: `/arena/${arenaId}/information` },

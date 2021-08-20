@@ -42,16 +42,16 @@ export default new Vuex.Store({
     },
 
     children_team(state) {
-      return state.teams.filter((x) => x.team.type == "Детскaя");
+      return state.teams.filter((x) => x.team.type == "CHILDREN");
     },
     youth_team(state) {
-      return state.teams.filter((x) => x.team.type == "Юношеская");
+      return state.teams.filter((x) => x.team.type == "YOUTH");
     },
     adult_team(state) {
-      return state.teams.filter((x) => x.team.type === "Взрослая");
+      return state.teams.filter((x) => x.team.type === "ADULT");
     },
     female_team(state) {
-      return state.teams.filter((x) => x.team.type === "Женская");
+      return state.teams.filter((x) => x.team.type === "FEMALE");
     },
     kid_trainers(state) {
       return state.trainers.filter((x) => x.qualification === "Детскaя");
