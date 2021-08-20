@@ -26,7 +26,7 @@
               class="px-6"
               color="grey lighten-2"
               x-large
-              
+              v-show="data.description.length"
               elevation="0"
               @click.stop="readMoreInfo = !readMoreInfo"
             >

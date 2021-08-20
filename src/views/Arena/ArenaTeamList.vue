@@ -177,6 +177,7 @@ export default {
     ...mapState(["current_arena"]),
     ...mapState(["teams"]),
     ...mapGetters(["children_team", "youth_team", "adult_team", "female_team"]),
+    
   },
   filters: {
     descriptionLength(value) {

@@ -81,7 +81,7 @@
                   <v-img
                     contain
                     :src="
-                      arena.profilePicture.length
+                      arena.profilePicture != null
                         ? arena.profilePicture
                         : require('@/assets/team_room_1.jpg')
                     "
@@ -187,7 +187,7 @@
                 <v-img
                   contain
                   :src="
-                    item.user.profilePicture.length
+                    item.user.profilePicture != null
                       ? item.user.profilePicture
                       : require('@/assets/team_room_1.jpg')
                   "
@@ -214,58 +214,6 @@
           </v-card>
         </v-col>
       </v-row>
-      <div v-show="false">
-        <p class="text-h6 mt-8">Защитники</p>
-        <v-row dense class="mx-n4">
-          <v-col cols="12" md="6" v-for="(item, i) in defenders" :key="i">
-            <v-card color="transparent" elevation="0">
-              <div class="d-flex flex-no-wrap">
-                <v-avatar class="ma-3" size="125" tile>
-                  <v-img :src="require('@/assets' + '/player_1.jpg')"></v-img>
-                </v-avatar>
-                <v-card-text>
-                  <div class="text-h5 mb-2">
-                    {{ item.name + " " + item.middleName + " " + item.surname }}
-                  </div>
-                  <div class="body-1 blue--text mb-2">
-                    {{ item.age }}, {{ item.city }}
-                  </div>
-
-                  <div class="body-1 grey--text">{{ item.position }}</div>
-                </v-card-text>
-              </div>
-            </v-card>
-          </v-col>
-        </v-row>
-
-        <p class="text-h6 mt-8">Нападающие</p>
-        <v-row dense class="mx-n4">
-          <v-col cols="12" md="6" v-for="(item, i) in forwards" :key="i">
-            <v-card color="transparent" elevation="0">
-              <div class="d-flex flex-no-wrap">
-                <v-avatar class="ma-3" size="125" tile>
-                  <v-img
-                    :src="
-                      require('@/assets' +
-                        (item.level ? item.level : '/player_1.jpg'))
-                    "
-                  ></v-img>
-                </v-avatar>
-                <v-card-text>
-                  <div class="text-h5 mb-2">
-                    {{ item.name + " " + item.middleName + " " + item.surname }}
-                  </div>
-                  <div class="body-1 blue--text mb-2">
-                    {{ item.age }}, {{ item.city }}
-                  </div>
-
-                  <div class="body-1 grey--text">{{ item.position }}</div>
-                </v-card-text>
-              </div>
-            </v-card>
-          </v-col>
-        </v-row>
-      </div>
     </v-container>
 
     <v-container class="mt-10">
@@ -412,15 +360,15 @@ export default {
     ...mapState({ team: "current_team" }),
     ...mapState({ arena: "current_arena" }),
     ...mapState({ tplayers: "team_players" }),
-    ...mapState(["forums"]),
+    ...mapState(["team_forums"]),
     valid_contact_list() {
       return this.contact_list.filter((x) => x.link !== "");
     },
     teamFindPlayer() {
-      return this.forums.filter((x) => x.type === "PLAYERTEAM");
+      return this.team_forums.filter((x) => x.type === "PLAYERTEAM");
     },
     teamFindTrainer() {
-      return this.forums.filter((x) => x.type === "TEAMTRAINER");
+      return this.team_forums.filter((x) => x.type === "TEAMTRAINER");
     },
     trainers() {
       return this.tplayers.filter((x) => x.user.role == "TRAINER");

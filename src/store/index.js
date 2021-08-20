@@ -28,6 +28,7 @@ export default new Vuex.Store({
     players: [],
     katokPL: [],
     othersPL: [],
+    team_forums: [],
     forums: [],
   },
   getters: {
@@ -164,8 +165,11 @@ export default new Vuex.Store({
     //     }
     //   });
     // },
+    SET_FORUMS(state, payload) {
+      state.forums = payload
+    },
     SET_TEAM_FORUMS(state, payload) {
-      state.forums = payload;
+      state.team_forums = payload;
     },
   },
   actions: {
@@ -382,6 +386,17 @@ export default new Vuex.Store({
 
       Promise.all(priceList).then((response) => {
         console.log(response);
+      });
+    },
+    getForums({ commit }) {
+      return new Promise((resolve) => {
+        axios
+          .get(`/forums`)
+          .then((response) => {
+            commit("SET_FORUMS", response.data);
+            resolve(response.data);
+          })
+          .catch((err) => console.log(err));
       });
     },
     getTeamForums({ commit }, teamId) {
