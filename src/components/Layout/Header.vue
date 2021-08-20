@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-toolbar flat app class="my-2">
+    <v-toolbar flat class="my-2">
       <v-toolbar-side-icon class="mr-4 fix-margin-left">
         <router-link to="/" class="reset-link">
         <div class="my-logo"></div>

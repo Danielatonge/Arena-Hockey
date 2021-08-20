@@ -36,41 +36,16 @@
           </router-link>
         </v-col>
       </v-row>
-      <v-row class="d-flex">
+      <v-row class="d-flex mx-n4">
         <v-col
-          v-for="(item, i) in displayedArena"
-          :key="i"
+          class="pa-4"
           cols="12"
           md="4"
-          lg="3"
+          xl="3"
+          v-for="(arena, i) in displayedArena"
+          :key="i"
         >
-          <v-card
-            @click="goToArena(item.id)"
-            elevation="0"
-            color="#FFF"
-            :loading="false"
-            class="my-3"
-          >
-            <template slot="progress">
-              <v-progress-linear
-                color="deep-purple"
-                height="10"
-                indeterminate
-              ></v-progress-linear>
-            </template>
-
-            <v-img height="250" :src="require('@/assets/team_room_1.jpg')"></v-img>
-
-            <v-card-title>
-              {{ item.title || "Los Angeles Clippers" }}</v-card-title
-            >
-
-            <v-card-text>
-              <div>
-                {{ item.address | addressDescription }}
-              </div>
-            </v-card-text>
-          </v-card>
+          <ArenaCard :arena="arena" />
         </v-col>
       </v-row>
     </v-container>
@@ -289,9 +264,11 @@
 
 <script>
 import { mapState } from "vuex";
+import ArenaCard from "@/components/Arena/ArenaCard.vue";
 
 export default {
   name: "Home",
+  components: { ArenaCard },
   computed: {
     ...mapState(["list_arenas"]),
     displayedArena() {

@@ -35,10 +35,10 @@ export default new Vuex.Store({
       return state.current_arena;
     },
     katok_services(state) {
-      return state.services.filter((x) => x.serviceType === "ICERINK");
+      return state.services.filter((x) => x.serviceType === "RENT");
     },
     others_services(state) {
-      return state.services.filter((x) => x.serviceType !== "ICERINK");
+      return state.services.filter((x) => x.serviceType !== "RENT");
     },
 
     children_team(state) {
@@ -271,7 +271,7 @@ export default new Vuex.Store({
     getPriceListKatok({ commit }) {
       let priceList = [];
       let katokService = this.state.services.filter(
-        (x) => x.serviceType === "ICERINK"
+        (x) => x.serviceType === "RENT"
       );
       console.log("KATOKSERVICE", katokService);
       let final = [];

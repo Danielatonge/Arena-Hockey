@@ -64,7 +64,7 @@
           "
           color="primary mr-4 mt-4"
           elevation="0"
-          >Забронировать</v-btn
+          > Забронировать </v-btn
         >
         <!-- <v-btn
           class="mt-4"
