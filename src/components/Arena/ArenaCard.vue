@@ -6,6 +6,7 @@
     @mouseout="elevation = '0'"
     @click="goToArena"
   >
+
     <v-img
       :src="
         arena.profilePicture.length

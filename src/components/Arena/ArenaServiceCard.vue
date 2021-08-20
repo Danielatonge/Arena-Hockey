@@ -42,7 +42,7 @@
         class="text-justify border"
       >
         <div class="right-border mr-n3">
-          <p class="mb-0">{{ data.description | descriptionLength }}</p>
+          <p class="mb-0">{{ data.description }}</p>
         </div>
       </v-col>
     </v-row>
