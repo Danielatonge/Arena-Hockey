@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  arena_hockey_ui:
+    container_name: arena_hockey_ui
+    image: danielatonge/arena-hockey:docker-compose
+    build:
+      context: .
+      target: runtime-image
+      dockerfile: Dockerfile
+      # args:
+      #   APP_HOME: "/usr/share/nginx/html"
+      #   NGINX_CONF_HOME: "/usr/share/nginx/conf"
+    ports:
+      - 8080:8080
