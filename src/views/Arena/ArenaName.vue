@@ -39,9 +39,8 @@
 
         <div class="d-flex mt-5 mb-2">
           <div class="pr-4">
-            <v-avatar class="rounded-lg" tile size="180">
+            <v-avatar class="rounded-lg" contain tile size="180">
               <v-img
-              contain
                 :src="
                   current_arena.profilePicture != null
                     ? current_arena.profilePicture
@@ -64,8 +63,9 @@
           "
           color="primary mr-4 mt-4"
           elevation="0"
-          > Забронировать </v-btn
         >
+          Забронировать
+        </v-btn>
         <!-- <v-btn
           class="mt-4"
           @click="
@@ -112,7 +112,11 @@ export default {
   computed: {
     ...mapState(["current_arena"]),
     valid_contact_list() {
-      return this.contact_list.filter((x) => x.link !== "");
+      return this.contact_list.filter((x) => {
+        if (x.link !== "null" ) {
+          if (x.link) return x.link;
+        }
+      });
     },
   },
   created() {

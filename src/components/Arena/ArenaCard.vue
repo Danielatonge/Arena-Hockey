@@ -6,7 +6,6 @@
     @mouseout="elevation = '0'"
     @click="goToArena"
   >
-
     <v-img
       :src="
         arena.profilePicture.length
@@ -40,7 +39,7 @@
       </v-container>
     </v-img>
     <v-card-title class="pb-5">
-      {{ arena.title || "Los Angeles Clippers" }}
+      {{ arena.title || "Los Angeles Clippers" | arenaTitle }}
     </v-card-title>
     <v-card-subtitle>
       {{
@@ -84,6 +83,11 @@ export default {
     addressDescription: (value) => {
       if (!value) return "";
       return value.slice(0, 45);
+    },
+    arenaTitle: (value) => {
+      if (!value) return "";
+      if (value.length <= 28) return value
+      return value.slice(0, 28) + "..";
     },
   },
   computed: {

@@ -13,26 +13,27 @@
         {{ tag }}
       </v-chip>
     </div>
-    <div v-if="current_arena.description.length < 580">
-      <p class="text-justify">
-        {{ current_arena.description }}
-      </p>
+    <div v-if="current_arena.description">
+      <div v-if="current_arena.description.length < 580">
+        <p class="text-justify">
+          {{ current_arena.description }}
+        </p>
+      </div>
+      <div v-else>
+        <p class="text-justify" v-if="!readMoreInfo">
+          {{ current_arena.description.slice(0, 580) + "..." }}
+        </p>
+        <p class="text-justify" v-else v-text="current_arena.description"></p>
+      </div>
+      <v-btn
+        color="grey lighten-2 mb-5"
+        v-show="current_arena.description.length > 580"
+        elevation="0"
+        @click="readMoreInfo = !readMoreInfo"
+      >
+        {{ readMoreInfo ? "Скрыть" : "Развернуть" }}
+      </v-btn>
     </div>
-    <div v-else>
-      <p class="text-justify" v-if="!readMoreInfo">
-        {{ current_arena.description.slice(0, 580) + "..." }}
-      </p>
-      <p class="text-justify" v-else v-text="current_arena.description"></p>
-    </div>
-    <v-btn
-      color="grey lighten-2 mb-5"
-      v-show="current_arena.description.length > 580"
-      elevation="0"
-      @click="readMoreInfo = !readMoreInfo"
-    >
-      {{ readMoreInfo ? "Скрыть" : "Развернуть" }}
-    </v-btn>
-
     <p class="text-h5 font-weight-bold mt-3">Галерея</p>
     <v-row class="mb-10">
       <v-col cols="6" md="4" lg="3" v-for="(item, i) in media" :key="i">
@@ -121,15 +122,15 @@ export default {
     valid_contact_list() {
       return this.contact_list.filter((x) => x.link !== "");
     },
-    media(){
+    media() {
       let _media = [];
-      if(this.current_arena.gallery) {
+      if (this.current_arena.gallery) {
         this.current_arena.gallery.forEach((x) => {
           const item = {
             thumb: x,
             src: x,
             caption: "<h4></h4>",
-          }
+          };
           _media.push(item);
         });
       }
