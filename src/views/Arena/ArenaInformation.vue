@@ -64,30 +64,30 @@
         </section>
       </v-col>
       <v-col cols="12" md="4">
+        <div v-if="current_arena.address">
         <p class="text-h6 mb-1">Адрес</p>
         <p class="blue--text">
           {{ current_arena.address }}
         </p>
-        <p class="text-h6 mt-5 mb-1">Ближайшие станции метро:</p>
-        <span class="mr-3" v-for="(metro, i) in current_arena.metro" :key="i">
-          {{ metro }}
-        </span>
+        </div>
+        <div v-if="current_arena.metro.length">
+          <p class="text-h6 mt-5 mb-1">Ближайшие станции метро:</p>
+          <span class="mr-3" v-for="(metro, i) in current_arena.metro" :key="i">
+            {{ metro }}
+          </span>
+        </div>
         <p class="text-h6 font-weight-bold mt-10">Контакты</p>
         <div>
           <p v-if="current_arena.phones">
+            
             <span v-for="x in current_arena.phones" :key="x">
-              {{ x }} <br
-            /></span>
+              {{ x }} <br/>
+              </span>
           </p>
-          <p>
-            Администратор: Васильева Татьяна Михайловна <br />
-            +7 495 964-39-69
-          </p>
-          <p>
+          <p v-if="current_arena.mails.length">
             Email:
-            {{ current_arena.mails ? current_arena.mails[0] : "" }}
+            {{ current_arena.mails ? current_arena.mails.toString() : "" }}
             <br />
-            Адрес: {{ current_arena.address }}
           </p>
           <a :href="current_arena.website" target="_blank">
             {{ current_arena.website }}
