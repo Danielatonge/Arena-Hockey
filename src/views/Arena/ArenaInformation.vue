@@ -34,22 +34,24 @@
         {{ readMoreInfo ? "Скрыть" : "Развернуть" }}
       </v-btn>
     </div>
-    <p class="text-h5 font-weight-bold mt-3">Галерея</p>
-    <v-row class="mb-10">
-      <v-col cols="6" md="4" lg="3" v-for="(item, i) in media" :key="i">
-        <v-img
-          style="height: 100px"
-          :src="item.src"
-          @click="openGallery(i)"
-        ></v-img>
-      </v-col>
-      <LightBox
-        ref="lightbox"
-        :media="media"
-        :show-caption="true"
-        :show-light-box="false"
-      />
-    </v-row>
+    <div v-if="media.length">
+      <p class="text-h5 font-weight-bold mt-3">Галерея</p>
+      <v-row class="mb-10">
+        <v-col cols="6" md="4" lg="3" v-for="(item, i) in media" :key="i">
+          <v-img
+            style="height: 100px"
+            :src="item.src"
+            @click="openGallery(i)"
+          ></v-img>
+        </v-col>
+        <LightBox
+          ref="lightbox"
+          :media="media"
+          :show-caption="true"
+          :show-light-box="false"
+        />
+      </v-row>
+    </div>
     <v-row>
       <v-col cols="12" md="8">
         <section class="wrapper-map" id="map">
@@ -65,10 +67,10 @@
       </v-col>
       <v-col cols="12" md="4">
         <div v-if="current_arena.address">
-        <p class="text-h6 mb-1">Адрес</p>
-        <p class="blue--text">
-          {{ current_arena.address }}
-        </p>
+          <p class="text-h6 mb-1">Адрес</p>
+          <p class="blue--text">
+            {{ current_arena.address }}
+          </p>
         </div>
         <div v-if="current_arena.metro.length">
           <p class="text-h6 mt-5 mb-1">Ближайшие станции метро:</p>
@@ -79,10 +81,9 @@
         <p class="text-h6 font-weight-bold mt-10">Контакты</p>
         <div>
           <p v-if="current_arena.phones">
-            
             <span v-for="x in current_arena.phones" :key="x">
-              {{ x }} <br/>
-              </span>
+              {{ x }} <br />
+            </span>
           </p>
           <p v-if="current_arena.mails.length">
             Email:
