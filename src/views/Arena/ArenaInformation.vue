@@ -34,7 +34,7 @@
         {{ readMoreInfo ? "Скрыть" : "Развернуть" }}
       </v-btn>
     </div>
-    <div v-if="media.length">
+    <div v-if="media?media.length:false">
       <p class="text-h5 font-weight-bold mt-3">Галерея</p>
       <v-row class="mb-10">
         <v-col cols="6" md="4" lg="3" v-for="(item, i) in media" :key="i">
@@ -72,7 +72,7 @@
             {{ current_arena.address }}
           </p>
         </div>
-        <div v-if="current_arena.metro.length">
+        <div v-if="current_arena.metro?current_arena.metro.length:false">
           <p class="text-h6 mt-5 mb-1">Ближайшие станции метро:</p>
           <span class="mr-3" v-for="(metro, i) in current_arena.metro" :key="i">
             {{ metro }}
@@ -85,7 +85,7 @@
               {{ x }} <br />
             </span>
           </p>
-          <p v-if="current_arena.mails.length">
+          <p v-if="current_arena.mails?current_arena.mails.length:false">
             Email:
             {{ current_arena.mails ? current_arena.mails.toString() : "" }}
             <br />

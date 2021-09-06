@@ -41,6 +41,7 @@
           <div class="pr-4">
             <v-avatar class="rounded-lg" contain tile size="180">
               <v-img
+                contain
                 :src="
                   current_arena.profilePicture != null
                     ? current_arena.profilePicture
@@ -113,7 +114,7 @@ export default {
     ...mapState(["current_arena"]),
     valid_contact_list() {
       return this.contact_list.filter((x) => {
-        if (x.link !== "null" ) {
+        if (x.link !== "null") {
           if (x.link) return x.link;
         }
       });
