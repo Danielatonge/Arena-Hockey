@@ -195,16 +195,16 @@
                   {{ item.name + " " + item.middleName + " " + item.surname }}
                 </div>
                 <div class="body-1 blue--text mb-2">
-                  {{ item.age }}, {{ item.city }}
+                  {{ item.age }}{{ isValidCityOutput(item.city) }}
                 </div>
                 <div class="d-flex">
-                  <div class="body-2 grey--text">Хват: правый</div>
-                  <div class="body-2 grey--text ml-12">
+                  <div class="body-2 grey--text mr-12" v-if="isValidOutput(item.grip)">Хват: {{item.grip}}</div>
+                  <div class="body-2 grey--text">
                     Амплуа: {{ item.position }}
                   </div>
                 </div>
 
-                <div class="body-2 grey--text">Уровень: профессионал</div>
+                <div class="body-2 grey--text">Уровень: {{item.level}}</div>
               </v-card-text>
             </div>
           </v-card>
@@ -237,7 +237,6 @@ export default {
   computed: {
     ...mapState(["teams", "players"]),
     displayedTeam() {
-      console.log("Display");
       return this.teams;
     },
   },
@@ -249,10 +248,8 @@ export default {
   },
   watch: {
     sort_model() {
-      console.log(this.sort_model);
-      if (this.sort_model == 0) {
+      if (this.sort_model === 0) {
         this.displayedTeam.sort((item1, item2) => {
-          console.log(item1, item2);
           if (item1.title < item2.title) {
             return -1;
           }
@@ -262,7 +259,6 @@ export default {
           return 0;
         });
         this.players.sort((item1, item2) => {
-          console.log(item1, item2);
           if (item1.name < item2.name) {
             return -1;
           }
@@ -338,6 +334,12 @@ export default {
     showRoom() {
       this.team_room = true;
       this.player_room = false;
+    },
+    isValidOutput(input){
+      return input && input !== 'string'? input: null
+    },
+    isValidCityOutput(input){
+      return input && input !== 'string'? ', ' + input: null
     },
     showPlayer() {
       this.team_room = false;
