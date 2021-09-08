@@ -28,8 +28,8 @@
       </v-row>
       <v-row class="mb-3">
         <v-col cols="8" sm="6" md="7" lg="5">
-          <p class="text-h5 blue--text">{{ team.team.city }}</p>
-          <p class="text-h4">{{ team.team.title }}</p>
+          <p class="text-h5 blue--text">{{ team.city }}</p>
+          <p class="text-h4">{{ team.title }}</p>
           <v-btn class="mt-8" color="primary" elevation="0"
             >Вступить в команду</v-btn
           >
@@ -39,26 +39,29 @@
           <v-img
             contain
             :src="
-              team.team.profilePicture != null
-                ? team.team.profilePicture
+              team.profilePicture != null
+                ? team.profilePicture
                 : require('@/assets/team_room_1.jpg')
             "
           ></v-img>
         </v-avatar>
       </v-row>
     </v-container>
-    <v-container class="mt-10">
+    <v-container
+      class="mt-10"
+      v-if="team.description ? team.description.length : false"
+    >
       <p class="text-h5">Описание</p>
-      <div v-if="team.team.description.length < 580">
-        <p class="text-justify" v-html="team.team.description"></p>
+      <div v-if="team.description.length < 580">
+        <p class="text-justify" v-html="team.description"></p>
       </div>
       <div v-else>
         <p
           class="text-justify"
           v-if="!readMoreInfo"
-          v-html="team.team.description.slice(0, 580) + '...'"
+          v-html="team.description.slice(0, 580) + '...'"
         ></p>
-        <p class="text-justify" v-else v-html="team.team.description"></p>
+        <p class="text-justify" v-else v-html="team.description"></p>
       </div>
       <v-btn
         class="px-6"
@@ -70,7 +73,10 @@
         {{ readMoreInfo ? "Скрыть" : "Развернуть" }}
       </v-btn>
     </v-container>
-    <v-container class="mt-10" v-show="team.arenas.length">
+    <v-container
+      class="mt-10"
+      v-show="team.arenas ? team.arenas.length : false"
+    >
       <p class="text-h5">Место проведения тренировок</p>
       <v-row dense class="mx-n4" v-for="(arena, id) in team.arenas" :key="id">
         <v-col cols="12" md="7">
@@ -358,7 +364,6 @@ export default {
   },
   computed: {
     ...mapState({ team: "current_team" }),
-    ...mapState({ arena: "current_arena" }),
     ...mapState({ tplayers: "team_players" }),
     ...mapState(["team_forums"]),
     valid_contact_list() {
@@ -371,15 +376,15 @@ export default {
       return this.team_forums.filter((x) => x.type === "TEAMTRAINER");
     },
     trainers() {
-      return this.tplayers.filter((x) => x.user.role == "TRAINER");
+      return this.tplayers.filter((x) => x.user.role === "TRAINER");
     },
     players() {
-      return this.tplayers.filter((x) => x.user.role == "PLAYER");
+      return this.tplayers.filter((x) => x.user.role === "PLAYER");
     },
     media() {
       let _media = [];
-      if (this.team.team.gallery) {
-        this.team.team.gallery.forEach((x) => {
+      if (this.team.gallery) {
+        this.team.gallery.forEach((x) => {
           const item = {
             thumb: x,
             src: x,
@@ -391,46 +396,43 @@ export default {
       return _media;
     },
     forwards() {
-      return this.tplayers.filter((x) => x.user.role == "FORWARD");
+      return this.tplayers.filter((x) => x.user.role === "FORWARD");
     },
     defenders() {
-      return this.tplayers.filter((x) => x.user.role == "Защитники");
+      return this.tplayers.filter((x) => x.user.role === "Защитники");
     },
   },
   created() {
     const teamId = this.$route.params.teamId;
-    const arenaId = this.$route.params.arenaId;
-    console.log("arena", this.arena);
-    this.arenaId = arenaId;
     this.$store.dispatch("getTeamByID", teamId);
-    this.$store.dispatch("getArenaGivenID", arenaId);
+    // this.$store.dispatch("getArenaGivenID", arenaId);
     this.$store.dispatch("getTeamPlayers", teamId);
-    this.$store.dispatch("getCurrentTeamArenas", teamId);
+    // this.$store.dispatch("getCurrentTeamArenas", teamId);
     this.$store.dispatch("getTeamForums", teamId);
 
     this.breadcrumb_items = [
-      {
-        text: this.arena.title, //"Название арены",
-        disabled: false,
-        href: `/arena/${arenaId}/information`,
-      },
+      // {
+      //   text: "Название арены", //,
+      //   disabled: false,
+      //   href: `/arena//information`,
+      // },
       {
         text: "Список команд",
         disabled: false,
-        href: `/arena/${arenaId}/list_teams`,
+        href: `/room`,
       },
       {
-        text: this.team.team.title, //"Название команды",
+        text: this.team.title, //"Название команды",
         disabled: true,
         href: "breadcrumbs_link_2",
       },
     ];
-    const teamItem = this.team.team;
+    const teamItem = this.team;
 
     this.contact_list = [
       { icon: "mdi-whatsapp", link: `${teamItem.whatsApp}` },
       { icon: "mdi-instagram", link: `${teamItem.instagram}` },
-      { icon: "mdi-vk", link: `${teamItem.vk}` },
+      { icon: "mdi-alpha-k-box", link: `${teamItem.vk}` },
       { icon: "mdi-web", link: `${teamItem.website}` },
       { icon: "mdi-music-note-outline", link: `${teamItem.tiktok}` },
       { icon: "mdi-twitter", link: `${teamItem.twitter}` },
@@ -450,7 +452,7 @@ export default {
         month: "long",
         day: "numeric",
       });
-      
+
       return formatter.format(newDate);
     },
   },
@@ -466,16 +468,6 @@ export default {
       contact_list: null,
       readMoreInfo: false,
       breadcrumb_items: null,
-      gallery_items: [
-        "/gallery_1",
-        "/gallery_2",
-        "/gallery_3",
-        "/gallery_4",
-        "/gallery_5",
-        "/gallery_6",
-        "/gallery_7",
-        "/gallery_8",
-      ],
     };
   },
 };

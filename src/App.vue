@@ -17,7 +17,6 @@ import "vue-image-lightbox/dist/vue-image-lightbox.min.css";
 
 export default {
   components: { Navbar, Header, Footer },
-
 };
 </script>
 

@@ -34,7 +34,7 @@
         {{ readMoreInfo ? "Скрыть" : "Развернуть" }}
       </v-btn>
     </div>
-    <div v-if="media?media.length:false">
+    <div v-if="media ? media.length : false">
       <p class="text-h5 font-weight-bold mt-3">Галерея</p>
       <v-row class="mb-10">
         <v-col cols="6" md="4" lg="3" v-for="(item, i) in media" :key="i">
@@ -55,14 +55,12 @@
     <v-row>
       <v-col cols="12" md="8">
         <section class="wrapper-map" id="map">
-          <a name="map" class="reset-link">
-            <ArenaMap
-              :coords="coords"
-              :surfaces="surfaces"
-              :zoom="zoom"
-              @set-coords="coords = $event"
-            />
-          </a>
+          <ArenaMap
+            :coords="coords"
+            :surfaces="surfaces"
+            :zoom="zoom"
+            @set-coords="coords = $event"
+          />
         </section>
       </v-col>
       <v-col cols="12" md="4">
@@ -72,7 +70,7 @@
             {{ current_arena.address }}
           </p>
         </div>
-        <div v-if="current_arena.metro?current_arena.metro.length:false">
+        <div v-if="current_arena.metro ? current_arena.metro.length : false">
           <p class="text-h6 mt-5 mb-1">Ближайшие станции метро:</p>
           <span class="mr-3" v-for="(metro, i) in current_arena.metro" :key="i">
             {{ metro }}
@@ -85,7 +83,7 @@
               {{ x }} <br />
             </span>
           </p>
-          <p v-if="current_arena.mails?current_arena.mails.length:false">
+          <p v-if="current_arena.mails ? current_arena.mails.length : false">
             Email:
             {{ current_arena.mails ? current_arena.mails.toString() : "" }}
             <br />
@@ -154,9 +152,9 @@ export default {
       zoom: 16,
       surfaces: [
         {
-          id: "1",
+          id: this.$route.params.id,
           city: this.$store.state.current_arena.city,
-          type: "Mediawall",
+          title: this.$store.state.current_arena.title,
           address: this.$store.state.current_arena.address,
           coords:
             `${this.$store.state.current_arena.lat}, ` +

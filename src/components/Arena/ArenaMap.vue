@@ -27,7 +27,6 @@
       cluster-name="1"
       :balloon-template="mapBalloon(billboard)"
       :coords="billboard.coords.split(',')"
-      :icon="{ content: billboard.title }"
     ></ymap-marker>
   </yandex-map>
 </template>
@@ -61,23 +60,23 @@ export default {
       map: {},
     };
   },
-    watch: {
+  watch: {
     selectedSurfaces() {
       this.makeSurfaceSelected(
         this.selectedSurfaces[this.selectedSurfaces.length - 1].SURFACEID
       );
-    }
+    },
   },
   methods: {
-      selectedBillboard(billboard) {
+    selectedBillboard(billboard) {
       let data = {
         SURFACEID: billboard.surface_id,
-        NETWORKID: billboard.networkid
+        NETWORKID: billboard.networkid,
       };
       return data;
     },
-    makeSurfaceSelected: function(surface_id) {
-      this.surfaces.forEach(surface => {
+    makeSurfaceSelected: function (surface_id) {
+      this.surfaces.forEach((surface) => {
         if (surface.surface_id === surface_id) {
           surface.selected = true;
         }
@@ -85,9 +84,10 @@ export default {
     },
     mapBalloon(billboard) {
       return `
-      <div><h1>${billboard.title}</h1>
-      <div><strong>City</strong>: ${billboard.city}</div>
-      <div><strong>Address</strong>: ${billboard.address}</div>
+      <div>
+        <h1><a href="/arena/${billboard.id}/information" target="_blank" class="reset-link primary--text">${billboard.title}</a></h1>
+        <div><strong>City</strong>: ${billboard.city}</div>
+        <div><strong>Address</strong>: ${billboard.address}</div>
       </div>
       `;
     },
@@ -113,4 +113,3 @@ export default {
   color: tomato;
 }
 </style>
-

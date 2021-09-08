@@ -8,7 +8,7 @@ Vue.use(Vuex);
 axios.defaults.baseURL = "https://api-hockey-io.herokuapp.com";
 
 const vuexLocal = new VuexPersistence({
-  storage: window.sessionStorage,
+  storage: window.localStorage,
 });
 
 export default new Vuex.Store({
@@ -24,7 +24,7 @@ export default new Vuex.Store({
     services: [],
     arenasMapIdentifier: [],
     teams: [],
-    team_trainers:[],
+    team_trainers: [],
     trainers: [],
     players: [],
     katokPL: [],
@@ -65,7 +65,8 @@ export default new Vuex.Store({
         ({ id, lat, lan, title, city, address }) => ({
           id,
           address,
-          coords: lat.toString() + ", " + lan.toString(),
+          coords:
+            lat && lan ? lat.toString() + ", " + lan.toString() : "55.55,37.32",
           title,
           city,
         })
@@ -96,7 +97,9 @@ export default new Vuex.Store({
       state.players = players;
     },
     SETPRICELIST(state, sPriceList) {
-      sPriceList.sort((a, b) => (a.title.toLowerCase() > b.title.toLowerCase()) ? 1 : -1)
+      sPriceList.sort((a, b) =>
+        a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1
+      );
       state.katokPL = sPriceList;
     },
     SET_PRICE_LIST_OTHERS(state, priceList) {
@@ -107,10 +110,9 @@ export default new Vuex.Store({
     },
     SET_CURRENT_ARENA_TEAM(state, data) {
       const arenas = data.map((item) => item.arena);
-      const current_team = { ...state.current_team, arenas: arenas };
-      state.current_team = current_team;
+      state.current_team = { ...state.current_team, arenas: arenas };
       const id = state.teams.findIndex(
-        (item) => item.id == state.current_team.id
+        (item) => item.id === state.current_team.id
       );
       if (id > -1) {
         state.teams[id]["arenas"] = arenas;
@@ -118,7 +120,7 @@ export default new Vuex.Store({
     },
     SET_TEAM_CONTACT(state, contact) {
       state.current_team["contact"] = contact;
-      const id = state.teams.findIndex((item) => item.id == contact.teamId);
+      const id = state.teams.findIndex((item) => item.id === contact.teamId);
       if (id > -1) {
         state.teams[id]["contact"] = contact;
       }
@@ -146,7 +148,7 @@ export default new Vuex.Store({
     //   });
     // },
     SET_FORUMS(state, payload) {
-      state.forums = payload
+      state.forums = payload;
     },
     SET_TEAM_FORUMS(state, payload) {
       state.team_forums = payload;
@@ -167,11 +169,9 @@ export default new Vuex.Store({
       const item = this.state.list_arenas.filter(
         (arena) => arena.id === payload
       );
-      console.log("SET_CURRENT_ARENA", item[0]);
       commit("SET_CURRENT_ARENA", item[0]);
     },
     setCurrentArena({ commit }, arena) {
-      console.log("ARENA 003", arena);
       commit("SET_CURRENT_ARENA", arena);
     },
     displayMapAll({ commit }) {
@@ -204,10 +204,19 @@ export default new Vuex.Store({
         })
         .catch((err) => console.log(err));
     },
+    getAllPlayers({ commit }) {
+      axios
+        .get(`/user?role=PLAYER`)
+        .then((response) => {
+          commit("SET_PLAYERS", response.data);
+        })
+        .catch((err) => console.log(err));
+    },
     getTeamPlayers({ commit }, teamId) {
       axios
         .get(`/team/${teamId}/users`)
         .then((response) => {
+          console.log("Users: ", response.data);
           commit("SET_TEAM_PLAYERS", response.data);
         })
         .catch((err) => console.log(err));
@@ -244,9 +253,12 @@ export default new Vuex.Store({
       });
     },
     getTeamByID({ commit }, id) {
-      const item = this.state.teams.filter((team) => team.id === id);
-      console.log(item[0]);
-      commit("SET_CURRENT_TEAM", item[0]);
+      axios
+        .get(`/team/${id}`)
+        .then((response) => {
+          commit("SET_CURRENT_TEAM", response.data);
+        })
+        .catch((err) => console.log(err));
     },
     getServiceById({ commit }, id) {
       const item = this.state.services.filter((service) => service.id === id);
@@ -286,7 +298,7 @@ export default new Vuex.Store({
     },
     getPriceListOthers({ commit }) {
       let priceList = [];
-      let otherService = this.state.services.filter((x) => x.type != "Каток");
+      let otherService = this.state.services.filter((x) => x.type !== "Каток");
       let final = [];
       otherService.forEach((x) => {
         priceList.push(

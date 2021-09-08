@@ -152,7 +152,7 @@ export default {
     this.contact_list = [
       { icon: "mdi-whatsapp", link: `${arenaItem.whatsApp}` },
       { icon: "mdi-instagram", link: `${arenaItem.instagram}` },
-      { icon: "mdi-vk", link: `${arenaItem.vk}` },
+      { icon: "mdi-alpha-k-box", link: `${arenaItem.vk}` },
       { icon: "mdi-web", link: `${arenaItem.website}` },
       { icon: "mdi-music-note-outline", link: `${arenaItem.tiktok}` },
       { icon: "mdi-twitter", link: `${arenaItem.twitter}` },

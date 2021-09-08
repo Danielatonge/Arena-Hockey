@@ -84,7 +84,7 @@
       <v-row dense class="mx-n4">
         <v-col cols="12" md="6" v-for="(item, i) in displayedTeam" :key="i">
           <router-link
-            :to="`/arena/d5132ff1-674e-4a1f-948e-8833937b0fa4/teamname/${item.id}`"
+            :to="`/teamname/${item.id}`"
             class="undo-link-default"
           >
             <v-card color="transparent" elevation="0">
@@ -92,10 +92,9 @@
                 <v-avatar class="ma-3 rounded-lg" size="125" tile>
                   <v-img
                     :src="
-                      require('@/assets' +
-                        (item.profilePicture
-                          ? item.profilePicture
-                          : '/team_room_1.jpg'))
+                      item.profilePicture != null
+                        ? item.profilePicture
+                        : require('@/assets/team_room_1.jpg')
                     "
                   ></v-img>
                 </v-avatar>
@@ -104,12 +103,12 @@
                     class="body-1 blue--text mb-2"
                     style="text-decoration: none"
                   >
-                    Москва
+                    {{ item.city }}
                   </div>
                   <div class="text-h5 mb-2">{{ item.title }}</div>
-                  <div class="body-1 grey--text">
-                    {{ item.miniDescription | descriptionLength }}
-                  </div>
+                  <!--                  <div class="body-1 grey&#45;&#45;text">-->
+                  <!--                    {{ item.miniDescription }}-->
+                  <!--                  </div>-->
                 </v-card-text>
               </div>
             </v-card>
@@ -223,11 +222,11 @@
       ></v-pagination>
     </div>
     <v-container>
-      <v-row>
-        <v-col cols="12" v-for="(item, i) in items" :key="i">
-          {{ item.title }}
-        </v-col>
-      </v-row>
+      <!--      <v-row>-->
+      <!--        <v-col cols="12" v-for="(item, i) in items" :key="i">-->
+      <!--          {{ item.title }}-->
+      <!--        </v-col>-->
+      <!--      </v-row>-->
     </v-container>
   </div>
 </template>
@@ -241,12 +240,7 @@ export default {
     ...mapState(["teams", "players"]),
     displayedTeam() {
       console.log("Display");
-      return this.teams.map((item) => {
-        if (item.profilePicture == "string") {
-          item.profilePicture = null;
-        }
-        return item;
-      });
+      return this.teams;
     },
   },
   filters: {
@@ -307,7 +301,7 @@ export default {
   },
   data() {
     return {
-      sort_model: null,
+      sort_model: { key: 0, value: "По именни (от Я до А)" },
       player_room: false,
       team_room: true,
       page: 1,

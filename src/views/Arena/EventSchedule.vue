@@ -56,15 +56,16 @@
         <div></div>
         <v-spacer></v-spacer>
 
-        <v-btn icon class="ma-2" @click="$refs.calendar.prev()">
-          <v-icon>mdi-chevron-left</v-icon>
-        </v-btn>
-        <v-btn icon class="ma-2" @click="$refs.calendar.next()">
-          <v-icon>mdi-chevron-right</v-icon>
-        </v-btn>
+        <!--        <v-btn icon class="ma-2" @click="$refs.calendar.prev()">-->
+        <!--          <v-icon>mdi-chevron-left</v-icon>-->
+        <!--        </v-btn>-->
+        <!--        <v-btn icon class="ma-2" @click="$refs.calendar.next()">-->
+        <!--          <v-icon>mdi-chevron-right</v-icon>-->
+        <!--        </v-btn>-->
       </v-sheet>
       <v-sheet height="600" class="px-4 pb-4">
         <v-calendar
+          v-show="value !== 3"
           ref="calendar"
           v-model="value"
           :weekdays="weekday"
@@ -88,7 +89,9 @@ import { mapState } from "vuex";
 export default {
   watch: {
     value(x) {
-      this.type = x == 1 ? "week" : "day";
+      if (x === 0) this.type = "day";
+      if (x === 1) this.type = "week";
+      if (x === 2) this.type = "month";
     },
   },
   filters: {
@@ -107,7 +110,7 @@ export default {
   data() {
     return {
       type: "week",
-      schedule_nav: ["Дневное", "Недельное"],
+      schedule_nav: ["Дневное", "Недельное", "Месячное", "Список мероприятий"],
       currentDay: "23.09.2021, пн",
       mode: "column",
       mode_lesson: ["0", "1", "2"],
@@ -193,5 +196,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

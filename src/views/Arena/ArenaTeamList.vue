@@ -10,9 +10,11 @@
     <v-tabs-items v-model="premises_tab" style="background-color: unset">
       <v-tab-item v-for="i in 4" :key="i">
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 0">
+
           <v-col cols="12" v-for="(item, i) in teams" :key="i">
+
             <router-link
-              :to="`/arena/${arenaId}/teamname/${item.id}`"
+              :to="`/teamname/${item.team.id}`"
               class="undo-link-default"
             >
               <v-card color="transparent" elevation="0">
@@ -48,7 +50,7 @@
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 1">
           <v-col cols="12" v-for="(item, i) in children_team" :key="i">
             <router-link
-              :to="`/arena/${arenaId}/teamname/${item.id}`"
+              :to="`/teamname/${item.id}`"
               class="undo-link-default"
             >
               <v-card color="transparent" elevation="0">
@@ -78,7 +80,7 @@
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 2">
           <v-col cols="12" v-for="(item, i) in youth_team" :key="i">
             <router-link
-              :to="`/arena/${arenaId}/teamname/${item.id}`"
+              :to="`/teamname/${item.id}`"
               class="undo-link-default"
             >
               <v-card color="transparent" elevation="0">
@@ -108,7 +110,7 @@
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 3">
           <v-col cols="12" v-for="(item, i) in adult_team" :key="i">
             <router-link
-              :to="`/arena/${arenaId}/teamname/${item.id}`"
+              :to="`/teamname/${item.id}`"
               class="undo-link-default"
             >
               <v-card color="transparent" elevation="0">
@@ -138,7 +140,7 @@
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 4">
           <v-col cols="12" v-for="(item, i) in female_team" :key="i">
             <router-link
-              :to="`/arena/${arenaId}/teamname/${item.id}`"
+              :to="`/teamname/${item.id}`"
               class="undo-link-default"
             >
               <v-card color="transparent" elevation="0">

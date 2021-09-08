@@ -181,7 +181,7 @@ export default {
           (x.title ? x.title.toLowerCase().includes(term) : false) ||
           (x.metro ? x.metro.toString().toLowerCase().includes(term) : false) ||
           (x.address ? x.address.toLowerCase().includes(term) : false) ||
-          (x.courtSize ? x.courtSize == term : false)
+          (x.courtSize ? x.courtSize === term : false)
         );
       });
     },
@@ -196,7 +196,7 @@ export default {
     },
     sort_model() {
       console.log(this.sort_model);
-      if (this.sort_model == 0) {
+      if (this.sort_model.key === 0) {
         this.displayedArenas.sort((item1, item2) => {
           console.log(item1, item2);
           if (item1.title < item2.title) {
@@ -240,7 +240,7 @@ export default {
   data() {
     return {
       page: 1,
-      perPage: 5,
+      perPage: 9,
       search: "",
       paginationLength: 10,
       team_tags: ["Москва", "Казань"],
@@ -263,12 +263,12 @@ export default {
         { key: 0, value: "По алфавиту (от А до Я)" },
         { key: 1, value: "По алфавиту (от Я до А)" },
       ],
-      display_item: { state: "Показывать по 5", value: 5 },
+      display_item: { state: "Показывать по 9", value: 9 },
       display_items: [
-        { state: "Показывать по 5", value: 5 },
         { state: "Показывать по 9", value: 9 },
-        { state: "Показывать по 12", value: 12 },
-        { state: "Показывать по 24", value: 24 },
+        { state: "Показывать по 27", value: 27 },
+        { state: "Показывать по 42", value: 42 },
+        { state: "Показывать по 81", value: 81 },
       ],
       filter_dialog: false,
     };

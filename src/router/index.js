@@ -135,7 +135,7 @@ const routes = [
     component: Room,
   },
   {
-    path: "/arena/:arenaId/teamname/:teamId",
+    path: "/teamname/:teamId",
     name: "TeamName",
     component: TeamName,
   },

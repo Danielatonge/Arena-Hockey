@@ -12,7 +12,7 @@
                 height="48px"
                 width="100%"
                 color="primary"
-                @click="$router.push({path: `/arena`})"
+                @click="$router.push({ path: `/arena` })"
               >
                 Списком
               </v-btn>
@@ -33,6 +33,7 @@
           <v-text-field
             label="Поиск по названию арены, метро, адресу"
             single-line
+            v-model="search"
             prepend-inner-icon="mdi-magnify"
             solo
             flat
@@ -59,11 +60,10 @@
             depressed
             height="48px"
             width="100%"
-            @click="$router.push({path: `/event_schedule`})"
+            @click="$router.push({ path: `/event_schedule` })"
           >
-              Расписание
-              <span v-show="$vuetify.breakpoint.lgAndUp">мероприятий</span>
-            
+            Расписание
+            <span v-show="$vuetify.breakpoint.lgAndUp">мероприятий</span>
           </v-btn>
         </v-col>
       </v-row>
@@ -71,53 +71,72 @@
     <section class="wrapper-map-main">
       <ArenaMap
         :coords="coords"
-        :surfaces="arenasMapIdentifier"
+        :surfaces="mapPoints"
         :zoom="zoom"
         @set-coords="coords = $event"
       />
     </section>
     <v-container>
-      <div class="text-h6 mt-5">Найдено 7 арен</div>
-      <v-row dense class="mx-n4">
-        <v-col
-          class="pa-4"
-          cols="12"
-          md="4"
-          xl="3"
-          v-for="(item, i) in team_items"
-          :key="i"
-        >
-          <ArenaCard :item="item" />
-        </v-col>
-      </v-row>
+      <div class="text-h6 mt-5 text-center">Найдено {{mapPoints.length}} арен</div>
+<!--      <v-row dense class="mx-n4">-->
+<!--        <v-col-->
+<!--          class="pa-4"-->
+<!--          cols="12"-->
+<!--          md="4"-->
+<!--          xl="3"-->
+<!--          v-for="(item, i) in team_items"-->
+<!--          :key="i"-->
+<!--        >-->
+<!--          <ArenaCard :item="item" />-->
+<!--        </v-col>-->
+<!--      </v-row>-->
     </v-container>
   </div>
 </template>
 
 <script>
 import ArenaMap from "@/components/Arena/ArenaMap";
-import ArenaCard from "@/components/Arena/ArenaCard";
+// import ArenaCard from "@/components/Arena/ArenaCard";
 import { mapState } from "vuex";
 
 export default {
   components: {
     ArenaMap,
-    ArenaCard,
+    // ArenaCard,
   },
   computed: {
-    ...mapState(["list_arenas", "arenasMapIdentifier"]),
-  },
-  created() {
+    ...mapState(["list_arenas"]),
+    searchList() {
+      return this.list_arenas.filter((x) => {
+        const term = this.search.toLowerCase();
+        return (
+          (x.title ? x.title.toLowerCase().includes(term) : false) ||
+          (x.metro ? x.metro.toString().toLowerCase().includes(term) : false) ||
+          (x.address ? x.address.toLowerCase().includes(term) : false) ||
+          (x.courtSize ? x.courtSize === term : false)
+        );
+      });
+    },
+    mapPoints() {
+      return this.searchList.map(({ id, lat, lan, title, city, address }) => ({
+        id,
+        address,
+        coords:
+          lat && lan ? lat.toString() + ", " + lan.toString() : "55.55,37.32",
+        title,
+        city,
+      }));
+    },
 
   },
-  methods: {
-
-  },
+  created() {},
+  methods: {},
   data() {
     return {
       team_tags: ["Москва", "Казань"],
       coords: [55.7539, 37.6208],
       zoom: 10,
+      search: "",
       options: {
         layout: "default#image",
         imageSize: [30, 40],
