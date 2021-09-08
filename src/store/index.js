@@ -167,7 +167,7 @@ export default new Vuex.Store({
     },
     getArenaGivenID({ commit }, payload) {
       const item = this.state.list_arenas.filter(
-        (arena) => arena.id === payload
+        (arena) => (arena.id = payload)
       );
       commit("SET_CURRENT_ARENA", item[0]);
     },
