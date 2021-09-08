@@ -83,10 +83,7 @@
       </div>
       <v-row dense class="mx-n4">
         <v-col cols="12" md="6" v-for="(item, i) in displayedTeam" :key="i">
-          <router-link
-            :to="`/teamname/${item.id}`"
-            class="undo-link-default"
-          >
+          <router-link :to="`/teamname/${item.id}`" class="undo-link-default">
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
                 <v-avatar class="ma-3 rounded-lg" size="125" tile>
@@ -187,8 +184,9 @@
               <v-avatar class="ma-3 rounded-lg" size="125" tile>
                 <v-img
                   :src="
-                    require('@/assets' +
-                      (item.level ? item.level : '/team_room_1.jpg'))
+                    item.profilePicture != null
+                      ? item.profilePicture
+                      : require('@/assets/team_room_1.jpg')
                   "
                 ></v-img>
               </v-avatar>

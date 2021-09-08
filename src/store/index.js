@@ -208,6 +208,7 @@ export default new Vuex.Store({
       axios
         .get(`/user?role=PLAYER`)
         .then((response) => {
+          console.log(response.data)
           commit("SET_PLAYERS", response.data);
         })
         .catch((err) => console.log(err));
