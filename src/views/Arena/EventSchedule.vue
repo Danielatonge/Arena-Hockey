@@ -63,7 +63,7 @@
         <!--          <v-icon>mdi-chevron-right</v-icon>-->
         <!--        </v-btn>-->
       </v-sheet>
-      <v-sheet height="600" class="px-4 pb-4">
+      <v-sheet  height="600" class="px-4 pb-4 overflow-auto">
         <v-calendar
           v-show="value !== 3"
           ref="calendar"
@@ -78,6 +78,25 @@
           :interval-format="intervalFormat"
           @change="getEvents"
         ></v-calendar>
+        <div v-show="value === 3 && arena_events.length === 0" class="text-center">
+          <h3 class="grey--text lighten-3--text text-h6 mb-2">Нет мероприятий</h3>
+        </div>
+        <div v-show="value === 3" v-for="(event,index) in arena_events" :key="index"
+          class="mb-10 pl-5">
+          <div class="grey--text lighten-3--text text-h6 mb-2">
+            {{event.date}}
+          </div>
+          <div class="text-h6 mb-2 font-weight-bold">{{event.title}} </div>
+          <div class="body-1 blue--text mb-2">
+            {{event.type}}
+          </div>
+          <div class="grey--text">
+            {{event.startTime}}
+          </div>
+          <div class="body-1 blue--text mb-2 pt-4">
+            {{event.phone}}
+          </div>
+        </div>
       </v-sheet>
     </div>
   </div>
@@ -104,9 +123,13 @@ export default {
     },
   },
   computed: {
-    ...mapState(["current_arena"]),
+    ...mapState(["current_arena", "arena_events"]),
   },
-  created() {},
+  created() {
+    const arenaId = this.$route.params.id;
+    this.arenaId = arenaId;
+    this.$store.dispatch("getArenaEvents", arenaId);
+  },
   data() {
     return {
       type: "week",
@@ -136,6 +159,7 @@ export default {
         "Conference",
         "Party",
       ],
+      arenaId: ''
     };
   },
   methods: {
@@ -196,4 +220,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.vertical-scroll {
+  overflow: auto;
+}
+</style>

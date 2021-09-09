@@ -31,6 +31,7 @@ export default new Vuex.Store({
     othersPL: [],
     team_forums: [],
     forums: [],
+    arena_events: []
   },
   getters: {
     current_arena(state) {
@@ -130,6 +131,9 @@ export default new Vuex.Store({
     },
     SET_ARENA_TRAINERS(state, payload) {
       state.trainers = payload;
+    },
+    SET_ARENA_EVENTS(state, payload) {
+      state.arena_events = payload;
     },
     SET_TEAM_PLAYERS(state, payload) {
       state.team_players = payload;
@@ -344,6 +348,17 @@ export default new Vuex.Store({
           .get(`/arena/${arena_id}/users`)
           .then((response) => {
             commit("SET_ARENA_TRAINERS", response.data);
+            resolve(response.data);
+          })
+          .catch((err) => console.log(err));
+      });
+    },
+    getArenaEvents({commit}, arena_id) {
+      return new Promise((resolve) => {
+        axios
+          .get(`/arena/${arena_id}/events`)
+          .then((response) => {
+            commit("SET_ARENA_EVENTS", response.data);
             resolve(response.data);
           })
           .catch((err) => console.log(err));
