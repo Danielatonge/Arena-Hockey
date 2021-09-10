@@ -146,7 +146,6 @@
           </div>
         </div>
       </v-sheet>
-      {{ focus }}
     </div>
   </div>
 </template>
