@@ -35,6 +35,7 @@
             <v-date-picker
               v-model="date"
               @input="date_picker = false"
+              locale="ru-RU"
             ></v-date-picker>
           </v-menu>
         </div>
@@ -91,7 +92,8 @@
           :event-overlap-mode="mode"
           :event-overlap-threshold="30"
           :event-color="getEventColor"
-          :interval-format="intervalFormat"
+
+          locale="ru-RU"
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
@@ -228,24 +230,6 @@ export default {
       this.value = 0;
       this.date = date;
       this.type = "day";
-    },
-    myDayFormat(day) {
-      switch (day.weekday) {
-        case 0:
-          return "ПН";
-        case 1:
-          return "ВТ";
-        case 2:
-          return "СР";
-        case 3:
-          return "ЧТ";
-        case 4:
-          return "ПТ";
-        case 5:
-          return "СБ";
-        case 6:
-          return "ВС";
-      }
     },
     getEventColor(event) {
       return event.color;
