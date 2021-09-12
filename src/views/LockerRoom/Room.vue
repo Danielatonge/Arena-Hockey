@@ -31,6 +31,7 @@
               label="Поиск по названию команды"
               single-line
               prepend-inner-icon="mdi-magnify"
+              v-model="searchTeam"
               solo
               flat
               hide-details="auto"
@@ -66,14 +67,16 @@
           </v-col>
           <v-col class="my-auto" cols="6" md="4">
             <div class="body-1 grey--text">
-              Найдено: {{ teams.length }} результатов
+              Найдено: {{ searchListTeam.length }} результатов
             </div>
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="6" md="4" lg="3" xl="2">
             <v-select
               :items="display_items"
-              value="Показывать по 12"
+              v-model="numItemsTeam"
+              item-text="state"
+              item-value="value"
               solo
               flat
               hide-details="auto"
@@ -82,7 +85,7 @@
         </v-row>
       </div>
       <v-row dense class="mx-n4">
-        <v-col cols="12" md="6" v-for="(item, i) in displayedTeam" :key="i">
+        <v-col cols="12" md="6" v-for="(item, i) in displayedTeams" :key="i">
           <router-link :to="`/teamname/${item.id}`" class="undo-link-default">
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
@@ -112,6 +115,14 @@
           </router-link>
         </v-col>
       </v-row>
+      <div class="text-center py-10">
+        <v-pagination
+          color="grey"
+          v-model="pageTeam"
+          :length="paginationTeamLength"
+          :total-visible="7"
+        ></v-pagination>
+      </div>
     </v-container>
     <v-container class="pt-16 pb-0" v-show="value == 1">
       <div class="pb-16">
@@ -129,6 +140,7 @@
             <v-text-field
               label="Поиск по ФИО игрока"
               single-line
+              v-model="searchPlayer"
               prepend-inner-icon="mdi-magnify"
               solo
               flat
@@ -162,14 +174,16 @@
           </v-col>
           <v-col class="my-auto" cols="6" md="4">
             <div class="body-1 grey--text">
-              Найдено: {{ players.length }} результатов ss
+              Найдено: {{ searchListPlayer.length }} результатов
             </div>
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="6" md="4" lg="3" xl="2">
             <v-select
               :items="display_items"
-              value="Показывать по 12"
+              v-model="numItemsPlayer"
+              item-text="state"
+              item-value="value"
               solo
               flat
               hide-details="auto"
@@ -178,7 +192,7 @@
         </v-row>
       </div>
       <v-row dense class="mx-n4">
-        <v-col cols="12" md="6" v-for="(item, i) in players" :key="i">
+        <v-col cols="12" md="6" v-for="(item, i) in displayedPlayers" :key="i">
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
               <v-avatar class="ma-3 rounded-lg" size="125" tile>
@@ -198,27 +212,32 @@
                   {{ item.age }}{{ isValidCityOutput(item.city) }}
                 </div>
                 <div class="d-flex">
-                  <div class="body-2 grey--text mr-12" v-if="isValidOutput(item.grip)">Хват: {{item.grip}}</div>
+                  <div
+                    class="body-2 grey--text mr-12"
+                    v-if="isValidOutput(item.grip)"
+                  >
+                    Хват: {{ item.grip }}
+                  </div>
                   <div class="body-2 grey--text">
                     Амплуа: {{ item.position }}
                   </div>
                 </div>
 
-                <div class="body-2 grey--text">Уровень: {{item.level}}</div>
+                <div class="body-2 grey--text">Уровень: {{ item.level }}</div>
               </v-card-text>
             </div>
           </v-card>
         </v-col>
       </v-row>
+      <div class="text-center py-10">
+        <v-pagination
+          color="grey"
+          v-model="pagePlayer"
+          :length="paginationPlayerLength"
+          :total-visible="7"
+        ></v-pagination>
+      </div>
     </v-container>
-    <div class="text-center py-10">
-      <v-pagination
-        color="grey"
-        v-model="page"
-        :length="15"
-        :total-visible="7"
-      ></v-pagination>
-    </div>
     <v-container>
       <!--      <v-row>-->
       <!--        <v-col cols="12" v-for="(item, i) in items" :key="i">-->
@@ -236,8 +255,34 @@ export default {
   name: "Room",
   computed: {
     ...mapState(["teams", "players"]),
-    displayedTeam() {
-      return this.teams;
+    displayedTeams() {
+      return this.paginate(
+        this.searchListTeam,
+        this.pageTeam,
+        this.perPageTeam
+      );
+    },
+    displayedPlayers() {
+      return this.paginate(
+        this.searchListPlayer,
+        this.pagePlayer,
+        this.perPagePlayer
+      );
+    },
+    searchListTeam() {
+      return this.teams.filter((x) => {
+        const term = this.searchTeam.toLowerCase();
+        return x.title ? x.title.toLowerCase().includes(term) : false;
+      });
+    },
+    searchListPlayer() {
+      return this.players.filter((x) => {
+        const term = this.searchPlayer.toLowerCase();
+        return (
+          (x.surname ? x.surname.toLowerCase().includes(term) : false) ||
+          (x.name ? x.name.toLowerCase().includes(term) : false)
+        );
+      });
     },
   },
   filters: {
@@ -247,22 +292,35 @@ export default {
     },
   },
   watch: {
+    numItemsTeam(val) {
+      this.perPageTeam = val;
+      this.paginationTeamLength = Math.ceil(
+        this.searchListTeam.length / this.perPageTeam
+      );
+    },
+    numItemsPlayer(val) {
+      this.perPagePlayer = val;
+      this.paginationPlayerLength = Math.ceil(
+        this.searchListPlayer.length / this.perPagePlayer
+      );
+    },
+    searchTeam() {
+      this.paginationTeamLength = Math.ceil(
+        this.searchListTeam.length / this.perPageTeam
+      );
+    },
+    searchPlayer() {
+      this.paginationPlayerLength = Math.ceil(
+        this.searchListPlayer.length / this.perPagePlayer
+      );
+    },
     sort_model() {
-      if (this.sort_model === 0) {
+      if (this.sort_model.key === 0) {
         this.displayedTeam.sort((item1, item2) => {
           if (item1.title < item2.title) {
             return -1;
           }
           if (item1.title > item2.title) {
-            return 1;
-          }
-          return 0;
-        });
-        this.players.sort((item1, item2) => {
-          if (item1.name < item2.name) {
-            return -1;
-          }
-          if (item1.name > item2.name) {
             return 1;
           }
           return 0;
@@ -277,53 +335,47 @@ export default {
           }
           return 0;
         });
-        this.players.sort(function (item1, item2) {
-          if (item1.name < item2.name) {
-            return 1;
-          }
-          if (item1.name > item2.name) {
-            return -1;
-          }
-          return 0;
-        });
       }
     },
   },
   mounted() {
     this.$store.dispatch("getAllTeams");
     this.$store.dispatch("getAllPlayers");
+    this.setPaginationLength("player");
+    this.setPaginationLength("team");
   },
   data() {
     return {
-      sort_model: { key: 0, value: "По именни (от Я до А)" },
+      pageTeam: 1,
+      pagePlayer: 1,
+      perPagePlayer: 10,
+      perPageTeam: 10,
+      searchTeam: "",
+      searchPlayer: "",
+      paginationTeamLength: 10,
+      paginationPlayerLength: 10,
+
       player_room: false,
       team_room: true,
       page: 1,
       value: 0,
       room_tab: null,
       room_nav: ["Команды", "Игроки"],
-      team_items: [
-        "/team_room_1",
-        "/team_room_2",
-        "/team_room_3",
-        "/team_room_4",
-        "/team_room_1",
-        "/team_room_2",
-        "/team_room_3",
-        "/team_room_4",
-      ],
-      player_items: [
-        "/player_1",
-        "/player_2",
-        "/player_3",
-        "/player_4",
-        "/player_5",
-        "/player_6",
-      ],
+      team_items: ["/team_room_1"],
+      player_items: ["/player_1"],
       team_tags: ["Москва", "Казань"],
       player_tags: [""],
+      numItemsTeam: { state: "Показывать по 10", value: 10 },
+      numItemsPlayer: { state: "Показывать по 10", value: 10 },
+
       sort_by_player: ["По возрасту", "По город"],
-      display_items: ["Показывать по 12", "Показывать по 25"],
+      display_items: [
+        { state: "Показывать по 10", value: 10 },
+        { state: "Показывать по 30", value: 30 },
+        { state: "Показывать по 50", value: 50 },
+        { state: "Показывать по 100", value: 100 },
+      ],
+      sort_model: { key: 0, value: "По именни (от Я до А)" },
       sort_by_team: [
         { key: 0, value: "По именни (от А до Я)" },
         { key: 1, value: "По именни (от Я до А)" },
@@ -331,15 +383,31 @@ export default {
     };
   },
   methods: {
+    setPaginationLength(category) {
+      if (category === "team") {
+        this.paginationTeamLength = Math.ceil(
+          this.searchListTeam.length / this.perPageTeam
+        );
+      } else {
+        this.paginationPlayerLength = Math.ceil(
+          this.searchListPlayer.length / this.perPagePlayer
+        );
+      }
+    },
+    paginate(items, currentPage, perPage) {
+      const from = currentPage * perPage - perPage;
+      const to = currentPage * perPage;
+      return items.slice(from, to);
+    },
     showRoom() {
       this.team_room = true;
       this.player_room = false;
     },
-    isValidOutput(input){
-      return input && input !== 'string'? input: null
+    isValidOutput(input) {
+      return input && input !== "string" ? input : null;
     },
-    isValidCityOutput(input){
-      return input && input !== 'string'? ', ' + input: null
+    isValidCityOutput(input) {
+      return input && input !== "string" ? ", " + input : null;
     },
     showPlayer() {
       this.team_room = false;
@@ -356,6 +424,7 @@ export default {
 .undo-link-default {
   text-decoration: none;
 }
+
 .banner-room {
   background: url("../../assets/banner-room.jpg") no-repeat center center;
   background-size: cover;
