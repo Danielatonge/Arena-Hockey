@@ -45,10 +45,6 @@ export default {
       type: Array,
       required: true,
     },
-    key: {
-      type: Number,
-      required: false,
-    },
     coords: {
       type: Array,
       required: true,

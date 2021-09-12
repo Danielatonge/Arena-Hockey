@@ -77,9 +77,6 @@
         @set-coords="coords = $event"
       />
     </section>
-    {{ mapPoints.length }} <br />
-    {{ mapPoints }} <br />
-    {{ coords }}
     <v-container>
       <div class="text-h6 mt-5 text-center">
         Найдено {{ mapPoints.length }} арен
