@@ -45,6 +45,10 @@ export default {
       type: Array,
       required: true,
     },
+    key: {
+      type: Number,
+      required: false,
+    },
     coords: {
       type: Array,
       required: true,
@@ -86,8 +90,8 @@ export default {
       return `
       <div>
         <h1><a href="/arena/${billboard.id}/information" target="_blank" class="reset-link primary--text">${billboard.title}</a></h1>
-        <div><strong>City</strong>: ${billboard.city}</div>
-        <div><strong>Address</strong>: ${billboard.address}</div>
+        <div><strong>Город</strong>: ${billboard.city}</div>
+        <div><strong>Адрес</strong>: ${billboard.address}</div>
       </div>
       `;
     },

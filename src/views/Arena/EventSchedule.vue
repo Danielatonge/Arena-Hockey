@@ -86,13 +86,11 @@
           ref="calendar"
           v-model="date"
           :weekdays="weekday"
-          :weekday-format="myDayFormat"
           :type="type"
           :events="events"
           :event-overlap-mode="mode"
           :event-overlap-threshold="30"
           :event-color="getEventColor"
-
           locale="ru-RU"
           @click:event="showEvent"
           @click:more="viewDay"

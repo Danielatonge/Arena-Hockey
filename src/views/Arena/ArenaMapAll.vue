@@ -73,23 +73,29 @@
         :coords="coords"
         :surfaces="mapPoints"
         :zoom="zoom"
+        :key="key"
         @set-coords="coords = $event"
       />
     </section>
+    {{ mapPoints.length }} <br />
+    {{ mapPoints }} <br />
+    {{ coords }}
     <v-container>
-      <div class="text-h6 mt-5 text-center">Найдено {{mapPoints.length}} арен</div>
-<!--      <v-row dense class="mx-n4">-->
-<!--        <v-col-->
-<!--          class="pa-4"-->
-<!--          cols="12"-->
-<!--          md="4"-->
-<!--          xl="3"-->
-<!--          v-for="(item, i) in team_items"-->
-<!--          :key="i"-->
-<!--        >-->
-<!--          <ArenaCard :item="item" />-->
-<!--        </v-col>-->
-<!--      </v-row>-->
+      <div class="text-h6 mt-5 text-center">
+        Найдено {{ mapPoints.length }} арен
+      </div>
+      <!--      <v-row dense class="mx-n4">-->
+      <!--        <v-col-->
+      <!--          class="pa-4"-->
+      <!--          cols="12"-->
+      <!--          md="4"-->
+      <!--          xl="3"-->
+      <!--          v-for="(item, i) in team_items"-->
+      <!--          :key="i"-->
+      <!--        >-->
+      <!--          <ArenaCard :item="item" />-->
+      <!--        </v-col>-->
+      <!--      </v-row>-->
     </v-container>
   </div>
 </template>
@@ -103,6 +109,11 @@ export default {
   components: {
     ArenaMap,
     // ArenaCard,
+  },
+  watch: {
+    mapPoints() {
+      this.key += 1;
+    },
   },
   computed: {
     ...mapState(["list_arenas"]),
@@ -127,7 +138,6 @@ export default {
         city,
       }));
     },
-
   },
   created() {},
   methods: {},
@@ -135,6 +145,7 @@ export default {
     return {
       team_tags: ["Москва", "Казань"],
       coords: [55.7539, 37.6208],
+      key: 0,
       zoom: 10,
       search: "",
       options: {
