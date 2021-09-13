@@ -22,6 +22,7 @@
                     contain
                   >
                     <v-img
+                      contain
                       :src="
                         item.profilePicture != null
                           ? item.profilePicture
@@ -40,7 +41,7 @@
                       >
                         {{ item.length * item.width }}
                       </span>
-                      <span class="body-1 ml-4"> {{ item.type }} </span>
+                      <!--                      <span class="body-1 ml-4"> {{ item.type }} </span>-->
                     </div>
                     <div class="body-1 grey--text mb-3">
                       {{ item.description }}
@@ -119,6 +120,7 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import ArenaServiceCard from "@/components/Arena/ArenaServiceCard";
+
 export default {
   components: {
     ArenaServiceCard,
@@ -140,7 +142,6 @@ export default {
     this.$store.dispatch("getPriceListKatok");
     const arenaId = this.$route.params.id;
     this.arenaId = arenaId;
-
   },
   name: "PaymentPortal",
   data() {
@@ -153,5 +154,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -6,7 +6,7 @@
           <v-col class="d-flex" cols="12" md="2">
             <v-select
               :items="team_tags"
-              value="Москва"
+              v-model="sort_by_city"
               solo
               flat
               hide-details="auto"
@@ -156,7 +156,7 @@
             Назад
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn elevation="0" color="primary" class="body-2"> Добавить </v-btn>
+          <v-btn elevation="0" color="primary" class="body-2"> Добавить</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -177,11 +177,13 @@ export default {
     searchList() {
       return this.list_arenas.filter((x) => {
         const term = this.search.toLowerCase();
+        const city = this.sort_by_city;
         return (
           (x.title ? x.title.toLowerCase().includes(term) : false) ||
           (x.metro ? x.metro.toString().toLowerCase().includes(term) : false) ||
           (x.address ? x.address.toLowerCase().includes(term) : false) ||
-          (x.courtSize ? x.courtSize === term : false)
+          (x.courtSize ? x.courtSize === term : false) ||
+          (x.city ? x.city === city : false)
         );
       });
     },
@@ -195,7 +197,6 @@ export default {
       this.paginationLength = Math.ceil(this.searchList.length / this.perPage);
     },
     sort_model() {
-      console.log(this.sort_model);
       if (this.sort_model.key === 0) {
         this.displayedArenas.sort((item1, item2) => {
           console.log(item1, item2);
@@ -218,6 +219,9 @@ export default {
           return 0;
         });
       }
+    },
+    sort_by_city() {
+      this.paginationLength = Math.ceil(this.searchList.length / this.perPage);
     },
   },
   methods: {
@@ -243,6 +247,7 @@ export default {
       perPage: 9,
       search: "",
       paginationLength: 10,
+      sort_by_city: "Москва",
       team_tags: ["Москва", "Казань"],
       team_items: [
         "/arena_1",
