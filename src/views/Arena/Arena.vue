@@ -5,7 +5,7 @@
         <v-row dense>
           <v-col class="d-flex" cols="12" md="2">
             <v-select
-              :items="team_tags"
+              :items="arena_cities"
               v-model="sort_by_city"
               solo
               flat
@@ -100,7 +100,7 @@
           </v-col>
         </v-row>
       </div>
-      <v-row dense class="mx-n4">
+      <v-row dense class="mx-n4" :key="display_id">
         <v-col
           class="pa-4"
           cols="12"
@@ -170,9 +170,31 @@ import ArenaCard from "@/components/Arena/ArenaCard.vue";
 export default {
   name: "Home",
   computed: {
-    ...mapState(["list_arenas"]),
+    ...mapState(["list_arenas", "arena_cities"]),
     displayedArenas() {
-      return this.paginate(this.searchList);
+      const output_list = this.searchList;
+      if (this.sort_model.key === 0) {
+        output_list.sort((item1, item2) => {
+          if (item1.title < item2.title) {
+            return -1;
+          }
+          if (item1.title > item2.title) {
+            return 1;
+          }
+          return 0;
+        });
+      } else {
+        output_list.sort((item1, item2) => {
+          if (item1.title < item2.title) {
+            return 1;
+          }
+          if (item1.title > item2.title) {
+            return -1;
+          }
+          return 0;
+        });
+      }
+      return this.paginate(output_list);
     },
     searchList() {
       return this.list_arenas.filter((x) => {
@@ -199,27 +221,7 @@ export default {
       this.paginationLength = Math.ceil(this.searchList.length / this.perPage);
     },
     sort_model() {
-      if (this.sort_model.key === 0) {
-        this.displayedArenas.sort((item1, item2) => {
-          if (item1.title < item2.title) {
-            return -1;
-          }
-          if (item1.title > item2.title) {
-            return 1;
-          }
-          return 0;
-        });
-      } else {
-        this.displayedArenas.sort(function (item1, item2) {
-          if (item1.title < item2.title) {
-            return 1;
-          }
-          if (item1.title > item2.title) {
-            return -1;
-          }
-          return 0;
-        });
-      }
+      this.display_id += 1;
     },
     sort_by_city() {
       this.paginationLength = Math.ceil(this.searchList.length / this.perPage);
@@ -248,8 +250,8 @@ export default {
       perPage: 9,
       search: "",
       paginationLength: 10,
+      display_id: 0,
       sort_by_city: "Москва",
-      team_tags: ["Москва", "Казань"],
       team_items: [
         "/arena_1",
         "/arena_2",
@@ -282,6 +284,7 @@ export default {
   components: { ArenaCard },
   created() {
     this.$store.dispatch("getAllArenas");
+    this.$store.dispatch("getArenaCities");
     this.setPaginationLength();
   },
 };

@@ -31,7 +31,9 @@ export default new Vuex.Store({
     othersPL: [],
     team_forums: [],
     forums: [],
-    arena_events: []
+    arena_events: [],
+    arena_cities: [],
+    team_cities: [],
   },
   getters: {
     current_arena(state) {
@@ -134,6 +136,12 @@ export default new Vuex.Store({
     },
     SET_ARENA_EVENTS(state, payload) {
       state.arena_events = payload;
+    },
+    SET_ARENA_CITIES(state, payload) {
+      state.arena_cities = payload;
+    },
+    SET_TEAM_CITIES(state, payload) {
+      state.team_cities = payload;
     },
     SET_TEAM_PLAYERS(state, payload) {
       state.team_players = payload;
@@ -353,12 +361,34 @@ export default new Vuex.Store({
           .catch((err) => console.log(err));
       });
     },
-    getArenaEvents({commit}, arena_id) {
+    getArenaEvents({ commit }, arena_id) {
       return new Promise((resolve) => {
         axios
           .get(`/arena/${arena_id}/events`)
           .then((response) => {
             commit("SET_ARENA_EVENTS", response.data);
+            resolve(response.data);
+          })
+          .catch((err) => console.log(err));
+      });
+    },
+    getArenaCities({ commit }) {
+      return new Promise((resolve) => {
+        axios
+          .get(`/arena/cities`)
+          .then((response) => {
+            commit("SET_ARENA_CITIES", response.data);
+            resolve(response.data);
+          })
+          .catch((err) => console.log(err));
+      });
+    },
+    getTeamCities({ commit }) {
+      return new Promise((resolve) => {
+        axios
+          .get(`/team/cities`)
+          .then((response) => {
+            commit("SET_TEAM_CITIES", response.data);
             resolve(response.data);
           })
           .catch((err) => console.log(err));

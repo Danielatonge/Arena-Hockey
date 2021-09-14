@@ -19,8 +19,8 @@
         <v-row dense>
           <v-col class="d-flex" cols="12" md="2">
             <v-select
-              :items="team_tags"
-              value="Москва"
+              :items="team_cities"
+              v-model="sort_by_city"
               solo
               flat
               hide-details="auto"
@@ -254,7 +254,7 @@ import { mapState } from "vuex";
 export default {
   name: "Room",
   computed: {
-    ...mapState(["teams", "players"]),
+    ...mapState(["teams", "players", "team_cities"]),
     displayedTeams() {
       return this.paginate(
         this.searchListTeam,
@@ -339,6 +339,8 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch("getTeamCities");
+
     this.$store.dispatch("getAllTeams");
     this.$store.dispatch("getAllPlayers");
     this.setPaginationLength("player");
@@ -364,6 +366,7 @@ export default {
       team_items: ["/team_room_1"],
       player_items: ["/player_1"],
       team_tags: ["Москва", "Казань"],
+      sort_by_city: "г. Москва",
       player_tags: [""],
       numItemsTeam: { state: "Показывать по 10", value: 10 },
       numItemsPlayer: { state: "Показывать по 10", value: 10 },
