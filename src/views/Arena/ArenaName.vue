@@ -58,15 +58,15 @@
             </p>
           </div>
         </div>
-        <v-btn
-          @click="
-            $router.push({ path: `/arena/${current_arena.id}/event_schedule` })
-          "
-          color="primary mr-4 mt-4"
-          elevation="0"
-        >
-          Забронировать
-        </v-btn>
+        <!--        <v-btn-->
+        <!--          @click="-->
+        <!--            $router.push({ path: `/arena/${current_arena.id}/event_schedule` })-->
+        <!--          "-->
+        <!--          color="primary mr-4 mt-4"-->
+        <!--          elevation="0"-->
+        <!--        >-->
+        <!--          Забронировать-->
+        <!--        </v-btn>-->
         <!-- <v-btn
           class="mt-4"
           @click="
@@ -142,10 +142,6 @@ export default {
         text: "Тренерский состав",
         link: `/arena/${arenaId}/training_staff`,
       },
-      {
-        text: "Состав руководства",
-        link: `/arena/${arenaId}/leadership`,
-      },
     ];
 
     const arenaItem = this.current_arena;
@@ -197,9 +193,11 @@ export default {
 .border > .right-border {
   border-right: 1px solid #ccc;
 }
+
 .border:last-child .right-border {
   border-right: unset;
 }
+
 .wrapper-map {
   background-color: #ccc;
   height: 600px;

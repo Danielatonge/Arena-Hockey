@@ -178,7 +178,6 @@ export default {
       return this.list_arenas.filter((x) => {
         const term = this.search.toLowerCase();
         const city = this.sort_by_city;
-        console.log(city, x.city);
         return (
           ((x.title ? x.title.toLowerCase().includes(term) : false) ||
             (x.metro
@@ -202,7 +201,6 @@ export default {
     sort_model() {
       if (this.sort_model.key === 0) {
         this.displayedArenas.sort((item1, item2) => {
-          console.log(item1, item2);
           if (item1.title < item2.title) {
             return -1;
           }
