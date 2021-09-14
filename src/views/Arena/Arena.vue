@@ -178,12 +178,15 @@ export default {
       return this.list_arenas.filter((x) => {
         const term = this.search.toLowerCase();
         const city = this.sort_by_city;
+        console.log(city, x.city);
         return (
-          (x.title ? x.title.toLowerCase().includes(term) : false) ||
-          (x.metro ? x.metro.toString().toLowerCase().includes(term) : false) ||
-          (x.address ? x.address.toLowerCase().includes(term) : false) ||
-          (x.courtSize ? x.courtSize === term : false) ||
-          (x.city ? x.city === city : false)
+          ((x.title ? x.title.toLowerCase().includes(term) : false) ||
+            (x.metro
+              ? x.metro.toString().toLowerCase().includes(term)
+              : false) ||
+            (x.address ? x.address.toLowerCase().includes(term) : false) ||
+            (x.courtSize ? x.courtSize === term : false)) &&
+          x.city.includes(city)
         );
       });
     },
