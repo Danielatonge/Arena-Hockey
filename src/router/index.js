@@ -48,6 +48,9 @@ import CreateAdminTrainStaff from "../views/Admin/Arena/Create/CreateAdminTrainS
 import CreateAdminManager from "../views/Admin/Arena/Create/CreateAdminManager.vue";
 import KidsTournaments from "../views/KidsTournaments/Home.vue";
 
+import Registration from "../views/Auth/Registration";
+import Login from "../views/Auth/Login";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -263,6 +266,16 @@ const routes = [
     path: "/admin/sport_complex/:arenaId/payment_portal/price_list/:serviceId",
     name: "EditAdminPriceList",
     component: EditAdminPriceList,
+  },
+  {
+    path: "/auth/registration",
+    name: "Registration",
+    component: Registration,
+  },
+  {
+    path: "/auth/login",
+    name: "Login",
+    component: Login,
   },
 ];
 
