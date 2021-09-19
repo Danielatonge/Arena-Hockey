@@ -15,15 +15,25 @@
     </div>
     <div v-if="current_arena.description">
       <div v-if="current_arena.description.length < 580">
-        <p class="text-justify">
-          {{ current_arena.description }}
-        </p>
+        <p
+          style="white-space: pre-line"
+          class="text-justify"
+          v-html="current_arena.description"
+        ></p>
       </div>
       <div v-else>
-        <p class="text-justify" v-if="!readMoreInfo">
-          {{ current_arena.description.slice(0, 580) + "..." }}
-        </p>
-        <p class="text-justify" v-else v-text="current_arena.description"></p>
+        <p
+          style="white-space: pre-line"
+          class="text-justify"
+          v-if="!readMoreInfo"
+          v-html="current_arena.description.slice(0, 580) + '...'"
+        ></p>
+        <p
+          style="white-space: pre-line"
+          class="text-justify"
+          v-else
+          v-html="current_arena.description"
+        ></p>
       </div>
       <v-btn
         color="grey lighten-2 mb-5"
@@ -174,9 +184,11 @@ export default {
 .border > .right-border {
   border-right: 1px solid #ccc;
 }
+
 .border:last-child .right-border {
   border-right: unset;
 }
+
 div.my-sidetabs [role="tab"] {
   justify-content: flex-start;
 }
