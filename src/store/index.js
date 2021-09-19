@@ -132,7 +132,9 @@ export default new Vuex.Store({
       state.teams = payload;
     },
     SET_ARENA_TRAINERS(state, payload) {
-      state.trainers = payload;
+      state.trainers = payload.map((x) => ({
+        ...x.user,
+      }));
     },
     SET_ARENA_EVENTS(state, payload) {
       state.arena_events = payload;

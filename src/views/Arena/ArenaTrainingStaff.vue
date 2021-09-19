@@ -6,7 +6,6 @@
         {{ item }}
       </v-tab>
     </v-tabs>
-
     <v-tabs-items v-model="premises_tab" style="background-color: unset">
       <v-tab-item v-for="x in 3" :key="x">
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 0">
@@ -14,17 +13,24 @@
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
                 <v-avatar class="ma-3 rounded-lg" size="125" tile>
-                  <v-img :src="require('@/assets' + '/player_2.jpg')"></v-img>
+                  <v-img
+                    :src="
+                      item.profilePicture != null
+                        ? item.profilePicture
+                        : require('@/assets/player_2.jpg')
+                    "
+                  ></v-img>
                 </v-avatar>
                 <v-card-text>
                   <div class="text-h5 mb-2">
-                    {{ item.name + " " + item.middleName + " " + item.surname }}
+                    {{ full_name(item) }}
                   </div>
                   <div class="body-1 blue--text mb-2">
-                    {{ item.age }}, {{ item.city }}
+                    {{ isValidOutput(item.age) }}
+                    {{ isValidCityOutput(item.city) }}
                   </div>
                   <div class="body-2 grey--text">
-                    {{ item.position }}
+                    {{ isValidOutput(item.position) }}
                   </div>
                 </v-card-text>
               </div>
@@ -36,17 +42,24 @@
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
                 <v-avatar class="ma-3 rounded-lg" size="125" tile>
-                  <v-img :src="require('@/assets' + '/player_2.jpg')"></v-img>
+                  <v-img
+                    :src="
+                      item.profilePicture != null
+                        ? item.profilePicture
+                        : require('@/assets/player_2.jpg')
+                    "
+                  ></v-img>
                 </v-avatar>
                 <v-card-text>
                   <div class="text-h5 mb-2">
-                    {{ item.name + " " + item.middleName + " " + item.surname }}
+                    {{ full_name(item) }}
                   </div>
                   <div class="body-1 blue--text mb-2">
-                    {{ item.age }}, {{ item.city }}
+                    {{ isValidOutput(item.age) }}
+                    {{ isValidCityOutput(item.city) }}
                   </div>
                   <div class="body-2 grey--text">
-                    {{ item.position }}
+                    {{ isValidOutput(item.position) }}
                   </div>
                 </v-card-text>
               </div>
@@ -58,17 +71,24 @@
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
                 <v-avatar class="ma-3 rounded-lg" size="125" tile>
-                  <v-img :src="require('@/assets' + '/player_2.jpg')"></v-img>
+                  <v-img
+                    :src="
+                      item.profilePicture != null
+                        ? item.profilePicture
+                        : require('@/assets/player_2.jpg')
+                    "
+                  ></v-img>
                 </v-avatar>
                 <v-card-text>
                   <div class="text-h5 mb-2">
-                    {{ item.name + " " + item.middleName + " " + item.surname }}
+                    {{ full_name(item) }}
                   </div>
                   <div class="body-1 blue--text mb-2">
-                    {{ item.age }}, {{ item.city }}
+                    {{ isValidOutput(item.age) }}
+                    {{ isValidCityOutput(item.city) }}
                   </div>
                   <div class="body-2 grey--text">
-                    {{ item.position }}
+                    {{ isValidOutput(item.position) }}
                   </div>
                 </v-card-text>
               </div>
@@ -80,17 +100,24 @@
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
                 <v-avatar class="ma-3 rounded-lg" size="125" tile>
-                  <v-img :src="require('@/assets' + '/player_2.jpg')"></v-img>
+                  <v-img
+                    :src="
+                      item.profilePicture != null
+                        ? item.profilePicture
+                        : require('@/assets/player_2.jpg')
+                    "
+                  ></v-img>
                 </v-avatar>
                 <v-card-text>
                   <div class="text-h5 mb-2">
-                    {{ item.name + " " + item.middleName + " " + item.surname }}
+                    {{ full_name(item) }}
                   </div>
                   <div class="body-1 blue--text mb-2">
-                    {{ item.age }}, {{ item.city }}
+                    {{ isValidOutput(item.age) }}
+                    {{ isValidCityOutput(item.city) }}
                   </div>
                   <div class="body-2 grey--text">
-                    {{ item.position }}
+                    {{ isValidOutput(item.position) }}
                   </div>
                 </v-card-text>
               </div>
@@ -104,6 +131,7 @@
 
 <script>
 import { mapState } from "vuex";
+
 export default {
   filters: {
     descriptionLength(value) {
@@ -118,13 +146,13 @@ export default {
     ...mapState(["trainers"]),
     ...mapState(["current_arena"]),
     kid_trainers() {
-      return this.trainers.filter((x) => x.level === "Детскaя");
+      return this.trainers.filter((x) => x.level === "KID");
     },
     youth_trainers() {
-      return this.trainers.filter((x) => x.level === "Юношеская");
+      return this.trainers.filter((x) => x.level === "YOUTH");
     },
     female_trainer() {
-      return this.trainers.filter((x) => x.level === "Женская");
+      return this.trainers.filter((x) => x.level === "FEMALE");
     },
   },
   created() {
@@ -146,8 +174,18 @@ export default {
       player_items: ["/player_1", "/player_2", "/player_3"],
     };
   },
+  methods: {
+    isValidCityOutput(input) {
+      return input && input !== "string" ? ", " + input : null;
+    },
+    isValidOutput(input) {
+      return input && input !== "string" ? input : null;
+    },
+    full_name(item) {
+      return `${item.name} ${item.middleName} ${item.surname}`;
+    },
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>
