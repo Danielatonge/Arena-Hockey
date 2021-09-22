@@ -36,6 +36,8 @@ export default new Vuex.Store({
     team_cities: [],
     school_location: [],
     selected_arena: [],
+    selected_arena_events: [],
+    schools: [],
   },
   getters: {
     current_arena(state) {
@@ -91,6 +93,9 @@ export default new Vuex.Store({
     },
     SET_SERVICES(state, services) {
       state.services = services;
+    },
+    SET_SCHOOLS(state, schools) {
+      state.schools = schools;
     },
     SET_TEAMS(state, teams) {
       state.teams = teams;
@@ -176,6 +181,12 @@ export default new Vuex.Store({
       state.selected_arena = state.selected_arena.filter(
         (x) => x.id !== arena.id
       );
+    },
+    SET_SELECTED_EVENTS(state, payload) {
+      state.selected_arena_events = payload;
+    },
+    REMOVE_SELECTED_ARENA_EVENTS(state, index) {
+      state.selected_arena_events.splice(index, 1);
     },
   },
   actions: {
@@ -464,6 +475,38 @@ export default new Vuex.Store({
     },
     removeFromSelectedArena({ commit }, arena) {
       commit("REMOVE_SELECTED_ARENA", arena);
+    },
+    removeFromSelectedArenaEvent({ commit }, index) {
+      commit("REMOVE_SELECTED_ARENA_EVENTS", index);
+    },
+    getEventsFromSelectedArena({ commit }) {
+      let eventList = [];
+      this.state.selected_arena.forEach((x) => {
+        eventList.push(
+          new Promise((resolve, reject) => {
+            axios
+              .get(`/arena/${x.id}/events`)
+              .then((response) => {
+                resolve(response.data);
+              })
+              .catch((err) => {
+                console.log(err);
+                reject(err);
+              });
+          })
+        );
+      });
+      Promise.all(eventList).then((response) => {
+        commit("SET_SELECTED_EVENTS", response);
+      });
+    },
+    getAllSchools({ commit }) {
+      axios
+        .get(`/schools`)
+        .then((response) => {
+          commit("SET_SCHOOLS", response.data);
+        })
+        .catch((err) => console.log(err));
     },
   },
   modules: {},

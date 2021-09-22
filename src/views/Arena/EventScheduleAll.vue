@@ -15,7 +15,7 @@
           </p>
           <v-row>
             <v-col cols="4" v-for="(arena, i) in selected_arena" :key="i">
-              <ArenaChosen :arena="arena" />
+              <ArenaChosen :arena="arena" :index="i" />
             </v-col>
           </v-row>
         </v-col>
@@ -105,6 +105,7 @@
         </v-sheet>
       </div>
     </v-container>
+    {{ selected_arena_events }}
   </div>
 </template>
 
@@ -115,7 +116,7 @@ import { mapState } from "vuex";
 export default {
   components: { ArenaChosen },
   computed: {
-    ...mapState(["selected_arena", "arena_events"]),
+    ...mapState(["selected_arena", "selected_arena_events"]),
   },
   data() {
     return {
@@ -164,12 +165,6 @@ export default {
         "Каток 4",
         "Каток 5",
         "Каток 6",
-        "Каток 10",
-        "Каток 20",
-        "Каток 30",
-        "Каток 40",
-        "Каток 50",
-        "Каток 60",
       ],
       date_picker: false,
       date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
@@ -214,6 +209,9 @@ export default {
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;
     },
+  },
+  mounted() {
+    this.$store.dispatch("getEventsFromSelectedArena");
   },
 };
 </script>

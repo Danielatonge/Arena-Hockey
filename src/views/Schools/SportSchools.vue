@@ -86,7 +86,7 @@
       </div>
       <v-row dense class="mx-n4">
         <v-col cols="12" md="6" v-for="(item, i) in displayedTeams" :key="i">
-          <router-link :to="`/teamname/${item.id}`" class="undo-link-default">
+          <router-link :to="`/school/${item.id}`" class="undo-link-default">
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
                 <v-avatar class="ma-3 rounded-lg" size="180" tile>
@@ -206,7 +206,7 @@
       </div>
       <v-row dense class="mx-n4">
         <v-col cols="12" md="6" v-for="(item, i) in displayedPlayers" :key="i">
-          <router-link :to="`/teamname/${item.id}`" class="undo-link-default">
+          <router-link :to="`/school/${item.id}`" class="undo-link-default">
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
                 <v-avatar class="ma-3 rounded-lg" size="180" tile>
@@ -270,7 +270,7 @@ import { mapState } from "vuex";
 export default {
   name: "SportSchools",
   computed: {
-    ...mapState(["teams", "school_location"]),
+    ...mapState(["schools", "school_location"]),
     displayedTeams() {
       return this.paginate(
         this.searchListTeam,
@@ -286,13 +286,13 @@ export default {
       );
     },
     searchListTeam() {
-      return this.teams.filter((x) => {
+      return this.schools.filter((x) => {
         const term = this.searchSchoolOne.toLowerCase();
         return x.title ? x.title.toLowerCase().includes(term) : false;
       });
     },
     searchListPlayer() {
-      return this.teams.filter((x) => {
+      return this.schools.filter((x) => {
         const term = this.searchSchoolTwo.toLowerCase();
         return x.title ? x.title.toLowerCase().includes(term) : false;
       });
@@ -352,12 +352,12 @@ export default {
     },
   },
   mounted() {
-    // this.$store.dispatch("getAllSchools");
+    this.$store.dispatch("getAllSchools");
     // this.$store.dispatch("getTeamCities");
     // this.$store.dispatch("getAllTeams");
     // this.$store.dispatch("getAllPlayers");
-    // this.setPaginationLength("player");
-    // this.setPaginationLength("team");
+    this.setPaginationLength("schoolOne");
+    this.setPaginationLength("schoolTwo");
   },
   data() {
     return {
@@ -401,7 +401,7 @@ export default {
   },
   methods: {
     setPaginationLength(category) {
-      if (category === "team") {
+      if (category === "schoolOne") {
         this.paginationTeamLength = Math.ceil(
           this.searchListTeam.length / this.perPageTeam
         );
@@ -431,7 +431,7 @@ export default {
       this.player_room = true;
     },
     teamClicked() {
-      this.$router.push({ path: "teamname" });
+      this.$router.push({ path: "school" });
     },
   },
 };

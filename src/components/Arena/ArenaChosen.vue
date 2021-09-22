@@ -5,7 +5,7 @@
         <v-card-title class="text-h6 justify-space-between">
           <div>{{ arena.title }}</div>
           <div>
-            <v-icon @click.stop="removeFromSelected(arena)">mdi-close</v-icon>
+            <v-icon @click.stop="removeFromSelected">mdi-close</v-icon>
           </div>
         </v-card-title>
         <v-card-subtitle>
@@ -76,16 +76,19 @@ export default {
   name: "ArenaChosen",
   props: {
     arena: Object,
+    index: Number,
   },
   data() {
+    console.log(this.index);
     return {
       katok: "",
       dialog: false,
     };
   },
   methods: {
-    removeFromSelected(arena) {
-      this.$store.dispatch("removeFromSelectedArena", arena);
+    removeFromSelected() {
+      this.$store.dispatch("removeFromSelectedArena", this.arena);
+      this.$store.dispatch("removeFromSelectedArenaEvent", this.index);
     },
   },
 };
