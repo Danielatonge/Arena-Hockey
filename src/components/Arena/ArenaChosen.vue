@@ -3,11 +3,13 @@
     <v-card class="rounded-lg" color="#fff" elevation="0">
       <div class="pointer" @click.stop="dialog = true">
         <v-card-title class="text-h6 justify-space-between">
-          <div>Название арены</div>
-          <div><v-icon @click.stop="printClose">mdi-close</v-icon></div>
+          <div>{{ arena.title }}</div>
+          <div>
+            <v-icon @click.stop="removeFromSelected(arena)">mdi-close</v-icon>
+          </div>
         </v-card-title>
         <v-card-subtitle>
-          ул. Лермонтова, д. 14, пом. 3, г. Чита
+          {{ arena.address }}
         </v-card-subtitle>
       </div>
       <div>
@@ -27,7 +29,9 @@
       <v-card class="py-3">
         <v-card-title class="justify-space-between">
           <div class="text-caption">Название арены, название катка</div>
-          <div><v-icon @click.stop="printClose">mdi-close</v-icon></div>
+          <div>
+            <v-icon @click.stop="dialog = false">mdi-close</v-icon>
+          </div>
         </v-card-title>
         <v-card-text>
           <div class="mt-n4 mb-2">
@@ -70,6 +74,9 @@
 <script>
 export default {
   name: "ArenaChosen",
+  props: {
+    arena: Object,
+  },
   data() {
     return {
       katok: "",
@@ -77,8 +84,8 @@ export default {
     };
   },
   methods: {
-    printClose() {
-      console.log("Close");
+    removeFromSelected(arena) {
+      this.$store.dispatch("removeFromSelectedArena", arena);
     },
   },
 };

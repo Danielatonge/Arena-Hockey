@@ -35,6 +35,7 @@ export default new Vuex.Store({
     arena_cities: [],
     team_cities: [],
     school_location: [],
+    selected_arena: [],
   },
   getters: {
     current_arena(state) {
@@ -167,6 +168,14 @@ export default new Vuex.Store({
     },
     SET_TEAM_FORUMS(state, payload) {
       state.team_forums = payload;
+    },
+    ADD_SELECTED_ARENA(state, arena) {
+      state.selected_arena.push(arena);
+    },
+    REMOVE_SELECTED_ARENA(state, arena) {
+      state.selected_arena = state.selected_arena.filter(
+        (x) => x.id !== arena.id
+      );
     },
   },
   actions: {
@@ -449,6 +458,12 @@ export default new Vuex.Store({
           })
           .catch((err) => console.log(err));
       });
+    },
+    addToSelectedArena({ commit }, arena) {
+      commit("ADD_SELECTED_ARENA", arena);
+    },
+    removeFromSelectedArena({ commit }, arena) {
+      commit("REMOVE_SELECTED_ARENA", arena);
     },
   },
   modules: {},

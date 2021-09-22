@@ -9,34 +9,53 @@
       <v-row class="mb-3">
         <v-col cols="12">
           <p class="text-h5">Выбранные арены</p>
-          <p class="grey--text" v-show="false">
+          <p class="grey--text" v-show="!selected_arena.length">
             Нет выбранных арен. Чтобы добавить арену, нажмите на значок добавить
             на карточке арены.
           </p>
           <v-row>
-            <v-col cols="4" v-for="i in 3" :key="i">
-              <ArenaChosen />
+            <v-col cols="4" v-for="(arena, i) in selected_arena" :key="i">
+              <ArenaChosen :arena="arena" />
             </v-col>
           </v-row>
         </v-col>
       </v-row>
-      <v-btn color="primary" elevation="0">Добавить арену</v-btn>
+      <v-btn @click="$router.push('/arena')" color="primary" elevation="0"
+        >Добавить арену
+      </v-btn>
     </v-container>
     <v-container class="mt-14">
       <p class="text-h4">Расписание мероприятий</p>
       <div class="rounded-lg white">
-        <v-sheet tile height="54" class="d-flex" color="#EBF5FB">
-          <div style="width: 200px">
-            <v-select
-              v-model="currentDay"
-              dense
-              single-line
-              outlined
-              prepend-inner-icon="mdi-calendar-blank"
-              hide-details
-              class="ma-2 white d-flex"
-              label="Дата"
-            ></v-select>
+        <v-sheet tile height="54" class="d-flex align-center" color="#EBF5FB">
+          <div style="width: 200px" class="ml-3">
+            <v-menu
+              v-model="date_picker"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="date"
+                  prepend-inner-icon="mdi-calendar"
+                  readonly
+                  single-line
+                  outlined
+                  dense
+                  hide-details
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="date"
+                @input="date_picker = false"
+                locale="ru-RU"
+              ></v-date-picker>
+            </v-menu>
           </div>
           <div style="width: 200px">
             <v-select
@@ -70,10 +89,12 @@
         <v-sheet height="600" class="px-4 pb-4">
           <v-calendar
             ref="calendar"
-            v-model="value"
+            v-model="date"
             :weekdays="weekday"
-            :weekday-format="myDayFormat"
-            :type="'4day'"
+            locale="ru-RU"
+            type="category"
+            category-show-all
+            :categories="categories"
             :events="events"
             :event-overlap-mode="mode"
             :event-overlap-threshold="30"
@@ -89,8 +110,13 @@
 
 <script>
 import ArenaChosen from "@/components/Arena/ArenaChosen.vue";
+import { mapState } from "vuex";
+
 export default {
   components: { ArenaChosen },
+  computed: {
+    ...mapState(["selected_arena", "arena_events"]),
+  },
   data() {
     return {
       breadcrumb_items: [
@@ -131,6 +157,24 @@ export default {
         "Conference",
         "Party",
       ],
+      categories: [
+        "Каток 1",
+        "Каток 2",
+        "Каток 3",
+        "Каток 4",
+        "Каток 5",
+        "Каток 6",
+        "Каток 10",
+        "Каток 20",
+        "Каток 30",
+        "Каток 40",
+        "Каток 50",
+        "Каток 60",
+      ],
+      date_picker: false,
+      date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
     };
   },
   methods: {
@@ -158,32 +202,11 @@ export default {
           end: second,
           color: this.colors[this.rnd(0, this.colors.length - 1)],
           timed: !allDay,
+          category: this.categories[this.rnd(0, this.categories.length - 1)],
         });
       }
 
       this.events = events;
-    },
-    myDayFormat(day) {
-      switch (day.weekday) {
-        case 0:
-          return "Каток 1";
-        case 1:
-          return "Каток 1";
-        case 2:
-          return "Каток 1";
-        case 3:
-          return "Каток 2";
-        case 4:
-          return "Каток 3";
-        case 5:
-          return "Каток 4";
-        case 6:
-          return "Каток 5";
-        case 7:
-          return "Каток 6";
-        default:
-          return "Каток";
-      }
     },
     getEventColor(event) {
       return event.color;
@@ -195,5 +218,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -26,7 +26,7 @@
           </v-btn>
           <v-spacer></v-spacer>
           <v-btn
-            @click.stop="selectToggle"
+            @click.stop="selectArena(arena)"
             :class="[selected ? 'primary' : '']"
             x-small
             class="rounded-lg white"
@@ -58,6 +58,13 @@ export default {
   props: {
     arena: Object,
   },
+  mounted() {
+    this.selected_arena.forEach((x) => {
+      if (x.id === this.arena.id) {
+        this.selected = true;
+      }
+    });
+  },
   data() {
     return {
       elevation: 0,
@@ -75,8 +82,15 @@ export default {
         .dispatch("displayMapOne", [this.arena])
         .then(() => this.$router.push({ path: "/arena/arena_maps" }));
     },
-    selectToggle() {
+    selectArena(arena) {
       this.selected = !this.selected;
+      if (this.selected) {
+        // TODO add arena to list of selected arenas
+        this.$store.dispatch("addToSelectedArena", arena);
+      } else {
+        // TODO remove arena from list of selected arenas
+        this.$store.dispatch("removeFromSelectedArena", arena);
+      }
     },
   },
   filters: {
@@ -86,12 +100,12 @@ export default {
     },
     arenaTitle: (value) => {
       if (!value) return "";
-      if (value.length <= 28) return value
+      if (value.length <= 28) return value;
       return value.slice(0, 28) + "..";
     },
   },
   computed: {
-    ...mapState(["arenasMapIdentifier"]),
+    ...mapState(["arenasMapIdentifier", "selected_arena"]),
     checkPlus() {
       return this.selected ? "mdi-check" : "mdi-plus";
     },
@@ -99,5 +113,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
