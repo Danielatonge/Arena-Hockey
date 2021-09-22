@@ -34,6 +34,7 @@ export default new Vuex.Store({
     arena_events: [],
     arena_cities: [],
     team_cities: [],
+    school_location: [],
   },
   getters: {
     current_arena(state) {

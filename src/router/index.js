@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Main from "../views/Home/Home.vue";
 import Arena from "../views/Arena/Arena.vue";
 import Room from "../views/LockerRoom/Room.vue";
+import SportSchools from "../views/Schools/SportSchools.vue";
 import TeamName from "../views/LockerRoom/TeamName.vue";
 import ArenaName from "../views/Arena/ArenaName.vue";
 import ArenaInformation from "../views/Arena/ArenaInformation.vue";
@@ -133,6 +134,11 @@ const routes = [
     path: "/room",
     name: "Room",
     component: Room,
+  },
+  {
+    path: "/school",
+    name: "SportSchools",
+    component: SportSchools,
   },
   {
     path: "/teamname/:teamId",
