@@ -15,7 +15,11 @@
           </p>
           <v-row>
             <v-col cols="4" v-for="(arena, i) in selected_arena" :key="i">
-              <ArenaChosen :arena="arena" :index="i" />
+              <ArenaChosen
+                :arena="arena"
+                :index="i"
+                @arenaRemoved="reInitCalendar"
+              />
             </v-col>
           </v-row>
         </v-col>
@@ -100,12 +104,10 @@
             :event-overlap-threshold="30"
             :event-color="getEventColor"
             :interval-format="intervalFormat"
-            @change="getEvents"
           ></v-calendar>
         </v-sheet>
       </div>
     </v-container>
-    {{ selected_arena_events }}
   </div>
 </template>
 
@@ -148,24 +150,7 @@ export default {
         "orange",
         "grey lighten-1",
       ],
-      names: [
-        "Meeting",
-        "Holiday",
-        "PTO",
-        "Travel",
-        "Event",
-        "Birthday",
-        "Conference",
-        "Party",
-      ],
-      categories: [
-        "Каток 1",
-        "Каток 2",
-        "Каток 3",
-        "Каток 4",
-        "Каток 5",
-        "Каток 6",
-      ],
+      categories: [],
       date_picker: false,
       date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
         .toISOString()
@@ -176,32 +161,36 @@ export default {
     intervalFormat(interval) {
       return interval.time;
     },
-    getEvents({ start, end }) {
-      const events = [];
+    generateEvents() {
+      let _events = [];
+      const arenaCount = this.selected_arena.length;
+      for (let i = 0; i < arenaCount; i++) {
+        const eventCount = this.selected_arena_events[i]
+          ? this.selected_arena_events[i].length
+          : 0;
+        for (let j = 0; j < eventCount; j++) {
+          const event = this.selected_arena_events[i][j];
 
-      const min = new Date(`${start.date}T00:00:00`);
-      const max = new Date(`${end.date}T23:59:59`);
-      const days = (max.getTime() - min.getTime()) / 86400000;
-      const eventCount = this.rnd(days, days + 20);
-
-      for (let i = 0; i < eventCount; i++) {
-        const allDay = this.rnd(0, 3) === 0;
-        const firstTimestamp = this.rnd(min.getTime(), max.getTime());
-        const first = new Date(firstTimestamp - (firstTimestamp % 900000));
-        const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000;
-        const second = new Date(first.getTime() + secondTimestamp);
-
-        events.push({
-          name: this.names[this.rnd(0, this.names.length - 1)],
-          start: first,
-          end: second,
-          color: this.colors[this.rnd(0, this.colors.length - 1)],
-          timed: !allDay,
-          category: this.categories[this.rnd(0, this.categories.length - 1)],
-        });
+          _events.push({
+            name: event.title,
+            start: new Date(
+              `${event.date}T${event.startTime ? event.startTime : "00:00"}:00`
+            ),
+            end: new Date(
+              `${event.date}T${event.endTime ? event.endTime : "23:59"}:59`
+            ),
+            color: this.colors[this.rnd(0, this.colors.length - 1)],
+            timed: true,
+            description: event.description,
+            category: this.categories[i],
+          });
+        }
       }
-
-      this.events = events;
+      this.events = _events;
+    },
+    reInitCalendar() {
+      this.categories = this.selected_arena.map((x) => x.title);
+      this.generateEvents();
     },
     getEventColor(event) {
       return event.color;
@@ -212,6 +201,8 @@ export default {
   },
   mounted() {
     this.$store.dispatch("getEventsFromSelectedArena");
+    this.categories = this.selected_arena.map((x) => x.title);
+    this.generateEvents();
   },
 };
 </script>

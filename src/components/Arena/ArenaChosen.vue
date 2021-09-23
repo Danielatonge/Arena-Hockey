@@ -3,27 +3,27 @@
     <v-card class="rounded-lg" color="#fff" elevation="0">
       <div class="pointer" @click.stop="dialog = true">
         <v-card-title class="text-h6 justify-space-between">
-          <div>{{ arena.title }}</div>
+          <div>{{ arena.title | arenaTitle }}</div>
           <div>
             <v-icon @click.stop="removeFromSelected">mdi-close</v-icon>
           </div>
         </v-card-title>
         <v-card-subtitle>
-          {{ arena.address }}
+          {{ arena.address | addressDescription }}
         </v-card-subtitle>
       </div>
-      <div>
-        <v-select
-          v-model="katok"
-          :items="['1', '2', '3']"
-          dense
-          single-line
-          outlined
-          hide-details
-          class="pa-4"
-          label="Все катки"
-        ></v-select>
-      </div>
+      <!--      <div>-->
+      <!--        <v-select-->
+      <!--          v-model="katok"-->
+      <!--          :items="['1', '2', '3']"-->
+      <!--          dense-->
+      <!--          single-line-->
+      <!--          outlined-->
+      <!--          hide-details-->
+      <!--          class="pa-4"-->
+      <!--          label="Все катки"-->
+      <!--        ></v-select>-->
+      <!--      </div>-->
     </v-card>
     <v-dialog v-model="dialog" max-width="600">
       <v-card class="py-3">
@@ -78,8 +78,19 @@ export default {
     arena: Object,
     index: Number,
   },
+  filters: {
+    addressDescription: (value) => {
+      if (!value) return "";
+      if (value.length <= 40) return value;
+      return value.slice(0, 40) + "...";
+    },
+    arenaTitle: (value) => {
+      if (!value) return "";
+      if (value.length <= 26) return value;
+      return value.slice(0, 26) + "...";
+    },
+  },
   data() {
-    console.log(this.index);
     return {
       katok: "",
       dialog: false,
@@ -89,6 +100,7 @@ export default {
     removeFromSelected() {
       this.$store.dispatch("removeFromSelectedArena", this.arena);
       this.$store.dispatch("removeFromSelectedArenaEvent", this.index);
+      this.$emit("arenaRemoved", this.index);
     },
   },
 };
