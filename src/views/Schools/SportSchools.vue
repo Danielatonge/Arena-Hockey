@@ -106,19 +106,19 @@
                     {{ item.city }}
                   </div>
                   <div class="text-h5 mb-2">{{ item.title }}</div>
-                  <!--                  <div class="body-1 grey&#45;&#45;text">-->
-                  <!--                    {{ item.miniDescription }}-->
-                  <!--                  </div>-->
-                  <div class="">
-                    <v-btn
-                      large
-                      color="grey lighten-2"
-                      elevation="0"
-                      class="rounded-lg position-more"
-                    >
-                      Подробнее
-                    </v-btn>
+                  <div class="body-1 grey--text">
+                    {{ item.address }}
                   </div>
+                  <!--                  <div class="">-->
+                  <!--                    <v-btn-->
+                  <!--                      large-->
+                  <!--                      color="grey lighten-2"-->
+                  <!--                      elevation="0"-->
+                  <!--                      class="rounded-lg position-more"-->
+                  <!--                    >-->
+                  <!--                      Подробнее-->
+                  <!--                    </v-btn>-->
+                  <!--                  </div>-->
                 </v-card-text>
               </div>
             </v-card>
@@ -226,19 +226,19 @@
                     {{ item.city }}
                   </div>
                   <div class="text-h5 mb-2">{{ item.title }}</div>
-                  <!--                  <div class="body-1 grey&#45;&#45;text">-->
-                  <!--                    {{ item.miniDescription }}-->
-                  <!--                  </div>-->
-                  <div class="">
-                    <v-btn
-                      large
-                      color="grey lighten-2"
-                      elevation="0"
-                      class="rounded-lg position-more"
-                    >
-                      Подробнее
-                    </v-btn>
+                  <div class="body-1 grey--text">
+                    {{ item.address }}
                   </div>
+                  <!--                  <div class="">-->
+                  <!--                    <v-btn-->
+                  <!--                      large-->
+                  <!--                      color="grey lighten-2"-->
+                  <!--                      elevation="0"-->
+                  <!--                      class="rounded-lg position-more"-->
+                  <!--                    >-->
+                  <!--                      Подробнее-->
+                  <!--                    </v-btn>-->
+                  <!--                  </div>-->
                 </v-card-text>
               </div>
             </v-card>
@@ -271,6 +271,12 @@ export default {
   name: "SportSchools",
   computed: {
     ...mapState(["schools", "school_location"]),
+    commercial() {
+      return this.schools.filter((x) => x.type === "COMMERCIAL");
+    },
+    state() {
+      return this.schools.filter((x) => x.type === "STATE");
+    },
     displayedTeams() {
       return this.paginate(
         this.searchListTeam,
@@ -286,13 +292,13 @@ export default {
       );
     },
     searchListTeam() {
-      return this.schools.filter((x) => {
+      return this.commercial.filter((x) => {
         const term = this.searchSchoolOne.toLowerCase();
         return x.title ? x.title.toLowerCase().includes(term) : false;
       });
     },
     searchListPlayer() {
-      return this.schools.filter((x) => {
+      return this.state.filter((x) => {
         const term = this.searchSchoolTwo.toLowerCase();
         return x.title ? x.title.toLowerCase().includes(term) : false;
       });
@@ -353,9 +359,6 @@ export default {
   },
   mounted() {
     this.$store.dispatch("getAllSchools");
-    // this.$store.dispatch("getTeamCities");
-    // this.$store.dispatch("getAllTeams");
-    // this.$store.dispatch("getAllPlayers");
     this.setPaginationLength("schoolOne");
     this.setPaginationLength("schoolTwo");
   },
