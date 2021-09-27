@@ -12,7 +12,7 @@
               hide-details="auto"
             ></v-select>
           </v-col>
-          <v-col cols="9" md="8" lg="5" xl="7">
+          <v-col cols="12" md="10" lg="7" xl="8">
             <v-text-field
               label="Поиск по названию арены, метро, адресу"
               single-line
@@ -24,18 +24,18 @@
               class="rounded-lg"
             ></v-text-field>
           </v-col>
-          <v-col cols="3" md="2" lg="2" xl="1">
-            <v-btn
-              class="rounded-lg"
-              large
-              depressed
-              height="48px"
-              width="100%"
-              color="primary"
-            >
-              ФИЛЬТРЫ
-            </v-btn>
-          </v-col>
+          <!--          <v-col cols="3" md="2" lg="2" xl="1">-->
+          <!--            <v-btn-->
+          <!--              class="rounded-lg"-->
+          <!--              large-->
+          <!--              depressed-->
+          <!--              height="48px"-->
+          <!--              width="100%"-->
+          <!--              color="primary"-->
+          <!--            >-->
+          <!--              ФИЛЬТРЫ-->
+          <!--            </v-btn>-->
+          <!--          </v-col>-->
           <v-col cols="8" md="4" lg="3" xl="2">
             <v-btn
               class="rounded-lg grey lighten-2"
