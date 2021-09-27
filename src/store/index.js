@@ -188,6 +188,9 @@ export default new Vuex.Store({
     REMOVE_SELECTED_ARENA_EVENTS(state, index) {
       state.selected_arena_events.splice(index, 1);
     },
+    SET_SCHOOLS_LOCATION(state, payload) {
+      state.school_location = payload;
+    },
   },
   actions: {
     getAllArenas({ commit }) {
@@ -505,6 +508,14 @@ export default new Vuex.Store({
         .get(`/schools`)
         .then((response) => {
           commit("SET_SCHOOLS", response.data);
+        })
+        .catch((err) => console.log(err));
+    },
+    getSchoolAddress({ commit }) {
+      axios
+        .get(`/schools/cites`)
+        .then((response) => {
+          commit("SET_SCHOOLS_LOCATION", response.data);
         })
         .catch((err) => console.log(err));
     },

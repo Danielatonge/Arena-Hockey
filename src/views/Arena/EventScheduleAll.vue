@@ -98,6 +98,7 @@
             locale="ru-RU"
             type="category"
             category-show-all
+            @click:event="showEvent"
             :categories="categories"
             :events="events"
             :event-overlap-mode="mode"
@@ -105,6 +106,27 @@
             :event-color="getEventColor"
             :interval-format="intervalFormat"
           ></v-calendar>
+          <v-menu
+            v-model="selectedOpen"
+            :close-on-content-click="false"
+            :activator="selectedElement"
+            offset-x
+          >
+            <v-card color="grey lighten-4" min-width="350px" flat>
+              <v-toolbar :color="selectedEvent.color" dark>
+                <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+                <v-spacer></v-spacer>
+              </v-toolbar>
+              <v-card-text>
+                <span v-html="selectedEvent.description"></span>
+              </v-card-text>
+              <v-card-actions>
+                <v-btn text color="secondary" @click="selectedOpen = false">
+                  Закрыть
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-menu>
         </v-sheet>
       </div>
     </v-container>
@@ -122,6 +144,9 @@ export default {
   },
   data() {
     return {
+      selectedEvent: {},
+      selectedElement: null,
+      selectedOpen: false,
       breadcrumb_items: [
         {
           text: "Ледовые дворцы и арены",
@@ -194,6 +219,23 @@ export default {
     },
     getEventColor(event) {
       return event.color;
+    },
+    showEvent({ nativeEvent, event }) {
+      const open = () => {
+        this.selectedEvent = event;
+        this.selectedElement = nativeEvent.target;
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => (this.selectedOpen = true))
+        );
+      };
+
+      if (this.selectedOpen) {
+        this.selectedOpen = false;
+        requestAnimationFrame(() => requestAnimationFrame(() => open()));
+      } else {
+        open();
+      }
+      nativeEvent.stopPropagation();
     },
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;

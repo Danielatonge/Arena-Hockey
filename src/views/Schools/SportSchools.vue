@@ -140,7 +140,7 @@
           <v-col class="d-flex" cols="12" md="2">
             <v-select
               :items="school_location"
-              value="Москва"
+              v-model="sort_by_city"
               solo
               flat
               hide-details="auto"
@@ -294,13 +294,21 @@ export default {
     searchListTeam() {
       return this.commercial.filter((x) => {
         const term = this.searchSchoolOne.toLowerCase();
-        return x.title ? x.title.toLowerCase().includes(term) : false;
+        const city = this.sort_by_city;
+        return (
+          (x.title ? x.title.toLowerCase().includes(term) : false) &&
+          x.city.includes(city)
+        );
       });
     },
     searchListPlayer() {
       return this.state.filter((x) => {
         const term = this.searchSchoolTwo.toLowerCase();
-        return x.title ? x.title.toLowerCase().includes(term) : false;
+        const city = this.sort_by_city;
+        return (
+          (x.title ? x.title.toLowerCase().includes(term) : false) &&
+          x.city.includes(city)
+        );
       });
     },
   },
@@ -356,9 +364,18 @@ export default {
         });
       }
     },
+    sort_by_city() {
+      this.paginationTeamLength = Math.ceil(
+        this.searchListTeam.length / this.perPageTeam
+      );
+      this.paginationPlayerLength = Math.ceil(
+        this.searchListPlayer.length / this.perPagePlayer
+      );
+    },
   },
   mounted() {
     this.$store.dispatch("getAllSchools");
+    this.$store.dispatch("getSchoolAddress");
     this.setPaginationLength("schoolOne");
     this.setPaginationLength("schoolTwo");
   },
@@ -385,7 +402,7 @@ export default {
       team_items: ["/team_room_1"],
       player_items: ["/player_1"],
       team_tags: ["Москва", "Казань"],
-      sort_by_city: "г. Москва",
+      sort_by_city: "Москва",
       player_tags: [""],
       numItemsTeam: { state: "Показывать по 10", value: 10 },
       numItemsPlayer: { state: "Показывать по 10", value: 10 },
