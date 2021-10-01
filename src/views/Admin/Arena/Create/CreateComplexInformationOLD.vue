@@ -13,7 +13,7 @@
         <div class="mb-4">
           <v-text-field
             label="Наименование арены (полное)"
-            v-model="fullTitle"
+            v-model="arena.title"
             outlined
             flat
             hide-details="auto"
@@ -23,7 +23,6 @@
         <div class="mb-6">
           <v-text-field
             label="Наименование арены (сокращенное)"
-            v-model="shortTitle"
             outlined
             flat
             hide-details="auto"
@@ -63,7 +62,7 @@
           <div class="text-h6 mb-2">Описание</div>
           <v-textarea
             solo
-            v-model="description"
+            v-model="arena.description"
             name=""
             flat
             elevation="0"
@@ -71,7 +70,7 @@
           <v-text-field
             label="Теги"
             outlined
-            v-model="tags"
+            v-model="arena.tags"
             flat
             hide-details="auto"
             class="rounded-lg"
@@ -82,7 +81,7 @@
           <v-text-field
             label="Адрес арены"
             outlined
-            v-model="address"
+            v-model="arena.address"
             flat
             hide-details="auto"
             class="rounded-lg"
@@ -123,7 +122,7 @@
           <v-text-field
             label="Как проехать"
             outlined
-            v-model="description"
+            v-model="arena.route"
             flat
             hide-details="auto"
             class="rounded-lg"
@@ -439,6 +438,199 @@
           </v-dialog>
         </div>
       </div>
+      <!--      <div class="mb-8">-->
+      <!--        <div class="mb-2 text-h5">Катки</div>-->
+      <!--        <div class="mb-4">-->
+      <!--          <v-data-table-->
+      <!--            :headers="headers"-->
+      <!--            :items="rollers"-->
+      <!--            :items-per-page="5"-->
+      <!--            class="elevation-0"-->
+      <!--          >-->
+      <!--            <template v-slot:item.icon="{ item }">-->
+      <!--              <v-icon small class="mr-6" @click="editRoller(item)">-->
+      <!--                mdi-pencil-->
+      <!--              </v-icon>-->
+      <!--              <v-icon small @click="deleteRoller(item)"> mdi-delete</v-icon>-->
+      <!--            </template>-->
+      <!--          </v-data-table>-->
+      <!--        </div>-->
+
+      <!--        <v-dialog v-model="katok_dialog" max-width="600">-->
+      <!--          <template v-slot:activator="{ on, attrs }">-->
+      <!--            <v-btn-->
+      <!--              class="mr-2 mb-2"-->
+      <!--              color="primary"-->
+      <!--              large-->
+      <!--              elevation="0"-->
+      <!--              v-bind="attrs"-->
+      <!--              v-on="on"-->
+      <!--            >-->
+      <!--              Добавить Каток-->
+      <!--            </v-btn>-->
+      <!--          </template>-->
+
+      <!--          <v-card class="py-3">-->
+      <!--            <v-card-title class="justify-space-between">-->
+      <!--              <div class="text-h5 black&#45;&#45;text">Добавить каток</div>-->
+      <!--              <div class="mb-4">-->
+      <!--                <v-icon @click.stop="katok_dialog = false">mdi-close</v-icon>-->
+      <!--              </div>-->
+      <!--            </v-card-title>-->
+      <!--            <v-card-text>-->
+      <!--              <div class="mb-6">-->
+      <!--                <v-text-field-->
+      <!--                  label="Название"-->
+      <!--                  outlined-->
+      <!--                  flat-->
+      <!--                  hide-details="auto"-->
+      <!--                  class="rounded-lg"-->
+      <!--                  v-model="edited_roller.name"-->
+      <!--                ></v-text-field>-->
+      <!--              </div>-->
+      <!--              <div class="mb-2">-->
+      <!--                <v-text-field-->
+      <!--                  label="Размер поля"-->
+      <!--                  outlined-->
+      <!--                  flat-->
+      <!--                  hide-details="auto"-->
+      <!--                  class="rounded-lg"-->
+      <!--                  v-model="edited_roller.size"-->
+      <!--                ></v-text-field>-->
+      <!--              </div>-->
+      <!--              <div class="">-->
+      <!--                <v-checkbox-->
+      <!--                  v-model="edited_roller.type"-->
+      <!--                  :value="edited_roller.type ? 'Крытое поле' : 'Не крытое поле'"-->
+      <!--                >-->
+      <!--                  <template v-slot:label>-->
+      <!--                    <div>Крытое поле</div>-->
+      <!--                  </template>-->
+      <!--                </v-checkbox>-->
+      <!--              </div>-->
+      <!--            </v-card-text>-->
+      <!--            <v-card-actions class="mt-n6">-->
+      <!--              <v-btn-->
+      <!--                class="body-2 px-4"-->
+      <!--                @click="katok_dialog = false"-->
+      <!--                elevation="0"-->
+      <!--              >-->
+      <!--                Назад-->
+      <!--              </v-btn>-->
+      <!--              <v-spacer></v-spacer>-->
+      <!--              <v-btn-->
+      <!--                elevation="0"-->
+      <!--                color="primary"-->
+      <!--                class="body-2 px-4"-->
+      <!--                @click="saveRoller"-->
+      <!--              >-->
+      <!--                <span v-if="edited_roller_index > -1">Обновить</span>-->
+      <!--                <span v-else>Добавить</span>-->
+      <!--              </v-btn>-->
+      <!--            </v-card-actions>-->
+      <!--          </v-card>-->
+      <!--        </v-dialog>-->
+      <!--      </div>-->
+      <!--      <div class="mb-15">-->
+      <!--        <div class="mb-2 text-h5">Другие виды помещений</div>-->
+      <!--        <div class="mb-4">-->
+      <!--          <v-data-table-->
+      <!--            :headers="headers_services"-->
+      <!--            :items="promises"-->
+      <!--            :items-per-page="5"-->
+      <!--            class="elevation-0"-->
+      <!--          >-->
+      <!--            <template v-slot:item.icon="{ item }">-->
+      <!--              <v-icon small class="mr-6" @click="editPromise(item)">-->
+      <!--                mdi-pencil-->
+      <!--              </v-icon>-->
+      <!--              <v-icon small @click="deletePromise(item)"> mdi-delete</v-icon>-->
+      <!--            </template>-->
+      <!--          </v-data-table>-->
+      <!--        </div>-->
+      <!--        <v-dialog v-model="service_dialog" max-width="600">-->
+      <!--          <template v-slot:activator="{ on, attrs }">-->
+      <!--            <v-btn-->
+      <!--              class="mr-2 mb-2"-->
+      <!--              color="primary"-->
+      <!--              large-->
+      <!--              elevation="0"-->
+      <!--              v-bind="attrs"-->
+      <!--              v-on="on"-->
+      <!--            >-->
+      <!--              Добавить другой вид помещения-->
+      <!--            </v-btn>-->
+      <!--          </template>-->
+
+      <!--          <v-card class="py-3">-->
+      <!--            <v-card-title class="justify-space-between">-->
+      <!--              <div class="text-h5 black&#45;&#45;text">-->
+      <!--                Добавить другой вид помещения-->
+      <!--              </div>-->
+      <!--              <div class="mb-4">-->
+      <!--                <v-icon-->
+      <!--                  @click.stop="-->
+      <!--                    service_dialog = false;-->
+      <!--                    editingPromise = false;-->
+      <!--                  "-->
+      <!--                  >mdi-close-->
+      <!--                </v-icon>-->
+      <!--              </div>-->
+      <!--            </v-card-title>-->
+      <!--            <v-card-text>-->
+      <!--              <div class="mb-5">-->
+      <!--                <v-text-field-->
+      <!--                  label="Название"-->
+      <!--                  outlined-->
+      <!--                  flat-->
+      <!--                  hide-details="auto"-->
+      <!--                  class="rounded-lg"-->
+      <!--                  v-model="promise.name"-->
+      <!--                ></v-text-field>-->
+      <!--              </div>-->
+      <!--              <div class="mb-5">-->
+      <!--                <v-text-field-->
+      <!--                  label="Размер поля"-->
+      <!--                  outlined-->
+      <!--                  flat-->
+      <!--                  hide-details="auto"-->
+      <!--                  class="rounded-lg"-->
+      <!--                  v-model="promise.size"-->
+      <!--                ></v-text-field>-->
+      <!--              </div>-->
+      <!--              <div class="mb-5">-->
+      <!--                <v-text-field-->
+      <!--                  label="Площадь"-->
+      <!--                  outlined-->
+      <!--                  flat-->
+      <!--                  hide-details="auto"-->
+      <!--                  class="rounded-lg"-->
+      <!--                  v-model="promise.place"-->
+      <!--                ></v-text-field>-->
+      <!--              </div>-->
+      <!--            </v-card-text>-->
+      <!--            <v-card-actions class="mt-n6">-->
+      <!--              <v-btn-->
+      <!--                class="body-2 px-4"-->
+      <!--                @click="service_dialog = false"-->
+      <!--                elevation="0"-->
+      <!--              >-->
+      <!--                Назад-->
+      <!--              </v-btn>-->
+      <!--              <v-spacer></v-spacer>-->
+      <!--              <v-btn-->
+      <!--                elevation="0"-->
+      <!--                color="primary"-->
+      <!--                class="body-2 px-4"-->
+      <!--                @click="add_promise()"-->
+      <!--              >-->
+      <!--                <span v-if="editingPromise">Обновить</span>-->
+      <!--                <span v-else>Добавить</span>-->
+      <!--              </v-btn>-->
+      <!--            </v-card-actions>-->
+      <!--          </v-card>-->
+      <!--        </v-dialog>-->
+      <!--      </div>-->
       <div class="d-flex">
         <v-btn
           @click="saveNewArena"
@@ -485,8 +677,8 @@ export default {
       let surface = [
         {
           id: "1",
-          city: this.city,
-          address: this.address,
+          city: this.arena.city,
+          address: this.arena.address,
           coords: `${this.coordinate.lat}, ` + `${this.coordinate.lon}`,
         },
       ];
@@ -502,13 +694,10 @@ export default {
   },
   data() {
     return {
-      fullTitle: "",
-      shortTitle: "",
-      description: "",
-      tags: [],
-      address: "",
-      route: "",
+      arena: { fullTitle: "", shortTitle: '', description: "", tags: [], address: "", route: "" },
       avatar: null,
+      saving: false,
+      saved: false,
       contact: {
         tel: [],
         mail: [],
@@ -518,15 +707,24 @@ export default {
         lon: "",
       },
       checkbox: null,
-      telephone: "",
-      email: "",
       errMessage: "",
+      service_dialog: false,
       social_media_dialog: false,
       toggle_social_media: null,
       social_media_text: "",
+      katok_dialog: false,
       contact_dialog: false,
       album_dialog: false,
-      social_media_links: [],
+      social_media_links: [
+        {
+          icon: "mdi-instagram",
+          link: "https://www.instagram.com/p/B6hJFmkFvHG/",
+        },
+        {
+          icon: "mdi-web",
+          link: "https://www.google.com",
+        },
+      ],
       social_icons: ["mdi-vk", "mdi-whatsapp", "mdi-web", "mdi-instagram"],
       breadcrumb_items: [
         {
@@ -545,7 +743,58 @@ export default {
           href: "",
         },
       ],
+      headers: [
+        {
+          text: "Название",
+          align: "start",
+          sortable: false,
+          value: "name",
+        },
+        { text: "Размер", value: "size" },
+        { text: "Тип", value: "type" },
+        { text: "", value: "icon", sortable: false },
+      ],
+      headers_services: [
+        {
+          text: "Название",
+          align: "start",
+          sortable: false,
+          value: "name",
+        },
+        { text: "Размер", value: "size" },
+        { text: "Площадь", value: "place" },
+        { text: "", value: "icon", sortable: false },
+      ],
+      promises: [
+        {
+          name: "Название катка",
+          size: "50х50м",
+          place: "Крытое",
+          icon: "",
+        },
+      ],
       zoom: 16,
+      promise: {
+        name: "",
+        size: "",
+        place: "",
+        icon: "",
+      },
+      editingPromise: false,
+      rollers: [],
+      edited_roller: {
+        name: "",
+        size: "",
+        type: "",
+        icon: "",
+      },
+      default_roller: {
+        name: "",
+        size: "",
+        type: "",
+        icon: "",
+      },
+      edited_roller_index: -1,
     };
   },
   methods: {
@@ -574,7 +823,93 @@ export default {
       this.saving = false;
       this.saved = true;
     },
+    saveRoller() {
+      if (this.edited_roller_index > -1) {
+        Object.assign(
+          this.rollers[this.edited_roller_index],
+          this.edited_roller
+        );
+      } else {
+        this.rollers.push(this.edited_roller);
+      }
+      this.closeRoller();
+    },
 
+    editRoller(item) {
+      this.edited_roller_index = this.rollers.indexOf(item);
+      this.edited_roller = Object.assign({}, item);
+      this.katok_dialog = true;
+    },
+    deleteRoller(item) {
+      this.edited_roller_index = this.rollers.indexOf(item);
+      this.edited_roller = Object.assign({}, item);
+      this.katok_dialog = true;
+      this.deleteRollerConfirm();
+    },
+
+    deleteRollerConfirm() {
+      this.rollers.splice(this.edited_roller, 1);
+      this.closeDelete();
+    },
+
+    closeRoller() {
+      this.katok_dialog = false;
+      this.$nextTick(() => {
+        this.edited_roller = Object.assign({}, this.defaultItem);
+        this.edited_roller_index = -1;
+      });
+    },
+
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+    closePromiseDialog() {
+      this.service_dialog = false;
+      this.promise = {
+        name: "",
+        size: "",
+        place: "",
+        icon: "",
+      };
+    },
+    add_promise() {
+      if (this.editingPromise) {
+        const index = this.promises.indexOf(this.promise);
+        if (index > -1) {
+          this.promises[index] = this.promise;
+        }
+        this.editingPromise = false;
+      } else {
+        this.promises = [
+          ...this.promises,
+          {
+            id: this.promises.length + 1,
+            name: this.promise.name,
+            size: this.promise.size,
+            place: this.promise.place,
+            icon: "",
+          },
+        ];
+      }
+      this.closePromiseDialog();
+    },
+    editPromise(item) {
+      this.editingPromise = true;
+      const id = this.promises.indexOf(item);
+      //alert(id);
+      if (id > -1) {
+        this.promise = this.promises[id];
+        this.service_dialog = true;
+      }
+    },
+    deletePromise(item) {
+      const id = this.promises.indexOf(item);
+      if (id > -1) this.promises.splice(id, 1);
+    },
     removeSocialMedia(index) {
       if (index > -1) {
         this.social_media_links.splice(index, 1);
@@ -598,17 +933,20 @@ export default {
     },
     saveNewArena() {
       const data = {
-        title: this.title,
-        tags: this.tags.split(","),
-        address: this.address,
-        description: this.description,
+        title: this.arena.title,
+        tags: this.arena.tags.split(","),
+        address: this.arena.address,
+        description: this.arena.description,
+        route: this.arena.route,
+        sledgeHockey: "string",
+        sledgeHockeyLink: "string",
         metro: ["string"],
         courtSize: 0,
         city: "string",
         lat: Number(this.coordinate.lat),
         lan: Number(this.coordinate.lon),
-        profilePicture: this.profilePicture,
-        gallery: [],
+        profilePicture: "/" + this.profilePicture,
+        gallery: ["string"],
       };
       axios
         .post(`/arena`, data)

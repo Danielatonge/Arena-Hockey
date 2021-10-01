@@ -48,6 +48,7 @@ import CreateAdminTeamList from "../views/Admin/Arena/Create/CreateAdminTeamList
 import CreateAdminTrainStaff from "../views/Admin/Arena/Create/CreateAdminTrainStaff.vue";
 import CreateAdminManager from "../views/Admin/Arena/Create/CreateAdminManager.vue";
 import KidsTournaments from "../views/KidsTournaments/Home.vue";
+import AdminLayoutSection from "../views/Admin/AdminLayoutSection";
 
 Vue.use(VueRouter);
 
@@ -156,15 +157,23 @@ const routes = [
     component: SubstituteBench,
   },
   {
+    path: "/admin",
+    name: "AdminLayoutSection",
+    component: AdminLayoutSection,
+    children: [
+      {
+        path: "/admin/sport_complex/add",
+        name: "AdminAddArenaSportComplex",
+        component: AdminAddArenaSportComplex,
+      },
+    ],
+  },
+  {
     path: "/admin/sport_complex",
     name: "AdminSportComplex",
     component: AdminSportComplex,
   },
-  {
-    path: "/admin/sport_complex/add",
-    name: "AdminAddArenaSportComplex",
-    component: AdminAddArenaSportComplex,
-  },
+
   {
     path: "/admin/sport_complex/:id",
     name: "NameComplex",

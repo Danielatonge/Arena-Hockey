@@ -3,7 +3,7 @@
     <v-toolbar flat class="my-2">
       <div class="mr-4 fix-margin-left">
         <router-link to="/" class="reset-link">
-        <div class="my-logo"></div>
+          <div class="my-logo"></div>
         </router-link>
       </div>
       <v-toolbar-title class="">
@@ -28,9 +28,10 @@
           height="40px"
           depressed
           color="primary"
-          
         >
-          <router-link to="/admin/sport_complex" class="reset-link"> Личный кабинет </router-link>
+          <router-link to="/admin/sport_complex/add" class="reset-link">
+            Личный кабинет</router-link
+          >
         </v-btn>
       </div>
     </v-toolbar>
@@ -47,9 +48,11 @@ export default {
 .fix-margin-left {
   margin-left: -16px;
 }
+
 .fix-margin-right {
   margin-right: -16px;
 }
+
 .my-logo {
   width: 40px;
   height: 40px;
