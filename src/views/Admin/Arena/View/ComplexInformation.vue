@@ -1,267 +1,179 @@
 <template>
-  <div class="grey lighten-4">
-    <v-container class="pb-10">
-      <v-row class="">
-        <div>
-          <v-breadcrumbs :items="breadcrumb_items" class="px-3"></v-breadcrumbs>
-        </div>
+  <div>
+    <p class="text-h4">{{ current_arena.fullTitle }}</p>
+    <p class="text-h6">Информация</p>
+    <div class="ml-n2 mb-3">
+      <v-chip
+        color="primary"
+        class="ma-2"
+        label
+        v-for="(tag, i) in current_arena.tags"
+        :key="i"
+      >
+        {{ tag }}
+      </v-chip>
+    </div>
+    <div v-if="current_arena.description">
+      <div v-if="current_arena.description.length < 580">
+        <p
+          style="white-space: pre-line"
+          class="text-justify"
+          v-html="current_arena.description"
+        ></p>
+      </div>
+      <div v-else>
+        <p
+          style="white-space: pre-line"
+          class="text-justify"
+          v-if="!readMoreInfo"
+          v-html="current_arena.description.slice(0, 580) + '...'"
+        ></p>
+        <p
+          style="white-space: pre-line"
+          class="text-justify"
+          v-else
+          v-html="current_arena.description"
+        ></p>
+      </div>
+      <v-btn
+        color="grey lighten-2 mb-5"
+        v-show="current_arena.description.length > 580"
+        elevation="0"
+        @click="readMoreInfo = !readMoreInfo"
+      >
+        {{ readMoreInfo ? "Скрыть" : "Развернуть" }}
+      </v-btn>
+    </div>
+    <div v-if="media ? media.length : false">
+      <p class="text-h5 font-weight-bold mt-3">Галерея</p>
+      <v-row class="mb-10">
+        <v-col cols="6" md="4" lg="3" v-for="(item, i) in media" :key="i">
+          <v-img
+            style="height: 100px"
+            :src="item.src"
+            @click="openGallery(i)"
+          ></v-img>
+        </v-col>
+        <LightBox
+          ref="lightbox"
+          :media="media"
+          :show-caption="true"
+          :show-light-box="false"
+        />
       </v-row>
-      <div>
-        <div class="text-h5 py-5">Информация</div>
+    </div>
+    <v-row>
+      <v-col cols="12" md="8">
+        <section class="wrapper-map" id="map">
+          <ArenaMap
+            :coords="coords"
+            :surfaces="surfaces"
+            :zoom="zoom"
+            @set-coords="coords = $event"
+          />
+        </section>
+      </v-col>
+      <v-col cols="12" md="4">
+        <div v-if="current_arena.address">
+          <p class="text-h6 mb-1">Адрес</p>
+          <p class="blue--text">
+            {{ current_arena.address }}
+          </p>
+        </div>
+        <div v-if="current_arena.metro ? current_arena.metro.length : false">
+          <p class="text-h6 mt-5 mb-1">Ближайшие станции метро:</p>
+          <span class="mr-3" v-for="(metro, i) in current_arena.metro" :key="i">
+            {{ metro }}
+          </span>
+        </div>
+        <p class="text-h6 font-weight-bold mt-10">Контакты</p>
         <div>
-          <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
-            Редактировать
-          </v-btn>
-          <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
-            Посмотреть страницу арены
-          </v-btn>
-        </div>
-
-        <div class="text-h6 my-4">Основная информация</div>
-        <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">
-            Наименование катка (полное)
-          </div>
-          <div>
-            {{current_arena.title}}
-          </div>
-        </div>
-        <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">
-            Наименование катка (полное)
-          </div>
-          <div>
-            {{current_arena.title}}
-          </div>
-        </div>
-        <div class="mb-6">
-          <div class="body-2 font-weight-bold mb-4 grey--text">
-            Основное изображение арены
-          </div>
-          <div style="width: 25%">
-            <v-img src="https://via.placeholder.com/140x80"></v-img>
-          </div>
-        </div>
-        <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">
-            Описание катка
-          </div>
-          <p>
-            {{current_arena.description}}
+          <p v-if="current_arena.phones">
+            <span v-for="x in current_arena.phones" :key="x">
+              {{ x }} <br />
+            </span>
           </p>
-          <p>
-            В окружении многочисленных водоемов, фонтанов и смешанного леса вас
-            ничто не будет отвлекать от занятий спортом. Здесь нет суеты
-            большого города, только великолепная природа и свежий воздух.
-            Сокольники - это место побед и спортивного духа. И мы продолжаем эти
-            традиции!
+          <p v-if="current_arena.mails ? current_arena.mails.length : false">
+            Email:
+            {{ current_arena.mails ? current_arena.mails.toString() : "" }}
+            <br />
           </p>
-          <p>
-            Хоккейный комплекс «Академия «Спартак» отвечает всем современным
-            требованиям и оборудован высококлассной техникой для качественной
-            организации тренировочного процесса и проведения спортивных
-            мероприятий разного уровня. Только самое новейшее оборудование и
-            тренажеры, инновационные материалы – все для комплексной подготовки
-            профессионалов и любителей.
-          </p>
+          <a :href="current_arena.website" target="_blank">
+            {{ current_arena.website }}
+          </a>
         </div>
-        <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">Адрес</div>
-          <p>
-{{current_arena.address}}          </p>
-          <div style="width: 40%">
-            <v-img src="https://via.placeholder.com/140x80"></v-img>
-          </div>
-        </div>
-        <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">
-            Как проехать
-          </div>
-          <p>
-            {{current_arena.route}}
-          </p>
-        </div>
-        <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">
-            Социальные сети
-          </div>
-          <div class="pr-3 my-auto">
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="mr-1"
-            >
-              <v-icon>mdi-whatsapp</v-icon>
-            </v-btn>
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="mx-1"
-            >
-              <v-icon>mdi-instagram</v-icon>
-            </v-btn>
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="mx-1"
-            >
-              <v-icon>mdi-vk</v-icon>
-            </v-btn>
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="ml-1"
-            >
-              <v-icon>mdi-web</v-icon>
-            </v-btn>
-          </div>
-        </div>
-        <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">Контакты</div>
-          <div>
-            <p>
-              Касса: +7 495 964-39-69 <br />
-              Кафе: +7 977 815-61-97 <br />
-              Магазин: +7 495 369-19-77 <br />
-              Отдел продаж: +7 925 278-77-41 <br />
-              Ресепшн: +7 495 964-39-69 <br />
-              Приемная директора: +7 495 964-39-69 <br />
-            </p>
-            <p>
-              Администратор: Васильева Татьяна Михайловна <br />
-              +7 495 964-39-69
-            </p>
-            <p>
-              Email: office@spartak-academy.ru <br />
-              Адрес: г. Москва, м. Сокольники, ул. Большая Тихоновская, д. 2.
-            </p>
-          </div>
-        </div>
-        <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-1 grey--text">Галерея</div>
-          <v-row class="mx-n4 pb-10">
-            <v-col class="pa-4" cols="4" md="2" v-for="i in 8" :key="i">
-              <v-sheet
-                color="grey lighten-3"
-                elevation="0"
-                height="150"
-                width="100%"
-              >
-              </v-sheet>
-            </v-col>
-          </v-row>
-        </div>
-      </div>
-      <div class="mb-8">
-        <div class="mb-2 text-h5">Список катков</div>
-        <div class>
-          <v-data-table
-            :headers="headers"
-            :items="desserts"
-            :items-per-page="5"
-            class="elevation-1"
-          ></v-data-table>
-        </div>
-      </div>
-      <div>
-        <div class="mb-2 text-h5">Список помещений</div>
-        <div class>
-          <v-data-table
-            :headers="headers"
-            :items="desserts"
-            :items-per-page="5"
-            class="elevation-1"
-          ></v-data-table>
-        </div>
-      </div>
-    </v-container>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script>
+import ArenaMap from "@/components/Arena/ArenaMap";
 import { mapState } from "vuex";
+import LightBox from "vue-image-lightbox";
+
 export default {
+  components: {
+    ArenaMap,
+    LightBox,
+  },
+  filters: {
+    descriptionLength(value) {
+      if (!value) return "";
+      if (value.length < 30) {
+        return value;
+      }
+      return value.slice(0, 30) + "...";
+    },
+  },
   computed: {
     ...mapState(["current_arena"]),
+    valid_contact_list() {
+      return this.contact_list.filter((x) => x.link !== "");
+    },
+    media() {
+      let _media = [];
+      if (this.current_arena.gallery) {
+        this.current_arena.gallery.forEach((x) => {
+          const item = {
+            thumb: x,
+            src: x,
+            caption: "<h4></h4>",
+          };
+          _media.push(item);
+        });
+      }
+      return _media;
+    },
   },
-  mounted() {
-    const arena = this.$store.getters.current_arena;
-    this.$store.dispatch("updateCurrentArena", arena.id);
+  created() {},
+  methods: {
+    openGallery(index) {
+      this.$refs.lightbox.showImage(index);
+    },
   },
   data() {
+    console.log(this.$store.state);
     return {
-      checkbox: null,
-      breadcrumb_items: [
+      readMoreInfo: null,
+      selectedItem: 0,
+      readMoreActivated: false,
+
+      zoom: 16,
+      surfaces: [
         {
-          text: "Личный кабинет",
-          disabled: false,
-          href: "/",
-        },
-        {
-          text: "Мои спортивные комплексы",
-          disabled: false,
-          href: "/admin/sport_complex/",
-        },
-        {
-          text: "Название комплекса",
-          disabled: false,
-          href: "/admin/sport_complex/id",
-        },
-        {
-          text: "Информация",
-          disabled: true,
-          href: "",
+          id: this.$route.params.id,
+          city: this.$store.state.current_arena.city,
+          title: this.$store.state.current_arena.title,
+          address: this.$store.state.current_arena.address,
+          coords:
+            `${this.$store.state.current_arena.lat}, ` +
+            `${this.$store.state.current_arena.lan}`,
         },
       ],
-      headers: [
-        {
-          text: "Название",
-          align: "start",
-          sortable: false,
-          value: "name",
-        },
-        { text: "Описание", value: "description" },
-        { text: "Размер", value: "size" },
-        { text: "Тип", value: "type" },
-        { text: "Мероприятия", value: "event" },
-      ],
-      desserts: [
-        {
-          name: "Название катка",
-          description: "Краткое описание катка",
-          size: "50х50м",
-          type: "Крытое",
-          event: "Посмотреть календарь мероприятий",
-        },
-        {
-          name: "Название катка",
-          description: "Краткое описание катка",
-          size: "50х50м",
-          type: "Крытое",
-          event: "Посмотреть календарь мероприятий",
-        },
-        {
-          name: "Название катка",
-          description: "Краткое описание катка",
-          size: "50х50м",
-          type: "Крытое",
-          event: "Посмотреть календарь мероприятий",
-        },
-        {
-          name: "Название катка",
-          description: "Краткое описание катка",
-          size: "50х50м",
-          type: "Крытое",
-          event: "Посмотреть календарь мероприятий",
-        },
+      coords: [
+        this.$store.state.current_arena.lat,
+        this.$store.state.current_arena.lan,
       ],
     };
   },
@@ -269,4 +181,23 @@ export default {
 </script>
 
 <style>
+.border > .right-border {
+  border-right: 1px solid #ccc;
+}
+
+.border:last-child .right-border {
+  border-right: unset;
+}
+
+div.my-sidetabs [role="tab"] {
+  justify-content: flex-start;
+}
+
+.wrapper-map {
+  background-color: #ccc;
+  height: 600px;
+  width: 100%;
+  position: relative;
+  margin: 10px auto;
+}
 </style>

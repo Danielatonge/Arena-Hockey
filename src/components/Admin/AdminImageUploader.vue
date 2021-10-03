@@ -15,10 +15,10 @@
     <!-- error dialog displays any potential error messages -->
     <v-dialog v-model="errorDialog" max-width="300">
       <v-card>
-        <v-card-text class="subheading">{{ errorText }}</v-card-text>
+        <div class="text-center pt-4">{{ errorText }}</div>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn @click="errorDialog = false" flat>Got it!</v-btn>
+          <v-btn elevation="0" @click="errorDialog = false" flat>OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "AdminImageUploader",
   data: () => ({
@@ -40,6 +42,7 @@ export default {
   },
   methods: {
     launchFilePicker() {
+      console.log(this.$refs.file);
       this.$refs.file.click();
     },
     onFileChange(fieldName, file) {
@@ -50,19 +53,27 @@ export default {
         if (!imageFile.type.match("image.*")) {
           // check whether the upload is an image
           this.errorDialog = true;
-          this.errorText = "Please choose an image file";
-        } else if (size > 1) {
+          this.errorText = "Пожалуйста, выберите файл изображения";
+        } else if (size > 2) {
           // check whether the size is greater than the size limit
           this.errorDialog = true;
           this.errorText =
-            "Your file is too big! Please select an image under 1MB";
+            "Ваш файл слишком велик! Пожалуйста, выберите изображение размером менее 2 МБ";
         } else {
           // Append file into FormData and turn file into image URL
           let formData = new FormData();
           let imageURL = URL.createObjectURL(imageFile);
-          formData.append(fieldName, imageFile);
-          // Emit the FormData and image URL to the parent component
-          this.$emit("input", { formData, imageURL, name: imageFile.name });
+
+          formData.append("file", imageFile);
+          axios
+            .post("https://file-hockey.herokuapp.com/file/upload", formData)
+            .then((response) => {
+              this.$emit("input", {
+                imageURL: response.data.url,
+                name: imageFile.name,
+              });
+            });
+          console.log(formData, imageURL, imageFile.name);
         }
       }
     },
@@ -70,5 +81,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

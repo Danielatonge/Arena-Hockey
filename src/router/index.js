@@ -178,36 +178,38 @@ const routes = [
     path: "/admin/sport_complex/:id",
     name: "NameComplex",
     component: NameComplex,
-  },
-  {
-    path: "/admin/sport_complex/:id/information",
-    name: "ComplexInformation",
-    component: ComplexInformation,
-  },
-  {
-    path: "/admin/sport_complex/:id/payment_portal",
-    name: "AdminPaymentPortal",
-    component: AdminPaymentPortal,
-  },
-  {
-    path: "/admin/sport_complex/:id/schedule_event",
-    name: "AdminScheduleEvent",
-    component: AdminScheduleEvent,
-  },
-  {
-    path: "/admin/sport_complex/:id/team_list",
-    name: "AdminTeamList",
-    component: AdminTeamList,
-  },
-  {
-    path: "/admin/sport_complex/:id/training_staff",
-    name: "AdminTrainStaff",
-    component: AdminTrainStaff,
-  },
-  {
-    path: "/admin/sport_complex/:id/management_staff",
-    name: "AdminManager",
-    component: AdminManager,
+    children: [
+      {
+        path: "information",
+        name: "ComplexInformation",
+        component: ComplexInformation,
+      },
+      {
+        path: "payment_portal",
+        name: "AdminPaymentPortal",
+        component: AdminPaymentPortal,
+      },
+      {
+        path: "schedule_event",
+        name: "AdminScheduleEvent",
+        component: AdminScheduleEvent,
+      },
+      {
+        path: "team_list",
+        name: "AdminTeamList",
+        component: AdminTeamList,
+      },
+      {
+        path: "training_staff",
+        name: "AdminTrainStaff",
+        component: AdminTrainStaff,
+      },
+      {
+        path: "management_staff",
+        name: "AdminManager",
+        component: AdminManager,
+      },
+    ],
   },
   {
     path: "/admin/sport_complex/:id/edit",

@@ -77,6 +77,7 @@
               flat
               item-text="value"
               item-value="key"
+              return-object
               prepend-icon="mdi-sort"
               hide-details="auto"
             ></v-select>
@@ -221,7 +222,7 @@ export default {
       this.paginationLength = Math.ceil(this.searchList.length / this.perPage);
     },
     sort_model() {
-      this.display_id += 1;
+      this.paginationLength = Math.ceil(this.searchList.length / this.perPage);
     },
     sort_by_city() {
       this.paginationLength = Math.ceil(this.searchList.length / this.perPage);
@@ -263,10 +264,10 @@ export default {
         "/arena_2",
       ],
       sort_by_team: [
-        { key: 0, value: "По именни (от Я до А)" },
-        { key: 1, value: "По именни (от А до Я)" },
+        { key: 0, value: "По именни (от А до Я)" },
+        { key: 1, value: "По именни (от Я до А)" },
       ],
-      sort_model: { key: 0, value: "По именни (от Я до А)" },
+      sort_model: { key: 0, value: "По именни (от А до Я)" },
       sort_by_alphabet: [
         { key: 0, value: "По алфавиту (от А до Я)" },
         { key: 1, value: "По алфавиту (от Я до А)" },

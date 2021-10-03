@@ -33,11 +33,12 @@
         <div class="mb-4">
           <div class="text-h6 mb-4">Основное изображение арены</div>
           <v-row>
-            <v-col cols="3">
+            <v-col class="pa-2" cols="4" md="3" lg="2">
               <admin-image-uploader v-model="avatar">
                 <div slot="activator">
                   <v-avatar
-                    size="200px"
+                    width="100%"
+                    height="160"
                     v-ripple
                     tile
                     v-if="!avatar"
@@ -46,7 +47,8 @@
                     <span><v-icon large>mdi-upload</v-icon></span>
                   </v-avatar>
                   <v-avatar
-                    size="200px"
+                    width="100%"
+                    height="160"
                     tile
                     v-ripple
                     v-else
@@ -83,6 +85,7 @@
             label="Адрес арены"
             outlined
             v-model="address"
+            @change="findCoordinateGivenAddress"
             flat
             hide-details="auto"
             class="rounded-lg"
@@ -92,11 +95,20 @@
           <v-row>
             <v-col>
               <v-sheet height="350px">
-                <arena-map
+                <yandex-map
                   :coords="coords"
-                  :surfaces="surfaces"
-                  :zoom="zoom"
-                ></arena-map>
+                  zoom="16"
+                  style="width: 100%; height: 100%"
+                  @map-was-initialized="initHandler"
+                >
+                  <ymap-marker
+                    v-for="(billboard, index) in surfaces"
+                    :key="index"
+                    :marker-id="index"
+                    marker-type="placemark"
+                    :coords="billboard.coords"
+                  ></ymap-marker>
+                </yandex-map>
               </v-sheet>
             </v-col>
             <v-col class="d-flex">
@@ -105,12 +117,14 @@
                 outlined
                 v-model="coordinate.lat"
                 flat
+                disabled
                 hide-details="auto"
                 class="rounded-lg mr-3"
               ></v-text-field>
               <v-text-field
                 label="Долгота"
                 outlined
+                disabled
                 v-model="coordinate.lon"
                 flat
                 hide-details="auto"
@@ -119,16 +133,7 @@
             </v-col>
           </v-row>
         </div>
-        <div class="mb-4">
-          <v-text-field
-            label="Как проехать"
-            outlined
-            v-model="description"
-            flat
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-text-field>
-        </div>
+
         <div class="mb-4">
           <div class="text-h6 mb-2">Социальные сети</div>
           <v-row class="mb-2">
@@ -137,7 +142,7 @@
                 <v-col
                   cols="12"
                   class="d-flex align-center"
-                  v-for="(item, i) in social_media_links"
+                  v-for="(item, i) in social_media_display"
                   :key="i"
                 >
                   <v-btn
@@ -150,7 +155,7 @@
                     <v-icon>{{ item.icon }}</v-icon>
                   </v-btn>
                   <div>{{ item.link }}</div>
-                  <v-icon class="ml-4" @click="removeSocialMedia(i)"
+                  <v-icon class="ml-4" @click="removeSocialMedia(item)"
                     >mdi-close
                   </v-icon>
                 </v-col>
@@ -189,10 +194,10 @@
                       color="grey"
                       height="40px"
                       class="mr-2"
-                      v-for="item in social_icons"
-                      :key="item"
+                      v-for="(item, i) in social_media"
+                      :key="i"
                     >
-                      <v-icon> {{ item }}</v-icon>
+                      <v-icon> {{ item.icon }}</v-icon>
                     </v-btn>
                   </v-btn-toggle>
                 </div>
@@ -206,7 +211,11 @@
                     flat
                     hide-details="auto"
                     class="rounded-lg"
-                  ></v-text-field>
+                  >
+                    <template v-slot:message="{ message }">
+                      <span class="error--text" v-html="message"></span>
+                    </template>
+                  </v-text-field>
                 </div>
               </v-card-text>
               <v-card-actions class="mt-n3">
@@ -364,25 +373,58 @@
         <div class="mb-4">
           <div class="body-2 font-weight-bold mb-4 grey--text">Галерея</div>
           <v-row class="pb-6">
-            <v-col class="pa-2" cols="4" sm="2" md="1" v-for="i in 12" :key="i">
-              <v-sheet
-                color="grey lighten-3"
-                elevation="0"
-                height="90"
+            <v-col
+              class="pa-2"
+              cols="4"
+              md="3"
+              lg="2"
+              v-for="(i, indx) in galleryPics"
+              :key="indx"
+            >
+              <v-avatar
+                height="160"
                 width="100%"
-                class="
-                  font-weight-bold
-                  d-flex
-                  justify-center
-                  align-center
-                  rounded-lg
-                "
+                tile
+                v-ripple
+                class="mb-3 rounded-lg"
               >
-                <div class="pa-4"></div>
-              </v-sheet>
+                <v-img :src="i"></v-img>
+              </v-avatar>
+              <!--              <v-sheet-->
+              <!--                color="grey lighten-3"-->
+              <!--                elevation="0"-->
+              <!--                height="90"-->
+              <!--                width="100%"-->
+              <!--                class="-->
+              <!--                  font-weight-bold-->
+              <!--                  d-flex-->
+              <!--                  justify-center-->
+              <!--                  align-center-->
+              <!--                  rounded-lg-->
+              <!--                "-->
+              <!--                -->
+              <!--              >-->
+              <!--                -->
+              <!--              </v-sheet>-->
             </v-col>
           </v-row>
-          <v-btn class="mr-2 mb-2" color="primary" large elevation="0">
+          <input
+            type="file"
+            ref="multifile"
+            :name="galleryName"
+            @change="
+              selectGalleryItems($event.target.name, $event.target.files)
+            "
+            multiple
+            style="display: none"
+          />
+          <v-btn
+            class="mr-2 mb-2"
+            color="primary"
+            large
+            elevation="0"
+            @click.prevent="triggerMultiFileSelector()"
+          >
             Загрузить фотографии
           </v-btn>
           <v-dialog v-model="album_dialog" max-width="600">
@@ -464,13 +506,14 @@
 
 <script>
 import axios from "axios";
-import ArenaMap from "@/components/Arena/ArenaMap.vue";
+import { yandexMap, ymapMarker } from "vue-yandex-maps";
 import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
 
 export default {
   components: {
-    ArenaMap,
     AdminImageUploader,
+    yandexMap,
+    ymapMarker,
   },
   watch: {
     avatar: {
@@ -481,20 +524,21 @@ export default {
     },
   },
   computed: {
+    social_media_display() {
+      return this.social_media.filter((x) => x.link);
+    },
     surfaces() {
-      let surface = [
+      return [
         {
           id: "1",
           city: this.city,
           address: this.address,
-          coords: `${this.coordinate.lat}, ` + `${this.coordinate.lon}`,
+          coords: this.coords,
         },
       ];
-      return surface;
     },
     coords() {
-      let coordinate = [this.coordinate.lat, this.coordinate.lon];
-      return coordinate;
+      return [this.coordinate.lat, this.coordinate.lon];
     },
     profilePicture() {
       return this.avatar ? this.avatar.name : "";
@@ -502,10 +546,13 @@ export default {
   },
   data() {
     return {
+      files: {},
+      galleryPics: [],
+      map: {},
       fullTitle: "",
       shortTitle: "",
       description: "",
-      tags: [],
+      tags: "",
       address: "",
       route: "",
       avatar: null,
@@ -514,9 +561,10 @@ export default {
         mail: [],
       },
       coordinate: {
-        lat: "",
-        lon: "",
+        lat: "55.753336",
+        lon: "37.623084",
       },
+      galleryName: "multifile",
       checkbox: null,
       telephone: "",
       email: "",
@@ -526,8 +574,38 @@ export default {
       social_media_text: "",
       contact_dialog: false,
       album_dialog: false,
-      social_media_links: [],
-      social_icons: ["mdi-vk", "mdi-whatsapp", "mdi-web", "mdi-instagram"],
+      social_media: [
+        {
+          id: 1,
+          name: "vk",
+          link: "",
+          icon: "mdi-alpha-k-box-outline",
+        },
+        {
+          id: 2,
+          name: "whatsapp",
+          link: "",
+          icon: "mdi-whatsapp",
+        },
+        {
+          id: 3,
+          name: "web",
+          link: "",
+          icon: "mdi-web",
+        },
+        {
+          id: 4,
+          name: "instagram",
+          link: "",
+          icon: "mdi-instagram",
+        },
+        {
+          id: 5,
+          name: "facebook",
+          link: "",
+          icon: "mdi-facebook",
+        },
+      ],
       breadcrumb_items: [
         {
           text: "Личный кабинет",
@@ -545,23 +623,61 @@ export default {
           href: "",
         },
       ],
-      zoom: 16,
     };
   },
   methods: {
+    initHandler(obj) {
+      this.map = obj;
+    },
+    findCoordinateGivenAddress() {
+      // const { address } = this;
+      // eslint-disable-next-line no-undef
+      let myGeocoder = ymaps.geocode("Moscow");
+      let self = this;
+      myGeocoder.then((res) => {
+        self.map.geoObjects.add(res.geoObjects);
+        console.log(
+          res.geoObjects.get(0).properties.get("metaDataProperty").getAll()
+        );
+      });
+    },
+    selectGalleryItems(fieldName, files) {
+      this.galleryPics = [];
+      console.log(fieldName, files);
+      this.files = files;
+      for (let i = 0; i < files.length; i++) {
+        const picture = files[i];
+        let formData = new FormData();
+        formData.append("file", picture);
+        axios
+          .post("https://file-hockey.herokuapp.com/file/upload", formData)
+          .then((response) => {
+            console.log(response.data);
+            this.galleryPics.push(response.data.url);
+          });
+      }
+    },
+    triggerMultiFileSelector() {
+      console.log(this.$refs.multifile);
+      this.$refs.multifile.click();
+    },
     saveContacts() {
       this.contact_dialog = false;
     },
     addContactTelephone() {
-      this.contact.tel.push(this.telephone);
-      this.telephone = "";
+      if (this.telephone) {
+        this.contact.tel.push(this.telephone);
+        this.telephone = "";
+      }
     },
     removeTelephoneItem(idx) {
       this.contact.tel.splice(idx, 1);
     },
     addContactMail() {
-      this.contact.mail.push(this.email);
-      this.email = "";
+      if (this.email) {
+        this.contact.mail.push(this.email);
+        this.email = "";
+      }
     },
     removeMailItem(idx) {
       this.contact.mail.splice(idx, 1);
@@ -575,41 +691,51 @@ export default {
       this.saved = true;
     },
 
-    removeSocialMedia(index) {
-      if (index > -1) {
-        this.social_media_links.splice(index, 1);
-      }
+    removeSocialMedia(item) {
+      console.log(item);
+      item.link = "";
     },
     addSocialMedia() {
-      const check = this.social_media_links.filter(
-        (x) => x.icon === this.social_icons[this.toggle_social_media]
-      );
-      if (check.length == 0) {
-        const link = {
-          icon: this.social_icons[this.toggle_social_media],
-          link: this.social_media_text,
-        };
-        this.social_media_links.push(link);
+      console.log(this.toggle_social_media);
+      const link = this.social_media[this.toggle_social_media].link;
+      if (link === "") {
+        this.social_media[this.toggle_social_media].link =
+          this.social_media_text;
         this.social_media_dialog = false;
       } else {
-        this.errMessage = "A link already exist";
+        this.errMessage = "Ссылка уже существует";
       }
       this.social_media_text = "";
     },
     saveNewArena() {
       const data = {
-        title: this.title,
+        title: this.shortTitle,
+        full_title: this.fullTitle,
         tags: this.tags.split(","),
         address: this.address,
         description: this.description,
-        metro: ["string"],
+        route: "",
+        sledge_hockey: "",
+        sledge_hockey_link: "",
+        metro: [],
         courtSize: 0,
-        city: "string",
+        city: "",
         lat: Number(this.coordinate.lat),
         lan: Number(this.coordinate.lon),
-        profilePicture: this.profilePicture,
-        gallery: [],
+        profile_picture: this.avatar.imageURL,
+        gallery: this.galleryPics,
+        phones: this.contact.tel,
+        mails: this.contact.mail,
+        instagram: this.social_media[3].link,
+        vk: this.social_media[0].link,
+        website: this.social_media[2].link,
+        whats_app: this.social_media[1].link,
+        facebook: this.social_media[4].link,
+        classmates: "",
+        tiktok: "",
+        youtube: "",
       };
+      console.log(data);
       axios
         .post(`/arena`, data)
         .then((response) => {
@@ -617,7 +743,7 @@ export default {
           console.log(arena);
           this.$store.dispatch("setCurrentArena", arena).then(() => {
             this.$router.push({
-              path: `/admin/sport_complex/${arena.id}`,
+              path: `/admin/sport_complex/${arena.id}/information`,
             });
           });
         })

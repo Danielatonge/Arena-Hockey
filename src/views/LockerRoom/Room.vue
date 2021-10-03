@@ -56,11 +56,11 @@
             <v-select
               :items="sort_by_team"
               v-model="sort_model"
-              value="0"
               solo
               flat
               item-text="value"
               item-value="key"
+              return-object
               prepend-icon="mdi-sort"
               hide-details="auto"
             ></v-select>
@@ -256,11 +256,29 @@ export default {
   computed: {
     ...mapState(["teams", "players", "team_cities"]),
     displayedTeams() {
-      return this.paginate(
-        this.searchListTeam,
-        this.pageTeam,
-        this.perPageTeam
-      );
+      let finalTeam = this.searchListTeam;
+      if (this.sort_model.key === 0) {
+        finalTeam.sort((item1, item2) => {
+          if (item1.title < item2.title) {
+            return -1;
+          }
+          if (item1.title > item2.title) {
+            return 1;
+          }
+          return 0;
+        });
+      } else {
+        finalTeam.sort(function (item1, item2) {
+          if (item1.title < item2.title) {
+            return 1;
+          }
+          if (item1.title > item2.title) {
+            return -1;
+          }
+          return 0;
+        });
+      }
+      return this.paginate(finalTeam, this.pageTeam, this.perPageTeam);
     },
     displayedPlayers() {
       return this.paginate(
@@ -315,27 +333,9 @@ export default {
       );
     },
     sort_model() {
-      if (this.sort_model.key === 0) {
-        this.displayedTeam.sort((item1, item2) => {
-          if (item1.title < item2.title) {
-            return -1;
-          }
-          if (item1.title > item2.title) {
-            return 1;
-          }
-          return 0;
-        });
-      } else {
-        this.displayedTeam.sort(function (item1, item2) {
-          if (item1.title < item2.title) {
-            return 1;
-          }
-          if (item1.title > item2.title) {
-            return -1;
-          }
-          return 0;
-        });
-      }
+      this.paginationTeamLength = Math.ceil(
+        this.searchListTeam.length / this.perPageTeam
+      );
     },
   },
   mounted() {
@@ -378,7 +378,7 @@ export default {
         { state: "Показывать по 50", value: 50 },
         { state: "Показывать по 100", value: 100 },
       ],
-      sort_model: { key: 0, value: "По именни (от Я до А)" },
+      sort_model: { key: 0, value: "По именни (от А до Я)" },
       sort_by_team: [
         { key: 0, value: "По именни (от А до Я)" },
         { key: 1, value: "По именни (от Я до А)" },

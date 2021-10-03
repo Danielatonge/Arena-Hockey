@@ -2,7 +2,7 @@
   <div class="grey lighten-4">
     <v-container>
       <v-row class="mt-5">
-        <v-col cols="5" md="3">
+        <v-col cols="12" md="3">
           <v-tabs
             vertical
             class="pl-4 rounded-lg my-sidetabs"
@@ -18,7 +18,7 @@
             </v-tab>
           </v-tabs>
         </v-col>
-        <v-col cols="7" md="9">
+        <v-col cols="12" md="9">
           <router-view></router-view>
         </v-col>
       </v-row>

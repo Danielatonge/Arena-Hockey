@@ -8,7 +8,7 @@
       </v-row>
       <v-row class="mb-4">
         <v-col cols="4">
-          <v-img src="https://via.placeholder.com/140x80"></v-img>
+          <v-img :src="arena.profilePicture"></v-img>
         </v-col>
         <v-col cols="8">
           <div class="mb-16">
@@ -27,9 +27,6 @@
             <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
               Добавить в избранное
             </v-btn>
-            <v-btn class="mb-2" color="grey lighten-2" elevation="0">
-              Удалить
-            </v-btn>
           </div>
           <div>
             <v-checkbox v-model="checkbox">
@@ -40,34 +37,27 @@
           </div>
         </v-col>
       </v-row>
-      <div class="mb-4 text-h6">Разделы арены</div>
-      <v-row class="mx-n4 pb-10">
-        <v-col
-          class="pa-4"
-          cols="4"
-          md="4"
-          v-for="(section, i) in sections"
-          :key="i"
-        >
-          <router-link :to="`${section.link}`" class="reset-link">
-            <v-sheet
-              color="grey lighten-3"
-              elevation="0"
-              height="90"
-              width="100%"
-              class="
-                font-weight-bold
-                d-flex
-                justify-center
-                align-center
-                rounded-lg
-              "
+    </v-container>
+    <v-container>
+      <v-row class="mt-5">
+        <v-col cols="5" md="3">
+          <v-tabs
+            vertical
+            class="pl-4 rounded-lg my-sidetabs"
+            v-model="sidebar_tab"
+          >
+            <v-tab
+              v-for="(item, i) in sections"
+              :key="i"
+              router
+              :to="item.link"
             >
-              <div class="pa-4">
-                {{ section.text }}
-              </div>
-            </v-sheet>
-          </router-link>
+              {{ item.text }}
+            </v-tab>
+          </v-tabs>
+        </v-col>
+        <v-col cols="7" md="9">
+          <router-view></router-view>
         </v-col>
       </v-row>
     </v-container>
@@ -80,7 +70,7 @@ export default {
     const arena = this.$store.getters.current_arena;
     const id = arena.id;
     this.arena = arena;
-    const sections = [
+    const sidebar_items = [
       {
         text: "Информация",
         link: `/admin/sport_complex/${id}/information`,
@@ -106,11 +96,12 @@ export default {
         link: `/admin/sport_complex/${id}/management_staff`,
       },
     ];
-    this.sections = sections;
+    this.sections = sidebar_items;
   },
   data() {
     return {
       checkbox: null,
+      sidebar_tab: 0,
       arena: this.$store.state.current_arena,
       breadcrumb_items: [
         {
@@ -135,5 +126,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
