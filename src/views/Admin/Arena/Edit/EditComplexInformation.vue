@@ -582,6 +582,7 @@ export default {
     this.social_media[4].link = arena.facebook;
     this.coordinate.lat = arena.lat;
     this.coordinate.lon = arena.lan;
+    this.description = arena.description;
   },
   data() {
     return {
