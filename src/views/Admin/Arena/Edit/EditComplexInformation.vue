@@ -526,7 +526,6 @@
 import axios from "axios";
 import { yandexMap, ymapMarker } from "vue-yandex-maps";
 import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
-import { mapState } from "vuex";
 
 export default {
   components: {
@@ -544,7 +543,6 @@ export default {
     },
   },
   computed: {
-    ...mapState(["userId"]),
     social_media_display() {
       return this.social_media.filter((x) => x.link);
     },
@@ -697,7 +695,6 @@ export default {
       this.map = obj;
     },
     findCoordinateGivenAddress() {
-      // const { address } = this;
       // eslint-disable-next-line no-undef
       let myGeocoder = ymaps.geocode("Moscow");
       let self = this;
@@ -811,9 +808,7 @@ export default {
         youtube: "",
       };
       console.log(data);
-      const userId = this.userId;
-      this.postArena(data).then((arena) => {
-        this.linkArenaUser(arena.id, userId);
+      this.putArena(data).then((arena) => {
         this.$store
           .dispatch("setCurrentArena", arena)
           .then(() => {
@@ -824,28 +819,14 @@ export default {
           .catch((err) => console.log(err));
       });
     },
-    postArena(payload) {
+    putArena(payload) {
+      const arenaId = this.arena.id;
       return new Promise((resolve) => {
         axios
-          .post(`/arena`, payload)
+          .put(`/arena/${arenaId}`, payload)
           .then((response) => {
             const arena = response.data;
             resolve(arena);
-          })
-          .catch((err) => console.log(err));
-      });
-    },
-    linkArenaUser(arenaId, userId) {
-      const payload = {
-        arenaId: arenaId,
-        userId: userId,
-      };
-      return new Promise((resolve) => {
-        axios
-          .post(`/arena/user`, payload)
-          .then((response) => {
-            const arenaUser = response.data;
-            resolve(arenaUser.id);
           })
           .catch((err) => console.log(err));
       });

@@ -159,15 +159,14 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import axios from "axios";
 export default {
   computed: {
-    ...mapState(["teams"]),
     children_team() {
-      return this.teams.filter((x) => x.team.type == "CHILDREN");
+      return this.teams.filter((x) => x.team.type === "CHILDREN");
     },
     youth_team() {
-      return this.teams.filter((x) => x.team.type == "YOUTH");
+      return this.teams.filter((x) => x.team.type === "YOUTH");
     },
     adult_team() {
       return this.teams.filter((x) => x.team.type === "ADULT");
@@ -188,6 +187,7 @@ export default {
   created() {
     const arenaId = this.$route.params.id;
     this.arenaId = arenaId;
+    this.fetchArenaTeam(arenaId);
   },
   data() {
     return {
@@ -201,8 +201,21 @@ export default {
         "Взрослые команды",
         "Женские команда",
       ],
-      team_items: ["/team_room_1", "/team_room_2", "/team_room_3"],
+      teams: [],
     };
+  },
+  methods: {
+    fetchArenaTeam(arenaId) {
+      return new Promise((resolve) => {
+        axios
+          .get(`/arena/${arenaId}/teams`)
+          .then((response) => {
+            this.teams = response.data;
+            resolve(response.data);
+          })
+          .catch((err) => console.log(err));
+      });
+    },
   },
 };
 </script>
