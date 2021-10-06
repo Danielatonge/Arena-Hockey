@@ -18,7 +18,7 @@
           Вернуться к просмотру
         </v-btn>
       </div>
-      <div class="pb-16">
+      <div class="pb-8">
         <v-row dense>
           <v-col class="d-flex" cols="3" md="2">
             <v-select
@@ -74,7 +74,7 @@
           </v-col>
           <v-col class="my-auto" cols="6" md="4">
             <div class="body-1 grey--text">
-              Найдено: {{ displayTrainers.length }} результатов
+              Найдено: {{ filteredTrainers.length }} результатов
             </div>
           </v-col>
           <v-spacer></v-spacer>
@@ -90,14 +90,15 @@
         </v-row>
       </div>
       <v-row dense class="mx-n4">
-        <v-col cols="12" lg="6" v-for="(item, i) in displayTrainers" :key="i">
+        <v-col cols="12" v-for="(item, i) in arena_trainers" :key="i">
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
-              <v-avatar class="ma-3" size="128" tile>
+              <v-avatar class="ma-3 rounded-lg" size="150" tile>
                 <v-img
                   :src="
-                    require('@/assets' +
-                      (item.level ? item.level : '/player_2.jpg'))
+                    item.profilePicture
+                      ? item.profilePicture
+                      : require('@/assets/team_room_1.jpg')
                   "
                 ></v-img>
               </v-avatar>
@@ -135,14 +136,6 @@
           </v-card>
         </v-col>
       </v-row>
-    </div>
-    <div class="text-center py-10">
-      <v-pagination
-        color="grey"
-        v-model="page"
-        :length="paginationLength"
-        :total-visible="7"
-      ></v-pagination>
     </div>
 
     <div class="mb-4">
@@ -250,12 +243,11 @@ import { mapState } from "vuex";
 import axios from "axios";
 
 export default {
+  props: ["arena"],
   mounted() {
-    const arena_id = this.$route.params.id;
-
-    this.$store.dispatch("getArenaTrainer", arena_id).then((data) => {
-      console.log("getArenaTrainer", data);
-      this.arena_trainers = data;
+    const arenaId = this.$route.params.id;
+    axios.get(`/arena/${arenaId}/users`).then((response) => {
+      this.arena_trainers = this.filteredUsers(response.data);
     });
     this.$store.dispatch("getAllTrainers");
     this.breadcrumb_items = [
@@ -283,57 +275,53 @@ export default {
   },
   computed: {
     ...mapState({ trainers: "trainers" }),
-    displayTrainers() {
-      console.log("XXXX", this.trainers);
-      return this.paginate(this.filteredTrainers);
+  },
+  watch: {
+    // display_x(val) {
+    //   this.perPage = val;
+    //   this.paginationLength = Math.ceil(
+    //     this.filteredTrainers.length / this.perPage
+    //   );
+    // },
+    // filteredTrainers() {
+    //   this.paginationLength = Math.ceil(
+    //     this.filteredTrainers.length / this.perPage
+    //   );
+    // },
+    // filter_type() {
+    //   this.paginationLength = Math.ceil(
+    //     this.filteredTrainers.length / this.perPage
+    //   );
+    // },
+    // search_text(val) {
+    //   // Items have already been loaded
+    //   //if (this.search_items.length > 0) return;
+    //   if (!val) return this.filteredUsers;
+    //
+    //   // Items have already been requested
+    //   //if (this.is_searching) return;
+    //
+    //   //this.is_searching = true;
+    //   const value = val.toLowerCase();
+    //   console.log(this.filteredUsers);
+    //   this.search_items = this.filteredUsers.filter((x) => {
+    //     return x.fullname ? x.fullname.toLowerCase().includes(value) : false;
+    //   });
+    // },
+  },
+  methods: {
+    filteredTrainers(trainers) {
+      return trainers.map((item) => item.user);
     },
-    filteredTrainers() {
-      return this.arena_trainers.map((item) => item.user);
-    },
-    filteredUsers() {
-      return this.trainers.map((x) => ({
-        ...x,
+    filteredUsers(trainers) {
+      return trainers.map((x) => ({
+        ...x.user,
         fullname: x.name + " " + x.middleName + " " + x.surname,
       }));
     },
-  },
-  watch: {
-    display_x(val) {
-      this.perPage = val;
-      this.paginationLength = Math.ceil(
-        this.filteredTrainers.length / this.perPage
-      );
-    },
-    filteredTrainers() {
-      this.paginationLength = Math.ceil(
-        this.filteredTrainers.length / this.perPage
-      );
-    },
-    filter_type() {
-      this.paginationLength = Math.ceil(
-        this.filteredTrainers.length / this.perPage
-      );
-    },
-    search_text(val) {
-      // Items have already been loaded
-      //if (this.search_items.length > 0) return;
-      if (!val) return this.filteredUsers;
-
-      // Items have already been requested
-      //if (this.is_searching) return;
-
-      //this.is_searching = true;
-      const value = val.toLowerCase();
-      console.log(this.filteredUsers);
-      this.search_items = this.filteredUsers.filter((x) => {
-        return x.fullname ? x.fullname.toLowerCase().includes(value) : false;
-      });
-    },
-  },
-  methods: {
     deleteTrainer() {
       this.confirm_dialog = false;
-      if (this.current_team != -1) {
+      if (this.current_team !== -1) {
         const arena_id = this.$route.params.id;
         const user_id = this.arena_trainers[this.current_team].id;
         axios
@@ -396,14 +384,6 @@ export default {
       confirm_dialog: false,
       add_trainer_dialog: false,
       breadcrumb_items: [],
-      player_items: [
-        "/player_1",
-        "/player_2",
-        "/player_3",
-        "/player_4",
-        "/player_5",
-        "/player_6",
-      ],
       team_tags: ["Москва", "Казань"],
       sort_by_team: ["По популярности", "По именни"],
       type_team: ["возрасту", "город"],

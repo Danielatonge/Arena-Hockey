@@ -493,7 +493,7 @@
       </div>
       <div class="mb-4">
         <v-btn
-          @click="saveNewArena"
+          @click="updateArena"
           large
           class="mr-2 px-6 mb-2"
           color="primary"
@@ -772,7 +772,8 @@ export default {
       }
       this.social_media_text = "";
     },
-    saveNewArena() {
+    updateArena() {
+      const arenaId = this.arena.id;
       let whatsapp = "";
       if (this.social_media[1].link) {
         whatsapp = `https://wa.me/${this.social_media[1].link
@@ -809,15 +810,10 @@ export default {
         youtube: "",
       };
       console.log(data);
-      this.putArena(data).then((arena) => {
-        this.$store
-          .dispatch("setCurrentArena", arena)
-          .then(() => {
-            this.$router.push({
-              path: `/admin/sport_complex/${arena.id}`,
-            });
-          })
-          .catch((err) => console.log(err));
+      this.putArena(data).then(() => {
+        this.$router.push({
+          path: `/admin/sport_complex/${arenaId}`,
+        });
       });
     },
     putArena(payload) {
@@ -827,6 +823,7 @@ export default {
           .put(`/arena/${arenaId}`, payload)
           .then((response) => {
             const arena = response.data;
+            console.log(arena);
             resolve(arena);
           })
           .catch((err) => console.log(err));

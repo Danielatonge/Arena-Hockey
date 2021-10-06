@@ -68,7 +68,7 @@
           </v-col>
           <v-col class="my-auto" cols="6" md="4">
             <div class="body-1 grey--text">
-              Найдено: {{ filteredTeams.length }} результатов
+              Найдено: {{ arena_teams.length }} результатов
             </div>
           </v-col>
           <v-spacer></v-spacer>
@@ -87,27 +87,20 @@
         </v-row>
       </div>
       <v-row dense class="mx-n4">
-        <v-col
-          cols="12"
-          lg="6"
-          md="6"
-          v-for="(team, i) in displayTeams"
-          :key="i"
-        >
+        <v-col cols="12" v-for="(team, i) in arena_teams" :key="i">
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
-              <router-link to="/teamname" class="undo-link-default">
-                <v-avatar class="ma-3" size="140" tile>
-                  <v-img
-                    :src="
-                      require('@/assets' +
-                        (team.profilePicture
-                          ? team.profilePicture
-                          : '/team_room_1.jpg'))
-                    "
-                  ></v-img>
-                </v-avatar>
-              </router-link>
+              <v-avatar class="ma-3" size="150" tile>
+                <v-img
+                  :src="
+                    team.profilePicture
+                      ? team.profilePicture
+                      : require('@/assets/team_room_1.jpg')
+                  "
+                  contain
+                ></v-img>
+              </v-avatar>
+
               <v-card-text>
                 <div
                   class="body-1 blue--text mb-2"
@@ -131,11 +124,7 @@
                     </v-btn>
                   </v-col>
                   <v-col>
-                    <v-checkbox
-                      @click="hideTeam(item)"
-                      label="Скрыть команду"
-                      class=""
-                    />
+                    <v-checkbox label="Скрыть команду" />
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -143,16 +132,6 @@
           </v-card>
         </v-col>
       </v-row>
-    </div>
-    <div class="text-center py-10">
-      <div class="text-center py-10">
-        <v-pagination
-          color="grey"
-          v-model="page"
-          :length="paginationLength"
-          :total-visible="7"
-        ></v-pagination>
-      </div>
     </div>
     <div class="mb-4">
       <v-dialog v-model="add_team_dialog" max-width="600">
@@ -176,7 +155,6 @@
               v-model="selected_team"
               :items="search_items"
               :loading="is_searching"
-              :search-input.sync="search_text"
               color="white"
               solo
               flat
@@ -256,79 +234,28 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 import axios from "axios";
+import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState({ arena: "current_arena" }),
-    ...mapState({ teams: "teams" }),
-    displayTeams() {
-      console.log("XXXXX", this.teams);
-      return this.paginate(this.filteredTeams);
-    },
-    filteredTeams() {
-      let arenas = this.arena_teams.map((item) => item.team);
-      if (this.filter_type) {
-        arenas = arenas.filter((x) => {
-          return x.type == this.filter_type;
-        });
-      }
-      if (this.filter_city) {
-        arenas = arenas.filter((x) => {
-          return x.city == this.filter_city;
-        });
-      }
-
-      console.log("FIlter", this.filter_type, this.filter_city);
-      return arenas;
+    ...mapState(["teams"]),
+    search_items() {
+      return this.teams;
     },
   },
-  watch: {
-    display_item(val) {
-      this.perPage = val;
-      this.paginationLength = Math.ceil(
-        this.filteredTeams.length / this.perPage
-      );
-    },
-    filteredTeams() {
-      this.paginationLength = Math.ceil(
-        this.filteredTeams.length / this.perPage
-      );
-    },
-    filter_type() {
-      this.paginationLength = Math.ceil(
-        this.filteredTeams.length / this.perPage
-      );
-    },
-    search_text(val) {
-      // Items have already been loaded
-      if (!val) return [];
-      if (this.search_items.length > 0) return;
-
-      // Items have already been requested
-      //if (this.is_searching) return;
-
-      //this.is_searching = true;
-      const value = val.toLowerCase();
-      this.search_items = this.teams.filter((x) => {
-        return x.title ? x.title.toLowerCase().includes(value) : false;
-      });
-    },
-  },
+  watch: {},
   mounted() {
-    //const arena = this.$store.getters.current_arena;
     const arena_id = this.$route.params.id;
+
     this.$store.dispatch("getAllTeams");
     this.$store.dispatch("getArenaTeams", arena_id).then((data) => {
       console.log("getArenaTeams", data);
-      this.arena_teams = data;
-      this.setPaginationLength();
+      this.arena_teams = this.processTeam(data);
     });
   },
   data() {
     return {
-      search_text: "",
       page: 1,
       perPage: 5,
       arena_teams: [],
@@ -380,7 +307,6 @@ export default {
         { state: "Показывать по 12", value: 12 },
         { state: "Показывать по 24", value: 24 },
       ],
-      search_items: [],
       hide_team: false,
       selected_team: null,
       is_searching: false,
@@ -388,6 +314,9 @@ export default {
     };
   },
   methods: {
+    processTeam(payload) {
+      return payload.map((x) => x.team);
+    },
     deleteTeam() {
       this.confirm_dialog = false;
       if (this.current_team != -1) {
@@ -407,18 +336,6 @@ export default {
     hideTeam(id) {
       console.log("Hidde team", id);
     },
-    paginate(items) {
-      const cpage = this.page;
-      const perPage = this.perPage;
-      const from = cpage * perPage - perPage;
-      const to = cpage * perPage;
-      return items.slice(from, to);
-    },
-    setPaginationLength() {
-      this.paginationLength = Math.ceil(
-        this.filteredTeams.length / this.perPage
-      );
-    },
     addTeam() {
       this.adding_team = true;
       console.log("SELECTED", this.selected_team);
@@ -428,14 +345,14 @@ export default {
         teamId: this.selected_team.id,
         visible: this.hide_team,
       };
-      this.$store
-        .dispatch("addTeamToArena", data)
+      axios
+        .post(`/arena/team`, data)
         .then((response) => {
-          console.log("RESPONSE", response);
-          this.arena_teams.push({ team: this.selected_team });
+          console.log("RESPONSE", response.data);
+          console.log(this.selected_team);
+          this.arena_teams.push(this.selected_team);
           this.add_team_dialog = false;
           this.selected_team = null;
-          this.search_items = [];
         })
         .catch((err) => {
           console.log(err);
