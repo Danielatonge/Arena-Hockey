@@ -31,8 +31,8 @@
           <p class="text-h5 blue--text">{{ team.city }}</p>
           <p class="text-h4">{{ team.title }}</p>
           <v-btn class="mt-8" color="primary" elevation="0"
-            >Вступить в команду</v-btn
-          >
+            >Вступить в команду
+          </v-btn>
         </v-col>
         <v-spacer></v-spacer>
         <v-avatar class="rounded-lg" size="200" tile>
@@ -143,9 +143,18 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-container class="mt-10">
+    <v-container
+      class="mt-10"
+      v-if="
+        team.trainers || team.players
+          ? team.trainers.length || team.players.length
+          : false
+      "
+    >
       <p class="text-h5">Состав</p>
-      <p class="text-h6">Тренеры, сотрудники</p>
+      <p class="text-h6" v-if="team.trainers ? team.trainers.length : false">
+        Тренеры, сотрудники
+      </p>
       <v-row dense class="mx-n4">
         <v-col cols="12" md="6" v-for="(item, i) in trainers" :key="i">
           <v-card color="transparent" elevation="0">
@@ -184,7 +193,9 @@
         </v-col>
       </v-row>
 
-      <p class="text-h6 mt-8">Игроки</p>
+      <p class="text-h6 mt-8" v-if="team.players ? team.players.length : false">
+        Игроки
+      </p>
       <v-row dense class="mx-n4">
         <v-col cols="12" md="6" v-for="(item, i) in players" :key="i">
           <v-card color="transparent" elevation="0">
@@ -222,7 +233,14 @@
       </v-row>
     </v-container>
 
-    <v-container class="mt-10">
+    <v-container
+      class="mt-10"
+      v-if="
+        teamFindPlayer || teamFindTrainer
+          ? teamFindPlayer.length || teamFindTrainer.length
+          : false
+      "
+    >
       <p class="text-h5">Активные объявления</p>
       <v-row class="mt-2 ml-0">
         <v-tabs v-model="premises_tab" class="d-flex flex-no-wrap rounded-lg">
@@ -233,7 +251,7 @@
       </v-row>
       <v-tabs-items v-model="premises_tab" style="background-color: unset">
         <v-tab-item v-for="i in 2" :key="i">
-          <v-row dense class="mt-5" v-show="premises_tab == 0">
+          <v-row dense class="mt-5" v-show="premises_tab === 0">
             <v-col
               cols="12"
               md="6"
@@ -313,7 +331,7 @@
       </v-tabs-items>
     </v-container>
 
-    <v-container class="mt-10">
+    <v-container class="mt-10" v-if="media ? media.length : false">
       <p class="text-h5">Галерея</p>
       <v-row>
         <v-col cols="6" md="4" lg="3" v-for="(item, i) in media" :key="i">
@@ -327,22 +345,6 @@
         />
       </v-row>
     </v-container>
-    <!-- <v-container>
-      <p class="text-h5">Контакты</p>
-      <div v-if="contact" class="mt-10 pb-15">
-        <p v-if="contact.phones">
-          <span v-for="(phone, id) in contact.phones" :key="id">
-            {{ phone }} <br />
-          </span>
-        </p>
-        <p v-if="contact.mails">
-          <span v-for="(email, id) in contact.mails" :key="id">
-            {{ email }} <br />
-          </span>
-        </p>
-        Адрес: г. Москва, м. Сокольники, ул. Большая Тихоновская, д. 2.
-      </div>
-    </v-container> -->
   </div>
 </template>
 
@@ -405,24 +407,17 @@ export default {
   created() {
     const teamId = this.$route.params.teamId;
     this.$store.dispatch("getTeamByID", teamId);
-    // this.$store.dispatch("getArenaGivenID", arenaId);
     this.$store.dispatch("getTeamPlayers", teamId);
-    // this.$store.dispatch("getCurrentTeamArenas", teamId);
     this.$store.dispatch("getTeamForums", teamId);
 
     this.breadcrumb_items = [
-      // {
-      //   text: "Название арены", //,
-      //   disabled: false,
-      //   href: `/arena//information`,
-      // },
       {
         text: "Список команд",
         disabled: false,
         href: `/room`,
       },
       {
-        text: this.team.title, //"Название команды",
+        text: this.team.title,
         disabled: true,
         href: "breadcrumbs_link_2",
       },
@@ -463,8 +458,6 @@ export default {
       premises_tab: null,
       arenaId: null,
       advert_nav: ["Команда ищет игроков", "Команда ищет тренера"],
-      player_items: ["/player_1", "/player_2"],
-      advert_items: ["/advert_1", "/advert_2"],
       contact_list: null,
       readMoreInfo: false,
       breadcrumb_items: null,
@@ -477,6 +470,7 @@ export default {
 .description {
   position: relative;
 }
+
 .bottom {
   position: absolute;
   bottom: 0;

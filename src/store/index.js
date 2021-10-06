@@ -203,11 +203,13 @@ export default new Vuex.Store({
           console.log(err);
         });
     },
-    getArenaGivenID({ commit }, payload) {
-      const item = this.state.list_arenas.filter(
-        (arena) => arena.id === payload
-      );
-      commit("SET_CURRENT_ARENA", item[0]);
+    getArenaGivenID({ commit }, arenaId) {
+      axios
+        .get(`/arena/${arenaId}`)
+        .then((response) => {
+          commit("SET_CURRENT_ARENA", response.data);
+        })
+        .catch((err) => console.log(err));
     },
     setCurrentArena({ commit }, arena) {
       commit("SET_CURRENT_ARENA", arena);

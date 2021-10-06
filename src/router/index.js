@@ -176,11 +176,10 @@ const routes = [
 
   {
     path: "/admin/sport_complex/:id",
-    name: "NameComplex",
     component: NameComplex,
     children: [
       {
-        path: "information",
+        path: "",
         name: "ComplexInformation",
         component: ComplexInformation,
       },

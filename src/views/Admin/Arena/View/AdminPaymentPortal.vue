@@ -1,176 +1,165 @@
 <template>
-  <div class="grey lighten-4">
-    <v-container class="pb-10">
-      <v-row class="">
-        <div>
-          <v-breadcrumbs :items="breadcrumb_items" class="px-3"></v-breadcrumbs>
-        </div>
-      </v-row>
-      <div>
-        <div class="text-h5 py-5">Платные услуги</div>
-        <div class="mb-4">
-          <v-btn class="mr-2 mb-2" @click="goToEdit" color="grey lighten-2" elevation="0">
-            Редактировать
-          </v-btn>
-          <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
-            Посмотреть страницу арены
-          </v-btn>
-        </div>
-        <v-tabs v-model="value_tab" class="mt-6 d-flex flex-no-wrap rounded-lg">
-          <v-tab class="px-6" v-for="item in service_nav" :key="item">
-            {{ item }}
-          </v-tab>
-        </v-tabs>
-        <v-tabs-items v-model="value_tab" style="background-color: unset">
-          <v-tab-item v-for="i in 2" :key="i">
-            <div v-show="value_tab == 0">
-              <div v-for="(item, i) in katokPL" :key="i">
-                <p class="text-h4 mt-8 mb-0">{{ item.title }}</p>
-                <p class="grey--text">{{ item.miniDescription }}</p>
-                <v-row>
-                  <v-col
-                    cols="2"
-                    class="text-center border"
-                    v-for="(itm, indx) in item.price"
-                    :key="indx"
+  <div>
+    <div class="text-h4 mb-6">Платные услуги</div>
+    <div class="mb-4">
+      <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
+        Редактировать
+      </v-btn>
+      <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
+        Посмотреть страницу арены
+      </v-btn>
+    </div>
+    <v-tabs v-model="premises_tab" class="d-flex flex-no-wrap rounded-lg">
+      <v-tab v-for="item in premises_nav" :key="item">
+        {{ item }}
+      </v-tab>
+    </v-tabs>
+
+    <v-tabs-items v-model="premises_tab" style="background-color: unset">
+      <v-tab-item v-for="i in 2" :key="i">
+        <v-row dense class="mt-5" v-show="premises_tab == 0">
+          <v-col cols="12" class="mb-4" v-for="(item, i) in katokPL" :key="i">
+            <v-card color="transparent" elevation="0" class="mb-5">
+              <div class="d-flex flex-no-wrap">
+                <div class="ma-3">
+                  <v-avatar
+                    class="rounded-lg"
+                    tile
+                    width="200px"
+                    height="150px"
+                    contain
                   >
-                    <div class="mb-3 grey--text">
-                      {{ itm.price.startTime + " - " + itm.price.endTime }}
-                    </div>
-                    <div class="right-border mr-n3">
-                      <p class="mb-0">{{ itm.price.weekdayPrice }}</p>
-                      <p class="primary--text">{{ itm.price.holidayPrice }}</p>
-                    </div>
-                  </v-col>
-                </v-row>
-                <div class="mt-n8">
-                  <span class="mr-5 font-weight-bold">
-                    <v-icon style="font-size: 70px" color="#000" class="">
-                      mdi-circle-small
-                    </v-icon>
-                    <span class="ml-n5"> Будни </span>
-                  </span>
-                  <span class="font-weight-bold primary--text">
-                    <v-icon style="font-size: 70px" color="primary" class="">
-                      mdi-circle-small
-                    </v-icon>
-                    <span class="ml-n5"> Выходные </span>
-                  </span>
+                    <v-img
+                      contain
+                      :src="
+                        item.profilePicture != null
+                          ? item.profilePicture
+                          : require('@/assets/preview_arena_1.jpg')
+                      "
+                    ></v-img>
+                  </v-avatar>
                 </div>
-                <div class="">
-                  <v-btn color="primary" elevation="0">
-                    Перейти к Бронированию
-                  </v-btn>
+                <div class="description">
+                  <v-card-text>
+                    <div class="text-h5 mb-4">
+                      {{ item.title }}
+                      <span
+                        class="body-1 ml-4"
+                        v-show="item.length * item.width"
+                      >
+                        {{ item.length * item.width }}
+                      </span>
+                      <!--                      <span class="body-1 ml-4"> {{ item.type }} </span>-->
+                    </div>
+                    <div class="body-1 grey--text mb-3">
+                      {{ item.description }}
+                    </div>
+                  </v-card-text>
+                  <v-card-actions class="pl-4 bottom">
+                    <v-btn
+                      class="px-6"
+                      color="primary"
+                      x-large
+                      elevation="0"
+                      @click="
+                        $router.push({
+                          path: `/arena/${arenaId}/event_schedule`,
+                        })
+                      "
+                    >
+                      Забронировать
+                    </v-btn>
+                  </v-card-actions>
                 </div>
               </div>
-            </div>
-            <div v-show="value_tab == 1">
-              <div v-for="(item, i) in othersPL" :key="i">
-                <p class="text-h4 mt-8 mb-0">{{ item.title }}</p>
-                <p class="grey--text">{{ item.miniDescription }}</p>
-                <v-row>
-                  <v-col
-                    cols="2"
-                    class="text-center border"
-                    v-for="(itm, indx) in item.price"
-                    :key="indx"
-                  >
-                    <div class="mb-3 grey--text">
-                      {{ itm.price.startTime + " - " + itm.price.endTime }}
-                    </div>
-                    <div class="right-border mr-n3">
-                      <p class="mb-0">{{ itm.price.weekdayPrice }}</p>
-                      <p class="primary--text">{{ itm.price.holidayPrice }}</p>
-                    </div>
-                  </v-col>
-                </v-row>
-                <div class="mt-n8">
-                  <span class="mr-5 font-weight-bold">
-                    <v-icon style="font-size: 70px" color="#000" class="">
-                      mdi-circle-small
-                    </v-icon>
-                    <span class="ml-n5"> Будни </span>
-                  </span>
-                  <span class="font-weight-bold primary--text">
-                    <v-icon style="font-size: 70px" color="primary" class="">
-                      mdi-circle-small
-                    </v-icon>
-                    <span class="ml-n5"> Выходные </span>
-                  </span>
+            </v-card>
+            <v-row>
+              <v-col
+                cols="2"
+                class="text-center border"
+                v-for="(itm, indx) in item.price"
+                :key="indx"
+              >
+                <div class="mb-3 grey--text">
+                  {{ itm.price.startTime + " - " + itm.price.endTime }}
                 </div>
-                <div class="">
-                  <v-btn color="primary" elevation="0">
-                    Перейти к Бронированию
-                  </v-btn>
+                <div class="right-border mr-n3">
+                  <p class="mb-0">{{ itm.price.weekdayPrice }}</p>
+                  <p class="primary--text">
+                    {{ itm.price.holidayPrice }}
+                  </p>
                 </div>
-              </div>
+              </v-col>
+            </v-row>
+            <div class="mt-n8" v-show="item.price.length">
+              <span class="mr-5 font-weight-bold">
+                <v-icon style="font-size: 70px" color="#000" class="">
+                  mdi-circle-small
+                </v-icon>
+                <span class="ml-n5">Будни</span>
+              </span>
+              <span class="font-weight-bold primary--text">
+                <v-icon style="font-size: 70px" color="primary" class="">
+                  mdi-circle-small
+                </v-icon>
+                <span class="ml-n5"> Выходные </span>
+              </span>
             </div>
-          </v-tab-item>
-        </v-tabs-items>
-      </div>
-      
-    </v-container>
+          </v-col>
+        </v-row>
+        <v-row dense class="mt-5" v-show="premises_tab != 0">
+          <v-col
+            cols="12"
+            class="mb-2"
+            v-for="(item, i) in others_services"
+            :key="i"
+          >
+            <ArenaServiceCard
+              :data="item"
+              :arenaId="arenaId"
+            ></ArenaServiceCard>
+          </v-col>
+        </v-row>
+      </v-tab-item>
+    </v-tabs-items>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters, mapState } from "vuex";
+import ArenaServiceCard from "@/components/Arena/ArenaServiceCard";
 
 export default {
+  components: {
+    ArenaServiceCard,
+  },
   computed: {
-    ...mapState(["katokPL", "othersPL"]),
+    ...mapState(["katokPL"]),
+    ...mapGetters(["others_services"]),
   },
-  mounted() {
+  filters: {
+    descriptionLength(value) {
+      if (!value) return "";
+      if (value.length < 30) {
+        return value;
+      }
+      return value.slice(0, 30) + "...";
+    },
+  },
+  created() {
     this.$store.dispatch("getPriceListKatok");
-    this.$store.dispatch("getPriceListOthers");
-    this.arenaId = this.$route.params.id;
+    const arenaId = this.$route.params.id;
+    this.arenaId = arenaId;
   },
+  name: "PaymentPortal",
   data() {
     return {
-      value_tab: 0,
-      service_nav: ["Катки", "Другие помещения"],
-      breadcrumb_items: [
-        {
-          text: "Личный кабинет",
-          disabled: false,
-          href: "/",
-        },
-        {
-          text: "Мои спортивные комплексы",
-          disabled: false,
-          href: "/admin/sport_complex",
-        },
-        {
-          text: "Название комплекса",
-          disabled: false,
-          href: "/admin/sport_complex/id",
-        },
-        {
-          text: "Платные услуги",
-          disabled: true,
-          href: "/admin/sport_complex/id/payment_portal",
-        },
-      ],
-      arenaId: '',
-      price_list: [
-        { interval: "06:00–08:30", weekday: "8 000", weekend: "10 000" },
-        { interval: "08:30–15:00", weekday: "8 000", weekend: "10 000" },
-        { interval: "15:00–17:00", weekday: "8 000", weekend: "10 000" },
-        { interval: "17:00–19:00", weekday: "10 000", weekend: "10 000" },
-        { interval: "19:00–22:30", weekday: "12 000", weekend: "10 000" },
-        { interval: "22:30–00:00", weekday: "10 000", weekend: "10 000" },
-      ],
+      premises_tab: null,
+      premises_nav: ["аренда", "прочее"],
+      arenaId: "",
     };
   },
-  methods: {
-    goToEdit() {
-      const path = this.$route.path + "/edit";
-      console.log(path)
-      this.$router.push({path})
-    }
-  }
 };
 </script>
 
-<style>
-</style>
+<style></style>

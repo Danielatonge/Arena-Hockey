@@ -1,161 +1,197 @@
 <template>
-  <div class="grey lighten-4">
-    <v-container class="pb-10">
-      <v-row class="">
-        <div>
-          <v-breadcrumbs :items="breadcrumb_items" class="px-3"></v-breadcrumbs>
-        </div>
-      </v-row>
-      <div>
-        <div class="text-h5 py-5">Тренерский состав</div>
-        <div class="mb-4">
-          <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
-            Редактировать
-          </v-btn>
-          <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
-            Посмотреть страницу арены
-          </v-btn>
-        </div>
-        <div class="pb-16">
-          <v-row dense>
-            <v-col class="d-flex" cols="3" md="2">
-              <v-select
-                :items="team_tags"
-                value="Москва"
-                solo
-                flat
-                hide-details="auto"
-              ></v-select>
-            </v-col>
-            <v-col cols="9" md="6" lg="8">
-              <v-text-field
-                label="Поиск по названию команды"
-                single-line
-                prepend-inner-icon="mdi-magnify"
-                solo
-                flat
-                hide-details="auto"
-                class="rounded-lg"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="3" md="2" lg="1">
-              <v-text-field
-                label="от"
-                single-line
-                solo
-                flat
-                hide-details="auto"
-                class="rounded-lg"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="3" md="2" lg="1">
-              <v-text-field
-                label="до"
-                single-line
-                solo
-                flat
-                hide-details="auto"
-                class="rounded-lg"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col class="d-flex" cols="6" md="4" lg="3" xl="2">
-              <v-select
-                :items="sort_by_team"
-                value="По популярности"
-                solo
-                flat
-                prepend-icon="mdi-sort"
-                hide-details="auto"
-              ></v-select>
-            </v-col>
-            <v-col class="my-auto" cols="6" md="4">
-              <div class="body-1 grey--text">Найдено: 160 результатов</div>
-            </v-col>
-            <v-spacer></v-spacer>
-            <v-col cols="6" md="4" lg="3" xl="2">
-              <v-select
-                :items="display_items"
-                value="Показывать по 12"
-                solo
-                flat
-                hide-details="auto"
-              ></v-select>
-            </v-col>
-          </v-row>
-        </div>
-        <v-row dense class="mx-n4">
-          <v-col cols="12" v-for="(item, i) in player_items" :key="i">
-          <v-card color="transparent" elevation="0">
-            <div class="d-flex flex-no-wrap">
-              <v-avatar class="ma-3" size="125" tile>
-                <v-img :src="require('@/assets' + item + '.jpg')"></v-img>
-              </v-avatar>
-              <v-card-text>
-                <div class="text-h5 mb-2">Фамилия Имя Отчество</div>
-                <div class="body-1 blue--text mb-1">Возраст, город</div>
-                <div class="body-2 grey--text">Уровень: профессионал</div>
-              </v-card-text>
-            </div>
-          </v-card>
-        </v-col>
+  <div>
+    <div class="text-h4 mb-6">Тренерский состав</div>
+    <div class="mb-4">
+      <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
+        Редактировать
+      </v-btn>
+      <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
+        Посмотреть страницу арены
+      </v-btn>
+    </div>
+    <v-tabs v-model="premises_tab" class="d-flex flex-no-wrap rounded-lg">
+      <v-tab v-for="item in premises_nav" :key="item">
+        {{ item }}
+      </v-tab>
+    </v-tabs>
+    <v-tabs-items v-model="premises_tab" style="background-color: unset">
+      <v-tab-item v-for="x in 3" :key="x">
+        <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 0">
+          <v-col cols="12" v-for="(item, i) in trainers" :key="i">
+            <v-card color="transparent" elevation="0">
+              <div class="d-flex flex-no-wrap">
+                <v-avatar class="ma-3 rounded-lg" size="125" tile>
+                  <v-img
+                    :src="
+                      item.profilePicture != null
+                        ? item.profilePicture
+                        : require('@/assets/player_2.jpg')
+                    "
+                  ></v-img>
+                </v-avatar>
+                <v-card-text>
+                  <div class="text-h5 mb-2">
+                    {{ full_name(item) }}
+                  </div>
+                  <div class="body-1 blue--text mb-2">
+                    {{ isValidOutput(item.age) }}
+                    {{ isValidCityOutput(item.city) }}
+                  </div>
+                  <div class="body-2 grey--text">
+                    {{ isValidOutput(item.position) }}
+                  </div>
+                </v-card-text>
+              </div>
+            </v-card>
+          </v-col>
         </v-row>
-      </div>
-      <div class="text-center py-10">
-        <v-pagination
-          color="grey"
-          v-model="page"
-          :length="15"
-          :total-visible="7"
-        ></v-pagination>
-      </div>
-    </v-container>
+        <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 1">
+          <v-col cols="12" v-for="(item, i) in kid_trainers" :key="i">
+            <v-card color="transparent" elevation="0">
+              <div class="d-flex flex-no-wrap">
+                <v-avatar class="ma-3 rounded-lg" size="125" tile>
+                  <v-img
+                    :src="
+                      item.profilePicture != null
+                        ? item.profilePicture
+                        : require('@/assets/player_2.jpg')
+                    "
+                  ></v-img>
+                </v-avatar>
+                <v-card-text>
+                  <div class="text-h5 mb-2">
+                    {{ full_name(item) }}
+                  </div>
+                  <div class="body-1 blue--text mb-2">
+                    {{ isValidOutput(item.age) }}
+                    {{ isValidCityOutput(item.city) }}
+                  </div>
+                  <div class="body-2 grey--text">
+                    {{ isValidOutput(item.position) }}
+                  </div>
+                </v-card-text>
+              </div>
+            </v-card>
+          </v-col>
+        </v-row>
+        <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 2">
+          <v-col cols="12" v-for="(item, i) in youth_trainers" :key="i">
+            <v-card color="transparent" elevation="0">
+              <div class="d-flex flex-no-wrap">
+                <v-avatar class="ma-3 rounded-lg" size="125" tile>
+                  <v-img
+                    :src="
+                      item.profilePicture != null
+                        ? item.profilePicture
+                        : require('@/assets/player_2.jpg')
+                    "
+                  ></v-img>
+                </v-avatar>
+                <v-card-text>
+                  <div class="text-h5 mb-2">
+                    {{ full_name(item) }}
+                  </div>
+                  <div class="body-1 blue--text mb-2">
+                    {{ isValidOutput(item.age) }}
+                    {{ isValidCityOutput(item.city) }}
+                  </div>
+                  <div class="body-2 grey--text">
+                    {{ isValidOutput(item.position) }}
+                  </div>
+                </v-card-text>
+              </div>
+            </v-card>
+          </v-col>
+        </v-row>
+        <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 3">
+          <v-col cols="12" v-for="(item, i) in female_trainer" :key="i">
+            <v-card color="transparent" elevation="0">
+              <div class="d-flex flex-no-wrap">
+                <v-avatar class="ma-3 rounded-lg" size="125" tile>
+                  <v-img
+                    :src="
+                      item.profilePicture != null
+                        ? item.profilePicture
+                        : require('@/assets/player_2.jpg')
+                    "
+                  ></v-img>
+                </v-avatar>
+                <v-card-text>
+                  <div class="text-h5 mb-2">
+                    {{ full_name(item) }}
+                  </div>
+                  <div class="body-1 blue--text mb-2">
+                    {{ isValidOutput(item.age) }}
+                    {{ isValidCityOutput(item.city) }}
+                  </div>
+                  <div class="body-2 grey--text">
+                    {{ isValidOutput(item.position) }}
+                  </div>
+                </v-card-text>
+              </div>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-tab-item>
+    </v-tabs-items>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
+  filters: {
+    descriptionLength(value) {
+      if (!value) return "";
+      if (value.length < 30) {
+        return value;
+      }
+      return value.slice(0, 30) + "...";
+    },
+  },
+  computed: {
+    ...mapState(["trainers"]),
+    kid_trainers() {
+      return this.trainers.filter((x) => x.level === "KID");
+    },
+    youth_trainers() {
+      return this.trainers.filter((x) => x.level === "YOUTH");
+    },
+    female_trainer() {
+      return this.trainers.filter((x) => x.level === "FEMALE");
+    },
+  },
+  created() {
+    const arenaId = this.$route.params.id;
+    this.arenaId = arenaId;
+    this.$store.dispatch("getArenaTrainers", arenaId);
+  },
   data() {
     return {
-      breadcrumb_items: [
-        {
-          text: "Личный кабинет",
-          disabled: false,
-          href: "/",
-        },
-        {
-          text: "Мои спортивные комплексы",
-          disabled: false,
-          href: "/admin/sport_complex",
-        },
-        {
-          text: "Название комплекса",
-          disabled: false,
-          href: "/admin/sport_complex/id",
-        },
-        {
-          text: "Список команд",
-          disabled: true,
-          href: "",
-        },
+      name: "ArenaTeamList",
+      arenaId: null,
+      premises_tab: null,
+      premises_nav: [
+        "Все тренеры",
+        "Детские тренеры",
+        "Юношеские тренеры",
+        "Женские тренеры",
       ],
-      player_items: [
-        "/player_1",
-        "/player_2",
-        "/player_3",
-        "/player_4",
-        "/player_5",
-        "/player_6",
-      ],
-      team_tags: ["Москва", "Казань"],
-      sort_by_team: ["По популярности", "По именни"],
-      type_team: ["возрасту", "город"],
-      display_items: ["Показывать по 12", "Показывать по 25"],
     };
+  },
+  methods: {
+    isValidCityOutput(input) {
+      return input && input !== "string" ? ", " + input : null;
+    },
+    isValidOutput(input) {
+      return input && input !== "string" ? input : null;
+    },
+    full_name(item) {
+      return `${item.name} ${item.middleName} ${item.surname}`;
+    },
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>

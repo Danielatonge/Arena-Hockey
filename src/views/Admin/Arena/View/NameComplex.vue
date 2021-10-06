@@ -57,7 +57,7 @@
           </v-tabs>
         </v-col>
         <v-col cols="7" md="9">
-          <router-view></router-view>
+          <router-view :arena="arena" v-if="arenaLoaded"></router-view>
         </v-col>
       </v-row>
     </v-container>
@@ -65,44 +65,40 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
-  mounted() {
-    const arena = this.$store.getters.current_arena;
-    const id = arena.id;
-    this.arena = arena;
-    const sidebar_items = [
-      {
-        text: "Информация",
-        link: `/admin/sport_complex/${id}/information`,
-      },
-      {
-        text: "Платные услуги",
-        link: `/admin/sport_complex/${id}/payment_portal`,
-      },
-      {
-        text: "Расписание мероприятий",
-        link: `/admin/sport_complex/${id}/schedule_event`,
-      },
-      {
-        text: "Список команд",
-        link: `/admin/sport_complex/${id}/team_list`,
-      },
-      {
-        text: "Тренерский состав",
-        link: `/admin/sport_complex/${id}/training_staff`,
-      },
-      {
-        text: "Состав руководства",
-        link: `/admin/sport_complex/${id}/management_staff`,
-      },
-    ];
-    this.sections = sidebar_items;
+  created() {
+    const arenaId = this.$route.params.id;
+    this.fetchArenaById(arenaId).then((id) => {
+      this.sections = [
+        {
+          text: "Информация",
+          link: `/admin/sport_complex/${id}`,
+        },
+        {
+          text: "Платные услуги",
+          link: `/admin/sport_complex/${id}/payment_portal`,
+        },
+        {
+          text: "Расписание мероприятий",
+          link: `/admin/sport_complex/${id}/schedule_event`,
+        },
+        {
+          text: "Список команд",
+          link: `/admin/sport_complex/${id}/team_list`,
+        },
+        {
+          text: "Тренерский состав",
+          link: `/admin/sport_complex/${id}/training_staff`,
+        },
+      ];
+    });
   },
   data() {
     return {
       checkbox: null,
       sidebar_tab: 0,
-      arena: this.$store.state.current_arena,
+      arena: {},
       breadcrumb_items: [
         {
           text: "Личный кабинет",
@@ -120,8 +116,23 @@ export default {
           href: "",
         },
       ],
-      sections: null,
+      sections: [],
+      arenaLoaded: false,
     };
+  },
+  methods: {
+    fetchArenaById(arenaId) {
+      return new Promise((resolve) => {
+        axios
+          .get(`/arena/${arenaId}`)
+          .then((response) => {
+            this.arena = response.data;
+            this.arenaLoaded = true;
+            resolve(response.data.id);
+          })
+          .catch((err) => console.log(err));
+      });
+    },
   },
 };
 </script>
