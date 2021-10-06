@@ -1,45 +1,24 @@
 <template>
-  <div class="grey lighten-4">
-    <v-container class="pb-10">
-      <v-row class="">
-        <div>
-          <v-breadcrumbs :items="breadcrumb_items" class="px-3"></v-breadcrumbs>
-        </div>
-      </v-row>
-      <div>
-        <div class="text-h5 py-5">Расписание мероприятий</div>
-        <div class="mb-4">
-          <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
-            Редактировать
-          </v-btn>
-          <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
-            Посмотреть страницу арены
-          </v-btn>
-        </div>
-        <div class="mb-8">
-          <div class="mb-4 text-h5">Список катков</div>
-          <div class>
-            <v-data-table
-              :headers="headers"
-              :items="desserts"
-              :items-per-page="5"
-              class="elevation-1"
-            ></v-data-table>
-          </div>
-        </div>
-        <div class="mb-8">
-          <div class="mb-4 text-h5">Список помещений</div>
-          <div class>
-            <v-data-table
-              :headers="headers"
-              :items="desserts"
-              :items-per-page="5"
-              class="elevation-1"
-            ></v-data-table>
-          </div>
-        </div>
+  <div>
+    <div>
+      <div class="text-h4 pb-5">Расписание мероприятий</div>
+      <div class="mb-4">
+        <v-btn
+          large
+          @click="add_team_dialog = true"
+          class="mr-2 mb-2 primary"
+          elevation="0"
+        >
+          Добавить мероприятий
+        </v-btn>
+        <v-btn large class="mr-2 mb-2" color="grey lighten-2" elevation="0">
+          Обратить в тех. поддержку
+        </v-btn>
+        <v-btn large class="mr-2 mb-2" color="grey lighten-2" elevation="0">
+          Вернуться к просмотру
+        </v-btn>
       </div>
-    </v-container>
+    </div>
   </div>
 </template>
 
@@ -116,5 +95,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -1,14 +1,6 @@
 <template>
   <div>
     <div class="text-h4 mb-6">Платные услуги</div>
-    <div class="mb-4">
-      <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
-        Редактировать
-      </v-btn>
-      <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
-        Посмотреть страницу арены
-      </v-btn>
-    </div>
     <v-tabs v-model="premises_tab" class="d-flex flex-no-wrap rounded-lg">
       <v-tab v-for="item in premises_nav" :key="item">
         {{ item }}

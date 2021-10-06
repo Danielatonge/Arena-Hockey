@@ -1,165 +1,159 @@
 <template>
-  <div class="grey lighten-4">
-    <v-container class="pb-10">
-      <v-row class="">
-        <div>
-          <v-breadcrumbs :items="breadcrumb_items" class="px-3"></v-breadcrumbs>
-        </div>
-      </v-row>
-      <div>
-        <div class="text-h5 py-5">Список команд</div>
-        <div class="mb-4">
-          <v-btn
-            @click="add_team_dialog = true"
-            class="mr-2 mb-2 primary"
-            elevation="0"
-          >
-            Добавить команду
-          </v-btn>
-          <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
-            Обратить в тех. поддержку
-          </v-btn>
-          <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
-            Вернуться к просмотру
-          </v-btn>
-        </div>
-        <div class="pb-16">
-          <v-row dense>
-            <v-col class="d-flex" cols="12" md="2">
-              <v-select
-                :items="team_tags"
-                item-text="text"
-                item-value="value"
-                v-model="filter_city"
-                solo
-                flat
-                hide-details="auto"
-              ></v-select>
-            </v-col>
-            <v-col cols="9" md="8" lg="8">
-              <v-text-field
-                label="Поиск по названию команды"
-                single-line
-                prepend-inner-icon="mdi-magnify"
-                solo
-                flat
-                hide-details="auto"
-                class="rounded-lg"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="3" md="2" lg="2">
-              <v-select
-                :items="type_teams"
-                value="Тип команды"
-                v-model="filter_type"
-                item-text="text"
-                item-value="value"
-                solo
-                flat
-                hide-details="auto"
-              ></v-select>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col class="d-flex" cols="6" md="4" lg="3" xl="2">
-              <v-select
-                :items="sort_by_team"
-                value="По популярности"
-                solo
-                flat
-                prepend-icon="mdi-sort"
-                hide-details="auto"
-              ></v-select>
-            </v-col>
-            <v-col class="my-auto" cols="6" md="4">
-              <div class="body-1 grey--text">
-                Найдено: {{ filteredTeams.length }} результатов
-              </div>
-            </v-col>
-            <v-spacer></v-spacer>
-            <v-col cols="6" md="4" lg="3" xl="2">
-              <v-select
-                :items="display_items"
-                value="Показывать по 5"
-                v-model="display_item"
-                item-text="state"
-                item-value="value"
-                solo
-                flat
-                hide-details="auto"
-              ></v-select>
-            </v-col>
-          </v-row>
-        </div>
-        <v-row dense class="mx-n4">
-          <v-col
-            cols="12"
-            lg="6"
-            md="6"
-            v-for="(team, i) in displayTeams"
-            :key="i"
-          >
-            <v-card color="transparent" elevation="0">
-              <div class="d-flex flex-no-wrap">
-                <router-link to="/teamname" class="undo-link-default">
-                  <v-avatar class="ma-3" size="140" tile>
-                    <v-img
-                      :src="
-                        require('@/assets' +
-                          (team.profilePicture
-                            ? team.profilePicture
-                            : '/team_room_1.jpg'))
-                      "
-                    ></v-img>
-                  </v-avatar>
-                </router-link>
-                <v-card-text>
-                  <div
-                    class="body-1 blue--text mb-2"
-                    style="text-decoration: none"
-                  >
-                    {{ team.city }}
-                  </div>
-                  <div class="text-h5 mb-2">{{ team.title }}</div>
-                  <div class="body-1 grey--text">{{ team.type }}</div>
-                  <v-row no-gutters class="align-center">
-                    <v-col cols="12" md="4" lg="7">
-                      <v-btn
-                        @click="
-                          confirm_dialog = true;
-                          current_team = i;
-                        "
-                        class="primary"
-                        elevation="0"
-                      >
-                        Открепить команду
-                      </v-btn>
-                    </v-col>
-                    <v-col>
-                      <v-checkbox
-                        @click="hideTeam(item)"
-                        label="Скрыть команду"
-                        class=""
-                      />
-                    </v-col>
-                  </v-row>
-                </v-card-text>
-              </div>
-            </v-card>
+  <div>
+    <div>
+      <div class="text-h4 pb-5">Список команд</div>
+      <div class="mb-4">
+        <v-btn
+          large
+          @click="add_team_dialog = true"
+          class="mr-2 mb-2 primary"
+          elevation="0"
+        >
+          Добавить команду
+        </v-btn>
+        <v-btn large class="mr-2 mb-2" color="grey lighten-2" elevation="0">
+          Обратить в тех. поддержку
+        </v-btn>
+        <v-btn large class="mr-2 mb-2" color="grey lighten-2" elevation="0">
+          Вернуться к просмотру
+        </v-btn>
+      </div>
+      <div class="pb-16">
+        <v-row dense>
+          <v-col class="d-flex" cols="12" md="2">
+            <v-select
+              :items="team_tags"
+              item-text="text"
+              item-value="value"
+              v-model="filter_city"
+              solo
+              flat
+              hide-details="auto"
+            ></v-select>
+          </v-col>
+          <v-col cols="9" md="8" lg="8">
+            <v-text-field
+              label="Поиск по названию команды"
+              single-line
+              prepend-inner-icon="mdi-magnify"
+              solo
+              flat
+              hide-details="auto"
+              class="rounded-lg"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="3" md="2" lg="2">
+            <v-select
+              :items="type_teams"
+              value="Тип команды"
+              v-model="filter_type"
+              item-text="text"
+              item-value="value"
+              solo
+              flat
+              hide-details="auto"
+            ></v-select>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="d-flex" cols="6" md="4" lg="3" xl="2">
+            <v-select
+              :items="sort_by_team"
+              value="По популярности"
+              solo
+              flat
+              prepend-icon="mdi-sort"
+              hide-details="auto"
+            ></v-select>
+          </v-col>
+          <v-col class="my-auto" cols="6" md="4">
+            <div class="body-1 grey--text">
+              Найдено: {{ filteredTeams.length }} результатов
+            </div>
+          </v-col>
+          <v-spacer></v-spacer>
+          <v-col cols="6" md="4" lg="3" xl="2">
+            <v-select
+              :items="display_items"
+              value="Показывать по 5"
+              v-model="display_item"
+              item-text="state"
+              item-value="value"
+              solo
+              flat
+              hide-details="auto"
+            ></v-select>
           </v-col>
         </v-row>
       </div>
+      <v-row dense class="mx-n4">
+        <v-col
+          cols="12"
+          lg="6"
+          md="6"
+          v-for="(team, i) in displayTeams"
+          :key="i"
+        >
+          <v-card color="transparent" elevation="0">
+            <div class="d-flex flex-no-wrap">
+              <router-link to="/teamname" class="undo-link-default">
+                <v-avatar class="ma-3" size="140" tile>
+                  <v-img
+                    :src="
+                      require('@/assets' +
+                        (team.profilePicture
+                          ? team.profilePicture
+                          : '/team_room_1.jpg'))
+                    "
+                  ></v-img>
+                </v-avatar>
+              </router-link>
+              <v-card-text>
+                <div
+                  class="body-1 blue--text mb-2"
+                  style="text-decoration: none"
+                >
+                  {{ team.city }}
+                </div>
+                <div class="text-h5 mb-2">{{ team.title }}</div>
+                <div class="body-1 grey--text">{{ team.type }}</div>
+                <v-row no-gutters class="align-center">
+                  <v-col cols="12" md="4" lg="7">
+                    <v-btn
+                      @click="
+                        confirm_dialog = true;
+                        current_team = i;
+                      "
+                      class="primary"
+                      elevation="0"
+                    >
+                      Открепить команду
+                    </v-btn>
+                  </v-col>
+                  <v-col>
+                    <v-checkbox
+                      @click="hideTeam(item)"
+                      label="Скрыть команду"
+                      class=""
+                    />
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </div>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
+    <div class="text-center py-10">
       <div class="text-center py-10">
-        <div class="text-center py-10">
-          <v-pagination
-            color="grey"
-            v-model="page"
-            :length="paginationLength"
-            :total-visible="7"
-          ></v-pagination>
-        </div>
+        <v-pagination
+          color="grey"
+          v-model="page"
+          :length="paginationLength"
+          :total-visible="7"
+        ></v-pagination>
       </div>
-    </v-container>
+    </div>
     <div class="mb-4">
       <v-dialog v-model="add_team_dialog" max-width="600">
         <v-card :loading="adding_team" class="grey lighten-5">
@@ -452,5 +446,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

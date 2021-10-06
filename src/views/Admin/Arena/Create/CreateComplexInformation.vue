@@ -778,14 +778,18 @@ export default {
       this.social_media_text = "";
     },
     saveNewArena() {
-      const whatsapp = `https://wa.me/${this.social_media[1].link
-        .replace("(", "")
-        .replace(")", "")}`;
+      let whatsapp = "";
+      if (this.social_media[1].link) {
+        whatsapp = `https://wa.me/${this.social_media[1].link
+          .replace("(", "")
+          .replace(")", "")
+          .replace(" ", "")}`;
+      }
       console.log(this.avatar.imageURL);
       const data = {
         title: this.shortTitle,
         fullTitle: this.fullTitle,
-        tags: this.tag_chips ? this.tag_chips : [],
+        tags: this.tag_chips,
         address: this.address,
         description: this.description,
         route: "",

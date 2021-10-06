@@ -16,14 +16,14 @@
             <div>{{ arena.address }}</div>
           </div>
           <div>
-            <v-btn class="mr-2 mb-2" color="primary" elevation="0">
-              <router-link
-                :to="`/admin/sport_complex/${arena.id}/edit`"
-                class="reset-link"
-              >
+            <router-link
+              :to="`/admin/sport_complex/${arena.id}/edit`"
+              class="reset-link"
+            >
+              <v-btn class="mr-2 mb-2" color="primary" elevation="0">
                 Редактировать
-              </router-link>
-            </v-btn>
+              </v-btn>
+            </router-link>
             <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
               Добавить в избранное
             </v-btn>

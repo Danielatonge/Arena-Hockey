@@ -1,128 +1,120 @@
 <template>
-  <div class="grey lighten-4">
-    <v-container class="pb-10">
-      <v-row class="">
-        <div>
-          <v-breadcrumbs :items="breadcrumb_items" class="px-3"></v-breadcrumbs>
-        </div>
-      </v-row>
-      <div>
-        <div class="text-h5 py-5">Платные услуги</div>
-        <div class="mb-4">
-          <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
-            Обратить в тех. поддержку
-          </v-btn>
-          <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
-            Вернуться к просмотру
-          </v-btn>
-        </div>
-        <v-tabs v-model="value_tab" class="mt-6 d-flex flex-no-wrap rounded-lg">
-          <v-tab class="px-6" v-for="item in service_nav" :key="item">
-            {{ item }}
-          </v-tab>
-        </v-tabs>
-        <v-tabs-items v-model="value_tab" style="background-color: unset">
-          <v-tab-item v-for="i in 2" :key="i">
-            <div v-show="value_tab == 0">
-              <div v-for="(item, i) in katokPL" :key="i">
-                <p class="text-h4 mt-8 mb-0">{{ item.title }}</p>
-                <p class="grey--text">{{ item.miniDescription }}</p>
-
-                <v-row v-show="item.price.length">
-                  <v-col
-                    cols="2"
-                    class="text-center border"
-                    v-for="(itm, indx) in item.price"
-                    :key="indx"
-                  >
-                    <div class="mb-3 grey--text">
-                      {{ itm.price.startTime + " - " + itm.price.endTime }}
-                    </div>
-                    <div class="right-border mr-n3">
-                      <p class="mb-0">{{ itm.price.weekdayPrice }}</p>
-                      <p class="primary--text">{{ itm.price.holidayPrice }}</p>
-                    </div>
-                  </v-col>
-                </v-row>
-                <div class="mt-n8" v-show="item.price.length">
-                  <span class="mr-5 font-weight-bold">
-                    <v-icon style="font-size: 70px" color="#000" class="">
-                      mdi-circle-small
-                    </v-icon>
-                    <span class="ml-n5"> Будни </span>
-                  </span>
-                  <span class="font-weight-bold primary--text">
-                    <v-icon style="font-size: 70px" color="primary" class="">
-                      mdi-circle-small
-                    </v-icon>
-                    <span class="ml-n5"> Выходные </span>
-                  </span>
-                </div>
-                <div class="mt-4">
-                  <v-btn
-                    color="primary"
-                    elevation="0"
-                    @click="goToModifyList(item)"
-                  >
-                    {{
-                      item.price.length
-                        ? "ИЗМЕНИТЬ ПРАЙС-ЛИСТ"
-                        : "ДОБАВИТЬ ПРАЙС-ЛИСТ"
-                    }}
-                  </v-btn>
-                </div>
-              </div>
-            </div>
-            <div v-show="value_tab == 1">
-              <div v-for="(item, i) in othersPL" :key="i">
-                <p class="text-h4 mt-8 mb-0">{{ item.title }}</p>
-                <p class="grey--text">{{ item.miniDescription }}</p>
-                <v-row v-show="item.price.length">
-                  <v-col
-                    cols="2"
-                    class="text-center border"
-                    v-for="(itm, indx) in item.price"
-                    :key="indx"
-                  >
-                    <div class="mb-3 grey--text">
-                      {{ itm.price.startTime + " - " + itm.price.endTime }}
-                    </div>
-                    <div class="right-border mr-n3">
-                      <p class="mb-0">{{ itm.price.weekdayPrice }}</p>
-                      <p class="primary--text">{{ itm.price.holidayPrice }}</p>
-                    </div>
-                  </v-col>
-                </v-row>
-                <div class="mt-n8" v-show="item.price.length">
-                  <span class="mr-5 font-weight-bold">
-                    <v-icon style="font-size: 70px" color="#000" class="">
-                      mdi-circle-small
-                    </v-icon>
-                    <span class="ml-n5"> Будни </span>
-                  </span>
-                  <span class="font-weight-bold primary--text">
-                    <v-icon style="font-size: 70px" color="primary" class="">
-                      mdi-circle-small
-                    </v-icon>
-                    <span class="ml-n5"> Выходные </span>
-                  </span>
-                </div>
-                <div class="mt-4">
-                  <v-btn color="primary" elevation="0">
-                    {{
-                      item.price.length
-                        ? "ИЗМЕНИТЬ ПРАЙС-ЛИСТ"
-                        : "ДОБАВИТЬ ПРАЙС-ЛИСТ"
-                    }}
-                  </v-btn>
-                </div>
-              </div>
-            </div>
-          </v-tab-item>
-        </v-tabs-items>
+  <div>
+    <div>
+      <div class="text-h5 py-5">Платные услуги</div>
+      <div class="mb-4">
+        <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
+          Обратить в тех. поддержку
+        </v-btn>
+        <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
+          Вернуться к просмотру
+        </v-btn>
       </div>
-      {{katokPL}}
-    </v-container>
+      <v-tabs v-model="value_tab" class="mt-6 d-flex flex-no-wrap rounded-lg">
+        <v-tab class="px-6" v-for="item in service_nav" :key="item">
+          {{ item }}
+        </v-tab>
+      </v-tabs>
+      <v-tabs-items v-model="value_tab" style="background-color: unset">
+        <v-tab-item v-for="i in 2" :key="i">
+          <div v-show="value_tab == 0">
+            <div v-for="(item, i) in katokPL" :key="i">
+              <p class="text-h4 mt-8 mb-0">{{ item.title }}</p>
+              <p class="grey--text">{{ item.miniDescription }}</p>
+
+              <v-row v-show="item.price.length">
+                <v-col
+                  cols="2"
+                  class="text-center border"
+                  v-for="(itm, indx) in item.price"
+                  :key="indx"
+                >
+                  <div class="mb-3 grey--text">
+                    {{ itm.price.startTime + " - " + itm.price.endTime }}
+                  </div>
+                  <div class="right-border mr-n3">
+                    <p class="mb-0">{{ itm.price.weekdayPrice }}</p>
+                    <p class="primary--text">{{ itm.price.holidayPrice }}</p>
+                  </div>
+                </v-col>
+              </v-row>
+              <div class="mt-n8" v-show="item.price.length">
+                <span class="mr-5 font-weight-bold">
+                  <v-icon style="font-size: 70px" color="#000" class="">
+                    mdi-circle-small
+                  </v-icon>
+                  <span class="ml-n5"> Будни </span>
+                </span>
+                <span class="font-weight-bold primary--text">
+                  <v-icon style="font-size: 70px" color="primary" class="">
+                    mdi-circle-small
+                  </v-icon>
+                  <span class="ml-n5"> Выходные </span>
+                </span>
+              </div>
+              <div class="mt-4">
+                <v-btn
+                  color="primary"
+                  elevation="0"
+                  @click="goToModifyList(item)"
+                >
+                  {{
+                    item.price.length
+                      ? "ИЗМЕНИТЬ ПРАЙС-ЛИСТ"
+                      : "ДОБАВИТЬ ПРАЙС-ЛИСТ"
+                  }}
+                </v-btn>
+              </div>
+            </div>
+          </div>
+          <div v-show="value_tab == 1">
+            <div v-for="(item, i) in othersPL" :key="i">
+              <p class="text-h4 mt-8 mb-0">{{ item.title }}</p>
+              <p class="grey--text">{{ item.miniDescription }}</p>
+              <v-row v-show="item.price.length">
+                <v-col
+                  cols="2"
+                  class="text-center border"
+                  v-for="(itm, indx) in item.price"
+                  :key="indx"
+                >
+                  <div class="mb-3 grey--text">
+                    {{ itm.price.startTime + " - " + itm.price.endTime }}
+                  </div>
+                  <div class="right-border mr-n3">
+                    <p class="mb-0">{{ itm.price.weekdayPrice }}</p>
+                    <p class="primary--text">{{ itm.price.holidayPrice }}</p>
+                  </div>
+                </v-col>
+              </v-row>
+              <div class="mt-n8" v-show="item.price.length">
+                <span class="mr-5 font-weight-bold">
+                  <v-icon style="font-size: 70px" color="#000" class="">
+                    mdi-circle-small
+                  </v-icon>
+                  <span class="ml-n5"> Будни </span>
+                </span>
+                <span class="font-weight-bold primary--text">
+                  <v-icon style="font-size: 70px" color="primary" class="">
+                    mdi-circle-small
+                  </v-icon>
+                  <span class="ml-n5"> Выходные </span>
+                </span>
+              </div>
+              <div class="mt-4">
+                <v-btn color="primary" elevation="0">
+                  {{
+                    item.price.length
+                      ? "ИЗМЕНИТЬ ПРАЙС-ЛИСТ"
+                      : "ДОБАВИТЬ ПРАЙС-ЛИСТ"
+                  }}
+                </v-btn>
+              </div>
+            </div>
+          </div>
+        </v-tab-item>
+      </v-tabs-items>
+    </div>
   </div>
 </template>
 
@@ -186,5 +178,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

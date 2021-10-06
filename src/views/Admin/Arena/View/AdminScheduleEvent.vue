@@ -1,14 +1,6 @@
 <template>
   <div>
     <div class="text-h4 mb-6">Расписание мероприятий</div>
-    <div class="mb-4">
-      <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
-        Редактировать
-      </v-btn>
-      <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
-        Посмотреть страницу арены
-      </v-btn>
-    </div>
 
     <div class="rounded-lg white">
       <v-row class="mt-2 ml-0 mb-0">

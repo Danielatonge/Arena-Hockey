@@ -1,520 +1,258 @@
 <template>
-  <div class="grey lighten-4">
-    <v-container class="pb-10">
-      <v-row class="">
-        <div>
-          <v-breadcrumbs :items="breadcrumb_items" class="px-3"></v-breadcrumbs>
-        </div>
-      </v-row>
-      <div>
-        <div class="text-h5 pb-3 pt-5">Информация</div>
-        <div class="mb-4">
-          <v-btn
-            class="mr-2 mb-2"
-            color="primary"
-            @click="updateArenaDetails"
-            elevation="0"
-          >
-            Сохранить
-          </v-btn>
-          <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
-            Обратить в тех. поддержку
-          </v-btn>
-          <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
-            Вернуться к просмотру
-          </v-btn>
-        </div>
-        <div class="text-h6 mb-4">Основная информация</div>
-        <div class="mb-4">
-          <v-text-field
-            label="Наименование арены (полное)"
-            v-model="arena.title"
-            outlined
-            flat
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-text-field>
-        </div>
-        <div class="mb-6">
-          <v-text-field
-            label="Наименование арены (сокращенное)"
-            v-model="arena.title"
-            outlined
-            flat
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-text-field>
-        </div>
-        <div class="mb-4">
-          <div class="text-h6 mb-4">Основное изображение арены</div>
-          <v-row>
-            <v-col cols="3">
-              <admin-image-uploader v-model="avatar">
-                <div slot="activator">
-                  <v-avatar
-                    size="200px"
-                    v-ripple
-                    tile
-                    v-if="!avatar"
-                    class="grey lighten-3 mb-3 rounded-lg"
-                  >
-                    <span><v-icon large>mdi-upload</v-icon></span>
-                  </v-avatar>
-                  <v-avatar
-                    size="200px"
-                    tile
-                    v-ripple
-                    v-else
-                    class="mb-3 rounded-lg"
-                  >
-                    <img :src="avatar.imageURL" alt="avatar" />
-                  </v-avatar>
-                </div>
-              </admin-image-uploader>
-            </v-col>
-          </v-row>
-        </div>
-        <div class="mb-6">
-          <div class="text-h6 mb-2">Описание</div>
-          <v-textarea
-            solo
-            v-model="arena.description"
-            name=""
-            flat
-            elevation="0"
-          ></v-textarea>
-          <v-text-field
-            label="Теги"
-            outlined
-            v-model="arena.tags"
-            flat
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-text-field>
-        </div>
-        <div class="mb-6">
-          <div class="text-h6 mb-2">Адрес</div>
-          <v-text-field
-            label="Адрес арены"
-            outlined
-            v-model="arena.address"
-            flat
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-text-field>
-        </div>
-        <div class="mb-4">
-          <v-row>
-            <v-col>
-              <v-sheet height="350px">
-                <arena-map
-                  :coords="coords"
-                  :surfaces="surfaces"
-                  :zoom="zoom"
-                ></arena-map>
-              </v-sheet>
-            </v-col>
-            <v-col class="d-flex">
-              <v-text-field
-                label="широта"
-                outlined
-                v-model="coordinate.lat"
-                flat
-                hide-details="auto"
-                class="rounded-lg mr-3"
-              ></v-text-field>
-              <v-text-field
-                label="Долгота"
-                outlined
-                v-model="coordinate.lon"
-                flat
-                hide-details="auto"
-                class="rounded-lg ml-3"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </div>
-        <div class="mb-4">
-          <v-text-field
-            label="Как проехать"
-            outlined
-            v-model="arena.route"
-            flat
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-text-field>
-        </div>
-        <div class="mb-4">
-          <div class="text-h6 mb-2">Социальные сети</div>
-          <v-row class="mb-2">
-            <v-col cols="6" md="4">
-              <v-row>
-                <v-col
-                  cols="12"
-                  class="d-flex align-center"
-                  v-for="(item, i) in social_media_links"
-                  :key="i"
+  <div>
+    <div>
+      <div class="text-h4 pb-3">Информация</div>
+
+      <div class="text-h6 mb-4">Основная информация</div>
+      <div class="mb-4">
+        <v-text-field
+          label="Наименование арены (полное)"
+          v-model="fullTitle"
+          outlined
+          flat
+          hide-details="auto"
+          class="rounded-lg"
+        ></v-text-field>
+      </div>
+      <div class="mb-6">
+        <v-text-field
+          label="Наименование арены (сокращенное)"
+          v-model="shortTitle"
+          outlined
+          flat
+          hide-details="auto"
+          class="rounded-lg"
+        ></v-text-field>
+      </div>
+      <div class="mb-4">
+        <div class="text-h6 mb-4">Основное изображение арены</div>
+        <v-row>
+          <v-col cols="3">
+            <admin-image-uploader v-model="avatar">
+              <div slot="activator">
+                <v-avatar
+                  size="200px"
+                  v-ripple
+                  tile
+                  v-if="!avatar"
+                  class="grey lighten-3 mb-3 rounded-lg"
                 >
+                  <span><v-icon large>mdi-upload</v-icon></span>
+                </v-avatar>
+                <v-avatar
+                  size="200px"
+                  tile
+                  v-ripple
+                  v-else
+                  class="mb-3 rounded-lg"
+                >
+                  <img :src="avatar.imageURL" alt="avatar" />
+                </v-avatar>
+              </div>
+            </admin-image-uploader>
+          </v-col>
+        </v-row>
+      </div>
+      <div>
+        <div class="text-h6 mb-2">Описание</div>
+        <v-textarea
+          solo
+          v-model="description"
+          name=""
+          flat
+          elevation="0"
+        ></v-textarea>
+        <v-combobox
+          v-model="tag_chips"
+          :items="tag_items"
+          chips
+          clearable
+          label="Теги"
+          multiple
+          solo
+          flat
+        >
+          <template v-slot:selection="{ attrs, item, select, selected }">
+            <v-chip
+              v-bind="attrs"
+              :input-value="selected"
+              close
+              @click="select"
+              @click:close="remove(item)"
+            >
+              <strong>{{ item }}</strong
+              >&nbsp;
+            </v-chip>
+          </template>
+        </v-combobox>
+      </div>
+      <div class="mb-6">
+        <div class="text-h6 mb-2">Адрес</div>
+        <v-text-field
+          label="Адрес арены"
+          outlined
+          v-model="address"
+          flat
+          hide-details="auto"
+          class="rounded-lg"
+        ></v-text-field>
+      </div>
+      <div class="mb-4">
+        <v-row>
+          <v-col>
+            <v-sheet height="350px">
+              <yandex-map
+                :coords="coords"
+                zoom="16"
+                style="width: 100%; height: 100%"
+                @map-was-initialized="initHandler"
+              >
+                <ymap-marker
+                  v-for="(billboard, index) in surfaces"
+                  :key="index"
+                  :marker-id="index"
+                  marker-type="placemark"
+                  :coords="billboard.coords"
+                ></ymap-marker>
+              </yandex-map>
+            </v-sheet>
+          </v-col>
+          <v-col>
+            <v-row>
+              <v-col class="d-flex" cols="12" md="6">
+                <v-select
+                  :items="['Москва']"
+                  v-model="city"
+                  solo
+                  flat
+                  class="my-auto"
+                  hide-details="auto"
+                ></v-select>
+              </v-col>
+              <v-col class="d-flex" cols="12" md="6">
+                <v-text-field
+                  label="Метро"
+                  outlined
+                  v-model="metro"
+                  flat
+                  hide-details="auto"
+                  class="rounded-lg mr-3"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col class="d-flex">
+                <v-text-field
+                  label="широта"
+                  outlined
+                  v-model="coordinate.lat"
+                  flat
+                  disabled
+                  hide-details="auto"
+                  class="rounded-lg mr-3"
+                ></v-text-field>
+                <v-text-field
+                  label="Долгота"
+                  outlined
+                  disabled
+                  v-model="coordinate.lon"
+                  flat
+                  hide-details="auto"
+                  class="rounded-lg ml-3"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </div>
+      <div class="mb-4">
+        <div class="text-h6 mb-2">Социальные сети</div>
+        <v-row class="mb-2">
+          <v-col cols="6" md="4">
+            <v-row>
+              <v-col
+                cols="12"
+                class="d-flex align-center"
+                v-for="(item, i) in social_media_display"
+                :key="i"
+              >
+                <v-btn
+                  elevation="0"
+                  x-small
+                  color="grey"
+                  height="40px"
+                  class="mr-2"
+                >
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-btn>
+                <div>{{ item.link }}</div>
+                <v-icon class="ml-4" @click="removeSocialMedia(item)">
+                  mdi-close
+                </v-icon>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+        <v-dialog v-model="social_media_dialog" max-width="600">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              class="mr-2 mb-2"
+              color="primary"
+              large
+              elevation="0"
+              v-bind="attrs"
+              v-on="on"
+            >
+              Добавить профиль соцсети
+            </v-btn>
+          </template>
+
+          <v-card class="py-3">
+            <v-card-title class="justify-space-between">
+              <div class="text-h5 black--text">Добавить социальную сеть</div>
+              <div class="mb-4">
+                <v-icon @click.stop="social_media_dialog = false"
+                  >mdi-close
+                </v-icon>
+              </div>
+            </v-card-title>
+            <v-card-text>
+              <div class="mb-6">
+                <v-btn-toggle v-model="toggle_social_media" mandatory>
                   <v-btn
                     elevation="0"
                     x-small
                     color="grey"
                     height="40px"
                     class="mr-2"
+                    v-for="(item, i) in social_media"
+                    :key="i"
                   >
-                    <v-icon>{{ item.icon }}</v-icon>
+                    <v-icon> {{ item.icon }}</v-icon>
                   </v-btn>
-                  <div>{{ item.link }}</div>
-                  <v-icon class="ml-4" @click="removeSocialMedia(i)"
-                    >mdi-close</v-icon
-                  >
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
-          <v-dialog v-model="social_media_dialog" max-width="600">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                class="mr-2 mb-2"
-                color="primary"
-                large
-                elevation="0"
-                v-bind="attrs"
-                v-on="on"
-              >
-                Добавить профиль соцсети
-              </v-btn>
-            </template>
-
-            <v-card class="py-3">
-              <v-card-title class="justify-space-between">
-                <div class="text-h5 black--text">Добавить социальную сеть</div>
-                <div class="mb-4">
-                  <v-icon @click.stop="social_media_dialog = false"
-                    >mdi-close</v-icon
-                  >
-                </div>
-              </v-card-title>
-              <v-card-text>
-                <div class="mb-6">
-                  <v-btn-toggle v-model="toggle_social_media" mandatory>
-                    <v-btn
-                      elevation="0"
-                      x-small
-                      color="grey"
-                      height="40px"
-                      class="mr-2"
-                      v-for="item in social_icons"
-                      :key="item"
-                    >
-                      <v-icon> {{ item }} </v-icon>
-                    </v-btn>
-                  </v-btn-toggle>
-                </div>
-                <div class="mb-2">
-                  <v-text-field
-                    v-model="social_media_text"
-                    label="Ссылка на социальную сеть"
-                    outlined
-                    :hint="errMessage"
-                    persistent-hint
-                    flat
-                    hide-details="auto"
-                    class="rounded-lg"
-                  ></v-text-field>
-                </div>
-              </v-card-text>
-              <v-card-actions class="mt-n3">
-                <v-btn
-                  class="body-2"
-                  @click="social_media_dialog = false"
-                  elevation="0"
-                >
-                  Назад
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn
-                  elevation="0"
-                  color="primary"
-                  class="body-2"
-                  @click="addSocialMedia"
-                >
-                  Добавить
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </div>
-        <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-4 grey--text">Контакты</div>
-          <v-row v-show="contact.tel.length">
-            <v-col cols="12" class="">Телефоны: </v-col>
-            <v-col
-              cols="12"
-              class="mt-n4 my-auto"
-              v-for="(item, i) in contact.tel"
-              :key="i"
-            >
-              <span class="mr-4 grey--text">{{ item }}</span>
-            </v-col>
-          </v-row>
-          <v-row v-show="contact.mail.length">
-            <v-col cols="12" class="">Почты: </v-col>
-            <v-col
-              cols="12"
-              class="mt-n4 my-auto"
-              v-for="(item, i) in contact.mail"
-              :key="i"
-            >
-              <span class="mr-4 grey--text">{{ item }}</span>
-            </v-col>
-          </v-row>
-          <v-dialog v-model="contact_dialog" max-width="600">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                class="mr-2 mt-4"
-                color="primary"
-                large
-                elevation="0"
-                v-bind="attrs"
-                v-on="on"
-              >
-                {{
-                  contact.tel.length || contact.mail.length
-                    ? "Изменить контакт"
-                    : "Добавить контакт"
-                }}
-              </v-btn>
-            </template>
-
-            <v-card class="py-3">
-              <v-card-title class="justify-space-between">
-                <div class="text-h5 black--text">Добавить контакт</div>
-                <div class="mb-4">
-                  <v-icon @click.stop="contact_dialog = false"
-                    >mdi-close</v-icon
-                  >
-                </div>
-              </v-card-title>
-              <v-card-text class="mb-4">
-                <v-row>
-                  <v-col cols="12" class="text-h6 mb-n4">Телефоны</v-col>
-                  <v-col
-                    cols="12"
-                    class="mb-n2 my-auto"
-                    v-for="(item, i) in contact.tel"
-                    :key="i"
-                  >
-                    <span class="mr-4">{{ item }}</span>
-                    <v-icon class="" @click="removeTelephoneItem(i)">
-                      mdi-delete
-                    </v-icon>
-                  </v-col>
-                  <v-col class="mb-2 d-flex">
-                    <v-text-field
-                      label="служба :- номер телефона"
-                      outlined
-                      flat
-                      dense
-                      v-model="telephone"
-                      hide-details="auto"
-                      class="rounded-lg"
-                    ></v-text-field>
-                    <v-icon class="ml-4" @click="addContactTelephone">
-                      mdi-plus
-                    </v-icon>
-                  </v-col>
-                </v-row>
-
-                <v-row>
-                  <v-col cols="12" class="text-h6 mb-n4">Почты</v-col>
-                  <v-col
-                    cols="12"
-                    class="mb-n2 my-auto"
-                    v-for="(item, i) in contact.mail"
-                    :key="i"
-                  >
-                    <span class="mr-4">{{ item }}</span>
-                    <v-icon class="" @click="removeMailItem(i)">
-                      mdi-delete
-                    </v-icon>
-                  </v-col>
-                  <v-col class="mb-2 d-flex">
-                    <v-text-field
-                      label="служба :- Почта"
-                      outlined
-                      flat
-                      v-model="email"
-                      dense
-                      hide-details="auto"
-                      class="rounded-lg"
-                    ></v-text-field>
-                    <v-icon class="ml-4" @click="addContactMail">
-                      mdi-plus
-                    </v-icon>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-              <v-card-actions class="mt-n6 mx-2">
-                <v-btn
-                  class="body-2 px-4"
-                  @click="contact_dialog = false"
-                  elevation="0"
-                >
-                  Назад
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn
-                  elevation="0"
-                  color="primary"
-                  class="body-2 px-4"
-                  @click="saveContacts"
-                >
-                  Добавить
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </div>
-        <div class="mb-4">
-          <div class="body-2 font-weight-bold mb-4 grey--text">Галерея</div>
-          <v-row class="pb-6">
-            <v-col class="pa-2" cols="4" sm="2" md="1" v-for="i in 12" :key="i">
-              <v-sheet
-                color="grey lighten-3"
-                elevation="0"
-                height="90"
-                width="100%"
-                class="
-                  font-weight-bold
-                  d-flex
-                  justify-center
-                  align-center
-                  rounded-lg
-                "
-              >
-                <div class="pa-4"></div>
-              </v-sheet>
-            </v-col>
-          </v-row>
-          <v-btn class="mr-2 mb-2" color="primary" large elevation="0">
-            Загрузить фотографии
-          </v-btn>
-          <v-dialog v-model="album_dialog" max-width="600">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                class="mr-2 mb-2"
-                large
-                color="grey lighten-2"
-                elevation="0"
-                v-bind="attrs"
-                v-on="on"
-              >
-                Добавить ссылку на альбом
-              </v-btn>
-            </template>
-
-            <v-card class="py-3">
-              <v-card-title class="justify-space-between">
-                <div class="text-h5 black--text">Добавить ссылку на альбом</div>
-                <div class="mb-4">
-                  <v-icon @click.stop="album_dialog = false">mdi-close</v-icon>
-                </div>
-              </v-card-title>
-              <v-card-text class="mb-4">
-                <div class="mb-4">
-                  Добавьте ссылку на альбом в социальных сетях и фото будут
-                  автоматически загружатьсяна вашу страницу арены.
-                </div>
-                <div class="mb-2">
-                  <v-text-field
-                    label="Ссылка на альбом"
-                    outlined
-                    flat
-                    hide-details="auto"
-                    class="rounded-lg"
-                  ></v-text-field>
-                </div>
-              </v-card-text>
-              <v-card-actions class="mt-n6">
-                <v-btn
-                  class="body-2 px-4"
-                  @click="contact_dialog = false"
-                  elevation="0"
-                >
-                  Назад
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn elevation="0" color="primary" class="body-2 px-4">
-                  Добавить
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </div>
-      </div>
-      <div class="mb-8">
-        <div class="mb-2 text-h5">Список катков</div>
-        <div class="mb-4">
-          <v-data-table
-            :headers="headers"
-            :items="desserts"
-            :items-per-page="5"
-            class="elevation-0"
-          ></v-data-table>
-        </div>
-        <v-dialog v-model="katok_dialog" max-width="600">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              class="mr-2 mb-2"
-              color="primary"
-              large
-              elevation="0"
-              v-bind="attrs"
-              v-on="on"
-            >
-              Добавить новый каток
-            </v-btn>
-          </template>
-
-          <v-card class="py-3">
-            <v-card-title class="justify-space-between">
-              <div class="text-h5 black--text">Добавить каток</div>
-              <div class="mb-4">
-                <v-icon @click.stop="katok_dialog = false">mdi-close</v-icon>
-              </div>
-            </v-card-title>
-            <v-card-text>
-              <div class="mb-6">
-                <v-text-field
-                  label="Название"
-                  outlined
-                  flat
-                  hide-details="auto"
-                  class="rounded-lg"
-                ></v-text-field>
+                </v-btn-toggle>
               </div>
               <div class="mb-2">
                 <v-text-field
-                  label="Размер поля"
+                  v-model="social_media_text"
+                  label="Ссылка на социальную сеть"
                   outlined
+                  :hint="errMessage"
+                  persistent-hint
                   flat
                   hide-details="auto"
                   class="rounded-lg"
-                ></v-text-field>
-              </div>
-              <div class="">
-                <v-checkbox v-model="checkbox">
-                  <template v-slot:label>
-                    <div>Крытое поле</div>
+                >
+                  <template v-slot:message="{ message }">
+                    <span class="error--text" v-html="message"></span>
                   </template>
-                </v-checkbox>
+                </v-text-field>
               </div>
             </v-card-text>
-            <v-card-actions class="mt-n6">
+            <v-card-actions class="mt-n3">
               <v-btn
-                class="body-2 px-4"
-                @click="katok_dialog = false"
+                class="body-2"
+                @click="social_media_dialog = false"
                 elevation="0"
               >
                 Назад
@@ -523,8 +261,8 @@
               <v-btn
                 elevation="0"
                 color="primary"
-                class="body-2 px-4"
-                @click="katok_dialog = false"
+                class="body-2"
+                @click="addSocialMedia"
               >
                 Добавить
               </v-btn>
@@ -532,61 +270,204 @@
           </v-card>
         </v-dialog>
       </div>
-      <div class="mb-6">
-        <div class="mb-2 text-h5">Список помещений</div>
-        <div class="mb-4">
-          <v-data-table
-            :headers="headers"
-            :items="desserts"
-            :items-per-page="5"
-            class="elevation-0"
-          ></v-data-table>
-        </div>
-        <v-dialog v-model="service_dialog" max-width="600">
+      <div class="mb-4">
+        <div class="body-2 font-weight-bold mb-4 grey--text">Контакты</div>
+        <v-row v-show="contact.tel.length">
+          <v-col cols="12" class="">Телефоны:</v-col>
+          <v-col
+            cols="12"
+            class="mt-n4 my-auto"
+            v-for="(item, i) in contact.tel"
+            :key="i"
+          >
+            <span class="mr-4 grey--text">{{ item }}</span>
+          </v-col>
+        </v-row>
+        <v-row v-show="contact.mail.length">
+          <v-col cols="12" class="">Почты:</v-col>
+          <v-col
+            cols="12"
+            class="mt-n4 my-auto"
+            v-for="(item, i) in contact.mail"
+            :key="i"
+          >
+            <span class="mr-4 grey--text">{{ item }}</span>
+          </v-col>
+        </v-row>
+        <v-dialog v-model="contact_dialog" max-width="600">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-              class="mr-2 mb-2"
+              class="mr-2 mt-4"
               color="primary"
               large
               elevation="0"
               v-bind="attrs"
               v-on="on"
             >
-              Добавить новое помещение
+              {{
+                contact.tel.length || contact.mail.length
+                  ? "Изменить контакт"
+                  : "Добавить контакт"
+              }}
             </v-btn>
           </template>
 
           <v-card class="py-3">
             <v-card-title class="justify-space-between">
-              <div class="text-h5 black--text">
-                Добавить другой вид помещения
-              </div>
+              <div class="text-h5 black--text">Добавить контакт</div>
               <div class="mb-4">
-                <v-icon @click.stop="service_dialog = false">mdi-close</v-icon>
+                <v-icon @click.stop="contact_dialog = false">mdi-close</v-icon>
               </div>
             </v-card-title>
-            <v-card-text>
-              <div class="mb-5">
-                <v-text-field
-                  label="Название"
-                  outlined
-                  flat
-                  hide-details="auto"
-                  class="rounded-lg"
-                ></v-text-field>
+            <v-card-text class="mb-4">
+              <v-row>
+                <v-col cols="12" class="text-h6 mb-n4">Телефоны</v-col>
+                <v-col
+                  cols="12"
+                  class="mb-n2 my-auto"
+                  v-for="(item, i) in contact.tel"
+                  :key="i"
+                >
+                  <span class="mr-4">{{ item }}</span>
+                  <v-icon class="" @click="removeTelephoneItem(i)">
+                    mdi-delete
+                  </v-icon>
+                </v-col>
+                <v-col class="mb-2 d-flex">
+                  <v-text-field
+                    label="служба :- номер телефона"
+                    outlined
+                    flat
+                    dense
+                    v-model="telephone"
+                    hide-details="auto"
+                    class="rounded-lg"
+                  ></v-text-field>
+                  <v-icon class="ml-4" @click="addContactTelephone">
+                    mdi-plus
+                  </v-icon>
+                </v-col>
+              </v-row>
+
+              <v-row>
+                <v-col cols="12" class="text-h6 mb-n4">Почты</v-col>
+                <v-col
+                  cols="12"
+                  class="mb-n2 my-auto"
+                  v-for="(item, i) in contact.mail"
+                  :key="i"
+                >
+                  <span class="mr-4">{{ item }}</span>
+                  <v-icon class="" @click="removeMailItem(i)">
+                    mdi-delete
+                  </v-icon>
+                </v-col>
+                <v-col class="mb-2 d-flex">
+                  <v-text-field
+                    label="служба :- Почта"
+                    outlined
+                    flat
+                    v-model="email"
+                    dense
+                    hide-details="auto"
+                    class="rounded-lg"
+                  ></v-text-field>
+                  <v-icon class="ml-4" @click="addContactMail">
+                    mdi-plus
+                  </v-icon>
+                </v-col>
+              </v-row>
+            </v-card-text>
+            <v-card-actions class="mt-n6 mx-2">
+              <v-btn
+                class="body-2 px-4"
+                @click="contact_dialog = false"
+                elevation="0"
+              >
+                Назад
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn
+                elevation="0"
+                color="primary"
+                class="body-2 px-4"
+                @click="saveContacts"
+              >
+                Добавить
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </div>
+      <div class="mb-4">
+        <div class="body-2 font-weight-bold mb-4 grey--text">Галерея</div>
+        <v-row class="pb-6">
+          <v-col
+            class="pa-2"
+            cols="4"
+            md="3"
+            lg="2"
+            v-for="(i, indx) in galleryPics"
+            :key="indx"
+          >
+            <v-avatar
+              height="160"
+              width="100%"
+              tile
+              v-ripple
+              class="mb-3 rounded-lg"
+            >
+              <v-img :src="i"></v-img>
+            </v-avatar>
+          </v-col>
+        </v-row>
+        <input
+          type="file"
+          ref="multifile"
+          :name="galleryName"
+          @change="selectGalleryItems($event.target.name, $event.target.files)"
+          multiple
+          style="display: none"
+        />
+        <v-btn
+          class="mr-2 mb-2"
+          color="primary"
+          large
+          elevation="0"
+          @click.prevent="triggerMultiFileSelector()"
+        >
+          Загрузить фотографии
+        </v-btn>
+        <v-dialog v-model="album_dialog" max-width="600">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              class="mr-2 mb-2"
+              large
+              color="grey lighten-2"
+              elevation="0"
+              v-bind="attrs"
+              v-on="on"
+              disabled
+            >
+              Добавить ссылку на альбом
+            </v-btn>
+          </template>
+
+          <v-card class="py-3">
+            <v-card-title class="justify-space-between">
+              <div class="text-h5 black--text">Добавить ссылку на альбом</div>
+              <div class="mb-4">
+                <v-icon @click.stop="album_dialog = false">mdi-close</v-icon>
               </div>
-              <div class="mb-5">
-                <v-text-field
-                  label="Размер поля"
-                  outlined
-                  flat
-                  hide-details="auto"
-                  class="rounded-lg"
-                ></v-text-field>
+            </v-card-title>
+            <v-card-text class="mb-4">
+              <div class="mb-4">
+                Добавьте ссылку на альбом в социальных сетях и фото будут
+                автоматически загружатьсяна вашу страницу арены.
               </div>
-              <div class="mb-5">
+              <div class="mb-2">
                 <v-text-field
-                  label="Площадь"
+                  label="Ссылка на альбом"
                   outlined
                   flat
                   hide-details="auto"
@@ -597,36 +478,63 @@
             <v-card-actions class="mt-n6">
               <v-btn
                 class="body-2 px-4"
-                @click="service_dialog = false"
+                @click="contact_dialog = false"
                 elevation="0"
               >
                 Назад
               </v-btn>
               <v-spacer></v-spacer>
-              <v-btn
-                elevation="0"
-                color="primary"
-                class="body-2 px-4"
-                @click="service_dialog = false"
-              >
+              <v-btn elevation="0" color="primary" class="body-2 px-4">
                 Добавить
               </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </div>
-    </v-container>
+      <div class="mb-4">
+        <v-btn
+          @click="saveNewArena"
+          large
+          class="mr-2 px-6 mb-2"
+          color="primary"
+          elevation="0"
+        >
+          Сохранить
+        </v-btn>
+        <v-btn
+          large
+          class="mr-2 mb-2"
+          color="grey px-6 lighten-2"
+          elevation="0"
+        >
+          Обратить в тех. поддержку
+        </v-btn>
+        <v-btn
+          large
+          class="mr-2 mb-2"
+          color="grey px-6 lighten-2"
+          elevation="0"
+        >
+          Вернуться к просмотру
+        </v-btn>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import { yandexMap, ymapMarker } from "vue-yandex-maps";
 import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
-import ArenaMap from "@/components/Arena/ArenaMap.vue";
+import { mapState } from "vuex";
 
 export default {
-  components: { AdminImageUploader, ArenaMap },
-  mounted() {},
+  components: {
+    AdminImageUploader,
+    yandexMap,
+    ymapMarker,
+  },
+  props: ["arena"],
   watch: {
     avatar: {
       handler: function () {
@@ -636,145 +544,207 @@ export default {
     },
   },
   computed: {
+    ...mapState(["userId"]),
+    social_media_display() {
+      return this.social_media.filter((x) => x.link);
+    },
     surfaces() {
-      let surface = [
+      return [
         {
           id: "1",
-          city: this.arena.city,
-          address: this.arena.address,
-          coords: `${this.coordinate.lat}, ` + `${this.coordinate.lon}`,
+          city: this.city,
+          address: this.address,
+          coords: this.coords,
         },
       ];
-      return surface;
     },
     coords() {
-      let coordinate = [this.coordinate.lat, this.coordinate.lon];
-      return coordinate;
+      return [this.coordinate.lat, this.coordinate.lon];
+    },
+    profilePicture() {
+      return this.avatar ? this.avatar.name : "";
     },
   },
-  
+  created() {
+    const arena = this.arena;
+    this.galleryPics = arena.gallery;
+    this.fullTitle = arena.fullTitle;
+    this.shortTitle = arena.title;
+    this.avatar = { imageURL: arena.profilePicture };
+    this.tag_chips = arena.tags;
+    this.address = arena.address;
+    this.city = arena.city;
+    this.metro = arena.metro.toString();
+    this.contact.tel = arena.phones;
+    this.contact.mail = arena.mails;
+    this.social_media[0].link = arena.vk;
+    this.social_media[1].link = arena.whatsApp;
+    this.social_media[2].link = arena.website;
+    this.social_media[3].link = arena.instagram;
+    this.social_media[4].link = arena.facebook;
+    this.coordinate.lat = arena.lat;
+    this.coordinate.lon = arena.lan;
+  },
   data() {
     return {
-      arena: this.$store.getters.current_arena, 
-      checkbox: null,
+      files: {},
+      galleryPics: [],
+      map: {},
+      fullTitle: "",
+      shortTitle: "",
+      description: "",
+      metro: null,
+      address: "",
+      route: "",
+      city: "Москва",
+      avatar: null,
+      tag_chips: [],
+      tag_items: [
+        "Хоккейное катание",
+        "Раздевалки",
+        "Душ",
+        "Инвентарь",
+        "Бесплатный WiFi",
+        "Парковка",
+        "Заточка коньков",
+        "Аренда коньков",
+        "Фигурное катание",
+        "Кафе",
+        "Массовое катание",
+        "Гимнастический зал",
+        "Медкабинет",
+        "Зона ОФП",
+        "Бросковая зона",
+        "Ночное катание",
+        "Сухой лед",
+        "Оплата картой",
+      ],
       contact: {
         tel: [],
         mail: [],
       },
-      telephone: "",
       coordinate: {
-        lat: "",
-        lon: "",
+        lat: "55.753336",
+        lon: "37.623084",
       },
+      galleryName: "multifile",
+      checkbox: null,
+      telephone: "",
       email: "",
       errMessage: "",
-      avatar: null,
-      saving: false,
-      saved: false,
-      service_dialog: false,
       social_media_dialog: false,
       toggle_social_media: null,
       social_media_text: "",
-      katok_dialog: false,
       contact_dialog: false,
       album_dialog: false,
-      social_media_links: [
+      social_media: [
         {
-          icon: "mdi-instagram",
-          link: "https://www.instagram.com/p/B6hJFmkFvHG/",
+          id: 1,
+          name: "vk",
+          link: "",
+          icon: "mdi-alpha-k-box-outline",
         },
         {
+          id: 2,
+          name: "whatsapp",
+          link: "",
+          icon: "mdi-whatsapp",
+        },
+        {
+          id: 3,
+          name: "web",
+          link: "",
           icon: "mdi-web",
-          link: "https://www.google.com",
+        },
+        {
+          id: 4,
+          name: "instagram",
+          link: "",
+          icon: "mdi-instagram",
+        },
+        {
+          id: 5,
+          name: "facebook",
+          link: "",
+          icon: "mdi-facebook",
         },
       ],
-      social_icons: ["mdi-vk", "mdi-whatsapp", "mdi-web", "mdi-instagram"],
       breadcrumb_items: [
         {
           text: "Личный кабинет",
           disabled: false,
-          href: "/",
+          href: "/admin/sport_complex/add",
         },
         {
           text: "Мои спортивные комплексы",
           disabled: false,
-          href: "/admin/sport_complex/",
+          href: "/admin/sport_complex",
         },
         {
-          text: "Название комплекса",
-          disabled: false,
-          href: "/admin/sport_complex/edit",
-        },
-        {
-          text: "Информация",
+          text: "Создать арену",
           disabled: true,
           href: "",
         },
       ],
-      headers: [
-        {
-          text: "Название",
-          align: "start",
-          sortable: false,
-          value: "name",
-        },
-        { text: "Описание", value: "description" },
-        { text: "Размер", value: "size" },
-        { text: "Тип", value: "type" },
-        { text: "Расписание", value: "schedule" },
-        { text: "Мероприятия", value: "event" },
-      ],
-      desserts: [
-        {
-          name: "Название катка",
-          description: "Краткое описание катка",
-          size: "50х50м",
-          type: "Крытое",
-          schedule: "Изменить расписание",
-          event: "Посмотреть календарь мероприятий",
-        },
-        {
-          name: "Название катка",
-          description: "Краткое описание катка",
-          size: "50х50м",
-          type: "Крытое",
-          schedule: "Изменить расписание",
-          event: "Посмотреть календарь мероприятий",
-        },
-        {
-          name: "Название катка",
-          description: "Краткое описание катка",
-          size: "50х50м",
-          type: "Крытое",
-          schedule: "Изменить расписание",
-          event: "Посмотреть календарь мероприятий",
-        },
-        {
-          name: "Название катка",
-          description: "Краткое описание катка",
-          size: "50х50м",
-          type: "Крытое",
-          schedule: "Изменить расписание",
-          event: "Посмотреть календарь мероприятий",
-        },
-      ],
-      zoom: 16,
     };
   },
   methods: {
+    remove(item) {
+      this.chips.splice(this.chips.indexOf(item), 1);
+      this.chips = [...this.chips];
+    },
+    initHandler(obj) {
+      this.map = obj;
+    },
+    findCoordinateGivenAddress() {
+      // const { address } = this;
+      // eslint-disable-next-line no-undef
+      let myGeocoder = ymaps.geocode("Moscow");
+      let self = this;
+      myGeocoder.then((res) => {
+        self.map.geoObjects.add(res.geoObjects);
+        console.log(
+          res.geoObjects.get(0).properties.get("metaDataProperty").getAll()
+        );
+      });
+    },
+    selectGalleryItems(fieldName, files) {
+      this.galleryPics = [];
+      console.log(fieldName, files);
+      this.files = files;
+      for (let i = 0; i < files.length; i++) {
+        const picture = files[i];
+        let formData = new FormData();
+        formData.append("file", picture);
+        axios
+          .post("https://file-hockey.herokuapp.com/file/upload", formData)
+          .then((response) => {
+            console.log(response.data);
+            this.galleryPics.push(response.data.url);
+          });
+      }
+    },
+    triggerMultiFileSelector() {
+      console.log(this.$refs.multifile);
+      this.$refs.multifile.click();
+    },
     saveContacts() {
       this.contact_dialog = false;
     },
     addContactTelephone() {
-      this.contact.tel.push(this.telephone);
-      this.telephone = "";
+      if (this.telephone) {
+        this.contact.tel.push(this.telephone);
+        this.telephone = "";
+      }
     },
     removeTelephoneItem(idx) {
       this.contact.tel.splice(idx, 1);
     },
     addContactMail() {
-      this.contact.mail.push(this.email);
-      this.email = "";
+      if (this.email) {
+        this.contact.mail.push(this.email);
+        this.email = "";
+      }
     },
     removeMailItem(idx) {
       this.contact.mail.splice(idx, 1);
@@ -787,41 +757,101 @@ export default {
       this.saving = false;
       this.saved = true;
     },
-    removeSocialMedia(index) {
-      if (index > -1) {
-        this.social_media_links.splice(index, 1);
-      }
+
+    removeSocialMedia(item) {
+      console.log(item);
+      item.link = "";
     },
     addSocialMedia() {
-      const check = this.social_media_links.filter(
-        (x) => x.icon === this.social_icons[this.toggle_social_media]
-      );
-      if (check.length == 0) {
-        const link = {
-          icon: this.social_icons[this.toggle_social_media],
-          link: this.social_media_text,
-        };
-        this.social_media_links.push(link);
+      console.log(this.toggle_social_media);
+      const link = this.social_media[this.toggle_social_media].link;
+      if (link === "") {
+        this.social_media[this.toggle_social_media].link =
+          this.social_media_text;
         this.social_media_dialog = false;
       } else {
-        this.errMessage = "A link already exist";
+        this.errMessage = "Ссылка уже существует";
       }
       this.social_media_text = "";
     },
-    updateArenaDetails() {
-      console.log(this.arena);
-      const id = this.arena.id;
-      axios
-        .post(`/arena/${id}`, this.arena)
-        .then(() => {
-          this.$router.push({ path: `/admin/sport_complex/${id}/information` });
-          // commit("SET_TEAMS", response.data);
-        })
-        .catch((err) => console.log(err));
+    saveNewArena() {
+      let whatsapp = "";
+      if (this.social_media[1].link) {
+        whatsapp = `https://wa.me/${this.social_media[1].link
+          .replace("(", "")
+          .replace(")", "")
+          .replace(" ", "")}`;
+      }
+      console.log(this.avatar.imageURL);
+      const data = {
+        title: this.shortTitle,
+        fullTitle: this.fullTitle,
+        tags: this.tag_chips,
+        address: this.address,
+        description: this.description,
+        route: "",
+        sledgeHockey: "",
+        sledgeHockeyLink: "",
+        metro: this.metro ? this.metro.split(",") : [],
+        courtSize: 0,
+        city: this.city,
+        lat: Number(this.coordinate.lat),
+        lan: Number(this.coordinate.lon),
+        profilePicture: this.avatar.imageURL,
+        gallery: this.galleryPics,
+        phones: this.contact.tel,
+        mails: this.contact.mail,
+        instagram: this.social_media[3].link,
+        vk: this.social_media[0].link,
+        website: this.social_media[2].link,
+        whatsApp: whatsapp,
+        facebook: this.social_media[4].link,
+        classmates: "",
+        tiktok: "",
+        youtube: "",
+      };
+      console.log(data);
+      const userId = this.userId;
+      this.postArena(data).then((arena) => {
+        this.linkArenaUser(arena.id, userId);
+        this.$store
+          .dispatch("setCurrentArena", arena)
+          .then(() => {
+            this.$router.push({
+              path: `/admin/sport_complex/${arena.id}`,
+            });
+          })
+          .catch((err) => console.log(err));
+      });
+    },
+    postArena(payload) {
+      return new Promise((resolve) => {
+        axios
+          .post(`/arena`, payload)
+          .then((response) => {
+            const arena = response.data;
+            resolve(arena);
+          })
+          .catch((err) => console.log(err));
+      });
+    },
+    linkArenaUser(arenaId, userId) {
+      const payload = {
+        arenaId: arenaId,
+        userId: userId,
+      };
+      return new Promise((resolve) => {
+        axios
+          .post(`/arena/user`, payload)
+          .then((response) => {
+            const arenaUser = response.data;
+            resolve(arenaUser.id);
+          })
+          .catch((err) => console.log(err));
+      });
     },
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>

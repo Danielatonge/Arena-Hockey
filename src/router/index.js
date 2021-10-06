@@ -38,7 +38,6 @@ import EditComplexInformation from "../views/Admin/Arena/Edit/EditComplexInforma
 import EditAdminScheduleEvent from "../views/Admin/Arena/Edit/EditAdminScheduleEvent.vue";
 import EditAdminTeamList from "../views/Admin/Arena/Edit/EditAdminTeamList.vue";
 import EditAdminTrainStaff from "../views/Admin/Arena/Edit/EditAdminTrainStaff.vue";
-import EditAdminManager from "../views/Admin/Arena/Edit/EditAdminManager.vue";
 import EditAdminPriceList from "../views/Admin/Arena/Edit/EditAdminPriceList.vue";
 
 import CreateAdminPaymentPortal from "../views/Admin/Arena/Create/CreateAdminPaymentPortal.vue";
@@ -212,39 +211,36 @@ const routes = [
   },
   {
     path: "/admin/sport_complex/:id/edit",
-    name: "EditNameComplex",
     component: EditNameComplex,
+    children: [
+      {
+        path: "",
+        name: "EditComplexInformation",
+        component: EditComplexInformation,
+      },
+      {
+        path: "payment_portal",
+        name: "EditAdminPaymentPortal",
+        component: EditAdminPaymentPortal,
+      },
+      {
+        path: "schedule_event",
+        name: "EditAdminScheduleEvent",
+        component: EditAdminScheduleEvent,
+      },
+      {
+        path: "team_list",
+        name: "EditAdminTeamList",
+        component: EditAdminTeamList,
+      },
+      {
+        path: "training_staff",
+        name: "EditAdminTrainStaff",
+        component: EditAdminTrainStaff,
+      },
+    ],
   },
-  {
-    path: "/admin/sport_complex/:id/information/edit",
-    name: "EditComplexInformation",
-    component: EditComplexInformation,
-  },
-  {
-    path: "/admin/sport_complex/:id/payment_portal/edit",
-    name: "EditAdminPaymentPortal",
-    component: EditAdminPaymentPortal,
-  },
-  {
-    path: "/admin/sport_complex/:id/schedule_event/edit",
-    name: "EditAdminScheduleEvent",
-    component: EditAdminScheduleEvent,
-  },
-  {
-    path: "/admin/sport_complex/:id/team_list/edit",
-    name: "EditAdminTeamList",
-    component: EditAdminTeamList,
-  },
-  {
-    path: "/admin/sport_complex/:id/training_staff/edit",
-    name: "EditAdminTrainStaff",
-    component: EditAdminTrainStaff,
-  },
-  {
-    path: "/admin/sport_complex/:id/management_staff/edit",
-    name: "EditAdminManager",
-    component: EditAdminManager,
-  },
+
   {
     path: "/admin/sport_complex/information/create",
     name: "CreateComplexInformation",
