@@ -596,7 +596,6 @@ export default {
       fullTitle: "",
       shortTitle: "",
       description: "",
-      tags: null,
       metro: null,
       address: "",
       route: "",
@@ -786,7 +785,7 @@ export default {
       const data = {
         title: this.shortTitle,
         fullTitle: this.fullTitle,
-        tags: this.tags ? this.tags : [],
+        tags: this.tag_chips ? this.tag_chips : [],
         address: this.address,
         description: this.description,
         route: "",
