@@ -6,22 +6,10 @@
     @mouseout="elevation = '0'"
     @click="goToAdminArena"
   >
-    <v-img
-      :src="
-        arena.profilePicture.length
-          ? arena.profilePicture
-          : require('@/assets/team_room_1.jpg')
-      "
-      height="200px"
-    >
+    <v-img :src="require('@/assets/arena_1.jpg')" height="200px">
       <v-container>
         <v-row class="ma-2">
-          <v-btn
-            @click.stop="goToAdminArenaEdit"
-            class="rounded-lg white"
-            small
-            elevation="0"
-          >
+          <v-btn @click.stop="goToAdminArenaEdit" class="rounded-lg white" small elevation="0">
             редактировать
           </v-btn>
           <v-spacer></v-spacer>
@@ -48,6 +36,7 @@
           "ул. Лермонтова, д. 14, пом. 3, г. Чита" | addressDescription
         }}
       </div>
+      <div class="success--text">Подтверждена</div>
     </v-card-subtitle>
   </v-card>
 </template>
@@ -60,7 +49,8 @@ export default {
   props: {
     arena: Object,
   },
-  mounted() {},
+  mounted () {
+  },
   data() {
     return {
       elevation: 0,
@@ -69,12 +59,12 @@ export default {
   },
   methods: {
     goToAdminArena() {
-      this.$store.dispatch("setCurrentArena", this.arena);
+      this.$store.dispatch("setCurrentArena", this.arena)
       const arenaId = this.arena.id;
       this.$router.push({ path: `/admin/sport_complex/${arenaId}` });
     },
     goToAdminArenaEdit() {
-      this.$store.dispatch("setCurrentArena", this.arena);
+      this.$store.dispatch("setCurrentArena", this.arena)
       const arenaId = this.arena.id;
       this.$router.push({ path: `/admin/sport_complex/${arenaId}/edit` });
     },
@@ -97,4 +87,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+</style>

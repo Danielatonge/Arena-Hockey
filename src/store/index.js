@@ -10,7 +10,7 @@ axios.defaults.baseURL = "https://api-hockey-io.herokuapp.com";
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage,
 });
-
+const userId = "9dbc26d3-c45c-4180-a850-702464fa3f2d";
 export default new Vuex.Store({
   state: {
     items: {},
@@ -20,6 +20,7 @@ export default new Vuex.Store({
     current_contact: {},
     current_service: {},
     currentPL: [],
+    userId: userId,
     team_players: [],
     services: [],
     arenasMapIdentifier: [],

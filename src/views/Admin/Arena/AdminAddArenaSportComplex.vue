@@ -10,7 +10,7 @@
         <span class="text-h5">Добавить арену</span>
       </v-col>
     </v-row>
-    <div class="pb-16">
+    <div class="pb-8">
       <v-row dense>
         <v-col class="d-flex" cols="12" md="2">
           <v-select
@@ -59,19 +59,21 @@
         </v-col>
       </v-row>
     </div>
-    <v-row dense class="mx-n4">
-      <!-- <v-col
+    <v-row dense class="mx-n4 mb-4">
+      <v-col
         class="pa-4"
         cols="12"
-        md="4"
-        xl="3"
-        v-for="(arena, i) in displayedArenas"
+        md="6"
+        xl="4"
+        v-for="(arena, i) in arenaList"
         :key="i"
       >
         <AdminArenaCard :arena="arena" />
-      </v-col> -->
+      </v-col>
     </v-row>
-    <div class="mb-3">По вашему запросу ничего не найдено.</div>
+    <div class="mb-3" v-if="!arenaList.length">
+      По вашему запросу ничего не найдено.
+    </div>
 
     <div>
       <v-btn class="rounded-lg" large depressed color="primary">
@@ -97,31 +99,39 @@
 
 <script>
 import { mapState } from "vuex";
-// import AdminArenaCard from "@/components/Admin/AdminArenaCard.vue";
+import AdminArenaCard from "@/components/Admin/AdminArenaCard.vue";
+import axios from "axios";
 
 export default {
   name: "Home",
   computed: {
-    ...mapState(["list_arenas"]),
-    displayedArenas() {
-      return this.paginate(this.list_arenas);
-    },
+    ...mapState(["userId"]),
   },
+  components: { AdminArenaCard },
+  mounted() {
+    const userId = this.userId;
+    this.fetchArenaByUserId(userId);
+  },
+  watch: {},
   methods: {
     goToMapAll() {
       this.$store
         .dispatch("displayMapAll")
         .then(() => this.$router.push({ path: "/arena_maps" }));
     },
-    setPaginationLength() {
-      this.paginationLength = Math.ceil(this.list_arenas.length / this.perPage);
+    fetchArenaByUserId(userId) {
+      return new Promise((resolve) => {
+        axios
+          .get(`/user/${userId}/arenas`)
+          .then((response) => {
+            this.arenaList = this.processArenaListObject(response.data);
+            resolve(this.arenaList);
+          })
+          .catch((err) => console.log(err));
+      });
     },
-    paginate(items) {
-      const cpage = this.page;
-      const perPage = this.perPage;
-      const from = cpage * perPage - perPage;
-      const to = cpage * perPage;
-      return items.slice(from, to);
+    processArenaListObject(arenaList) {
+      return arenaList.map((item) => item.arena);
     },
   },
   data() {
@@ -145,6 +155,7 @@ export default {
       ],
       page: 1,
       perPage: 3,
+      arenaList: [],
       paginationLength: 10,
       team_tags: ["Москва", "Казань"],
       team_items: [
@@ -161,12 +172,6 @@ export default {
       display_items: ["Показывать по 12", "Показывать по 25"],
     };
   },
-  components: {},
-  mounted() {
-    this.$store.dispatch("getAllArenas");
-    this.setPaginationLength();
-  },
-  watch: {},
 };
 </script>
 

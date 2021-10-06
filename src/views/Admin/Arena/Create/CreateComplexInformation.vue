@@ -61,7 +61,7 @@
             </v-col>
           </v-row>
         </div>
-        <div class="mb-6">
+        <div>
           <div class="text-h6 mb-2">Описание</div>
           <v-textarea
             solo
@@ -70,14 +70,29 @@
             flat
             elevation="0"
           ></v-textarea>
-          <v-text-field
+          <v-combobox
+            v-model="tag_chips"
+            :items="tag_items"
+            chips
+            clearable
             label="Теги"
-            outlined
-            v-model="tags"
+            multiple
+            solo
             flat
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-text-field>
+          >
+            <template v-slot:selection="{ attrs, item, select, selected }">
+              <v-chip
+                v-bind="attrs"
+                :input-value="selected"
+                close
+                @click="select"
+                @click:close="remove(item)"
+              >
+                <strong>{{ item }}</strong
+                >&nbsp;
+              </v-chip>
+            </template>
+          </v-combobox>
         </div>
         <div class="mb-6">
           <div class="text-h6 mb-2">Адрес</div>
@@ -111,25 +126,52 @@
                 </yandex-map>
               </v-sheet>
             </v-col>
-            <v-col class="d-flex">
-              <v-text-field
-                label="широта"
-                outlined
-                v-model="coordinate.lat"
-                flat
-                disabled
-                hide-details="auto"
-                class="rounded-lg mr-3"
-              ></v-text-field>
-              <v-text-field
-                label="Долгота"
-                outlined
-                disabled
-                v-model="coordinate.lon"
-                flat
-                hide-details="auto"
-                class="rounded-lg ml-3"
-              ></v-text-field>
+
+            <v-col>
+              <v-row>
+                <v-col class="d-flex" cols="12" md="6">
+                  <v-select
+                    :items="['Москва']"
+                    v-model="city"
+                    solo
+                    flat
+                    class="my-auto"
+                    hide-details="auto"
+                  ></v-select>
+                </v-col>
+                <v-col class="d-flex" cols="12" md="6">
+                  <v-text-field
+                    label="Метро"
+                    outlined
+                    v-model="metro"
+                    flat
+                    hide-details="auto"
+                    class="rounded-lg mr-3"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col class="d-flex">
+                  <v-text-field
+                    label="широта"
+                    outlined
+                    v-model="coordinate.lat"
+                    flat
+                    disabled
+                    hide-details="auto"
+                    class="rounded-lg mr-3"
+                  ></v-text-field>
+                  <v-text-field
+                    label="Долгота"
+                    outlined
+                    disabled
+                    v-model="coordinate.lon"
+                    flat
+                    hide-details="auto"
+                    class="rounded-lg ml-3"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
         </div>
@@ -155,8 +197,8 @@
                     <v-icon>{{ item.icon }}</v-icon>
                   </v-btn>
                   <div>{{ item.link }}</div>
-                  <v-icon class="ml-4" @click="removeSocialMedia(item)"
-                    >mdi-close
+                  <v-icon class="ml-4" @click="removeSocialMedia(item)">
+                    mdi-close
                   </v-icon>
                 </v-col>
               </v-row>
@@ -508,6 +550,7 @@
 import axios from "axios";
 import { yandexMap, ymapMarker } from "vue-yandex-maps";
 import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -524,6 +567,7 @@ export default {
     },
   },
   computed: {
+    ...mapState(["userId"]),
     social_media_display() {
       return this.social_media.filter((x) => x.link);
     },
@@ -552,10 +596,33 @@ export default {
       fullTitle: "",
       shortTitle: "",
       description: "",
-      tags: "",
+      tags: null,
+      metro: null,
       address: "",
       route: "",
+      city: "Москва",
       avatar: null,
+      tag_chips: [],
+      tag_items: [
+        "Хоккейное катание",
+        "Раздевалки",
+        "Душ",
+        "Инвентарь",
+        "Бесплатный WiFi",
+        "Парковка",
+        "Заточка коньков",
+        "Аренда коньков",
+        "Фигурное катание",
+        "Кафе",
+        "Массовое катание",
+        "Гимнастический зал",
+        "Медкабинет",
+        "Зона ОФП",
+        "Бросковая зона",
+        "Ночное катание",
+        "Сухой лед",
+        "Оплата картой",
+      ],
       contact: {
         tel: [],
         mail: [],
@@ -626,6 +693,10 @@ export default {
     };
   },
   methods: {
+    remove(item) {
+      this.chips.splice(this.chips.indexOf(item), 1);
+      this.chips = [...this.chips];
+    },
     initHandler(obj) {
       this.map = obj;
     },
@@ -708,46 +779,76 @@ export default {
       this.social_media_text = "";
     },
     saveNewArena() {
+      const whatsapp = `https://wa.me/${this.social_media[1].link
+        .replace("(", "")
+        .replace(")", "")}`;
+      console.log(this.avatar.imageURL);
       const data = {
         title: this.shortTitle,
-        full_title: this.fullTitle,
-        tags: this.tags.split(","),
+        fullTitle: this.fullTitle,
+        tags: this.tags ? this.tags : [],
         address: this.address,
         description: this.description,
         route: "",
-        sledge_hockey: "",
-        sledge_hockey_link: "",
-        metro: [],
+        sledgeHockey: "",
+        sledgeHockeyLink: "",
+        metro: this.metro ? this.metro.split(",") : [],
         courtSize: 0,
-        city: "",
+        city: this.city,
         lat: Number(this.coordinate.lat),
         lan: Number(this.coordinate.lon),
-        profile_picture: this.avatar.imageURL,
+        profilePicture: this.avatar.imageURL,
         gallery: this.galleryPics,
         phones: this.contact.tel,
         mails: this.contact.mail,
         instagram: this.social_media[3].link,
         vk: this.social_media[0].link,
         website: this.social_media[2].link,
-        whats_app: this.social_media[1].link,
+        whatsApp: whatsapp,
         facebook: this.social_media[4].link,
         classmates: "",
         tiktok: "",
         youtube: "",
       };
       console.log(data);
-      axios
-        .post(`/arena`, data)
-        .then((response) => {
-          const arena = response.data;
-          console.log(arena);
-          this.$store.dispatch("setCurrentArena", arena).then(() => {
+      const userId = this.userId;
+      this.postArena(data).then((arena) => {
+        this.linkArenaUser(arena.id, userId);
+        this.$store
+          .dispatch("setCurrentArena", arena)
+          .then(() => {
             this.$router.push({
-              path: `/admin/sport_complex/${arena.id}/information`,
+              path: `/admin/sport_complex/${arena.id}`,
             });
-          });
-        })
-        .catch((err) => console.log(err));
+          })
+          .catch((err) => console.log(err));
+      });
+    },
+    postArena(payload) {
+      return new Promise((resolve) => {
+        axios
+          .post(`/arena`, payload)
+          .then((response) => {
+            const arena = response.data;
+            resolve(arena);
+          })
+          .catch((err) => console.log(err));
+      });
+    },
+    linkArenaUser(arenaId, userId) {
+      const payload = {
+        arenaId: arenaId,
+        userId: userId,
+      };
+      return new Promise((resolve) => {
+        axios
+          .post(`/arena/user`, payload)
+          .then((response) => {
+            const arenaUser = response.data;
+            resolve(arenaUser.id);
+          })
+          .catch((err) => console.log(err));
+      });
     },
   },
 };
