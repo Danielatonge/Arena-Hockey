@@ -137,7 +137,7 @@ export default new Vuex.Store({
       }
     },
     SET_ARENA_TEAMS(state, payload) {
-      state.teams = payload;
+      state.teams = payload.filter((x) => x.team.isVisible === true);
     },
     SET_ARENA_TRAINERS(state, payload) {
       state.trainers = payload.map((x) => ({
@@ -156,19 +156,6 @@ export default new Vuex.Store({
     SET_TEAM_PLAYERS(state, payload) {
       state.team_players = payload;
     },
-    // UPDATE_PRICE_LIST(state, service) {
-    //   state.katokPL.forEach((x) => {
-    //     if (x.id == service[0].serviceId) {
-    //       x.price = service;
-    //       console.log("SET__");
-    //     }
-    //   });
-    //   state.othersPL.forEach((x) => {
-    //     if (x.id === service.serviceId) {
-    //       x.price = service.price;
-    //     }
-    //   });
-    // },
     SET_FORUMS(state, payload) {
       state.forums = payload;
     },

@@ -1,66 +1,73 @@
 <template>
-  <div class="grey lighten-4">
-    <v-container class="pb-0">
-      <v-row class="">
-        <div>
-          <v-breadcrumbs :items="breadcrumb_items" class="px-3"></v-breadcrumbs>
-        </div>
-      </v-row>
-      <v-row class="mb-4">
-        <v-col cols="4">
-          <v-img :src="arena.profilePicture"></v-img>
-        </v-col>
-        <v-col cols="8">
-          <div class="mb-16">
-            <div class="text-h5">{{ arena.title }}</div>
-            <div>{{ arena.address }}</div>
-          </div>
+  <div>
+    <div class="white">
+      <v-container class="pb-0">
+        <v-row class="">
           <div>
-            <router-link
-              :to="`/admin/sport_complex/${arena.id}/edit`"
-              class="reset-link"
-            >
-              <v-btn class="mr-2 mb-2" color="primary" elevation="0">
-                Редактировать
+            <v-breadcrumbs
+              :items="breadcrumb_items"
+              class="px-3"
+            ></v-breadcrumbs>
+          </div>
+        </v-row>
+        <v-row class="mb-4">
+          <v-col cols="4">
+            <v-avatar class="rounded-lg" height="280px" width="100%">
+              <v-img :src="arena.profilePicture"></v-img>
+            </v-avatar>
+          </v-col>
+          <v-col cols="8">
+            <div class="mb-16">
+              <div class="text-h5">{{ arena.title }}</div>
+              <div>{{ arena.address }}</div>
+            </div>
+            <div>
+              <router-link
+                :to="`/admin/sport_complex/${arena.id}/edit`"
+                class="reset-link"
+              >
+                <v-btn class="mr-2 mb-2" color="primary" elevation="0">
+                  Редактировать
+                </v-btn>
+              </router-link>
+              <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
+                Добавить в избранное
               </v-btn>
-            </router-link>
-            <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
-              Добавить в избранное
-            </v-btn>
-          </div>
-          <div>
-            <v-checkbox v-model="checkbox">
-              <template v-slot:label>
-                <div>Уведомлять при появлении изменений</div>
-              </template>
-            </v-checkbox>
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-container>
-      <v-row class="mt-5">
-        <v-col cols="5" md="3">
-          <v-tabs
-            vertical
-            class="pl-4 rounded-lg my-sidetabs"
-            v-model="sidebar_tab"
-          >
-            <v-tab
-              v-for="(item, i) in sections"
-              :key="i"
-              router
-              :to="item.link"
+            </div>
+            <v-row align="center" class="pl-2">
+              <v-checkbox v-model="checkbox"></v-checkbox>
+              Уведомлять при появлении изменений
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-container>
+    </div>
+
+    <div class="grey lighten-4">
+      <v-container>
+        <v-row class="mt-2">
+          <v-col cols="5" md="3">
+            <v-tabs
+              vertical
+              class="pl-4 rounded-lg my-sidetabs"
+              v-model="sidebar_tab"
             >
-              {{ item.text }}
-            </v-tab>
-          </v-tabs>
-        </v-col>
-        <v-col cols="7" md="9">
-          <router-view :arena="arena" v-if="arenaLoaded"></router-view>
-        </v-col>
-      </v-row>
-    </v-container>
+              <v-tab
+                v-for="(item, i) in sections"
+                :key="i"
+                router
+                :to="item.link"
+              >
+                {{ item.text }}
+              </v-tab>
+            </v-tabs>
+          </v-col>
+          <v-col cols="7" md="9">
+            <router-view :arena="arena" v-if="arenaLoaded"></router-view>
+          </v-col>
+        </v-row>
+      </v-container>
+    </div>
   </div>
 </template>
 

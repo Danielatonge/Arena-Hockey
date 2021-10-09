@@ -21,7 +21,7 @@ import ArenaMapAll from "../views/Arena/ArenaMapAll.vue";
 import BookRoom from "../views/LockerRoom/BookRoom.vue";
 import SubstituteBench from "../views/Bench/SubstituteBench.vue";
 
-import AdminSportComplex from "../views/Admin/Arena/AdminSportComplex.vue";
+// import AdminSportComplex from "../views/Admin/Arena/AdminSportComplex.vue";
 import AdminAddArenaSportComplex from "../views/Admin/Arena/AdminAddArenaSportComplex.vue";
 
 import NameComplex from "../views/Admin/Arena/View/NameComplex.vue";
@@ -48,6 +48,8 @@ import CreateAdminTrainStaff from "../views/Admin/Arena/Create/CreateAdminTrainS
 import CreateAdminManager from "../views/Admin/Arena/Create/CreateAdminManager.vue";
 import KidsTournaments from "../views/KidsTournaments/Home.vue";
 import AdminLayoutSection from "../views/Admin/AdminLayoutSection";
+import UserProfile from "../views/Admin/User/View/UserProfile";
+import CreateArenaEvent from "../views/Admin/Arena/Create/CreateArenaEvent";
 
 Vue.use(VueRouter);
 
@@ -157,20 +159,19 @@ const routes = [
   },
   {
     path: "/admin",
-    name: "AdminLayoutSection",
     component: AdminLayoutSection,
     children: [
       {
-        path: "/admin/sport_complex/add",
+        path: "",
+        name: "UserProfile",
+        component: UserProfile,
+      },
+      {
+        path: "sport_complex",
         name: "AdminAddArenaSportComplex",
         component: AdminAddArenaSportComplex,
       },
     ],
-  },
-  {
-    path: "/admin/sport_complex",
-    name: "AdminSportComplex",
-    component: AdminSportComplex,
   },
 
   {
@@ -239,6 +240,11 @@ const routes = [
         component: EditAdminTrainStaff,
       },
     ],
+  },
+  {
+    path: "/admin/sport_complex/:id/create_event",
+    name: "CreateArenaEvent",
+    component: CreateArenaEvent,
   },
 
   {

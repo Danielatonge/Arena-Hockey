@@ -58,26 +58,6 @@
             </p>
           </div>
         </div>
-        <!--        <v-btn-->
-        <!--          @click="-->
-        <!--            $router.push({ path: `/arena/${current_arena.id}/event_schedule` })-->
-        <!--          "-->
-        <!--          color="primary mr-4 mt-4"-->
-        <!--          elevation="0"-->
-        <!--        >-->
-        <!--          Забронировать-->
-        <!--        </v-btn>-->
-        <!-- <v-btn
-          class="mt-4"
-          @click="
-            $router.push({ path: `/arena/${current_arena.id}/information#map` })
-          "
-          dark
-          outlined
-          elevation="0"
-        >
-          Как проехать?
-        </v-btn> -->
       </v-container>
     </v-img>
     <v-container>

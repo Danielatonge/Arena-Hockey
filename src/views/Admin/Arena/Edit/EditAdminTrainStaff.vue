@@ -91,53 +91,14 @@
       </div>
       <v-row dense class="mx-n4">
         <v-col cols="12" v-for="(item, i) in arena_trainers" :key="i">
-          <v-card color="transparent" elevation="0">
-            <div class="d-flex flex-no-wrap">
-              <v-avatar class="ma-3 rounded-lg" size="150" tile>
-                <v-img
-                  :src="
-                    item.profilePicture
-                      ? item.profilePicture
-                      : require('@/assets/team_room_1.jpg')
-                  "
-                ></v-img>
-              </v-avatar>
-              <v-card-text>
-                <div class="text-h5 mb-2">
-                  {{ item.name + " " + item.middleName + " " + item.surname }}
-                </div>
-                <div class="body-1 blue--text mb-1">
-                  {{ item.age }}, {{ item.city }}
-                </div>
-                <div class="body-2 grey--text">Уровень: профессионал</div>
-                <v-row no-gutters class="align-center">
-                  <v-col cols="12" md="4" lg="7">
-                    <v-btn
-                      @click="
-                        confirm_dialog = true;
-                        current_team = i;
-                      "
-                      class="primary"
-                      elevation="0"
-                    >
-                      Открепить команду
-                    </v-btn>
-                  </v-col>
-                  <v-col>
-                    <v-checkbox
-                      @click="hideTeam(item)"
-                      label="Скрыть команду"
-                      class=""
-                    />
-                  </v-col>
-                </v-row>
-              </v-card-text>
-            </div>
-          </v-card>
+          <AdminTrainerCard
+            :arenaId="arenaId"
+            :user="item"
+            @trainer-remove="removeTeam"
+          />
         </v-col>
       </v-row>
     </div>
-
     <div class="mb-4">
       <v-dialog v-model="add_trainer_dialog" max-width="600">
         <v-card :loading="adding" class="grey lighten-5">
@@ -158,7 +119,7 @@
           <v-card-text>
             <v-autocomplete
               v-model="selected_user"
-              :items="search_items"
+              :items="trainersList"
               :loading="is_searching"
               :search-input.sync="search_text"
               color="white"
@@ -167,7 +128,7 @@
               single-line
               hide-selected
               hide-no-data
-              item-text="fullname"
+              item-text="fullName"
               item-value="id"
               label="Поиск тренера"
               placeholder="Поиск тренера"
@@ -176,7 +137,11 @@
               hide-details="auto"
               class="rounded-lg"
             ></v-autocomplete>
-            <v-checkbox label="Скрыть тренера" class="" />
+            <v-checkbox
+              v-model="hide_trainer"
+              label="Скрыть тренера"
+              class=""
+            />
           </v-card-text>
           <v-card-actions class="mt-3">
             <v-btn
@@ -241,11 +206,14 @@
 <script>
 import { mapState } from "vuex";
 import axios from "axios";
+import AdminTrainerCard from "@/components/Admin/Trainer/AdminTrainerCard";
 
 export default {
+  components: { AdminTrainerCard },
   props: ["arena"],
   mounted() {
     const arenaId = this.$route.params.id;
+    this.arenaId = arenaId;
     axios.get(`/arena/${arenaId}/users`).then((response) => {
       this.arena_trainers = this.filteredUsers(response.data);
     });
@@ -274,41 +242,14 @@ export default {
     ];
   },
   computed: {
-    ...mapState({ trainers: "trainers" }),
+    ...mapState(["trainers"]),
+    trainersList() {
+      return this.trainers.map((x) => {
+        return { ...x, fullName: `${x.name} ${x.middleName} ${x.surname}` };
+      });
+    },
   },
-  watch: {
-    // display_x(val) {
-    //   this.perPage = val;
-    //   this.paginationLength = Math.ceil(
-    //     this.filteredTrainers.length / this.perPage
-    //   );
-    // },
-    // filteredTrainers() {
-    //   this.paginationLength = Math.ceil(
-    //     this.filteredTrainers.length / this.perPage
-    //   );
-    // },
-    // filter_type() {
-    //   this.paginationLength = Math.ceil(
-    //     this.filteredTrainers.length / this.perPage
-    //   );
-    // },
-    // search_text(val) {
-    //   // Items have already been loaded
-    //   //if (this.search_items.length > 0) return;
-    //   if (!val) return this.filteredUsers;
-    //
-    //   // Items have already been requested
-    //   //if (this.is_searching) return;
-    //
-    //   //this.is_searching = true;
-    //   const value = val.toLowerCase();
-    //   console.log(this.filteredUsers);
-    //   this.search_items = this.filteredUsers.filter((x) => {
-    //     return x.fullname ? x.fullname.toLowerCase().includes(value) : false;
-    //   });
-    // },
-  },
+  watch: {},
   methods: {
     filteredTrainers(trainers) {
       return trainers.map((item) => item.user);
@@ -316,32 +257,32 @@ export default {
     filteredUsers(trainers) {
       return trainers.map((x) => ({
         ...x.user,
-        fullname: x.name + " " + x.middleName + " " + x.surname,
+        fullName: `${x.user.name} ${x.user.middleName} ${x.user.surname}`,
       }));
     },
     deleteTrainer() {
+      const arenaId = this.arenaId;
+      axios
+        .delete(`/arena/${arenaId}/user/${this.userId}`)
+        .then((response) => {
+          console.log("RESPONSE_DELETE_TEAM", response);
+          this.arena_trainers = this.arena_trainers.filter(
+            (x) => x.id !== this.userId
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       this.confirm_dialog = false;
-      if (this.current_team !== -1) {
-        const arena_id = this.$route.params.id;
-        const user_id = this.arena_trainers[this.current_team].id;
-        axios
-          .delete(`/arena/${arena_id}/user/${user_id}`)
-          .then((response) => {
-            console.log("RESPONSE_DELETE_TEAM", response);
-            this.arena_trainers.splice(this.current_team, 1);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
     },
     setPaginationLength() {
       this.paginationLength = Math.ceil(
         this.filteredTrainers.length / this.perPage
       );
     },
-    hideStaff(id) {
-      console.log("Hidde team", id);
+    removeTeam(id) {
+      this.confirm_dialog = true;
+      this.userId = id;
     },
     paginate(items) {
       const cpage = this.page;
@@ -357,16 +298,15 @@ export default {
       const data = {
         arenaId: arena_id,
         userId: this.selected_user.id,
-        visible: this.hide_team,
+        visible: !this.hide_trainer,
       };
       axios
         .post("/arena/user", data)
         .then((response) => {
           console.log("RESPONSE", response);
-          this.arena_trainers.push({ user: this.selected_user });
+          this.arena_trainers.push(this.selected_user);
           this.add_trainer_dialog = false;
           this.selected_user = null;
-          this.search_items = [];
         })
         .catch((err) => {
           console.log(err);
@@ -388,13 +328,14 @@ export default {
       sort_by_team: ["По популярности", "По именни"],
       type_team: ["возрасту", "город"],
       display_items: ["Показывать по 12", "Показывать по 25"],
-      search_items: [],
-      hide_team: false,
+      hide_trainer: false,
       selected_user: null,
       is_searching: false,
       adding_player: false,
       search_text: "",
       adding: false,
+      arenaId: null,
+      userId: null,
     };
   },
 };

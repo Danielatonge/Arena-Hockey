@@ -1,15 +1,5 @@
 <template>
   <v-container class="pb-10">
-    <v-row class="">
-      <div>
-        <v-breadcrumbs :items="breadcrumb_items" class="px-3"></v-breadcrumbs>
-      </div>
-    </v-row>
-    <v-row class="mt-n2 mb-2">
-      <v-col>
-        <span class="text-h5">Добавить арену</span>
-      </v-col>
-    </v-row>
     <div class="pb-8">
       <v-row dense>
         <v-col class="d-flex" cols="12" md="2">

@@ -88,48 +88,11 @@
       </div>
       <v-row dense class="mx-n4">
         <v-col cols="12" v-for="(team, i) in arena_teams" :key="i">
-          <v-card color="transparent" elevation="0">
-            <div class="d-flex flex-no-wrap">
-              <v-avatar class="ma-3" size="150" tile>
-                <v-img
-                  :src="
-                    team.profilePicture
-                      ? team.profilePicture
-                      : require('@/assets/team_room_1.jpg')
-                  "
-                  contain
-                ></v-img>
-              </v-avatar>
-
-              <v-card-text>
-                <div
-                  class="body-1 blue--text mb-2"
-                  style="text-decoration: none"
-                >
-                  {{ team.city }}
-                </div>
-                <div class="text-h5 mb-2">{{ team.title }}</div>
-                <div class="body-1 grey--text">{{ team.type }}</div>
-                <v-row no-gutters class="align-center">
-                  <v-col cols="12" md="4" lg="7">
-                    <v-btn
-                      @click="
-                        confirm_dialog = true;
-                        current_team = i;
-                      "
-                      class="primary"
-                      elevation="0"
-                    >
-                      Открепить команду
-                    </v-btn>
-                  </v-col>
-                  <v-col>
-                    <v-checkbox label="Скрыть команду" />
-                  </v-col>
-                </v-row>
-              </v-card-text>
-            </div>
-          </v-card>
+          <AdminTeamCard
+            :arenaId="arenaId"
+            :team="team"
+            @team-remove="removeTeam"
+          />
         </v-col>
       </v-row>
     </div>
@@ -153,7 +116,7 @@
           <v-card-text>
             <v-autocomplete
               v-model="selected_team"
-              :items="search_items"
+              :items="teams"
               :loading="is_searching"
               color="white"
               solo
@@ -236,21 +199,19 @@
 <script>
 import axios from "axios";
 import { mapState } from "vuex";
+import AdminTeamCard from "@/components/Admin/Team/AdminTeamCard";
 
 export default {
+  components: { AdminTeamCard },
   computed: {
     ...mapState(["teams"]),
-    search_items() {
-      return this.teams;
-    },
   },
   watch: {},
   mounted() {
     const arena_id = this.$route.params.id;
-
+    this.arenaId = arena_id;
     this.$store.dispatch("getAllTeams");
     this.$store.dispatch("getArenaTeams", arena_id).then((data) => {
-      console.log("getArenaTeams", data);
       this.arena_teams = this.processTeam(data);
     });
   },
@@ -258,6 +219,7 @@ export default {
     return {
       page: 1,
       perPage: 5,
+      arenaId: null,
       arena_teams: [],
       current_team: -1,
       paginationLength: 1,
@@ -311,31 +273,34 @@ export default {
       selected_team: null,
       is_searching: false,
       adding_team: false,
+      teamId: null,
     };
   },
   methods: {
     processTeam(payload) {
       return payload.map((x) => x.team);
     },
+    removeTeam(id) {
+      this.confirm_dialog = true;
+      this.teamId = id;
+    },
     deleteTeam() {
+      const arena_id = this.$route.params.id;
+      axios
+        .delete(`/arena/${arena_id}/team/${this.teamId}`)
+        .then((response) => {
+          console.log("RESPONSE_DELETE_TEAM", response);
+          this.arena_teams = this.arena_teams.filter(
+            (x) => x.id !== this.teamId
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
       this.confirm_dialog = false;
-      if (this.current_team != -1) {
-        const arena_id = this.$route.params.id;
-        const user_id = this.arena_teams[this.current_team].id;
-        axios
-          .delete(`/arena/${arena_id}/team/${user_id}`)
-          .then((response) => {
-            console.log("RESPONSE_DELETE_TEAM", response);
-            this.arena_teams.splice(this.current_team, 1);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
     },
-    hideTeam(id) {
-      console.log("Hidde team", id);
-    },
+
     addTeam() {
       this.adding_team = true;
       console.log("SELECTED", this.selected_team);
@@ -343,7 +308,7 @@ export default {
       const data = {
         arenaId: arena_id,
         teamId: this.selected_team.id,
-        visible: this.hide_team,
+        visible: !this.hide_team,
       };
       axios
         .post(`/arena/team`, data)
@@ -353,6 +318,7 @@ export default {
           this.arena_teams.push(this.selected_team);
           this.add_team_dialog = false;
           this.selected_team = null;
+          this.hide_team = false;
         })
         .catch((err) => {
           console.log(err);

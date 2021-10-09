@@ -29,9 +29,9 @@
           depressed
           color="primary"
         >
-          <router-link to="/admin/sport_complex/add" class="reset-link">
-            Личный кабинет</router-link
-          >
+          <router-link to="/admin" class="reset-link">
+            Личный кабинет
+          </router-link>
         </v-btn>
       </div>
     </v-toolbar>

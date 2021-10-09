@@ -88,20 +88,31 @@
       </div>
       <div class="mb-6">
         <div class="text-h6 mb-2">Адрес</div>
-        <v-text-field
-          label="Адрес арены"
-          outlined
+        <v-autocomplete
           v-model="address"
+          :items="addressOptions"
+          :loading="isLoading"
+          :search-input.sync="search"
+          @change="assignCoordinates"
+          hide-no-data
+          hide-selected
+          item-text="address"
+          item-value="coords"
+          label="Address"
+          return-object
+          outlined
+          cache-items
           flat
           hide-details="auto"
           class="rounded-lg"
-        ></v-text-field>
+        ></v-autocomplete>
       </div>
       <div class="mb-4">
         <v-row>
           <v-col>
             <v-sheet height="350px">
               <yandex-map
+                :settings="settings"
                 :coords="coords"
                 zoom="16"
                 style="width: 100%; height: 100%"
@@ -541,6 +552,9 @@ export default {
       },
       deep: true,
     },
+    search(input) {
+      input && input !== this.address && this.findCoordinateGivenAddress(input);
+    },
   },
   computed: {
     social_media_display() {
@@ -570,7 +584,12 @@ export default {
     this.shortTitle = arena.title;
     this.avatar = { imageURL: arena.profilePicture };
     this.tag_chips = arena.tags;
-    this.address = arena.address;
+    this.coordinate.lat = arena.lat;
+    this.coordinate.lon = arena.lan;
+    this.address = {
+      address: arena.address,
+      coords: [arena.lat, arena.lan],
+    };
     this.city = arena.city;
     this.metro = arena.metro.toString();
     this.contact.tel = arena.phones;
@@ -580,8 +599,6 @@ export default {
     this.social_media[2].link = arena.website;
     this.social_media[3].link = arena.instagram;
     this.social_media[4].link = arena.facebook;
-    this.coordinate.lat = arena.lat;
-    this.coordinate.lon = arena.lan;
     this.description = arena.description;
   },
   data() {
@@ -685,9 +702,24 @@ export default {
           href: "",
         },
       ],
+      settings: {
+        apiKey: "cd43d2ef-9a2e-465e-b60b-fd240a2ec37a",
+        lang: "ru_RU",
+        coordorder: "latlong",
+        version: "2.1",
+      },
+      addressOptions: [],
+      isLoading: false,
+      search: null,
     };
   },
   methods: {
+    assignCoordinates() {
+      const coords = this.address.coords;
+      this.coordinate.lat = coords[0];
+      this.coordinate.lon = coords[1];
+      console.log(coords);
+    },
     remove(item) {
       this.chips.splice(this.chips.indexOf(item), 1);
       this.chips = [...this.chips];
@@ -695,17 +727,30 @@ export default {
     initHandler(obj) {
       this.map = obj;
     },
-    findCoordinateGivenAddress() {
+    findCoordinateGivenAddress(address) {
+      this.isLoading = true;
+      this.addressOptions = [];
       // eslint-disable-next-line no-undef
-      let myGeocoder = ymaps.geocode("Moscow");
-      let self = this;
-      myGeocoder.then((res) => {
-        self.map.geoObjects.add(res.geoObjects);
-        console.log(
-          res.geoObjects.get(0).properties.get("metaDataProperty").getAll()
-        );
-      });
+      ymaps
+        .geocode(address, {
+          results: 5,
+        })
+        .then((res) => {
+          const responseLength = res.metaData.geocoder.found;
+          for (let i = 0; i < responseLength; i++) {
+            let geoObject = res.geoObjects.get(i);
+            let coords = geoObject.geometry.getCoordinates();
+            let address = geoObject.getAddressLine();
+            const addressObj = {
+              coords: coords,
+              address: address,
+            };
+            this.addressOptions.push(addressObj);
+          }
+          this.isLoading = false;
+        });
     },
+
     selectGalleryItems(fieldName, files) {
       this.galleryPics = [];
       console.log(fieldName, files);
@@ -781,12 +826,14 @@ export default {
           .replace(")", "")
           .replace(" ", "")}`;
       }
+
+      console.log(this.address);
       console.log(this.avatar.imageURL);
       const data = {
         title: this.shortTitle,
         fullTitle: this.fullTitle,
         tags: this.tag_chips,
-        address: this.address,
+        address: this.address.address,
         description: this.description,
         route: "",
         sledgeHockey: "",
