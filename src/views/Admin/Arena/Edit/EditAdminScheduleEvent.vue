@@ -27,7 +27,6 @@
           </v-tab>
         </v-tabs>
       </v-row>
-
       <v-sheet tile height="74" class="d-flex align-center" color="#EBF5FB">
         <div style="width: 200px" class="ml-3">
           <v-menu
@@ -70,6 +69,7 @@
             class="ma-2 white"
           ></v-select>
         </div>
+
         <div style="width: 200px">
           <v-select
             v-model="mode"
@@ -200,10 +200,10 @@ export default {
       return this.arena_events.map((event) => ({
         name: event.title,
         start: new Date(
-          `${event.date}T${event.startTime ? event.startTime : "00:00"}:00`
+          `${event.startDate}T${event.startTime ? event.startTime : "00:00"}:00`
         ),
         end: new Date(
-          `${event.date}T${event.endTime ? event.endTime : "23:59"}:59`
+          `${event.startDate}T${event.endTime ? event.endTime : "23:59"}:59`
         ),
         color: this.colors[this.rnd(0, this.colors.length - 1)],
         timed: true,
