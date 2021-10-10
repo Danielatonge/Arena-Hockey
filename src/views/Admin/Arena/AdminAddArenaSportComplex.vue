@@ -35,7 +35,9 @@
           ></v-select>
         </v-col>
         <v-col class="my-auto" cols="6" md="4">
-          <div class="body-1 grey--text">Найдено: 160 результатов</div>
+          <div class="body-1 grey--text">
+            Найдено: {{ arenaList ? arenaList.length : 0 }} результатов
+          </div>
         </v-col>
         <v-spacer></v-spacer>
         <v-col cols="6" md="4" lg="3" xl="2">
@@ -55,10 +57,14 @@
         cols="12"
         md="6"
         xl="4"
-        v-for="(arena, i) in arenaList"
-        :key="i"
+        v-for="arena in arenaList"
+        :key="arena.id"
       >
-        <AdminArenaCard :arena="arena" />
+        <AdminArenaCard
+          :arena="arena"
+          @remove-selected="removeFromSelected"
+          @add-selected="addToSelected"
+        />
       </v-col>
     </v-row>
     <div class="mb-3" v-if="!arenaList.length">
@@ -66,14 +72,21 @@
     </div>
 
     <div>
-      <v-btn class="rounded-lg" large depressed color="primary">
-        <router-link
-          to="/admin/sport_complex/information/create"
-          class="reset-link d-flex"
-        >
+      <v-btn class="rounded-lg mr-2" large depressed color="primary">
+        <router-link to="/admin/sport_complex/create" class="reset-link d-flex">
           <v-icon class="mr-2">mdi-plus</v-icon>
           <div class="my-auto">Создать Арену</div>
         </router-link>
+      </v-btn>
+      <v-btn
+        :disabled="!selectedList.length"
+        class="rounded-lg ml-2"
+        color="grey lighten-2"
+        @click="deleteSelected"
+        large
+        depressed
+      >
+        <div class="my-auto">Удалить</div>
       </v-btn>
     </div>
   </v-container>
@@ -104,6 +117,12 @@ export default {
   },
   watch: {},
   methods: {
+    removeFromSelected(arenaId) {
+      this.selectedList = this.selectedList.filter((x) => x !== arenaId);
+    },
+    addToSelected(arenaId) {
+      this.selectedList.push(arenaId);
+    },
     goToMapAll() {
       this.$store
         .dispatch("displayMapAll")
@@ -123,9 +142,32 @@ export default {
     processArenaListObject(arenaList) {
       return arenaList.map((item) => item.arena);
     },
+    deleteSelected() {
+      let promiseDeleting = [];
+      this.selectedList.forEach((arenaId) => {
+        promiseDeleting.push(
+          new Promise((resolve, reject) => {
+            axios
+              .delete(`/arena/${arenaId}`)
+              .then((response) => {
+                resolve(response.data);
+                this.arenaList = this.arenaList.filter((x) => x.id !== arenaId);
+              })
+              .catch((err) => {
+                console.log(err);
+                reject(err);
+              });
+          })
+        );
+      });
+      Promise.all(promiseDeleting).then(() => {
+        this.selectedList = [];
+      });
+    },
   },
   data() {
     return {
+      selectedList: [],
       breadcrumb_items: [
         {
           text: "Личный кабинет",

@@ -170,7 +170,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import axios from "axios";
 
 export default {
   props: {
@@ -196,7 +196,6 @@ export default {
     },
   },
   computed: {
-    ...mapState(["current_arena", "arena_events"]),
     events() {
       return this.arena_events.map((event) => ({
         name: event.title,
@@ -216,6 +215,7 @@ export default {
     const arenaId = this.$route.params.id;
     this.arenaId = arenaId;
     this.$store.dispatch("getArenaEvents", arenaId);
+    this.fetchArenaEvent(arenaId);
   },
   data() {
     return {
@@ -243,9 +243,18 @@ export default {
         "grey lighten-1",
       ],
       arenaId: "",
+      arena_events: [],
     };
   },
   methods: {
+    fetchArenaEvent(arenaId) {
+      axios
+        .get(`/arena/${arenaId}/events`)
+        .then((response) => {
+          this.arena_events = response.data;
+        })
+        .catch((err) => console.log(err));
+    },
     goToAddEvent() {
       const arenaId = this.arena.id;
       this.$router.push({

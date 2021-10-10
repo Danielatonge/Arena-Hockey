@@ -23,16 +23,16 @@
           class="rounded-lg"
         ></v-text-field>
 
-        <v-btn
-          class="ml-4 rounded-lg fix-margin-right"
-          height="40px"
-          depressed
-          color="primary"
-        >
-          <router-link to="/admin" class="reset-link">
+        <router-link to="/admin" class="reset-link">
+          <v-btn
+            class="ml-4 rounded-lg fix-margin-right"
+            height="40px"
+            depressed
+            color="primary"
+          >
             Личный кабинет
-          </router-link>
-        </v-btn>
+          </v-btn>
+        </router-link>
       </div>
     </v-toolbar>
   </v-container>

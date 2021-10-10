@@ -27,18 +27,28 @@
               <div class="text-h5">{{ user.name }}</div>
               <div class="text-h5">{{ user.middleName }}</div>
               <div class="text-h5">{{ user.surname }}</div>
-              <div>{{ user.age }}</div>
+              <div>{{ validAge(user.age) }}</div>
             </div>
             <div>
               <router-link :to="`/admin/${user.id}/edit`" class="reset-link">
-                <v-btn class="mr-2 mb-2" color="primary" elevation="0">
+                <v-btn large class="mr-2 mb-2" color="primary" elevation="0">
                   Редактировать
                 </v-btn>
               </router-link>
-              <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
+              <v-btn
+                large
+                class="mr-2 mb-2"
+                color="grey lighten-2"
+                elevation="0"
+              >
                 Изменить пароль
               </v-btn>
-              <v-btn class="mr-2 mb-2" color="grey lighten-2" elevation="0">
+              <v-btn
+                large
+                class="mr-2 mb-2"
+                color="grey lighten-2"
+                elevation="0"
+              >
                 Обратиться в тех.поддержку
               </v-btn>
             </div>
@@ -145,6 +155,11 @@ export default {
     };
   },
   methods: {
+    validAge(age) {
+      if (age) {
+        return `${age} год`;
+      }
+    },
     fetchUser(userId) {
       axios.get(`/user/${userId}`).then((response) => {
         this.user = response.data;

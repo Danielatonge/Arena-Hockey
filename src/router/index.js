@@ -173,7 +173,11 @@ const routes = [
       },
     ],
   },
-
+  {
+    path: "/admin/sport_complex/create",
+    name: "CreateComplexInformation",
+    component: CreateComplexInformation,
+  },
   {
     path: "/admin/sport_complex/:id",
     component: NameComplex,
@@ -247,11 +251,6 @@ const routes = [
     component: CreateArenaEvent,
   },
 
-  {
-    path: "/admin/sport_complex/information/create",
-    name: "CreateComplexInformation",
-    component: CreateComplexInformation,
-  },
   {
     path: "/admin/sport_complex/payment_portal/create",
     name: "CreateAdminPaymentPortal",

@@ -5,7 +5,7 @@
       <v-row class="mb-4">
         <v-col cols="6" class="mb-2">
           <div class="body-1 mb-2 grey--text">День рождения</div>
-          <div class="">21 сентября 1999</div>
+          <div class="">21 сентября 1999 {{ user.birthDate }}</div>
         </v-col>
         <v-col cols="6" class="mb-2">
           <div class="body-1 mb-2 grey--text">Пол</div>
@@ -17,7 +17,9 @@
         </v-col>
         <v-col cols="6" class="mb-2">
           <div class="body-1 mb-2 grey--text">Электронная почта</div>
-          <div class="blue--text">jackson.graham@example.com</div>
+          <div class="blue--text">
+            jackson.graham@example.com {{ user.mail }}
+          </div>
         </v-col>
         <v-col cols="6" class="mb-2">
           <div class="body-1 mb-2 grey--text">Адрес</div>
@@ -33,7 +35,7 @@
       <div class="mb-4 text-h5">Ведение ролей</div>
       <v-row class="mx-n4 pb-10">
         <v-col
-          class="pa-4"
+          class="pa-2"
           cols="4"
           md="4"
           v-for="(section, i) in sections"
@@ -41,7 +43,7 @@
         >
           <v-sheet
             elevation="0"
-            height="90"
+            height="70"
             width="100%"
             class="
               font-weight-light
@@ -51,7 +53,7 @@
               rounded-lg
             "
           >
-            <div class="pa-4">
+            <div class="pa-2">
               {{ section.text }}
             </div>
           </v-sheet>
@@ -72,6 +74,12 @@ import { mapState } from "vuex";
 export default {
   computed: {
     ...mapState(["userId"]),
+  },
+  props: {
+    user: {
+      type: Object,
+      required: true,
+    },
   },
   mounted() {
     const id = this.userId;

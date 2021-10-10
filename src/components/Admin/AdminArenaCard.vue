@@ -79,7 +79,13 @@ export default {
       this.$router.push({ path: `/admin/sport_complex/${arenaId}/edit` });
     },
     selectToggle() {
+      const arenaId = this.arena.id;
       this.selected = !this.selected;
+      if (this.selected) {
+        this.$emit("add-selected", arenaId);
+      } else {
+        this.$emit("remove-selected", arenaId);
+      }
     },
   },
   filters: {
