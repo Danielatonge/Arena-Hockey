@@ -10,9 +10,7 @@
     <v-tabs-items v-model="premises_tab" style="background-color: unset">
       <v-tab-item v-for="i in 4" :key="i">
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 0">
-
           <v-col cols="12" v-for="(item, i) in teams" :key="i">
-
             <router-link
               :to="`/teamname/${item.team.id}`"
               class="undo-link-default"
@@ -49,15 +47,16 @@
         </v-row>
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 1">
           <v-col cols="12" v-for="(item, i) in children_team" :key="i">
-            <router-link
-              :to="`/teamname/${item.id}`"
-              class="undo-link-default"
-            >
+            <router-link :to="`/teamname/${item.id}`" class="undo-link-default">
               <v-card color="transparent" elevation="0">
                 <div class="d-flex flex-no-wrap">
                   <v-avatar class="ma-3 rounded-lg" size="125" tile>
                     <v-img
-                      :src="require('@/assets' + '/team_room_1.jpg')"
+                      :src="
+                        item.team.profilePicture != null
+                          ? item.team.profilePicture
+                          : require('@/assets/team_room_1.jpg')
+                      "
                     ></v-img>
                   </v-avatar>
                   <v-card-text>
@@ -65,12 +64,14 @@
                       class="body-1 blue--text mb-2"
                       style="text-decoration: none"
                     >
-                      {{ item.city }}
+                      {{ item.team.city }}
                     </div>
-                    <div class="text-h5 mb-2">{{ item.title }}</div>
-                    <div class="body-1 grey--text">
-                      {{ item.miniDescription | descriptionLength }}
+                    <div class="text-h5 mb-2">
+                      {{ item.team.title }}
                     </div>
+                    <!-- <div class="body-1 grey--text">
+                              {{ item.team.miniDescription | descriptionLength }}
+                            </div> -->
                   </v-card-text>
                 </div>
               </v-card>
@@ -79,15 +80,16 @@
         </v-row>
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 2">
           <v-col cols="12" v-for="(item, i) in youth_team" :key="i">
-            <router-link
-              :to="`/teamname/${item.id}`"
-              class="undo-link-default"
-            >
+            <router-link :to="`/teamname/${item.id}`" class="undo-link-default">
               <v-card color="transparent" elevation="0">
                 <div class="d-flex flex-no-wrap">
                   <v-avatar class="ma-3 rounded-lg" size="125" tile>
                     <v-img
-                      :src="require('@/assets' + '/team_room_1.jpg')"
+                      :src="
+                        item.team.profilePicture != null
+                          ? item.team.profilePicture
+                          : require('@/assets/team_room_1.jpg')
+                      "
                     ></v-img>
                   </v-avatar>
                   <v-card-text>
@@ -95,12 +97,14 @@
                       class="body-1 blue--text mb-2"
                       style="text-decoration: none"
                     >
-                      {{ item.city }}
+                      {{ item.team.city }}
                     </div>
-                    <div class="text-h5 mb-2">{{ item.title }}</div>
-                    <div class="body-1 grey--text">
-                      {{ item.miniDescription | descriptionLength }}
+                    <div class="text-h5 mb-2">
+                      {{ item.team.title }}
                     </div>
+                    <!-- <div class="body-1 grey--text">
+                              {{ item.team.miniDescription | descriptionLength }}
+                            </div> -->
                   </v-card-text>
                 </div>
               </v-card>
@@ -109,15 +113,16 @@
         </v-row>
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 3">
           <v-col cols="12" v-for="(item, i) in adult_team" :key="i">
-            <router-link
-              :to="`/teamname/${item.id}`"
-              class="undo-link-default"
-            >
+            <router-link :to="`/teamname/${item.id}`" class="undo-link-default">
               <v-card color="transparent" elevation="0">
                 <div class="d-flex flex-no-wrap">
                   <v-avatar class="ma-3 rounded-lg" size="125" tile>
                     <v-img
-                      :src="require('@/assets' + '/team_room_1.jpg')"
+                      :src="
+                        item.team.profilePicture != null
+                          ? item.team.profilePicture
+                          : require('@/assets/team_room_1.jpg')
+                      "
                     ></v-img>
                   </v-avatar>
                   <v-card-text>
@@ -125,12 +130,14 @@
                       class="body-1 blue--text mb-2"
                       style="text-decoration: none"
                     >
-                      {{ item.city }}
+                      {{ item.team.city }}
                     </div>
-                    <div class="text-h5 mb-2">{{ item.title }}</div>
-                    <div class="body-1 grey--text">
-                      {{ item.miniDescription | descriptionLength }}
+                    <div class="text-h5 mb-2">
+                      {{ item.team.title }}
                     </div>
+                    <!-- <div class="body-1 grey--text">
+                              {{ item.team.miniDescription | descriptionLength }}
+                            </div> -->
                   </v-card-text>
                 </div>
               </v-card>
@@ -139,15 +146,16 @@
         </v-row>
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 4">
           <v-col cols="12" v-for="(item, i) in female_team" :key="i">
-            <router-link
-              :to="`/teamname/${item.id}`"
-              class="undo-link-default"
-            >
+            <router-link :to="`/teamname/${item.id}`" class="undo-link-default">
               <v-card color="transparent" elevation="0">
                 <div class="d-flex flex-no-wrap">
                   <v-avatar class="ma-3 rounded-lg" size="125" tile>
                     <v-img
-                      :src="require('@/assets' + '/team_room_1.jpg')"
+                      :src="
+                        item.team.profilePicture != null
+                          ? item.team.profilePicture
+                          : require('@/assets/team_room_1.jpg')
+                      "
                     ></v-img>
                   </v-avatar>
                   <v-card-text>
@@ -155,12 +163,14 @@
                       class="body-1 blue--text mb-2"
                       style="text-decoration: none"
                     >
-                      {{ item.city }}
+                      {{ item.team.city }}
                     </div>
-                    <div class="text-h5 mb-2">{{ item.title }}</div>
-                    <div class="body-1 grey--text">
-                      {{ item.miniDescription | descriptionLength }}
+                    <div class="text-h5 mb-2">
+                      {{ item.team.title }}
                     </div>
+                    <!-- <div class="body-1 grey--text">
+                              {{ item.team.miniDescription | descriptionLength }}
+                            </div> -->
                   </v-card-text>
                 </div>
               </v-card>
@@ -222,5 +232,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

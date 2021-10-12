@@ -41,6 +41,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "AdminTrainerCard",
   props: {
@@ -62,13 +64,27 @@ export default {
     };
   },
   methods: {
+    toggleVisibility() {
+      const payload = {
+        arenaId: this.arenaId,
+        userId: this.user.id,
+        isVisible: !this.checked,
+      };
+      axios
+        .put(`/arena/user`, payload)
+        .then((response) => {
+          console.log("RESPONSE_UPDATE_ARENAUSER", response);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     isValidCityOutput(input) {
       return input && input !== "string" ? ", " + input : null;
     },
     isValidOutput(input) {
       return input && input !== "string" ? input : null;
     },
-    toggleVisibility() {},
     removeTeam(id) {
       this.$emit("trainer-remove", id);
     },

@@ -38,7 +38,7 @@
 </template>
 
 <script>
-// import axios from "axios";
+import axios from "axios";
 
 export default {
   name: "AdminTeamCard",
@@ -61,7 +61,21 @@ export default {
     };
   },
   methods: {
-    toggleVisibility() {},
+    toggleVisibility() {
+      const payload = {
+        arenaId: this.arenaId,
+        teamId: this.team.id,
+        isVisible: !this.checked,
+      };
+      axios
+        .put(`/arena/team`, payload)
+        .then((response) => {
+          console.log("RESPONSE_UPDATE_ARENATEAM", response);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     removeTeam(id) {
       this.$emit("team-remove", id);
     },
