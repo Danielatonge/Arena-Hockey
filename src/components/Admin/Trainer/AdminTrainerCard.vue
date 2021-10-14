@@ -4,26 +4,36 @@
       <v-avatar class="ma-3 rounded-lg" size="150" tile>
         <v-img
           :src="
-            user.profilePicture
-              ? user.profilePicture
+            arenaUser.user.profilePicture
+              ? arenaUser.user.profilePicture
               : require('@/assets/team_room_1.jpg')
           "
         ></v-img>
       </v-avatar>
       <v-card-text>
         <div class="text-h5 mb-2">
-          {{ user.name + " " + user.middleName + " " + user.surname }}
+          {{
+            arenaUser.user.name +
+            " " +
+            arenaUser.user.middleName +
+            " " +
+            arenaUser.user.surname
+          }}
         </div>
         <div class="body-1 blue--text mb-1">
-          {{ isValidOutput(user.age) }}
-          {{ isValidCityOutput(user.city) }}
+          {{ isValidOutput(arenaUser.user.age) }}
+          {{ isValidCityOutput(arenaUser.user.city) }}
         </div>
-        <div class="body-2 grey--text" v-show="user.qualification">
-          Уровень: {{ user.qualification }}
+        <div class="body-2 grey--text" v-show="arenaUser.user.qualification">
+          Уровень: {{ arenaUser.user.qualification }}
         </div>
         <v-row no-gutters class="align-center">
           <v-col cols="12" md="4" lg="7">
-            <v-btn @click="removeTeam(user.id)" class="primary" elevation="0">
+            <v-btn
+              @click="removeTeam(arenaUser.user.id)"
+              class="primary"
+              elevation="0"
+            >
               Открепить команду
             </v-btn>
           </v-col>
@@ -46,17 +56,13 @@ import axios from "axios";
 export default {
   name: "AdminTrainerCard",
   props: {
-    user: {
+    arenaUser: {
       type: Object,
-      required: true,
-    },
-    arenaId: {
-      type: String,
       required: true,
     },
   },
   mounted() {
-    this.checked = this.user.isVisible;
+    this.checked = !this.arenaUser.visibility;
   },
   data() {
     return {
@@ -66,14 +72,16 @@ export default {
   methods: {
     toggleVisibility() {
       const payload = {
-        arenaId: this.arenaId,
-        userId: this.user.id,
-        isVisible: !this.checked,
+        arenaId: this.arenaUser.arenaId,
+        userId: this.arenaUser.user.id,
+        visibility: this.checked ? 0 : 1,
       };
+      const id = this.arenaUser.id;
+      console.log(payload);
       axios
-        .put(`/arena/user`, payload)
+        .put(`/arena/user?id=${id}`, payload)
         .then((response) => {
-          console.log("RESPONSE_UPDATE_ARENAUSER", response);
+          console.log("RESPONSE_UPDATE_ARENAUSER", response.data);
         })
         .catch((err) => {
           console.log(err);

@@ -226,7 +226,6 @@ export default {
         "Взрослые команды",
         "Женские команда",
       ],
-      team_items: ["/team_room_1", "/team_room_2", "/team_room_3"],
     };
   },
 };

@@ -91,11 +91,7 @@
       </div>
       <v-row dense class="mx-n4">
         <v-col cols="12" v-for="(item, i) in arena_trainers" :key="i">
-          <AdminTrainerCard
-            :arenaId="arenaId"
-            :user="item"
-            @trainer-remove="removeTeam"
-          />
+          <AdminTrainerCard :arenaUser="item" @trainer-remove="removeTeam" />
         </v-col>
       </v-row>
     </div>
@@ -215,7 +211,7 @@ export default {
     const arenaId = this.$route.params.id;
     this.arenaId = arenaId;
     axios.get(`/arena/${arenaId}/users`).then((response) => {
-      this.arena_trainers = this.filteredUsers(response.data);
+      this.arena_trainers = response.data;
     });
     this.$store.dispatch("getAllTrainers");
     this.breadcrumb_items = [
@@ -267,7 +263,7 @@ export default {
         .then((response) => {
           console.log("RESPONSE_DELETE_TEAM", response);
           this.arena_trainers = this.arena_trainers.filter(
-            (x) => x.id !== this.userId
+            (x) => x.user.id !== this.userId
           );
         })
         .catch((err) => {
@@ -298,13 +294,22 @@ export default {
       const data = {
         arenaId: arena_id,
         userId: this.selected_user.id,
-        visible: !this.hide_trainer,
+        visibility: this.hide_trainer ? 0 : 1,
       };
+      console.log(data);
+
       axios
         .post("/arena/user", data)
         .then((response) => {
-          console.log("RESPONSE", response);
-          this.arena_trainers.push(this.selected_user);
+          console.log("RESPONSE", response.data);
+          const res = response.data;
+          const arenaUser = {
+            id: res.id,
+            arenaId: res.arenaId,
+            visibility: res.visibility,
+            user: this.selected_user,
+          };
+          this.arena_trainers.push(arenaUser);
           this.add_trainer_dialog = false;
           this.selected_user = null;
         })

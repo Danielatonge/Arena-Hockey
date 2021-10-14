@@ -137,7 +137,7 @@ export default new Vuex.Store({
       }
     },
     SET_ARENA_TEAMS(state, payload) {
-      state.teams = payload.filter((x) => x.team.isVisible === true);
+      state.teams = payload;
     },
     SET_ARENA_TRAINERS(state, payload) {
       state.trainers = payload.map((x) => ({
@@ -358,7 +358,7 @@ export default new Vuex.Store({
     getArenaTeams({ commit }, arena_id) {
       return new Promise((resolve) => {
         axios
-          .get(`/arena/${arena_id}/teams`)
+          .get(`/arena/${arena_id}/teams/visible`)
           .then((response) => {
             commit("SET_ARENA_TEAMS", response.data);
             resolve(response.data);
@@ -369,7 +369,7 @@ export default new Vuex.Store({
     getArenaTrainers({ commit }, arena_id) {
       return new Promise((resolve) => {
         axios
-          .get(`/arena/${arena_id}/users`)
+          .get(`/arena/${arena_id}/users/visible`)
           .then((response) => {
             commit("SET_ARENA_TRAINERS", response.data);
             resolve(response.data);

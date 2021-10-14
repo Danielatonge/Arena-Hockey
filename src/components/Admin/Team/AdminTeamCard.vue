@@ -4,8 +4,8 @@
       <v-avatar class="ma-3" size="150" tile>
         <v-img
           :src="
-            team.profilePicture
-              ? team.profilePicture
+            arenaTeam.team.profilePicture
+              ? arenaTeam.team.profilePicture
               : require('@/assets/team_room_1.jpg')
           "
           contain
@@ -14,13 +14,17 @@
 
       <v-card-text>
         <div class="body-1 blue--text mb-2" style="text-decoration: none">
-          {{ team.city }}
+          {{ arenaTeam.team.city }}
         </div>
-        <div class="text-h5 mb-2">{{ team.title }}</div>
-        <div class="body-1 grey--text">{{ team.type }}</div>
+        <div class="text-h5 mb-2">{{ arenaTeam.team.title }}</div>
+        <div class="body-1 grey--text">{{ arenaTeam.team.type }}</div>
         <v-row no-gutters class="align-center">
           <v-col cols="12" md="4" lg="7">
-            <v-btn @click="removeTeam(team.id)" class="primary" elevation="0">
+            <v-btn
+              @click="removeTeam(arenaTeam.team.id)"
+              class="primary"
+              elevation="0"
+            >
               Открепить команду
             </v-btn>
           </v-col>
@@ -43,17 +47,13 @@ import axios from "axios";
 export default {
   name: "AdminTeamCard",
   props: {
-    team: {
+    arenaTeam: {
       type: Object,
-      required: true,
-    },
-    arenaId: {
-      type: String,
       required: true,
     },
   },
   mounted() {
-    this.checked = this.team.isVisible;
+    this.checked = !this.arenaTeam.visibility;
   },
   data() {
     return {
@@ -63,14 +63,15 @@ export default {
   methods: {
     toggleVisibility() {
       const payload = {
-        arenaId: this.arenaId,
-        teamId: this.team.id,
-        isVisible: !this.checked,
+        arenaId: this.arenaTeam.arenaId,
+        teamId: this.arenaTeam.team.id,
+        visibility: this.checked ? 0 : 1,
       };
+      const id = this.arenaTeam.id;
       axios
-        .put(`/arena/team`, payload)
+        .put(`/arena/team?id=${id}`, payload)
         .then((response) => {
-          console.log("RESPONSE_UPDATE_ARENATEAM", response);
+          console.log("RESPONSE_UPDATE_ARENATEAM", response.data);
         })
         .catch((err) => {
           console.log(err);

@@ -87,12 +87,8 @@
         </v-row>
       </div>
       <v-row dense class="mx-n4">
-        <v-col cols="12" v-for="(team, i) in arena_teams" :key="i">
-          <AdminTeamCard
-            :arenaId="arenaId"
-            :team="team"
-            @team-remove="removeTeam"
-          />
+        <v-col cols="12" v-for="(teamObj, i) in arena_teams" :key="i">
+          <AdminTeamCard :arenaTeam="teamObj" @team-remove="removeTeam" />
         </v-col>
       </v-row>
     </div>
@@ -212,7 +208,7 @@ export default {
     this.arenaId = arena_id;
     this.$store.dispatch("getAllTeams");
     this.$store.dispatch("getArenaTeams", arena_id).then((data) => {
-      this.arena_teams = this.processTeam(data);
+      this.arena_teams = data;
     });
   },
   data() {
@@ -277,9 +273,6 @@ export default {
     };
   },
   methods: {
-    processTeam(payload) {
-      return payload.map((x) => x.team);
-    },
     removeTeam(id) {
       this.confirm_dialog = true;
       this.teamId = id;
@@ -291,7 +284,7 @@ export default {
         .then((response) => {
           console.log("RESPONSE_DELETE_TEAM", response);
           this.arena_teams = this.arena_teams.filter(
-            (x) => x.id !== this.teamId
+            (x) => x.team.id !== this.teamId
           );
         })
         .catch((err) => {
@@ -308,14 +301,21 @@ export default {
       const data = {
         arenaId: arena_id,
         teamId: this.selected_team.id,
-        visible: !this.hide_team,
+        visibility: this.hide_team ? 0 : 1,
       };
+      console.log(data);
       axios
         .post(`/arena/team`, data)
         .then((response) => {
           console.log("RESPONSE", response.data);
-          console.log(this.selected_team);
-          this.arena_teams.push(this.selected_team);
+          const res = response.data;
+          const arenaTeam = {
+            id: res.id,
+            arenaId: res.arenaId,
+            visibility: res.visibility,
+            team: this.selected_team,
+          };
+          this.arena_teams.push(arenaTeam);
           this.add_team_dialog = false;
           this.selected_team = null;
           this.hide_team = false;
