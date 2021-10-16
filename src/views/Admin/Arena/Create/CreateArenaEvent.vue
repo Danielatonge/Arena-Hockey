@@ -273,13 +273,9 @@ export default {
       event_nav_value: 0,
       event_nav: ["Запланировано", "Выполнено", "Отменено"],
       date_picker_start: false,
-      startDate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-        .toISOString()
-        .substr(0, 10),
+      startDate: moment().format("YYYY-MM-DD"),
       date_picker_end: false,
-      endDate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-        .toISOString()
-        .substr(0, 10),
+      endDate: moment().format("YYYY-MM-DD"),
       choosen_days: [],
       days: [
         "понедельник",
@@ -311,9 +307,19 @@ export default {
       this.choosen_days.splice(this.choosen_days.indexOf(item), 1);
       this.choosen_days = [...this.choosen_days];
     },
+    processChoosenDays(days) {
+      return days.map((day) => {
+        if (day === "понедельник") return 1;
+        if (day === "вторник") return 2;
+        if (day === "среда") return 3;
+        if (day === "четверг") return 4;
+        if (day === "пятница") return 5;
+        if (day === "суббота") return 6;
+        if (day === "воскресенье") return 0;
+      });
+    },
     saveEvent() {
       const arenaId = this.arena.id;
-
       let startDate = this.startDate;
       let startDateTime = new Date(`${startDate}T${this.time}:00`);
       let startMoment = moment(startDateTime);
@@ -324,6 +330,7 @@ export default {
         title: this.title,
         phone: "",
         type: "",
+        days: this.processChoosenDays(this.choosen_days),
         startDate: startDate,
         endDate: endDate,
         startTime: this.time,
@@ -334,7 +341,7 @@ export default {
         arenaId: arenaId,
         repeat: this.checked,
       };
-
+      console.log(event);
       axios
         .post(`/event`, event)
         .then((response) => {

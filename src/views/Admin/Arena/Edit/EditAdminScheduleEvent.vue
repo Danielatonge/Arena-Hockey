@@ -171,6 +171,7 @@
 
 <script>
 import axios from "axios";
+import moment from "moment";
 
 export default {
   props: {
@@ -195,27 +196,13 @@ export default {
       return value.slice(0, 30) + "...";
     },
   },
-  computed: {
-    events() {
-      return this.arena_events.map((event) => ({
-        name: event.title,
-        start: new Date(
-          `${event.startDate}T${event.startTime ? event.startTime : "00:00"}:00`
-        ),
-        end: new Date(
-          `${event.startDate}T${event.endTime ? event.endTime : "23:59"}:59`
-        ),
-        color: this.colors[this.rnd(0, this.colors.length - 1)],
-        timed: true,
-        description: event.description,
-      }));
-    },
-  },
   created() {
     const arenaId = this.$route.params.id;
     this.arenaId = arenaId;
     this.$store.dispatch("getArenaEvents", arenaId);
-    this.fetchArenaEvent(arenaId);
+    this.fetchArenaEvent(arenaId).then(() => {
+      this.getEvents();
+    });
   },
   data() {
     return {
@@ -229,9 +216,7 @@ export default {
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
-      date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-        .toISOString()
-        .substr(0, 10),
+      date: moment().format("YYYY-MM-DD"),
       date_picker: false,
       colors: [
         "blue",
@@ -244,10 +229,11 @@ export default {
       ],
       arenaId: "",
       arena_events: [],
+      events: [],
     };
   },
   methods: {
-    fetchArenaEvent(arenaId) {
+    async fetchArenaEvent(arenaId) {
       axios
         .get(`/arena/${arenaId}/events`)
         .then((response) => {
@@ -292,6 +278,55 @@ export default {
     },
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;
+    },
+    generateEvents(event) {
+      const selectedDays = event.days;
+      const startDate = event.startDate,
+        endDate = event.endDate,
+        startTime = event.startTime,
+        endTime = event.endTime,
+        title = event.title,
+        description = event.description;
+
+      const startMoment = moment(
+        `${startDate}T${startTime ? startTime : "00:00"}:00`
+      );
+      const endMoment = moment(`${endDate}T${endTime ? endTime : "00:00"}:00`);
+      const arr_events = [];
+      for (let i = 0; i < 7; i++) {
+        for (let j = 0; j < selectedDays.length; j++) {
+          if (Number(startMoment.day()) === selectedDays[j]) {
+            const startMomentDate = startMoment.format("YYYY-MM-DDTHH:mm:ss");
+            const beginMoment = moment(startMomentDate);
+            while (endMoment.diff(beginMoment, "weeks") !== 0) {
+              const stopInterval = beginMoment.format("YYYY-MM-DD");
+              const stopMoment = moment(
+                `${stopInterval}T${endTime ? endTime : "00:00"}:00`
+              );
+              arr_events.push({
+                name: title,
+                start: beginMoment.format("YYYY-MM-DDTHH:mm:ss"),
+                end: stopMoment.format("YYYY-MM-DDTHH:mm:ss"),
+                color: this.colors[this.rnd(0, this.colors.length - 1)],
+                timed: true,
+                description: description,
+              });
+              beginMoment.add(1, "weeks");
+            }
+            break;
+          }
+        }
+        startMoment.add(1, "days");
+      }
+      return arr_events;
+    },
+    getEvents() {
+      const events = [];
+      for (const event in this.arena_events) {
+        const nEvents = this.generateEvents(event);
+        events.push(...nEvents);
+      }
+      this.events = events;
     },
   },
 };

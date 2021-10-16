@@ -271,21 +271,9 @@ export default {
         });
       this.confirm_dialog = false;
     },
-    setPaginationLength() {
-      this.paginationLength = Math.ceil(
-        this.filteredTrainers.length / this.perPage
-      );
-    },
     removeTeam(id) {
       this.confirm_dialog = true;
       this.userId = id;
-    },
-    paginate(items) {
-      const cpage = this.page;
-      const perPage = this.perPage;
-      const from = cpage * perPage - perPage;
-      const to = cpage * perPage;
-      return items.slice(from, to);
     },
     addTrainer() {
       this.adding = true;

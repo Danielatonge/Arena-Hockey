@@ -736,6 +736,7 @@ export default {
           results: 5,
         })
         .then((res) => {
+          console.log("findCoordinate:");
           const responseLength = res.metaData.geocoder.found;
           for (let i = 0; i < responseLength; i++) {
             let geoObject = res.geoObjects.get(i);
