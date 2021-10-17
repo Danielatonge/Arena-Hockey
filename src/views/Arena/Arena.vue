@@ -9,6 +9,7 @@
               v-model="sort_by_city"
               solo
               flat
+              @change="fetchArena"
               hide-details="auto"
             ></v-select>
           </v-col>
@@ -19,6 +20,7 @@
               v-model="search"
               prepend-inner-icon="mdi-magnify"
               solo
+              @change="fetchArena"
               flat
               hide-details="auto"
               class="rounded-lg"
@@ -71,10 +73,11 @@
 
           <v-col class="d-flex" cols="6" md="4" lg="3" xl="2">
             <v-select
-              :items="sort_by_team"
+              :items="sort_order"
               v-model="sort_model"
               solo
               flat
+              @change="fetchArena"
               item-text="value"
               item-value="key"
               return-object
@@ -84,7 +87,7 @@
           </v-col>
           <v-col class="my-auto" cols="6" md="4">
             <div class="body-1 grey--text">
-              Найдено: {{ searchList.length }} результатов
+              Найдено: {{ numFound }} результатов
             </div>
           </v-col>
           <v-spacer></v-spacer>
@@ -96,7 +99,9 @@
               item-value="value"
               solo
               flat
+              return-object
               hide-details="auto"
+              @change="fetchArena"
             ></v-select>
           </v-col>
         </v-row>
@@ -107,7 +112,7 @@
           cols="12"
           md="4"
           xl="3"
-          v-for="(arena, i) in displayedArenas"
+          v-for="(arena, i) in arenas"
           :key="i"
         >
           <ArenaCard :arena="arena" />
@@ -142,7 +147,6 @@
             <v-col>
               <div class="black--text font-weight-bold">Сортировка</div>
               <v-select
-                :items="sort_by_alphabet"
                 value="По алфавиту (от А до Я)"
                 solo
                 flat
@@ -165,113 +169,65 @@
 </template>
 
 <script>
+import axios from "axios";
 import { mapState } from "vuex";
 import ArenaCard from "@/components/Arena/ArenaCard.vue";
 
 export default {
   name: "Home",
   computed: {
-    ...mapState(["list_arenas", "arena_cities"]),
-    displayedArenas() {
-      const output_list = this.searchList;
-      if (this.sort_model.key === 0) {
-        output_list.sort((item1, item2) => {
-          if (item1.title < item2.title) {
-            return -1;
-          }
-          if (item1.title > item2.title) {
-            return 1;
-          }
-          return 0;
-        });
-      } else {
-        output_list.sort((item1, item2) => {
-          if (item1.title < item2.title) {
-            return 1;
-          }
-          if (item1.title > item2.title) {
-            return -1;
-          }
-          return 0;
-        });
-      }
-      return this.paginate(output_list);
-    },
-    searchList() {
-      return this.list_arenas.filter((x) => {
-        const term = this.search.toLowerCase();
-        const city = this.sort_by_city;
-        return (
-          ((x.title ? x.title.toLowerCase().includes(term) : false) ||
-            (x.metro
-              ? x.metro.toString().toLowerCase().includes(term)
-              : false) ||
-            (x.address ? x.address.toLowerCase().includes(term) : false) ||
-            (x.courtSize ? x.courtSize === term : false)) &&
-          x.city.includes(city)
-        );
-      });
-    },
+    ...mapState(["arena_cities"]),
   },
   watch: {
-    display_item(val) {
-      this.perPage = val;
-      this.paginationLength = Math.ceil(this.searchList.length / this.perPage);
-    },
-    search() {
-      this.paginationLength = Math.ceil(this.searchList.length / this.perPage);
-    },
-    sort_model() {
-      this.paginationLength = Math.ceil(this.searchList.length / this.perPage);
-    },
-    sort_by_city() {
-      this.paginationLength = Math.ceil(this.searchList.length / this.perPage);
+    page() {
+      this.fetchArena();
     },
   },
   methods: {
+    fetchArena() {
+      const city = this.sort_by_city,
+        currentPage = this.page,
+        pageSize = this.display_item.value,
+        queryString = this.search,
+        sortBy = this.sort_model.key;
+      const url =
+        `/arena/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
+        `&queryString=${queryString}&sortBy=${sortBy}`;
+      console.log(url);
+      axios
+        .get(url)
+        .then((response) => {
+          console.log("SET_ARENAS", response.data);
+          const res = response.data;
+          this.arenas = res.content;
+          this.paginationLength = res.totalPages;
+          this.numFound = res.totalElements;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     goToMapAll() {
       this.$store
         .dispatch("displayMapAll")
         .then(() => this.$router.push({ path: "/arena/arena_maps" }));
     },
-    setPaginationLength() {
-      this.paginationLength = Math.ceil(this.searchList.length / this.perPage);
-    },
-    paginate(items) {
-      const cpage = this.page;
-      const perPage = this.perPage;
-      const from = cpage * perPage - perPage;
-      const to = cpage * perPage;
-      return items.slice(from, to);
-    },
   },
   data() {
     return {
       page: 1,
-      perPage: 9,
       search: "",
       paginationLength: 10,
+      numFound: 0,
+      arenas: [],
       display_id: 0,
       sort_by_city: "Москва",
-      team_items: [
-        "/arena_1",
-        "/arena_2",
-        "/arena_3",
-        "/arena_4",
-        "/arena_5",
-        "/arena_6",
-        "/arena_7",
-        "/arena_2",
+      sort_order: [
+        { key: 1, value: "По именни (от А до Я)" },
+        { key: 0, value: "По именни (от Я до А)" },
       ],
-      sort_by_team: [
-        { key: 0, value: "По именни (от А до Я)" },
-        { key: 1, value: "По именни (от Я до А)" },
-      ],
-      sort_model: { key: 0, value: "По именни (от А до Я)" },
-      sort_by_alphabet: [
-        { key: 0, value: "По алфавиту (от А до Я)" },
-        { key: 1, value: "По алфавиту (от Я до А)" },
-      ],
+      sort_model: { key: 1, value: "По именни (от А до Я)" },
+
       display_item: { state: "Показывать по 9", value: 9 },
       display_items: [
         { state: "Показывать по 9", value: 9 },
@@ -286,7 +242,7 @@ export default {
   created() {
     this.$store.dispatch("getAllArenas");
     this.$store.dispatch("getArenaCities");
-    this.setPaginationLength();
+    this.fetchArena();
   },
 };
 </script>

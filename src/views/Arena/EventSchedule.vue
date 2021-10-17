@@ -153,6 +153,7 @@
 
 <script>
 import { mapState } from "vuex";
+import moment from "moment";
 
 export default {
   watch: {
@@ -174,18 +175,12 @@ export default {
   computed: {
     ...mapState(["current_arena", "arena_events"]),
     events() {
-      return this.arena_events.map((event) => ({
-        name: event.title,
-        start: new Date(
-          `${event.date}T${event.startTime ? event.startTime : "00:00"}:00`
-        ),
-        end: new Date(
-          `${event.date}T${event.endTime ? event.endTime : "23:59"}:59`
-        ),
-        color: this.colors[this.rnd(0, this.colors.length - 1)],
-        timed: true,
-        description: event.description,
-      }));
+      const events = [];
+      this.arena_events.forEach((event) => {
+        const nEvents = this.generateEvents(event);
+        events.push(...nEvents);
+      });
+      return events;
     },
   },
   created() {
@@ -253,6 +248,54 @@ export default {
     },
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;
+    },
+    generateEvents(event) {
+      const selectedDays = event.days;
+      const startDate = event.startDate,
+        endDate = event.endDate,
+        startTime = event.startTime,
+        endTime = event.endTime,
+        title = event.title,
+        description = event.description,
+        repeat = event.repeat;
+      const color = this.colors[this.rnd(0, this.colors.length - 1)];
+
+      const startMoment = moment(
+        `${startDate}T${startTime ? startTime : "00:00"}:00`
+      );
+      const endMoment = moment(`${endDate}T${endTime ? endTime : "00:00"}:00`);
+      const arr_events = [];
+      for (let i = 0; i < 7; i++) {
+        for (let j = 0; j < selectedDays.length; j++) {
+          if (Number(startMoment.day()) === selectedDays[j]) {
+            const startMomentDate = startMoment.format("YYYY-MM-DDTHH:mm:ss");
+            const beginMoment = moment(startMomentDate);
+
+            while (
+              Math.ceil(endMoment.diff(beginMoment, "weeks", true)) !== 0
+            ) {
+              const stopInterval = beginMoment.format("YYYY-MM-DD");
+              const stopMoment = moment(
+                `${stopInterval}T${endTime ? endTime : "00:00"}:00`
+              );
+              arr_events.push({
+                name: title,
+                start: beginMoment.format("YYYY-MM-DDTHH:mm:ss"),
+                end: stopMoment.format("YYYY-MM-DDTHH:mm:ss"),
+                color: color,
+                timed: true,
+                description: description,
+              });
+              if (repeat === 0) break;
+              beginMoment.add(1, "weeks");
+            }
+
+            break;
+          }
+        }
+        startMoment.add(1, "days");
+      }
+      return arr_events;
     },
   },
 };

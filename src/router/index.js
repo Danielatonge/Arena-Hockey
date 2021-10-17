@@ -229,9 +229,19 @@ const routes = [
         component: EditAdminPaymentPortal,
       },
       {
+        path: "payment_portal/price_list/:serviceId",
+        name: "EditAdminPriceList",
+        component: EditAdminPriceList,
+      },
+      {
         path: "schedule_event",
         name: "EditAdminScheduleEvent",
         component: EditAdminScheduleEvent,
+      },
+      {
+        path: "schedule_event/create_event",
+        name: "CreateArenaEvent",
+        component: CreateArenaEvent,
       },
       {
         path: "team_list",
@@ -244,11 +254,6 @@ const routes = [
         component: EditAdminTrainStaff,
       },
     ],
-  },
-  {
-    path: "/admin/sport_complex/:id/create_event",
-    name: "CreateArenaEvent",
-    component: CreateArenaEvent,
   },
 
   {
@@ -275,11 +280,6 @@ const routes = [
     path: "/admin/sport_complex/management_staff/create",
     name: "CreateAdminManager",
     component: CreateAdminManager,
-  },
-  {
-    path: "/admin/sport_complex/:arenaId/payment_portal/price_list/:serviceId",
-    name: "EditAdminPriceList",
-    component: EditAdminPriceList,
   },
 ];
 

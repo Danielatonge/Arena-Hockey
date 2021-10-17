@@ -106,7 +106,7 @@
           v-model="date"
           :weekdays="weekday"
           :type="type"
-          :events="events"
+          :events="getEvents"
           :event-overlap-mode="mode"
           :event-overlap-threshold="30"
           :event-color="getEventColor"
@@ -200,9 +200,17 @@ export default {
     const arenaId = this.$route.params.id;
     this.arenaId = arenaId;
     this.$store.dispatch("getArenaEvents", arenaId);
-    this.fetchArenaEvent(arenaId).then(() => {
-      this.getEvents();
-    });
+    this.fetchArenaEvent(arenaId);
+  },
+  computed: {
+    getEvents() {
+      const events = [];
+      this.arena_events.forEach((event) => {
+        const nEvents = this.generateEvents(event);
+        events.push(...nEvents);
+      });
+      return events;
+    },
   },
   data() {
     return {
@@ -244,7 +252,7 @@ export default {
     goToAddEvent() {
       const arenaId = this.arena.id;
       this.$router.push({
-        path: `/admin/sport_complex/${arenaId}/create_event`,
+        path: `/admin/sport_complex/${arenaId}/edit/schedule_event/create_event`,
       });
     },
     intervalFormat(interval) {
@@ -286,7 +294,9 @@ export default {
         startTime = event.startTime,
         endTime = event.endTime,
         title = event.title,
-        description = event.description;
+        description = event.description,
+        repeat = event.repeat;
+      const color = this.colors[this.rnd(0, this.colors.length - 1)];
 
       const startMoment = moment(
         `${startDate}T${startTime ? startTime : "00:00"}:00`
@@ -298,7 +308,10 @@ export default {
           if (Number(startMoment.day()) === selectedDays[j]) {
             const startMomentDate = startMoment.format("YYYY-MM-DDTHH:mm:ss");
             const beginMoment = moment(startMomentDate);
-            while (endMoment.diff(beginMoment, "weeks") !== 0) {
+
+            while (
+              Math.ceil(endMoment.diff(beginMoment, "weeks", true)) !== 0
+            ) {
               const stopInterval = beginMoment.format("YYYY-MM-DD");
               const stopMoment = moment(
                 `${stopInterval}T${endTime ? endTime : "00:00"}:00`
@@ -307,26 +320,20 @@ export default {
                 name: title,
                 start: beginMoment.format("YYYY-MM-DDTHH:mm:ss"),
                 end: stopMoment.format("YYYY-MM-DDTHH:mm:ss"),
-                color: this.colors[this.rnd(0, this.colors.length - 1)],
+                color: color,
                 timed: true,
                 description: description,
               });
+              if (repeat === 0) break;
               beginMoment.add(1, "weeks");
             }
+
             break;
           }
         }
         startMoment.add(1, "days");
       }
       return arr_events;
-    },
-    getEvents() {
-      const events = [];
-      for (const event in this.arena_events) {
-        const nEvents = this.generateEvents(event);
-        events.push(...nEvents);
-      }
-      this.events = events;
     },
   },
 };

@@ -114,8 +114,17 @@
       </div>
 
       <div class="mb-4 d-flex flex-wrap">
-        <v-btn class="mr-4 mb-2 my-auto" color="grey lighten-2" elevation="0">
-          Обратить в тех. поддержку
+        <v-btn
+          @click="
+            $router.push({
+              path: `/admin/sport_complex/${arenaId}/edit/payment_portal`,
+            })
+          "
+          class="mr-4 mb-2 my-auto"
+          color="grey lighten-2"
+          elevation="0"
+        >
+          Назад
         </v-btn>
         <v-btn
           class="mr-8 mb-2 primary my-auto"
@@ -152,7 +161,7 @@ export default {
     ...mapState(["currentPL"]),
   },
   mounted() {
-    const arenaId = this.$route.params.arenaId;
+    const arenaId = this.$route.params.id;
     const serviceId = this.$route.params.serviceId;
     this.arenaId = arenaId;
     this.serviceId = serviceId;

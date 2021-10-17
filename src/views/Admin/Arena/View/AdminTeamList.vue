@@ -52,7 +52,11 @@
                 <div class="d-flex flex-no-wrap">
                   <v-avatar class="ma-3 rounded-lg" size="125" tile>
                     <v-img
-                      :src="require('@/assets' + '/team_room_1.jpg')"
+                      :src="
+                        item.team.profilePicture != null
+                          ? item.team.profilePicture
+                          : require('@/assets/team_room_1.jpg')
+                      "
                     ></v-img>
                   </v-avatar>
                   <v-card-text>
@@ -60,12 +64,14 @@
                       class="body-1 blue--text mb-2"
                       style="text-decoration: none"
                     >
-                      {{ item.city }}
+                      {{ item.team.city }}
                     </div>
-                    <div class="text-h5 mb-2">{{ item.title }}</div>
-                    <div class="body-1 grey--text">
-                      {{ item.miniDescription | descriptionLength }}
+                    <div class="text-h5 mb-2">
+                      {{ item.team.title }}
                     </div>
+                    <!-- <div class="body-1 grey--text">
+                                {{ item.team.miniDescription | descriptionLength }}
+                              </div> -->
                   </v-card-text>
                 </div>
               </v-card>
@@ -79,7 +85,11 @@
                 <div class="d-flex flex-no-wrap">
                   <v-avatar class="ma-3 rounded-lg" size="125" tile>
                     <v-img
-                      :src="require('@/assets' + '/team_room_1.jpg')"
+                      :src="
+                        item.team.profilePicture != null
+                          ? item.team.profilePicture
+                          : require('@/assets/team_room_1.jpg')
+                      "
                     ></v-img>
                   </v-avatar>
                   <v-card-text>
@@ -87,12 +97,14 @@
                       class="body-1 blue--text mb-2"
                       style="text-decoration: none"
                     >
-                      {{ item.city }}
+                      {{ item.team.city }}
                     </div>
-                    <div class="text-h5 mb-2">{{ item.title }}</div>
-                    <div class="body-1 grey--text">
-                      {{ item.miniDescription | descriptionLength }}
+                    <div class="text-h5 mb-2">
+                      {{ item.team.title }}
                     </div>
+                    <!-- <div class="body-1 grey--text">
+                                {{ item.team.miniDescription | descriptionLength }}
+                              </div> -->
                   </v-card-text>
                 </div>
               </v-card>
@@ -106,7 +118,11 @@
                 <div class="d-flex flex-no-wrap">
                   <v-avatar class="ma-3 rounded-lg" size="125" tile>
                     <v-img
-                      :src="require('@/assets' + '/team_room_1.jpg')"
+                      :src="
+                        item.team.profilePicture != null
+                          ? item.team.profilePicture
+                          : require('@/assets/team_room_1.jpg')
+                      "
                     ></v-img>
                   </v-avatar>
                   <v-card-text>
@@ -114,12 +130,14 @@
                       class="body-1 blue--text mb-2"
                       style="text-decoration: none"
                     >
-                      {{ item.city }}
+                      {{ item.team.city }}
                     </div>
-                    <div class="text-h5 mb-2">{{ item.title }}</div>
-                    <div class="body-1 grey--text">
-                      {{ item.miniDescription | descriptionLength }}
+                    <div class="text-h5 mb-2">
+                      {{ item.team.title }}
                     </div>
+                    <!-- <div class="body-1 grey--text">
+                                {{ item.team.miniDescription | descriptionLength }}
+                              </div> -->
                   </v-card-text>
                 </div>
               </v-card>
@@ -133,7 +151,11 @@
                 <div class="d-flex flex-no-wrap">
                   <v-avatar class="ma-3 rounded-lg" size="125" tile>
                     <v-img
-                      :src="require('@/assets' + '/team_room_1.jpg')"
+                      :src="
+                        item.team.profilePicture != null
+                          ? item.team.profilePicture
+                          : require('@/assets/team_room_1.jpg')
+                      "
                     ></v-img>
                   </v-avatar>
                   <v-card-text>
@@ -141,12 +163,14 @@
                       class="body-1 blue--text mb-2"
                       style="text-decoration: none"
                     >
-                      {{ item.city }}
+                      {{ item.team.city }}
                     </div>
-                    <div class="text-h5 mb-2">{{ item.title }}</div>
-                    <div class="body-1 grey--text">
-                      {{ item.miniDescription | descriptionLength }}
+                    <div class="text-h5 mb-2">
+                      {{ item.team.title }}
                     </div>
+                    <!-- <div class="body-1 grey--text">
+                                {{ item.team.miniDescription | descriptionLength }}
+                              </div> -->
                   </v-card-text>
                 </div>
               </v-card>

@@ -24,6 +24,7 @@
               solo
               flat
               hide-details="auto"
+              @change="fetchTeams"
             ></v-select>
           </v-col>
           <v-col cols="9" md="8" lg="9">
@@ -36,6 +37,7 @@
               flat
               hide-details="auto"
               class="rounded-lg"
+              @change="fetchTeams"
             ></v-text-field>
           </v-col>
           <v-col cols="3" md="2" lg="1">
@@ -63,11 +65,12 @@
               return-object
               prepend-icon="mdi-sort"
               hide-details="auto"
+              @change="fetchTeams"
             ></v-select>
           </v-col>
           <v-col class="my-auto" cols="6" md="4">
             <div class="body-1 grey--text">
-              Найдено: {{ searchListTeam.length }} результатов
+              Найдено: {{ numFoundTeam }} результатов
             </div>
           </v-col>
           <v-spacer></v-spacer>
@@ -80,12 +83,13 @@
               solo
               flat
               hide-details="auto"
+              @change="fetchTeams"
             ></v-select>
           </v-col>
         </v-row>
       </div>
       <v-row dense class="mx-n4">
-        <v-col cols="12" md="6" v-for="(item, i) in displayedTeams" :key="i">
+        <v-col cols="12" md="6" v-for="(item, i) in teams" :key="i">
           <router-link :to="`/teamname/${item.id}`" class="undo-link-default">
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
@@ -124,7 +128,7 @@
         ></v-pagination>
       </div>
     </v-container>
-    <v-container class="pt-16 pb-0" v-show="value == 1">
+    <v-container class="pt-16 pb-0" v-show="value === 1">
       <div class="pb-16">
         <v-row dense>
           <v-col class="d-flex" cols="12" md="2">
@@ -134,6 +138,7 @@
               solo
               flat
               hide-details="auto"
+              @change="fetchPlayers"
             ></v-select>
           </v-col>
           <v-col cols="9" md="8" lg="9">
@@ -146,6 +151,7 @@
               flat
               hide-details="auto"
               class="rounded-lg"
+              @change="fetchPlayers"
             ></v-text-field>
           </v-col>
           <v-col cols="3" md="2" lg="1">
@@ -165,16 +171,17 @@
           <v-col class="d-flex" cols="6" md="4" lg="3" xl="2">
             <v-select
               :items="sort_by_player"
-              value="По возрасту"
+              v-model="sort_player"
               solo
               flat
               prepend-icon="mdi-sort"
               hide-details="auto"
+              @change="fetchPlayers"
             ></v-select>
           </v-col>
           <v-col class="my-auto" cols="6" md="4">
             <div class="body-1 grey--text">
-              Найдено: {{ searchListPlayer.length }} результатов
+              Найдено: {{ numFoundPlayer }} результатов
             </div>
           </v-col>
           <v-spacer></v-spacer>
@@ -187,12 +194,13 @@
               solo
               flat
               hide-details="auto"
+              @change="fetchPlayers"
             ></v-select>
           </v-col>
         </v-row>
       </div>
       <v-row dense class="mx-n4">
-        <v-col cols="12" md="6" v-for="(item, i) in displayedPlayers" :key="i">
+        <v-col cols="12" md="6" v-for="(item, i) in players" :key="i">
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
               <v-avatar class="ma-3 rounded-lg" size="125" tile>
@@ -250,58 +258,12 @@
 
 <script>
 import { mapState } from "vuex";
+import axios from "axios";
 
 export default {
   name: "Room",
   computed: {
-    ...mapState(["teams", "players", "team_cities"]),
-    displayedTeams() {
-      let finalTeam = this.searchListTeam;
-      if (this.sort_model.key === 0) {
-        finalTeam.sort((item1, item2) => {
-          if (item1.title < item2.title) {
-            return -1;
-          }
-          if (item1.title > item2.title) {
-            return 1;
-          }
-          return 0;
-        });
-      } else {
-        finalTeam.sort(function (item1, item2) {
-          if (item1.title < item2.title) {
-            return 1;
-          }
-          if (item1.title > item2.title) {
-            return -1;
-          }
-          return 0;
-        });
-      }
-      return this.paginate(finalTeam, this.pageTeam, this.perPageTeam);
-    },
-    displayedPlayers() {
-      return this.paginate(
-        this.searchListPlayer,
-        this.pagePlayer,
-        this.perPagePlayer
-      );
-    },
-    searchListTeam() {
-      return this.teams.filter((x) => {
-        const term = this.searchTeam.toLowerCase();
-        return x.title ? x.title.toLowerCase().includes(term) : false;
-      });
-    },
-    searchListPlayer() {
-      return this.players.filter((x) => {
-        const term = this.searchPlayer.toLowerCase();
-        return (
-          (x.surname ? x.surname.toLowerCase().includes(term) : false) ||
-          (x.name ? x.name.toLowerCase().includes(term) : false)
-        );
-      });
-    },
+    ...mapState(["team_cities"]),
   },
   filters: {
     descriptionLength(value) {
@@ -310,48 +272,22 @@ export default {
     },
   },
   watch: {
-    numItemsTeam(val) {
-      this.perPageTeam = val;
-      this.paginationTeamLength = Math.ceil(
-        this.searchListTeam.length / this.perPageTeam
-      );
+    pageTeam() {
+      this.fetchTeams();
     },
-    numItemsPlayer(val) {
-      this.perPagePlayer = val;
-      this.paginationPlayerLength = Math.ceil(
-        this.searchListPlayer.length / this.perPagePlayer
-      );
-    },
-    searchTeam() {
-      this.paginationTeamLength = Math.ceil(
-        this.searchListTeam.length / this.perPageTeam
-      );
-    },
-    searchPlayer() {
-      this.paginationPlayerLength = Math.ceil(
-        this.searchListPlayer.length / this.perPagePlayer
-      );
-    },
-    sort_model() {
-      this.paginationTeamLength = Math.ceil(
-        this.searchListTeam.length / this.perPageTeam
-      );
+    pagePlayer() {
+      this.fetchPlayers();
     },
   },
   mounted() {
     this.$store.dispatch("getTeamCities");
-
-    this.$store.dispatch("getAllTeams");
-    this.$store.dispatch("getAllPlayers");
-    this.setPaginationLength("player");
-    this.setPaginationLength("team");
+    this.fetchTeams();
+    this.fetchPlayers();
   },
   data() {
     return {
       pageTeam: 1,
       pagePlayer: 1,
-      perPagePlayer: 10,
-      perPageTeam: 10,
       searchTeam: "",
       searchPlayer: "",
       paginationTeamLength: 10,
@@ -359,12 +295,9 @@ export default {
 
       player_room: false,
       team_room: true,
-      page: 1,
       value: 0,
       room_tab: null,
       room_nav: ["Команды", "Игроки"],
-      team_items: ["/team_room_1"],
-      player_items: ["/player_1"],
       team_tags: ["Москва", "Казань"],
       sort_by_city: "г. Москва",
       player_tags: [""],
@@ -372,6 +305,7 @@ export default {
       numItemsPlayer: { state: "Показывать по 10", value: 10 },
 
       sort_by_player: ["По возрасту", "По город"],
+      sort_player: "По возрасту",
       display_items: [
         { state: "Показывать по 10", value: 10 },
         { state: "Показывать по 30", value: 30 },
@@ -383,25 +317,13 @@ export default {
         { key: 0, value: "По именни (от А до Я)" },
         { key: 1, value: "По именни (от Я до А)" },
       ],
+      numFoundTeam: 0,
+      teams: [],
+      numFoundPlayer: 0,
+      players: [],
     };
   },
   methods: {
-    setPaginationLength(category) {
-      if (category === "team") {
-        this.paginationTeamLength = Math.ceil(
-          this.searchListTeam.length / this.perPageTeam
-        );
-      } else {
-        this.paginationPlayerLength = Math.ceil(
-          this.searchListPlayer.length / this.perPagePlayer
-        );
-      }
-    },
-    paginate(items, currentPage, perPage) {
-      const from = currentPage * perPage - perPage;
-      const to = currentPage * perPage;
-      return items.slice(from, to);
-    },
     showRoom() {
       this.team_room = true;
       this.player_room = false;
@@ -418,6 +340,50 @@ export default {
     },
     teamClicked() {
       this.$router.push({ path: "teamname" });
+    },
+    fetchTeams() {
+      const city = this.sort_by_city,
+        currentPage = this.pageTeam,
+        pageSize = this.numItemsTeam.value,
+        queryString = this.searchTeam,
+        sortBy = this.sort_model.key;
+      const url =
+        `/team/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
+        `&queryString=${queryString}&sortBy=${sortBy}`;
+      console.log(url);
+      axios
+        .get(url)
+        .then((response) => {
+          const res = response.data;
+          this.teams = res.content;
+          this.paginationTeamLength = res.totalPages;
+          this.numFoundTeam = res.totalElements;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    fetchPlayers() {
+      const city = this.sort_by_city,
+        currentPage = this.pagePlayer,
+        pageSize = this.numItemsPlayer.value,
+        queryString = this.searchPlayer,
+        sortBy = this.sort_player;
+      const url =
+        `/user/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
+        `&queryString=${queryString}&sortBy=${sortBy}`;
+      console.log(url);
+      axios
+        .get(url)
+        .then((response) => {
+          const res = response.data;
+          this.players = res.content;
+          this.paginationPlayerLength = res.totalPages;
+          this.numFoundPlayer = res.totalElements;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
