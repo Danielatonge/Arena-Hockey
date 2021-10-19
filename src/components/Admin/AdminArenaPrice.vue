@@ -17,14 +17,16 @@
     <v-col cols="5" md="3" class="d-flex">
       <v-text-field
         placeholder="5000 p"
-        v-model="data.HolidayPrice"
+        v-model="data.holidayPrice"
         outlined
         dense
         flat
         hide-details="auto"
         class="rounded-lg"
       ></v-text-field>
-      <v-icon class="ml-4 my-auto" @click="$emit('deleteTimeframe', position)"> mdi-close </v-icon>
+      <v-icon class="ml-4 my-auto" @click="$emit('deleteTimeframe', position)">
+        mdi-close
+      </v-icon>
     </v-col>
   </fragment>
 </template>
@@ -35,10 +37,8 @@ export default {
   data() {
     return {};
   },
-  methods: {
-  },
+  methods: {},
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -50,6 +50,8 @@ import KidsTournaments from "../views/KidsTournaments/Home.vue";
 import AdminLayoutSection from "../views/Admin/AdminLayoutSection";
 import UserProfile from "../views/Admin/User/View/UserProfile";
 import CreateArenaEvent from "../views/Admin/Arena/Create/CreateArenaEvent";
+import EditAdminService from "../views/Admin/Arena/Edit/EditAdminService";
+import CreateAdminService from "../views/Admin/Arena/Create/CreateAdminService";
 
 Vue.use(VueRouter);
 
@@ -229,10 +231,21 @@ const routes = [
         component: EditAdminPaymentPortal,
       },
       {
+        path: "payment_portal/create_service",
+        name: "CreateAdminService",
+        component: CreateAdminService,
+      },
+      {
         path: "payment_portal/price_list/:serviceId",
         name: "EditAdminPriceList",
         component: EditAdminPriceList,
       },
+      {
+        path: "payment_portal/:serviceId",
+        name: "EditAdminService",
+        component: EditAdminService,
+      },
+
       {
         path: "schedule_event",
         name: "EditAdminScheduleEvent",

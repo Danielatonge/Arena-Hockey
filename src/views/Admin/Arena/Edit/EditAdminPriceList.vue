@@ -129,7 +129,11 @@
         <v-btn
           class="mr-8 mb-2 primary my-auto"
           elevation="0"
-          @click="savePriceList"
+          @click="
+            $router.push({
+              path: `/admin/sport_complex/${arenaId}/edit/payment_portal`,
+            })
+          "
         >
           Сохранить
         </v-btn>
@@ -165,6 +169,7 @@ export default {
     const serviceId = this.$route.params.serviceId;
     this.arenaId = arenaId;
     this.serviceId = serviceId;
+    this.fetchPriceList();
   },
   data() {
     return {
@@ -229,6 +234,7 @@ export default {
         endTime: data.end,
         weekdayPrice: Number(data.weekday),
         HolidayPrice: Number(data.weekend),
+        serviceId: this.serviceId,
       };
       // this.currentPL.push(price);
       // this.dialog = false;
@@ -237,7 +243,7 @@ export default {
         .post(`/price`, price)
         .then((response) => {
           console.log("SET_PRICE", response.data);
-          this.prices.push(price);
+          this.prices.push(response.data);
           this.dialog = false;
         })
         .catch((err) => console.log(err));
@@ -248,17 +254,14 @@ export default {
         weekend: "",
       };
     },
-    savePriceList() {
-      this.$store
-        .dispatch("savePriceList", {
-          prices: this.prices,
-          serviceId: this.serviceId,
+    fetchPriceList() {
+      axios
+        .get(`/service/${this.serviceId}/prices`)
+        .then((response) => {
+          console.log("SET_PRICE", response.data);
+          this.prices = response.data;
         })
-        .then(() => {
-          this.$router.push({
-            path: `/admin/sport_complex/${this.arenaId}/payment_portal/edit`,
-          });
-        });
+        .catch((err) => console.log(err));
     },
   },
 };
