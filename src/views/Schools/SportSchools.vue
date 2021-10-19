@@ -283,6 +283,8 @@ export default {
   mounted() {
     this.$store.dispatch("getAllSchools");
     this.$store.dispatch("getSchoolAddress");
+    this.fetchCommercial();
+    this.fetchGov();
   },
   data() {
     return {
@@ -351,14 +353,14 @@ export default {
         queryString = this.searchTeam,
         sortBy = this.sort_model.key;
       const url =
-        `/team/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
-        `&queryString=${queryString}&sortBy=${sortBy}`;
+        `/school/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
+        `&queryString=${queryString}&sortBy=${sortBy}&type=COMMERCIAL`;
       console.log(url);
       axios
         .get(url)
         .then((response) => {
           const res = response.data;
-          this.teams = res.content;
+          this.schoolOne = res.content;
           this.paginationTeamLength = res.totalPages;
           this.numFoundTeam = res.totalElements;
         })
@@ -373,14 +375,14 @@ export default {
         queryString = this.searchPlayer,
         sortBy = this.sort_player;
       const url =
-        `/user/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
-        `&queryString=${queryString}&sortBy=${sortBy}`;
+        `/school/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
+        `&queryString=${queryString}&sortBy=${sortBy}&type=STATE`;
       console.log(url);
       axios
         .get(url)
         .then((response) => {
           const res = response.data;
-          this.players = res.content;
+          this.schoolTwo = res.content;
           this.paginationPlayerLength = res.totalPages;
           this.numFoundPlayer = res.totalElements;
         })

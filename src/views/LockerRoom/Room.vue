@@ -20,7 +20,7 @@
           <v-col class="d-flex" cols="12" md="2">
             <v-select
               :items="team_cities"
-              v-model="sort_by_city"
+              v-model="team_city"
               solo
               flat
               hide-details="auto"
@@ -82,6 +82,7 @@
               item-value="value"
               solo
               flat
+              return-object
               hide-details="auto"
               @change="fetchTeams"
             ></v-select>
@@ -134,7 +135,7 @@
           <v-col class="d-flex" cols="12" md="2">
             <v-select
               :items="team_tags"
-              value="Москва"
+              v-model="player_city"
               solo
               flat
               hide-details="auto"
@@ -174,6 +175,9 @@
               v-model="sort_player"
               solo
               flat
+              item-text="value"
+              item-value="key"
+              return-object
               prepend-icon="mdi-sort"
               hide-details="auto"
               @change="fetchPlayers"
@@ -193,6 +197,7 @@
               item-value="value"
               solo
               flat
+              return-object
               hide-details="auto"
               @change="fetchPlayers"
             ></v-select>
@@ -299,13 +304,16 @@ export default {
       room_tab: null,
       room_nav: ["Команды", "Игроки"],
       team_tags: ["Москва", "Казань"],
-      sort_by_city: "г. Москва",
-      player_tags: [""],
+      team_city: "г. Москва",
+      player_city: "Москва",
       numItemsTeam: { state: "Показывать по 10", value: 10 },
       numItemsPlayer: { state: "Показывать по 10", value: 10 },
 
-      sort_by_player: ["По возрасту", "По город"],
-      sort_player: "По возрасту",
+      sort_by_player: [
+        { key: 0, value: "По именни (от А до Я)" },
+        { key: 1, value: "По именни (от Я до А)" },
+      ],
+      sort_player: { key: 0, value: "По именни (от А до Я)" },
       display_items: [
         { state: "Показывать по 10", value: 10 },
         { state: "Показывать по 30", value: 30 },
@@ -342,7 +350,7 @@ export default {
       this.$router.push({ path: "teamname" });
     },
     fetchTeams() {
-      const city = this.sort_by_city,
+      const city = this.team_city,
         currentPage = this.pageTeam,
         pageSize = this.numItemsTeam.value,
         queryString = this.searchTeam,
@@ -364,18 +372,19 @@ export default {
         });
     },
     fetchPlayers() {
-      const city = this.sort_by_city,
+      const city = this.player_city,
         currentPage = this.pagePlayer,
         pageSize = this.numItemsPlayer.value,
         queryString = this.searchPlayer,
-        sortBy = this.sort_player;
+        sortBy = this.sort_player.key;
       const url =
         `/user/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
-        `&queryString=${queryString}&sortBy=${sortBy}`;
+        `&queryString=${queryString}&sortBy=${sortBy}&role=PLAYER`;
       console.log(url);
       axios
         .get(url)
         .then((response) => {
+          console.log(response.data);
           const res = response.data;
           this.players = res.content;
           this.paginationPlayerLength = res.totalPages;
