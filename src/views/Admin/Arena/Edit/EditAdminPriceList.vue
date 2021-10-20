@@ -85,6 +85,13 @@
                       v-model="timeframe.weekend"
                     ></v-text-field>
                   </div>
+                  <div class="mb-4 d-flex">
+                    <v-spacer></v-spacer>
+                    <div class="my-auto mr-2">Применить с числа:</div>
+                    <div style="width: 200px">
+                      <SelectDatePicker :date.sync="showDate" />
+                    </div>
+                  </div>
                 </v-card-text>
                 <v-card-actions class="mt-n6 mx-2">
                   <v-btn
@@ -137,18 +144,6 @@
         >
           Сохранить
         </v-btn>
-        <div class="my-auto mr-2">Применить с числа:</div>
-        <div style="width: 200px">
-          <v-select
-            dense
-            single-line
-            outlined
-            prepend-inner-icon="mdi-calendar-blank"
-            hide-details
-            class="ma-2 white d-flex"
-            label="Дата"
-          ></v-select>
-        </div>
       </div>
     </div>
   </div>
@@ -158,9 +153,11 @@
 import AdminArenaPrice from "@/components/Admin/AdminArenaPrice.vue";
 import { mapState } from "vuex";
 import axios from "axios";
+import SelectDatePicker from "@/components/AppUnit/SelectDatePicker";
+import moment from "moment";
 
 export default {
-  components: { AdminArenaPrice },
+  components: { SelectDatePicker, AdminArenaPrice },
   computed: {
     ...mapState(["currentPL"]),
   },
@@ -214,6 +211,7 @@ export default {
         },
       ],
       prices: [],
+      showDate: moment().format("YYYY-MM-DD"),
     };
   },
   methods: {
@@ -236,8 +234,6 @@ export default {
         HolidayPrice: Number(data.weekend),
         serviceId: this.serviceId,
       };
-      // this.currentPL.push(price);
-      // this.dialog = false;
       console.log(price);
       axios
         .post(`/price`, price)

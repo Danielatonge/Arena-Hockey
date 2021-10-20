@@ -9,7 +9,7 @@
 
     <v-tabs-items v-model="premises_tab" style="background-color: unset">
       <v-tab-item v-for="i in 2" :key="i">
-        <v-row dense class="mt-5" v-show="premises_tab == 0">
+        <v-row dense class="mt-5" v-show="premises_tab === 0">
           <v-col
             cols="12"
             class="mb-4"
@@ -20,7 +20,7 @@
             </ArenaPaymentCard>
           </v-col>
         </v-row>
-        <v-row dense class="mt-5" v-show="premises_tab != 0">
+        <v-row dense class="mt-5" v-show="premises_tab !== 0">
           <v-col
             cols="12"
             class="mb-2"

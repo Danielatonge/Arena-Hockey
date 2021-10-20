@@ -20,34 +20,7 @@
     <div class="text-h6 mb-4">Дата и время<i class="error--text">*</i></div>
     <v-row class="mb-4">
       <v-col class="d-flex" cols="12" md="3">
-        <v-menu
-          v-model="date_picker_start"
-          :close-on-content-click="false"
-          :nudge-right="0"
-          transition="scale-transition"
-          offset-y
-          min-width="auto"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              v-model="startDate"
-              prepend-inner-icon="mdi-calendar"
-              readonly
-              single-line
-              outlined
-              dense
-              class="rounded-lg"
-              hide-details
-              v-bind="attrs"
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker
-            v-model="startDate"
-            @input="date_picker_start = false"
-            locale="ru-RU"
-          ></v-date-picker>
-        </v-menu>
+        <SelectDatePicker :date.sync="startDate" />
       </v-col>
       <v-col class="d-flex" cols="12" md="2">
         <v-menu
@@ -98,36 +71,8 @@
         <div class="my-auto">мин</div>
       </v-col>
       <v-spacer></v-spacer>
-
       <v-col class="d-flex" cols="12" md="3">
-        <v-menu
-          v-model="date_picker_end"
-          :close-on-content-click="false"
-          :nudge-left="120"
-          transition="scale-transition"
-          offset-y
-          min-width="auto"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              v-model="endDate"
-              prepend-inner-icon="mdi-calendar"
-              readonly
-              single-line
-              outlined
-              dense
-              class="rounded-lg"
-              hide-details
-              v-bind="attrs"
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker
-            v-model="endDate"
-            @input="date_picker_end = false"
-            locale="ru-RU"
-          ></v-date-picker>
-        </v-menu>
+        <SelectDatePicker :date.sync="endDate" />
       </v-col>
       <v-col class="d-flex" cols="12" md="10">
         <v-combobox
@@ -257,9 +202,11 @@
 <script>
 import axios from "axios";
 import moment from "moment";
+import SelectDatePicker from "@/components/AppUnit/SelectDatePicker";
 
 export default {
   name: "CreateArenaEvent",
+  components: { SelectDatePicker },
   created() {
     const arenaId = this.$route.params.id;
     this.fetchArenaById(arenaId);

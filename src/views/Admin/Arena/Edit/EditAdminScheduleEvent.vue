@@ -150,19 +150,18 @@
           :key="index"
           class="mb-10 pl-5"
         >
-          <div class="grey--text lighten-3--text text-h6 mb-2">
-            {{ event.date }}
-          </div>
-          <div class="text-h6 mb-2 font-weight-bold">{{ event.title }}</div>
-          <div class="body-1 blue--text mb-2">
-            {{ event.type }}
-          </div>
-          <div class="grey--text">
-            {{ event.startTime }}
-          </div>
-          <div class="body-1 blue--text mb-2 pt-4">
-            {{ event.phone }}
-          </div>
+          <ArenaEventCard :event="event">
+            <template #edit-delete>
+              <div style="position: absolute; top: 0px; right: 24px">
+                <!--                    <v-icon class="mr-2" @click="goToEdit(item.id)">-->
+                <!--                      mdi-pencil-outline-->
+                <!--                    </v-icon>-->
+                <v-icon @click="deleteEvent(event.id)">
+                  mdi-delete-outline
+                </v-icon>
+              </div>
+            </template>
+          </ArenaEventCard>
         </div>
       </v-sheet>
     </div>
@@ -172,8 +171,10 @@
 <script>
 import axios from "axios";
 import moment from "moment";
+import ArenaEventCard from "@/components/Arena/ArenaEventCard";
 
 export default {
+  components: { ArenaEventCard },
   props: {
     arena: {
       type: Object,
@@ -334,6 +335,15 @@ export default {
         startMoment.add(1, "days");
       }
       return arr_events;
+    },
+    deleteEvent(eventId) {
+      axios
+        .delete(`/event/${eventId}`)
+        .then((response) => {
+          console.log(response.data);
+          this.arena_events = this.arena_events.filter((x) => x.id !== eventId);
+        })
+        .catch((err) => console.log(err));
     },
   },
 };

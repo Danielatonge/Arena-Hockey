@@ -94,6 +94,8 @@
 </template>
 
 <script>
+import moment from "moment";
+
 export default {
   name: "ArenaPaymentCard",
   props: {
@@ -104,6 +106,18 @@ export default {
     arenaId: {
       type: String,
       required: true,
+    },
+  },
+  computed: {
+    priceList() {
+      const now = moment();
+      const prices = this.item.price;
+      return prices.filter((x) => {
+        const priceShowDate = moment(`${x.showDate}`);
+        if (now.diff(priceShowDate) < 0) {
+          return x;
+        }
+      });
     },
   },
 };
