@@ -132,19 +132,7 @@
           :key="index"
           class="mb-10 pl-5"
         >
-          <div class="grey--text lighten-3--text text-h6 mb-2">
-            {{ event.date }}
-          </div>
-          <div class="text-h6 mb-2 font-weight-bold">{{ event.title }}</div>
-          <div class="body-1 blue--text mb-2">
-            {{ event.type }}
-          </div>
-          <div class="grey--text">
-            {{ event.startTime }}
-          </div>
-          <div class="body-1 blue--text mb-2 pt-4">
-            {{ event.phone }}
-          </div>
+          <ArenaEventCard :event="event"></ArenaEventCard>
         </div>
       </v-sheet>
     </div>
@@ -153,8 +141,10 @@
 <script>
 import { mapState } from "vuex";
 import moment from "moment";
+import ArenaEventCard from "@/components/Arena/ArenaEventCard";
 
 export default {
+  components: { ArenaEventCard },
   watch: {
     value(x) {
       if (x === 0) this.type = "day";
