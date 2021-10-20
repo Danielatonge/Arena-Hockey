@@ -119,7 +119,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <div class="text-center py-10">
+    <div class="text-center py-10" v-if="arenas.length">
       <v-pagination
         color="grey"
         v-model="page"

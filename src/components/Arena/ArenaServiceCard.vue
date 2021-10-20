@@ -2,7 +2,7 @@
   <fragment>
     <v-card color="transparent" :elevation="elevation" class="rounded-lg mb-4">
       <div class="d-flex flex-no-wrap">
-      <!-- <div class="d-flex flex-no-wrap" @click="goToService"> -->
+        <!-- <div class="d-flex flex-no-wrap" @click="goToService"> -->
         <div class="ml-0" width="282px" height="186px">
           <v-avatar class="rounded-lg" tile width="200px" height="150px">
             <v-img
@@ -26,7 +26,7 @@
               class="px-6"
               color="grey lighten-2"
               x-large
-              v-show="data.description.length"
+              v-show="data.description ? data.description.length : false"
               elevation="0"
               @click.stop="readMoreInfo = !readMoreInfo"
             >
@@ -37,10 +37,7 @@
       </div>
     </v-card>
     <v-row v-show="readMoreInfo">
-      <v-col
-        cols="8"
-        class="text-justify border"
-      >
+      <v-col cols="8" class="text-justify border">
         <div class="right-border mr-n3">
           <p class="mb-0">{{ data.description }}</p>
         </div>
@@ -83,5 +80,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -120,7 +120,7 @@
           </router-link>
         </v-col>
       </v-row>
-      <div class="text-center py-10">
+      <div class="text-center py-10" v-if="teams.length">
         <v-pagination
           color="grey"
           v-model="pageTeam"
@@ -242,7 +242,7 @@
           </v-card>
         </v-col>
       </v-row>
-      <div class="text-center py-10">
+      <div class="text-center py-10" v-if="players.length">
         <v-pagination
           color="grey"
           v-model="pagePlayer"

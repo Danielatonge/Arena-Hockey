@@ -192,27 +192,14 @@
         :total-visible="7"
       ></v-pagination>
     </div>
-    <v-container>
-      <v-row>
-        <v-col cols="12" v-for="(item, i) in items" :key="i">
-          {{ item.title }}
-        </v-col>
-      </v-row>
-    </v-container>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
-
 export default {
   name: "KidsTournaments",
-  computed: {
-    ...mapState(["items"]),
-  },
-  mounted() {
-    this.$store.dispatch("loadItems");
-  },
+  computed: {},
+  mounted() {},
   data() {
     return {
       player_room: false,
@@ -246,6 +233,8 @@ export default {
       display_items: ["Показывать по 12", "Показывать по 25"],
       birthday_from: ["от 2003", "от 2004"],
       birthday_to: ["до 2007", "до 2008"],
+      currentDay: "",
+      mode: "",
     };
   },
   methods: {

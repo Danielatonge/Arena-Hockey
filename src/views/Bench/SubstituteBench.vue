@@ -17,73 +17,19 @@
       </v-container>
     </div>
     <v-container class="pt-16 pb-0" v-show="value == 0">
-      <div class="pb-10">
-        <v-row dense>
-          <v-col class="d-flex" cols="12" md="2">
-            <v-select
-              :items="country_tags"
-              value="Россия"
-              solo
-              flat
-              hide-details="auto"
-            ></v-select>
-          </v-col>
-          <v-col cols="9" md="8" lg="9">
-            <v-text-field
-              label="Поиск"
-              single-line
-              prepend-inner-icon="mdi-magnify"
-              solo
-              flat
-              hide-details="auto"
-              class="rounded-lg"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="3" md="2" lg="1">
-            <v-btn
-              class="rounded-lg"
-              large
-              depressed
-              height="48px"
-              width="100%"
-              color="primary"
-            >
-              Найти
-            </v-btn>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col class="d-flex" cols="6" md="4" lg="3" xl="2">
-            <v-select
-              :items="sort_by_team"
-              value="Сначала новые"
-              solo
-              flat
-              prepend-icon="mdi-sort"
-              hide-details="auto"
-            ></v-select>
-          </v-col>
-          <v-col class="my-auto" cols="6" md="4">
-            <div class="body-1 grey--text">Найдено: 160 результатов</div>
-          </v-col>
-          <v-spacer></v-spacer>
-          <v-col cols="6" md="4" lg="3" xl="2">
-            <v-select
-              :items="display_items"
-              value="Показывать по 12"
-              solo
-              flat
-              hide-details="auto"
-            ></v-select>
-          </v-col>
-        </v-row>
-      </div>
+      <ForumFilter
+        :forum="pteam"
+        :location="location"
+        :sort="sort_in"
+        :display-amount="display_items"
+        :fetch-forum="fetchpteam"
+      />
       <v-row dense class="mx-n4">
         <v-col
           class="pa-4"
           cols="12"
           md="6"
-          v-for="(item, i) in teamFindPlayer"
+          v-for="(item, i) in pteam.items"
           :key="i"
         >
           <v-card elevation="0" class="pa-5 rounded-lg">
@@ -110,75 +56,26 @@
           </v-card>
         </v-col>
       </v-row>
+      <ForumPagination
+        :page="pteam.page"
+        :length="pteam.paginationLength"
+        :show="!!pteam.items.length"
+      />
     </v-container>
     <v-container class="pt-16 pb-0" v-show="value == 1">
-      <div class="pb-10">
-        <v-row dense>
-          <v-col class="d-flex" cols="12" md="2">
-            <v-select
-              :items="country_tags"
-              value="Россия"
-              solo
-              flat
-              hide-details="auto"
-            ></v-select>
-          </v-col>
-          <v-col cols="9" md="8" lg="9">
-            <v-text-field
-              label="Поиск"
-              single-line
-              prepend-inner-icon="mdi-magnify"
-              solo
-              flat
-              hide-details="auto"
-              class="rounded-lg"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="3" md="2" lg="1">
-            <v-btn
-              class="rounded-lg"
-              large
-              depressed
-              height="48px"
-              width="100%"
-              color="primary"
-            >
-              Найти
-            </v-btn>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col class="d-flex" cols="6" md="4" lg="3" xl="2">
-            <v-select
-              :items="sort_by_team"
-              value="Сначала новые"
-              solo
-              flat
-              prepend-icon="mdi-sort"
-              hide-details="auto"
-            ></v-select>
-          </v-col>
-          <v-col class="my-auto" cols="6" md="4">
-            <div class="body-1 grey--text">Найдено: 160 результатов</div>
-          </v-col>
-          <v-spacer></v-spacer>
-          <v-col cols="6" md="4" lg="3" xl="2">
-            <v-select
-              :items="display_items"
-              value="Показывать по 12"
-              solo
-              flat
-              hide-details="auto"
-            ></v-select>
-          </v-col>
-        </v-row>
-      </div>
+      <ForumFilter
+        :forum="tplayer"
+        :location="location"
+        :sort="sort_in"
+        :display-amount="display_items"
+        :fetch-forum="fetchtplayer"
+      />
       <v-row dense class="mx-n4">
         <v-col
           class="pa-4"
           cols="12"
           md="6"
-          v-for="(item, i) in teamFindPlayer"
+          v-for="(item, i) in tplayer.items"
           :key="i"
         >
           <v-card elevation="0" class="pa-5">
@@ -208,75 +105,26 @@
           </v-card>
         </v-col>
       </v-row>
+      <ForumPagination
+        :page="tplayer.page"
+        :length="tplayer.paginationLength"
+        :show="!!tplayer.items.length"
+      />
     </v-container>
     <v-container class="pt-16 pb-0" v-show="value == 2">
-      <div class="pb-10">
-        <v-row dense>
-          <v-col class="d-flex" cols="12" md="2">
-            <v-select
-              :items="country_tags"
-              value="Россия"
-              solo
-              flat
-              hide-details="auto"
-            ></v-select>
-          </v-col>
-          <v-col cols="9" md="8" lg="9">
-            <v-text-field
-              label="Поиск"
-              single-line
-              prepend-inner-icon="mdi-magnify"
-              solo
-              flat
-              hide-details="auto"
-              class="rounded-lg"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="3" md="2" lg="1">
-            <v-btn
-              class="rounded-lg"
-              large
-              depressed
-              height="48px"
-              width="100%"
-              color="primary"
-            >
-              Найти
-            </v-btn>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col class="d-flex" cols="6" md="4" lg="3" xl="2">
-            <v-select
-              :items="sort_by_team"
-              value="Сначала новые"
-              solo
-              flat
-              prepend-icon="mdi-sort"
-              hide-details="auto"
-            ></v-select>
-          </v-col>
-          <v-col class="my-auto" cols="6" md="4">
-            <div class="body-1 grey--text">Найдено: 160 результатов</div>
-          </v-col>
-          <v-spacer></v-spacer>
-          <v-col cols="6" md="4" lg="3" xl="2">
-            <v-select
-              :items="display_items"
-              value="Показывать по 12"
-              solo
-              flat
-              hide-details="auto"
-            ></v-select>
-          </v-col>
-        </v-row>
-      </div>
+      <ForumFilter
+        :forum="ttrainer"
+        :location="location"
+        :sort="sort_in"
+        :display-amount="display_items"
+        :fetch-forum="fetchttrainer"
+      />
       <v-row dense class="mx-n4">
         <v-col
           class="pa-4"
           cols="12"
           md="6"
-          v-for="(item, i) in teamFindPlayer"
+          v-for="(item, i) in ttrainer.items"
           :key="i"
         >
           <v-card elevation="0" class="pa-5">
@@ -306,75 +154,26 @@
           </v-card>
         </v-col>
       </v-row>
+      <ForumPagination
+        :page="ttrainer.page"
+        :length="ttrainer.paginationLength"
+        :show="!!ttrainer.items.length"
+      />
     </v-container>
     <v-container class="pt-16 pb-0" v-show="value == 3">
-      <div class="pb-10">
-        <v-row dense>
-          <v-col class="d-flex" cols="12" md="2">
-            <v-select
-              :items="country_tags"
-              value="Россия"
-              solo
-              flat
-              hide-details="auto"
-            ></v-select>
-          </v-col>
-          <v-col cols="9" md="8" lg="9">
-            <v-text-field
-              label="Поиск"
-              single-line
-              prepend-inner-icon="mdi-magnify"
-              solo
-              flat
-              hide-details="auto"
-              class="rounded-lg"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="3" md="2" lg="1">
-            <v-btn
-              class="rounded-lg"
-              large
-              depressed
-              height="48px"
-              width="100%"
-              color="primary"
-            >
-              Найти
-            </v-btn>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col class="d-flex" cols="6" md="4" lg="3" xl="2">
-            <v-select
-              :items="sort_by_team"
-              value="Сначала новые"
-              solo
-              flat
-              prepend-icon="mdi-sort"
-              hide-details="auto"
-            ></v-select>
-          </v-col>
-          <v-col class="my-auto" cols="6" md="4">
-            <div class="body-1 grey--text">Найдено: 160 результатов</div>
-          </v-col>
-          <v-spacer></v-spacer>
-          <v-col cols="6" md="4" lg="3" xl="2">
-            <v-select
-              :items="display_items"
-              value="Показывать по 12"
-              solo
-              flat
-              hide-details="auto"
-            ></v-select>
-          </v-col>
-        </v-row>
-      </div>
+      <ForumFilter
+        :forum="tteam"
+        :location="location"
+        :sort="sort_in"
+        :display-amount="display_items"
+        :fetch-forum="fetchtteam"
+      />
       <v-row dense class="mx-n4">
         <v-col
           class="pa-4"
           cols="12"
           md="6"
-          v-for="(item, i) in teamFindPlayer"
+          v-for="(item, i) in ttrainer.items"
           :key="i"
         >
           <v-card elevation="0" class="pa-5 rounded-lg">
@@ -401,65 +200,102 @@
           </v-card>
         </v-col>
       </v-row>
-    </v-container>
-    <div class="text-center py-10">
-      <v-pagination
-        color="grey"
-        v-model="page"
-        :length="15"
-        :total-visible="7"
-      ></v-pagination>
-    </div>
-    <v-container>
-      <v-row>
-        <v-col cols="12" v-for="(item, i) in items" :key="i">
-          {{ item.title }}
-        </v-col>
-      </v-row>
+      <ForumPagination
+        :page="tteam.page"
+        :length="tteam.paginationLength"
+        :show="!!tteam.items.length"
+      />
     </v-container>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import axios from "axios";
+import ForumFilter from "@/components/Forum/ForumFilter";
+import ForumPagination from "../../components/Forum/ForumPagination";
 
 export default {
   name: "SubstituteBench",
-  computed: {
-    ...mapState(["forums"]),
-    teamFindPlayer() {
-      return this.forums.filter((x) => x.type === "PLAYERTEAM");
+  components: { ForumPagination, ForumFilter },
+  watch: {
+    "pteam.page": () => {
+      this.fetchpteam();
     },
-    teamFindTrainer() {
-      return this.forums.filter((x) => x.type === "TEAMTRAINER");
+    "tplayer.page": () => {
+      this.fetchtplayer();
     },
-    playerFindTeam() {
-      return this.forums.filter((x) => x.type === "TEAMTRAINER");
+    "ttrainer.page": () => {
+      this.fetchttrainer();
     },
-    trainerFindTeam() {
-      return this.forums.filter((x) => x.type === "TEAMTRAINER");
+    "tteam.page": () => {
+      this.fetchtteam();
     },
   },
   created() {
     this.$store.dispatch("getForums");
+    this.fetchpteam();
+    this.fetchtplayer();
+    this.fetchttrainer();
+    this.fetchtteam();
   },
   data() {
     return {
-      player_room: false,
-      team_room: true,
-      page: 1,
       value: 0,
       bench_tab: null,
+      pteam: {
+        page: 1,
+        search: "",
+        paginationLength: 10,
+        numItems: { state: "Показывать по 10", value: 10 },
+        sort_asc: { key: 0, value: "По именни (от А до Я)" },
+        address: "Россия",
+        items: [],
+      },
+      tplayer: {
+        page: 1,
+        search: "",
+        paginationLength: 10,
+        numItems: { state: "Показывать по 10", value: 10 },
+        sort_asc: { key: 0, value: "По именни (от А до Я)" },
+        address: "Россия",
+        items: [],
+      },
+      ttrainer: {
+        page: 1,
+        search: "",
+        paginationLength: 10,
+        numItems: { state: "Показывать по 10", value: 10 },
+        sort_asc: { key: 0, value: "По именни (от А до Я)" },
+        address: "Россия",
+        items: [],
+      },
+      tteam: {
+        page: 1,
+        search: "",
+        paginationLength: 10,
+        numItems: { state: "Показывать по 10", value: 10 },
+        sort_asc: { key: 0, value: "По именни (от А до Я)" },
+        address: "Россия",
+        items: [],
+      },
+      sort_in: [
+        { key: 0, value: "По именни (от А до Я)" },
+        { key: 1, value: "По именни (от Я до А)" },
+      ],
+      location: ["Россия"],
+
       bench_nav: [
         "Игроки ищут команду",
         "Команда ищет игроков",
         "Команда ищет тренера",
         "Тренер ищет команду",
       ],
-      country_tags: ["Россия"],
-      sort_by_team: ["По популярности", "По именни", "Сначала новые"],
-      sort_by_player: ["По возрасту", "По город"],
-      display_items: ["Показывать по 12", "Показывать по 25"],
+      display_items: [
+        { state: "Показывать по 10", value: 10 },
+        { state: "Показывать по 30", value: 30 },
+        { state: "Показывать по 50", value: 50 },
+        { state: "Показывать по 100", value: 100 },
+      ],
     };
   },
   methods: {
@@ -472,6 +308,82 @@ export default {
         day: "numeric",
       });
       return formatter.format(newDate);
+    },
+    fetchpteam() {
+      const { page, search, numItems, sort_asc, address } = this.pteam;
+      const url =
+        `/forum/search?city=${address}&currentPage=${page}&pageSize=${numItems.value}` +
+        `&queryString=${search}&sortBy=${sort_asc.key}&type=PLAYERTEAM`;
+      console.log(url);
+      axios
+        .get(url)
+        .then((response) => {
+          console.log(response.data);
+          const res = response.data;
+          this.pteam.items = res.content;
+          this.pteam.paginationLength = res.totalPages;
+          this.pteam.numItems = res.totalElements;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    fetchtplayer() {
+      const { page, search, numItems, sort_asc, address } = this.tplayer;
+      const url =
+        `/forum/search?city=${address}&currentPage=${page}&pageSize=${numItems.value}` +
+        `&queryString=${search}&sortBy=${sort_asc.key}&type=TEAMPLAYER`;
+      console.log(url);
+      axios
+        .get(url)
+        .then((response) => {
+          console.log(response.data);
+          const res = response.data;
+          this.tplayer.items = res.content;
+          this.tplayer.paginationLength = res.totalPages;
+          this.tplayer.numItems = res.totalElements;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    fetchttrainer() {
+      const { page, search, numItems, sort_asc, address } = this.ttrainer;
+      const url =
+        `/forum/search?city=${address}&currentPage=${page}&pageSize=${numItems.value}` +
+        `&queryString=${search}&sortBy=${sort_asc.key}&type=TEAMTRAINER`;
+      console.log(url);
+      axios
+        .get(url)
+        .then((response) => {
+          console.log(response.data);
+          const res = response.data;
+          this.ttrainer.items = res.content;
+          this.ttrainer.paginationLength = res.totalPages;
+          this.ttrainer.numItems = res.totalElements;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    fetchtteam() {
+      const { page, search, numItems, sort_asc, address } = this.tteam;
+      const url =
+        `/forum/search?city=${address}&currentPage=${page}&pageSize=${numItems.value}` +
+        `&queryString=${search}&sortBy=${sort_asc.key}&type=TRAINERTEAM`;
+      console.log(url);
+      axios
+        .get(url)
+        .then((response) => {
+          console.log(response.data);
+          const res = response.data;
+          this.tteam.items = res.content;
+          this.tteam.paginationLength = res.totalPages;
+          this.tteam.numItems = res.totalElements;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };

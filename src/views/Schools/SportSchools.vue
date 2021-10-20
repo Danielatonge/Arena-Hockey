@@ -31,7 +31,7 @@
               label="Поиск"
               single-line
               prepend-inner-icon="mdi-magnify"
-              v-model="searchSchoolOne"
+              v-model="searchCom"
               solo
               flat
               hide-details="auto"
@@ -54,8 +54,8 @@
         <v-row>
           <v-col class="d-flex" cols="6" md="4" lg="3" xl="2">
             <v-select
-              :items="sort_by_school"
-              v-model="sort_model"
+              :items="sort_by"
+              v-model="sort_com"
               value="0"
               solo
               flat
@@ -63,29 +63,31 @@
               item-value="key"
               prepend-icon="mdi-sort"
               hide-details="auto"
+              return-object
             ></v-select>
           </v-col>
           <v-col class="my-auto" cols="6" md="4">
             <div class="body-1 grey--text">
-              Найдено: {{ numFoundSchoolOne }} результатов
+              Найдено: {{ numFoundCom }} результатов
             </div>
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="6" md="4" lg="3" xl="2">
             <v-select
               :items="display_items"
-              v-model="numItemsTeam"
+              v-model="numItemsCom"
               item-text="state"
               item-value="value"
               solo
               flat
+              return-object
               hide-details="auto"
             ></v-select>
           </v-col>
         </v-row>
       </div>
       <v-row dense class="mx-n4">
-        <v-col cols="12" md="6" v-for="(item, i) in schoolOne" :key="i">
+        <v-col cols="12" md="6" v-for="(item, i) in com" :key="i">
           <router-link :to="`/school/${item.id}`" class="undo-link-default">
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
@@ -125,11 +127,11 @@
           </router-link>
         </v-col>
       </v-row>
-      <div class="text-center py-10">
+      <div class="text-center py-10" v-if="com.length">
         <v-pagination
           color="grey"
-          v-model="pageTeam"
-          :length="paginationTeamLength"
+          v-model="pageCom"
+          :length="paginationComLength"
           :total-visible="7"
         ></v-pagination>
       </div>
@@ -144,18 +146,20 @@
               solo
               flat
               hide-details="auto"
+              @change="fetchState"
             ></v-select>
           </v-col>
           <v-col cols="9" md="8" lg="9">
             <v-text-field
               label="Поиск"
               single-line
-              v-model="searchSchoolTwo"
+              v-model="searchState"
               prepend-inner-icon="mdi-magnify"
               solo
               flat
               hide-details="auto"
               class="rounded-lg"
+              @change="fetchState"
             ></v-text-field>
           </v-col>
           <v-col cols="3" md="2" lg="1">
@@ -166,6 +170,7 @@
               height="48px"
               width="100%"
               color="primary"
+              @click="fetchState"
             >
               Найти
             </v-btn>
@@ -174,38 +179,41 @@
         <v-row>
           <v-col class="d-flex" cols="6" md="4" lg="3" xl="2">
             <v-select
-              :items="sort_by_school"
-              v-model="sort_model"
-              value="0"
+              :items="sort_by"
+              v-model="sort_state"
               solo
               flat
               item-text="value"
               item-value="key"
               prepend-icon="mdi-sort"
               hide-details="auto"
+              return-object
+              @change="fetchState"
             ></v-select>
           </v-col>
           <v-col class="my-auto" cols="6" md="4">
             <div class="body-1 grey--text">
-              Найдено: {{ numFoundSchoolTwo }} результатов
+              Найдено: {{ numFoundState }} результатов
             </div>
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="6" md="4" lg="3" xl="2">
             <v-select
               :items="display_items"
-              v-model="numItemsPlayer"
+              v-model="numItemsState"
               item-text="state"
               item-value="value"
               solo
               flat
+              return-object
               hide-details="auto"
+              @change="fetchState"
             ></v-select>
           </v-col>
         </v-row>
       </div>
       <v-row dense class="mx-n4">
-        <v-col cols="12" md="6" v-for="(item, i) in schoolTwo" :key="i">
+        <v-col cols="12" md="6" v-for="(item, i) in state" :key="i">
           <router-link :to="`/school/${item.id}`" class="undo-link-default">
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
@@ -245,11 +253,11 @@
           </router-link>
         </v-col>
       </v-row>
-      <div class="text-center py-10">
+      <div class="text-center py-10" v-if="state.length">
         <v-pagination
           color="grey"
-          v-model="pagePlayer"
-          :length="paginationPlayerLength"
+          v-model="pageState"
+          :length="paginationStateLength"
           :total-visible="7"
         ></v-pagination>
       </div>
@@ -279,24 +287,31 @@ export default {
       return value.slice(0, 30) + "...";
     },
   },
-  watch: {},
+  watch: {
+    pageState() {
+      this.fetchState();
+    },
+    pageCom() {
+      this.fetchCom();
+    },
+  },
   mounted() {
     this.$store.dispatch("getAllSchools");
     this.$store.dispatch("getSchoolAddress");
-    this.fetchCommercial();
-    this.fetchGov();
+    this.fetchCom();
+    this.fetchState();
   },
   data() {
     return {
-      pageTeam: 1,
-      pagePlayer: 1,
-      searchSchoolOne: "",
-      searchSchoolTwo: "",
-      paginationTeamLength: 10,
-      paginationPlayerLength: 10,
+      pageCom: 1,
+      pageState: 1,
+      searchCom: "",
+      searchState: "",
+      paginationComLength: 10,
+      paginationStateLength: 10,
 
-      player_room: false,
-      team_room: true,
+      state_room: false,
+      com_room: true,
       page: 1,
       value: 0,
       room_tab: null,
@@ -304,34 +319,33 @@ export default {
         "Школы дополнительной подготовки",
         "Государственные спортивные школы",
       ],
-      team_items: ["/team_room_1"],
-      player_items: ["/player_1"],
-      team_tags: ["Москва", "Казань"],
+      com_tags: ["Москва", "Казань"],
       sort_by_city: "Москва",
-      player_tags: [""],
-      numItemsTeam: { state: "Показывать по 10", value: 10 },
-      numItemsPlayer: { state: "Показывать по 10", value: 10 },
+      state_tags: [""],
+      numItemsCom: { state: "Показывать по 10", value: 10 },
+      numItemsState: { state: "Показывать по 10", value: 10 },
       display_items: [
         { state: "Показывать по 10", value: 10 },
         { state: "Показывать по 30", value: 30 },
         { state: "Показывать по 50", value: 50 },
         { state: "Показывать по 100", value: 100 },
       ],
-      sort_model: { key: 0, value: "По популярности" },
-      sort_by_school: [
-        { key: 0, value: "По популярности" },
-        { key: 1, value: "По именни" },
+      sort_com: { key: 0, value: "По именни (от А до Я)" },
+      sort_state: { key: 0, value: "По именни (от А до Я)" },
+      sort_by: [
+        { key: 0, value: "По именни (от А до Я)" },
+        { key: 1, value: "По именни (от Я до А)" },
       ],
-      numFoundSchoolOne: 0,
-      schoolOne: [],
-      numFoundSchoolTwo: 0,
-      schoolTwo: [],
+      numFoundCom: 0,
+      com: [],
+      numFoundState: 0,
+      state: [],
     };
   },
   methods: {
     showRoom() {
-      this.team_room = true;
-      this.player_room = false;
+      this.com_room = true;
+      this.state_room = false;
     },
     isValidOutput(input) {
       return input && input !== "string" ? input : null;
@@ -339,19 +353,19 @@ export default {
     isValidCityOutput(input) {
       return input && input !== "string" ? ", " + input : null;
     },
-    showPlayer() {
-      this.team_room = false;
-      this.player_room = true;
+    showState() {
+      this.com_room = false;
+      this.state_room = true;
     },
-    teamClicked() {
+    comClicked() {
       this.$router.push({ path: "school" });
     },
-    fetchCommercial() {
+    fetchCom() {
       const city = this.sort_by_city,
-        currentPage = this.pageTeam,
-        pageSize = this.numItemsTeam.value,
-        queryString = this.searchTeam,
-        sortBy = this.sort_model.key;
+        currentPage = this.pageCom,
+        pageSize = this.numItemsCom.value,
+        queryString = this.searchCom,
+        sortBy = this.sort_com.key;
       const url =
         `/school/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
         `&queryString=${queryString}&sortBy=${sortBy}&type=COMMERCIAL`;
@@ -360,20 +374,20 @@ export default {
         .get(url)
         .then((response) => {
           const res = response.data;
-          this.schoolOne = res.content;
-          this.paginationTeamLength = res.totalPages;
-          this.numFoundTeam = res.totalElements;
+          this.com = res.content;
+          this.paginationComLength = res.totalPages;
+          this.numFoundCom = res.totalElements;
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    fetchGov() {
+    fetchState() {
       const city = this.sort_by_city,
-        currentPage = this.pagePlayer,
-        pageSize = this.numItemsPlayer.value,
-        queryString = this.searchPlayer,
-        sortBy = this.sort_player;
+        currentPage = this.pageState,
+        pageSize = this.numItemsState.value,
+        queryString = this.searchState,
+        sortBy = this.sort_state.key;
       const url =
         `/school/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
         `&queryString=${queryString}&sortBy=${sortBy}&type=STATE`;
@@ -382,9 +396,9 @@ export default {
         .get(url)
         .then((response) => {
           const res = response.data;
-          this.schoolTwo = res.content;
-          this.paginationPlayerLength = res.totalPages;
-          this.numFoundPlayer = res.totalElements;
+          this.state = res.content;
+          this.paginationStateLength = res.totalPages;
+          this.numFoundState = res.totalElements;
         })
         .catch((err) => {
           console.log(err);
