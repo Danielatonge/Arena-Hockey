@@ -17,24 +17,16 @@
           {{ arenaTeam.team.city }}
         </div>
         <div class="text-h5 mb-2">{{ arenaTeam.team.title }}</div>
-        <div class="body-1 grey--text">{{ arenaTeam.team.type }}</div>
+        <div class="body-1 grey--text">
+          {{ processType(arenaTeam.team.type) }}
+        </div>
         <v-row no-gutters class="align-center">
-          <v-col cols="12" md="4" lg="7">
-            <v-btn
-              @click="removeTeam(arenaTeam.team.id)"
-              class="primary"
-              elevation="0"
-            >
-              Открепить команду
-            </v-btn>
-          </v-col>
-          <v-col>
-            <v-checkbox
-              v-model="checked"
-              @click="toggleVisibility"
-              label="Скрыть команду"
-            />
-          </v-col>
+          <slot name="button"></slot>
+          <slot
+            name="hide"
+            :checked="checked"
+            :toggle="toggleVisibility"
+          ></slot>
         </v-row>
       </v-card-text>
     </div>
@@ -61,6 +53,12 @@ export default {
     };
   },
   methods: {
+    processType(type) {
+      if (type === "ADULT") return "Взрослая";
+      if (type === "CHILDREN") return "Детская";
+      if (type === "YOUTH") return "Юношеская";
+      if (type === "FEMALE") return "Женская";
+    },
     toggleVisibility() {
       const payload = {
         arenaId: this.arenaTeam.arenaId,
@@ -76,9 +74,6 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-    },
-    removeTeam(id) {
-      this.$emit("team-remove", id);
     },
   },
 };

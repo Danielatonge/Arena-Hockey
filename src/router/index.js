@@ -52,6 +52,7 @@ import UserProfile from "../views/Admin/User/View/UserProfile";
 import CreateArenaEvent from "../views/Admin/Arena/Create/CreateArenaEvent";
 import EditAdminService from "../views/Admin/Arena/Edit/EditAdminService";
 import CreateAdminService from "../views/Admin/Arena/Create/CreateAdminService";
+import AdminTeam from "../views/Admin/Team/AdminTeam";
 
 Vue.use(VueRouter);
 
@@ -172,6 +173,11 @@ const routes = [
         path: "sport_complex",
         name: "AdminAddArenaSportComplex",
         component: AdminAddArenaSportComplex,
+      },
+      {
+        path: "teams",
+        name: "AdminTeam",
+        component: AdminTeam,
       },
     ],
   },

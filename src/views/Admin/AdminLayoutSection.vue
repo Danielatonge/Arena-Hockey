@@ -3,12 +3,7 @@
     <div class="white">
       <v-container class="pb-0">
         <v-row class="">
-          <div>
-            <v-breadcrumbs
-              :items="breadcrumb_items"
-              class="px-3"
-            ></v-breadcrumbs>
-          </div>
+          <Breadcrumb :items="breadcrumb_items" />
         </v-row>
         <v-row class="mb-4">
           <v-col cols="4" md="3" class="text-center">
@@ -60,20 +55,7 @@
       <v-container>
         <v-row>
           <v-col cols="12" md="3">
-            <v-tabs
-              vertical
-              class="pl-4 rounded-lg my-sidetabs"
-              v-model="sidebar_tab"
-            >
-              <v-tab
-                v-for="(item, i) in sidebar_items"
-                :key="i"
-                :to="item.link"
-                exact
-              >
-                {{ item.text }}
-              </v-tab>
-            </v-tabs>
+            <VerticalSidebar :items="sidebar_items" />
           </v-col>
           <v-col cols="12" md="9">
             <router-view :user="user" :loading="loading"></router-view>
@@ -87,9 +69,12 @@
 <script>
 import axios from "axios";
 import { mapState } from "vuex";
+import Breadcrumb from "@/components/AppUnit/Breadcrumb";
+import VerticalSidebar from "@/components/AppUnit/VerticalSidebar";
 
 export default {
   name: "AdminLayoutSection",
+  components: { VerticalSidebar, Breadcrumb },
   created() {
     const userId = this.userId;
     this.fetchUser(userId);
@@ -135,7 +120,7 @@ export default {
         },
         {
           text: "Мои команды",
-          link: ``,
+          link: `/admin/teams`,
         },
         { text: "Мои спортивные комплексы", link: `/admin/sport_complex` },
 

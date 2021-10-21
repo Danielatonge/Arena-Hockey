@@ -88,7 +88,28 @@
       </div>
       <v-row dense class="mx-n4">
         <v-col cols="12" v-for="(teamObj, i) in arena_teams" :key="i">
-          <AdminTeamCard :arenaTeam="teamObj" @team-remove="removeTeam" />
+          <AdminTeamCard :arenaTeam="teamObj" @team-remove="removeTeam">
+            <template #button>
+              <v-col cols="12" md="4" lg="7">
+                <v-btn
+                  @click="removeTeam(teamObj.team.id)"
+                  class="primary"
+                  elevation="0"
+                >
+                  Открепить команду
+                </v-btn>
+              </v-col>
+            </template>
+            <template #hide="{ checked, toggle }">
+              <v-col>
+                <v-checkbox
+                  value="checked"
+                  @click="toggle"
+                  label="Скрыть команду"
+                />
+              </v-col>
+            </template>
+          </AdminTeamCard>
         </v-col>
       </v-row>
     </div>
