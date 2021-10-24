@@ -93,7 +93,7 @@ export default {
   data() {
     return {
       arenaId: "",
-      serviceTypes: ["RENT", "OTHER"],
+      serviceTypes: ["RENT", "OTHER"], //["аренда", "прочее"]
       item: {
         title: "",
         description: "",
