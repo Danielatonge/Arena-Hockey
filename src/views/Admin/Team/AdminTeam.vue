@@ -10,19 +10,7 @@
     />
     <v-row dense class="mx-n4 mb-4">
       <v-col class="pa-4" cols="12" v-for="team in teamList" :key="team.id">
-        <AdminTeamCard :arena-team="team">
-          <template #button>
-            <v-col cols="12" md="4" lg="7" class="mt-3">
-              <v-btn
-                @click="removeTeam(teamObj.team.id)"
-                class="primary"
-                elevation="0"
-              >
-                Отправить заявку на вступление
-              </v-btn>
-            </v-col>
-          </template>
-        </AdminTeamCard>
+        <AdminTeamCard :arena-team="team"> </AdminTeamCard>
       </v-col>
     </v-row>
     <div class="mb-3" v-if="!teamList.length">

@@ -11,7 +11,8 @@
         </v-tabs>
       </v-row>
       <v-sheet tile height="74" class="d-flex align-center" color="#EBF5FB">
-        <div style="width: 200px" class="ml-3">
+        <v-spacer></v-spacer>
+        <div style="width: 200px" class="mx-3">
           <v-menu
             v-model="date_picker"
             :close-on-content-click="false"
@@ -40,32 +41,7 @@
             ></v-date-picker>
           </v-menu>
         </div>
-        <div style="width: 200px">
-          <v-select
-            v-model="mode"
-            :items="mode_lesson"
-            dense
-            single-line
-            outlined
-            hide-details
-            label="Все виды занятий"
-            class="ma-2 white"
-          ></v-select>
-        </div>
-        <div style="width: 200px">
-          <v-select
-            v-model="mode"
-            :items="mode_lesson"
-            dense
-            single-line
-            outlined
-            hide-details
-            label="Каток 1"
-            class="ma-2 white"
-          ></v-select>
-        </div>
 
-        <v-spacer></v-spacer>
         <!-- <v-btn class="ma-2" color="primary" elevation="0">
               Загрузить расписание
             </v-btn> -->

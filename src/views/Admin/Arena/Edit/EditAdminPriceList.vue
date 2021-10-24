@@ -233,6 +233,7 @@ export default {
         weekdayPrice: Number(data.weekday),
         HolidayPrice: Number(data.weekend),
         serviceId: this.serviceId,
+        showDate: this.showDate,
       };
       console.log(price);
       axios

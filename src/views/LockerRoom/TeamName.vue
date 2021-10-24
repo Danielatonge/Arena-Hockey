@@ -355,14 +355,14 @@ import LightBox from "vue-image-lightbox";
 export default {
   name: "TeamName",
   components: {
-    LightBox,
+    LightBox
   },
   filters: {
     descriptionLength(value) {
       if (!value) return "";
       if (value.length < 30) return value;
       return value.slice(0, 30) + "...";
-    },
+    }
   },
   computed: {
     ...mapState({ team: "current_team" }),
@@ -390,7 +390,7 @@ export default {
           const item = {
             thumb: x,
             src: x,
-            caption: "<h4></h4>",
+            caption: "<h4></h4>"
           };
           _media.push(item);
         });
@@ -402,7 +402,7 @@ export default {
     },
     defenders() {
       return this.tplayers.filter((x) => x.user.role === "Защитники");
-    },
+    }
   },
   created() {
     const teamId = this.$route.params.teamId;
@@ -414,13 +414,13 @@ export default {
       {
         text: "Список команд",
         disabled: false,
-        href: `/room`,
+        href: `/room`
       },
       {
         text: this.team.title,
         disabled: true,
-        href: "breadcrumbs_link_2",
-      },
+        href: "breadcrumbs_link_2"
+      }
     ];
     const teamItem = this.team;
 
@@ -432,7 +432,7 @@ export default {
       { icon: "mdi-music-note-outline", link: `${teamItem.tiktok}` },
       { icon: "mdi-twitter", link: `${teamItem.twitter}` },
       { icon: "mdi-youtube", link: `${teamItem.youtube}` },
-      { icon: "mdi-facebook", link: `${teamItem.facebook}` },
+      { icon: "mdi-facebook", link: `${teamItem.facebook}` }
     ];
   },
   methods: {
@@ -445,11 +445,11 @@ export default {
         weekday: "long",
         year: "numeric",
         month: "long",
-        day: "numeric",
+        day: "numeric"
       });
 
       return formatter.format(newDate);
-    },
+    }
   },
   data() {
     return {
@@ -460,9 +460,9 @@ export default {
       advert_nav: ["Команда ищет игроков", "Команда ищет тренера"],
       contact_list: null,
       readMoreInfo: false,
-      breadcrumb_items: null,
+      breadcrumb_items: null
     };
-  },
+  }
 };
 </script>
 
