@@ -8,7 +8,6 @@
 
 <script>
 export default {
-  name: "VerticalSidebar",
   props: {
     items: {
       type: Array,

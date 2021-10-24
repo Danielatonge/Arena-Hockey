@@ -39,6 +39,9 @@
             flat
             class="my-auto"
             hide-details="auto"
+            item-text="translation"
+            item-value="value"
+            return-object
           ></v-select>
         </v-col>
         <v-col cols="12">
@@ -93,12 +96,15 @@ export default {
   data() {
     return {
       arenaId: "",
-      serviceTypes: ["RENT", "OTHER"], //["аренда", "прочее"]
+      serviceTypes: [
+        { value: "RENT", translation: "Аренда" },
+        { value: "OTHER", translation: "Прочее" },
+      ],
       item: {
         title: "",
         description: "",
         type: "",
-        serviceType: "RENT",
+        serviceType: { value: "RENT", translation: "Аренда" },
         length: "",
         width: "",
       },
@@ -115,7 +121,7 @@ export default {
         arenaId: this.arenaId,
         profilePicture: this.avatar.imageURL,
         type: type,
-        serviceType: serviceType,
+        serviceType: serviceType.value,
         length: length,
         width: width,
       };
