@@ -43,18 +43,18 @@
               <v-img
                 contain
                 :src="
-                  current_arena.profilePicture != null
-                    ? current_arena.profilePicture
+                  arena.profilePicture != null
+                    ? arena.profilePicture
                     : require('@/assets/preview_arena_1.jpg')
                 "
               ></v-img>
             </v-avatar>
           </div>
           <div class="my-auto">
-            <p class="text-h4 white--text">{{ current_arena.title }}</p>
+            <p class="text-h4 white--text">{{ arena.title }}</p>
             <p class="white--text">
               <v-icon color="white">mdi-map-marker-outline</v-icon>
-              {{ current_arena.address }}
+              {{ arena.address }}
             </p>
           </div>
         </div>
@@ -90,8 +90,14 @@
 import { mapState } from "vuex";
 
 export default {
+  props: {
+    arenaId: {
+      type: String,
+      required: true,
+    },
+  },
   computed: {
-    ...mapState(["current_arena"]),
+    ...mapState("arena", ["arena"]),
     valid_contact_list() {
       return this.contact_list.filter((x) => {
         if (x.link !== "null") {
@@ -101,30 +107,25 @@ export default {
     },
   },
   created() {
-    const arenaId = this.$route.params.id;
-    this.$store.dispatch("getArenaGivenID", arenaId);
-    this.$store.dispatch("getArenaServices", arenaId);
-    this.$store.dispatch("getArenaTeams", arenaId);
-    this.$store.dispatch("getArenaTrainers", arenaId);
-
+    this.$store.dispatch("arena/getArena", this.arenaId);
     this.sidebar_items = [
-      { text: "Информация", link: `/arena/${arenaId}/information` },
+      { text: "Информация", link: `/arena/${this.arenaId}` },
       {
         text: "Платные услуги",
-        link: `/arena/${arenaId}/payment_portal`,
+        link: `/arena/${this.arenaId}/payment_portal`,
       },
       {
         text: "Расписание мероприятий",
-        link: `/arena/${arenaId}/event_schedule`,
+        link: `/arena/${this.arenaId}/event_schedule`,
       },
-      { text: "Список команд", link: `/arena/${arenaId}/list_teams` },
+      { text: "Список команд", link: `/arena/${this.arenaId}/list_teams` },
       {
         text: "Тренерский состав",
-        link: `/arena/${arenaId}/training_staff`,
+        link: `/arena/${this.arenaId}/training_staff`,
       },
     ];
 
-    const arenaItem = this.current_arena;
+    const arenaItem = this.arena;
     this.contact_list = [
       { icon: "mdi-whatsapp", link: `${arenaItem.whatsApp}` },
       { icon: "mdi-instagram", link: `${arenaItem.instagram}` },
@@ -138,14 +139,13 @@ export default {
 
     this.breadcrumb_items = [
       {
-        text: "Москва",
+        text: "Ледовые дворцы и арены",
         disabled: false,
-        href: "/",
+        href: "/arena",
       },
       {
         text: `${arenaItem.title}`,
         disabled: true,
-        href: "/arena/id",
       },
     ];
   },

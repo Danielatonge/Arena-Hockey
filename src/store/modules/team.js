@@ -86,6 +86,15 @@ export const actions = {
       })
       .catch((err) => console.log(err));
   },
+  getForums({ commit }, teamId) {
+    return api
+      .getForums(teamId)
+      .then((response) => {
+        commit("SET_FORUMS", response.data);
+        return response.data;
+      })
+      .catch((err) => console.log(err));
+  },
 };
 
 export const getters = {};

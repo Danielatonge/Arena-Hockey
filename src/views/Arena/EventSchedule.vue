@@ -111,6 +111,12 @@ import ArenaEventCard from "@/components/Arena/ArenaEventCard";
 
 export default {
   components: { ArenaEventCard },
+  props: {
+    arenaId: {
+      type: String,
+      required: true,
+    },
+  },
   watch: {
     value(x) {
       if (x === 0) this.type = "day";
@@ -139,9 +145,7 @@ export default {
     },
   },
   created() {
-    const arenaId = this.$route.params.id;
-    this.arenaId = arenaId;
-    this.$store.dispatch("getArenaEvents", arenaId);
+    this.$store.dispatch("arena/getEvents", this.arenaId);
   },
   data() {
     return {
@@ -168,7 +172,6 @@ export default {
         "orange",
         "grey lighten-1",
       ],
-      arenaId: "",
     };
   },
   methods: {

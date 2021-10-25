@@ -185,6 +185,12 @@
 <script>
 import { mapState } from "vuex";
 export default {
+  props: {
+    arenaId: {
+      type: String,
+      required: true,
+    },
+  },
   computed: {
     ...mapState(["current_arena"]),
     ...mapState(["teams"]),
@@ -211,13 +217,11 @@ export default {
     },
   },
   created() {
-    const arenaId = this.$route.params.id;
-    this.arenaId = arenaId;
+    this.$store.dispatch("arena/getTeams", this.arenaId);
   },
   data() {
     return {
       name: "ArenaTeamList",
-      arenaId: null,
       premises_tab: null,
       premises_nav: [
         "Все команды",

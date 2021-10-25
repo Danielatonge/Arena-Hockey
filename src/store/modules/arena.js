@@ -15,6 +15,8 @@ export const state = () => ({
   pricelist: [],
   selected_arenas: [],
   selected_events: [],
+  paginationLength: 10,
+  numFound: 0,
 });
 
 export const getters = {
@@ -25,7 +27,7 @@ export const getters = {
     return state.services.filter((x) => x.serviceType === "RENT");
   },
   otherServices(state) {
-    return state.services.filter((x) => x.serviceType !== "RENT");
+    return state.services.filter((x) => x.serviceType === "OTHER");
   },
 };
 
@@ -87,14 +89,27 @@ export const mutations = {
       lat && lan ? lat.toString() + ", " + lan.toString() : "55.55,37.32";
     state.map = { id, address, coords, title, city };
   },
+  SET_PAGINATION(state, plength) {
+    state.paginationLength = plength;
+  },
+  SET_NUMFOUND(state, numFound) {
+    state.numFound = numFound;
+  },
 };
 
 export const actions = {
-  getArenas({ commit }) {
-    api
-      .getArenas()
+  getArenas({ commit }, filters) {
+    return api
+      .getArenas(filters)
       .then((response) => {
-        commit("SET_ARENAS", response.data);
+        const res = response.data;
+        commit("SET_ARENAS", res.content);
+        commit("SET_PAGINATION", res.totalPages);
+        commit("SET_NUMFOUND", res.totalElements);
+        return {
+          paginationLength: res.totalPages,
+          numFound: res.totalElements,
+        };
       })
       .catch((err) => {
         console.log(err);
@@ -117,13 +132,10 @@ export const actions = {
   showArenasOnMap({ commit }, arenas) {
     commit("SET_MAPS", arenas);
   },
-  getServices({ commit }, arenaId) {
-    api
-      .getServices(arenaId)
-      .then((response) => {
-        commit("SET_SERVICES", response.data);
-      })
-      .catch((err) => console.log(err));
+  getServices({ dispatch }, arenaId) {
+    dispatch("fetchServices", arenaId).then((services) => {
+      dispatch("fetchServicePriceList", services);
+    });
   },
   getTrainers({ commit }, arenaId) {
     api
@@ -151,12 +163,76 @@ export const actions = {
       .catch((err) => console.log(err));
   },
   getCities({ commit }) {
-    return api
+    api
       .getCities()
       .then((response) => {
         commit("SET_CITIES", response.data);
-        return response.data;
       })
       .catch((err) => console.log(err));
+  },
+  getEventsFromSelectedArenas({ commit, state }) {
+    let eventList = [];
+    state.selected_arenas.forEach((x) => {
+      eventList.push(
+        new Promise((resolve, reject) => {
+          api
+            .getEvents(x.id)
+
+            .then((response) => {
+              resolve(response.data);
+            })
+            .catch((err) => {
+              console.log(err);
+              reject(err);
+            });
+        })
+      );
+    });
+    Promise.all(eventList).then((response) => {
+      commit("SET_SELECTED_EVENTS", response);
+    });
+  },
+  addToSelectedArenas({ commit }, arena) {
+    commit("ADD_TO_SELECTED_ARENAS", arena);
+  },
+  removeFromSelectedArenas({ commit }, arena) {
+    commit("REMOVE_FROM_SELECTED_ARENAS", arena);
+  },
+  removeFromSelectedEvents({ commit }, index) {
+    commit("REMOVE_FROM_SELECTED_EVENTS", index);
+  },
+  fetchServices(_context, arenaId) {
+    return new Promise((resolve, reject) => {
+      api
+        .getServices(arenaId)
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((err) => reject(err));
+    });
+  },
+  fetchServicePriceList({ commit }, serviceList) {
+    let priceList = [];
+    let final = [];
+    serviceList.forEach((x) => {
+      priceList.push(
+        api
+          .getPrices(x.id)
+          .then((response) => {
+            let nItem = {
+              ...x,
+              price: response.data,
+            };
+            final.push(nItem);
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+      );
+    });
+
+    Promise.all(priceList).then(() => {
+      commit("SET_SERVICES", final);
+    });
   },
 };

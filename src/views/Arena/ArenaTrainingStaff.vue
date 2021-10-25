@@ -133,6 +133,12 @@
 import { mapState } from "vuex";
 
 export default {
+  props: {
+    arenaId: {
+      type: String,
+      required: true,
+    },
+  },
   filters: {
     descriptionLength(value) {
       if (!value) return "";
@@ -143,8 +149,8 @@ export default {
     },
   },
   computed: {
-    ...mapState(["trainers"]),
-    ...mapState(["current_arena"]),
+    ...mapState("arena", ["trainers"]),
+    ...mapState("arena", ["arena"]),
     kid_trainers() {
       return this.trainers.filter((x) => x.level === "KID");
     },
@@ -156,14 +162,11 @@ export default {
     },
   },
   created() {
-    const arenaId = this.$route.params.id;
-    this.arenaId = arenaId;
-    this.$store.dispatch("getArenaTrainers", arenaId);
+    this.$store.dispatch("arena/getTrainers", this.arenaId);
   },
   data() {
     return {
       name: "ArenaTeamList",
-      arenaId: null,
       premises_tab: null,
       premises_nav: [
         "Все тренеры",

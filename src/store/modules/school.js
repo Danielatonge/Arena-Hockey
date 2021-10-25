@@ -1,3 +1,5 @@
+import { apiSchool as api } from "@/service";
+
 export const namespaced = true;
 
 export const state = () => ({
@@ -14,6 +16,24 @@ export const mutations = {
   },
 };
 
-export const actions = {};
+export const actions = {
+  getSchools({ commit }) {
+    api
+      .getSchools()
+      .then((response) => {
+        commit("SET_SCHOOLS", response.data);
+      })
+      .catch((err) => console.log(err));
+  },
+  getCities({ commit }) {
+    return api
+      .getCities()
+      .then((response) => {
+        commit("SET_CITIES", response.data);
+        return response.data;
+      })
+      .catch((err) => console.log(err));
+  },
+};
 
 export const getters = {};

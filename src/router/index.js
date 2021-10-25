@@ -83,35 +83,40 @@ const routes = [
     component: EventScheduleAll,
   },
   {
-    path: "/arena/:id/",
-    name: "arena-name",
+    path: "/arena/:arenaId",
     component: ArenaName,
+    props: true,
     children: [
       {
-        path: "information",
+        path: "",
         name: "arena-information",
         component: ArenaInformation,
+        props: true,
       },
       {
         path: "payment_portal",
         name: "payment-portal",
         component: PaymentPortal,
+        props: true,
       },
 
       {
         path: "list_teams",
         name: "arena-team-list",
         component: ArenaTeamList,
+        props: true,
       },
       {
         path: "training_staff",
         name: "arena-training-staff",
         component: ArenaTrainingStaff,
+        props: true,
       },
       {
         path: "event_schedule",
         name: "event-schedule",
         component: EventSchedule,
+        props: true,
       },
       {
         path: "leadership",

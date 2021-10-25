@@ -11,8 +11,12 @@ const apiClient = axios.create({
 });
 
 export const apiArena = {
-  getArenas() {
-    return apiClient.get(`/arenas`);
+  getArenas({ city, currentPage, pageSize, queryString, sortBy }) {
+    const url =
+      `/arena/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
+      `&queryString=${queryString}&sortBy=${sortBy}`;
+    // console.log(url);
+    return apiClient.get(url);
   },
   getArena(id) {
     return apiClient.get(`/arena/${id}`);
@@ -35,6 +39,9 @@ export const apiArena = {
   getCities() {
     return apiClient.get(`/arena/cities`);
   },
+  getPrices(serviceId){
+    return apiClient.get(`/service/${serviceId}/prices`)
+  }
 };
 
 export const apiTeam = {
@@ -66,6 +73,9 @@ export const apiUser = {};
 export const apiForum = {
   getForums() {
     return apiClient.get(`/forums`);
+  },
+  getCities() {
+    return apiClient.get(`/forums/cities`);
   },
 };
 

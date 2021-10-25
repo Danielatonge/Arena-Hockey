@@ -13,7 +13,7 @@
           <v-col
             cols="12"
             class="mb-4"
-            v-for="(item, i) in rentedService"
+            v-for="(item, i) in rentServices"
             :key="i"
           >
             <ArenaPaymentCard :item="item" :arenaId="arenaId">
@@ -58,7 +58,7 @@
           <v-col
             cols="12"
             class="mb-2"
-            v-for="(item, i) in otherService"
+            v-for="(item, i) in otherServices"
             :key="i"
           >
             <ArenaServiceCard
@@ -75,20 +75,23 @@
 <script>
 import ArenaServiceCard from "@/components/Arena/ArenaServiceCard";
 import ArenaPaymentCard from "@/components/Arena/ArenaPaymentCard";
-import axios from "axios";
+import { mapState, mapGetters } from "vuex";
 
 export default {
+  props: {
+    arenaId: {
+      type: String,
+      required: true,
+    },
+  },
   components: {
     ArenaServiceCard,
     ArenaPaymentCard,
   },
   computed: {
-    rentedService() {
-      return this.services.filter((x) => x.serviceType === "RENT");
-    },
-    otherService() {
-      return this.services.filter((x) => x.serviceType === "OTHER");
-    },
+    ...mapState("arena", ["services"]),
+    ...mapGetters("arena", ["rentServices", "otherServices"])
+  
   },
   filters: {
     descriptionLength(value) {
@@ -100,59 +103,15 @@ export default {
     },
   },
   created() {
-    const arenaId = this.$route.params.id;
-    this.arenaId = arenaId;
-
-    this.fetchArenaServices(this.arenaId).then((services) => {
-      this.fetchServicePriceList(services);
-    });
+    this.$store.dispatch("arena/getServices", this.arenaId);
   },
-  name: "PaymentPortal",
   data() {
     return {
       premises_tab: null,
       premises_nav: ["аренда", "прочее"],
-      arenaId: "",
-      services: [],
     };
   },
-  methods: {
-    async fetchArenaServices(arenaId) {
-      return new Promise((resolve, reject) => {
-        axios
-          .get(`/arena/${arenaId}/services`)
-          .then((response) => {
-            resolve(response.data);
-          })
-          .catch((err) => reject(err));
-      });
-    },
-    async fetchServicePriceList(serviceList) {
-      let priceList = [];
-      let final = [];
-      serviceList.forEach((x) => {
-        priceList.push(
-          axios
-            .get(`/service/${x.id}/prices`)
-            .then((response) => {
-              let nItem = {
-                ...x,
-                price: response.data,
-              };
-              final.push(nItem);
-            })
-            .catch((err) => {
-              console.log(err);
-            })
-        );
-      });
-
-      Promise.all(priceList).then(() => {
-        this.services = final;
-        console.log(this.services);
-      });
-    },
-  },
+  methods: {},
 };
 </script>
 
