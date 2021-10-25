@@ -113,7 +113,8 @@ export default {
       const prices = this.item.price;
       console.log(prices);
       return prices.filter((x) => {
-        const priceShowDate = moment(`${x.showDate}`);
+        const showDate = x.showDate ? x.showDate : "";
+        const priceShowDate = moment(showDate);
         if (priceShowDate.diff(now, "days") < 0) {
           return x;
         }

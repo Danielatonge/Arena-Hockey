@@ -149,8 +149,9 @@ export default {
     },
   },
   computed: {
-    ...mapState("arena", ["trainers"]),
-    ...mapState("arena", ["arena"]),
+    ...mapState({
+      trainers: (state) => state.arena.trainers.map((user) => user.user),
+    }),
     kid_trainers() {
       return this.trainers.filter((x) => x.level === "KID");
     },
@@ -166,7 +167,6 @@ export default {
   },
   data() {
     return {
-      name: "ArenaTeamList",
       premises_tab: null,
       premises_nav: [
         "Все тренеры",
@@ -174,7 +174,6 @@ export default {
         "Юношеские тренеры",
         "Женские тренеры",
       ],
-      player_items: ["/player_1", "/player_2", "/player_3"],
     };
   },
   methods: {

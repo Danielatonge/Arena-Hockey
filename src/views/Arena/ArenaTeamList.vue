@@ -192,8 +192,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["current_arena"]),
-    ...mapState(["teams"]),
+    ...mapState("arena", ["teams"]),
     children_team() {
       return this.teams.filter((x) => x.team.type == "CHILDREN");
     },
@@ -221,7 +220,6 @@ export default {
   },
   data() {
     return {
-      name: "ArenaTeamList",
       premises_tab: null,
       premises_nav: [
         "Все команды",

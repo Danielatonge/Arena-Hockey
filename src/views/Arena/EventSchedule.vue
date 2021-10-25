@@ -53,7 +53,7 @@
           v-model="date"
           :weekdays="weekday"
           :type="type"
-          :events="events"
+          :events="fevents"
           :event-overlap-mode="mode"
           :event-overlap-threshold="30"
           :event-color="getEventColor"
@@ -83,17 +83,14 @@
             </v-card-actions>
           </v-card>
         </v-menu>
-        <div
-          v-show="value === 3 && arena_events.length === 0"
-          class="text-center"
-        >
+        <div v-show="value === 3 && fevents.length === 0" class="text-center">
           <h3 class="grey--text lighten-3--text text-h6 mb-2">
             Нет мероприятий
           </h3>
         </div>
         <div
           v-show="value === 3"
-          v-for="(event, index) in arena_events"
+          v-for="(event, index) in events"
           :key="index"
           class="mb-10 pl-5"
         >
@@ -134,14 +131,14 @@ export default {
     },
   },
   computed: {
-    ...mapState(["current_arena", "arena_events"]),
-    events() {
-      const events = [];
-      this.arena_events.forEach((event) => {
+    ...mapState("arena", ["events"]),
+    fevents() {
+      const ievents = [];
+      this.events.forEach((event) => {
         const nEvents = this.generateEvents(event);
-        events.push(...nEvents);
+        ievents.push(...nEvents);
       });
-      return events;
+      return ievents;
     },
   },
   created() {
@@ -159,9 +156,7 @@ export default {
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
-      date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-        .toISOString()
-        .substr(0, 10),
+      date: moment().format("YYYY-MM-DD"),
       date_picker: false,
       colors: [
         "blue",
