@@ -125,10 +125,10 @@ export default {
     },
     goToMapAll() {
       this.$store
-        .dispatch("displayMapAll")
-        .then(() => this.$router.push({ path: "/arena_maps" }));
+        .dispatch("arena/showArenasOnMap")
+        .then(() => this.$router.push({ name: 'arena-map-all'}));
     },
-    fetchArenaByUserId(userId) {
+    fetchArenaByUserId(userId) { //TODO : Take to vuex store
       return new Promise((resolve) => {
         axios
           .get(`/user/${userId}/arenas`)

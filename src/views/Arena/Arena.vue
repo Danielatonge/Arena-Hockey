@@ -45,7 +45,7 @@
               depressed
               height="48px"
               width="100%"
-              @click="$router.push({ path: '/event_schedule_all' })"
+              @click="$router.push({ name: 'event_schedule_all' })"
             >
               Расписание мероприятий
             </v-btn>
@@ -231,8 +231,8 @@ export default {
   },
   components: { ArenaCard },
   created() {
-    this.fetchArena();
     this.$store.dispatch("arena/getCities");
+    this.fetchArena();
   },
 };
 </script>

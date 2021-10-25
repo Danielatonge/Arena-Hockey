@@ -44,7 +44,8 @@
                 elevation="0"
                 @click="
                   $router.push({
-                    path: `/admin/sport_complex/${arenaId}/edit/schedule_event`,
+                    name: 'edit-admin-schedule-event',
+                    params: { arenaId },
                   })
                 "
               >

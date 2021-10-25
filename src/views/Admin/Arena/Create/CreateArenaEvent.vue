@@ -292,7 +292,8 @@ export default {
         .then((response) => {
           console.log(response.data);
           this.$router.push({
-            path: `/admin/sport_complex/${arenaId}/edit/schedule_event`,
+            name: "edit-admin-schedule-event",
+            params: { arenaId },
           });
         })
         .catch((err) => console.log(err));

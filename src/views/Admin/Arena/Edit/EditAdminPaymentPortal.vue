@@ -17,7 +17,8 @@
           large
           @click="
             $router.push({
-              path: `/admin/sport_complex/${arenaId}/edit/payment_portal/create_service`,
+              name: 'create-admin-service',
+              params: { arenaId },
             })
           "
         >
@@ -149,13 +150,14 @@ export default {
     goToModifyList(service) {
       this.$store.dispatch("setCurrentPL", service.price);
       this.$router.push({
-        path: `/admin/sport_complex/${this.arenaId}/edit/payment_portal/price_list/${service.id}`,
+        name: "edit-admin-pricelist",
+        params: { arenaId: this.arenaId, serviceId: service.id },
       });
     },
     async fetchArenaServices(arenaId) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`/arena/${arenaId}/services`)
+          .get(`/arena/${arenaId}/services`) // TODO : transfer to vuex
           .then((response) => {
             resolve(response.data);
           })
@@ -188,12 +190,13 @@ export default {
     },
     goToEdit(serviceId) {
       this.$router.push({
-        path: `/admin/sport_complex/${this.arenaId}/edit/payment_portal/${serviceId}`,
+        name: "edit-admin-service",
+        params: { arenaId: this.arenaId, serviceId },
       });
     },
     deleteService(serviceId) {
       axios
-        .delete(`/service/${serviceId}`)
+        .delete(`/service/${serviceId}`) //TODO: Vuex store
         .then((response) => {
           console.log(response.data);
           this.services = this.services.filter((x) => x.id !== serviceId);

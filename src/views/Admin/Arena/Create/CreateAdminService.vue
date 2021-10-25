@@ -71,7 +71,8 @@
         elevation="0"
         @click="
           $router.push({
-            path: `/admin/sport_complex/${arenaId}/edit/payment_portal`,
+            name: 'edit-admin-payment-portal',
+            params: { arenaId },
           })
         "
       >
@@ -131,7 +132,8 @@ export default {
         .then((response) => {
           console.log(response.data);
           this.$router.push({
-            path: `/admin/sport_complex/${this.arenaId}/edit/payment_portal`,
+            name: "edit-admin-payment-portal",
+            params: { arenaId: this.arenaId },
           });
         })
         .catch((err) => console.log(err));

@@ -129,11 +129,13 @@ const routes = [
     path: "/arena/:arenaId/event_schedule/:serviceId",
     name: "katok-schedule-book",
     component: KatokScheduleBook,
+    props: true,
   },
   {
     path: "/arena/:arenaId/service/:serviceId",
     name: "arena-premises",
     component: ArenaPremises,
+    props: true,
   },
   {
     path: "/join_team",
@@ -154,6 +156,7 @@ const routes = [
     path: "/teamname/:teamId",
     name: "team-name",
     component: TeamName,
+    props: true,
   },
   {
     path: "/book_room",
@@ -192,90 +195,105 @@ const routes = [
     component: CreateComplexInformation,
   },
   {
-    path: "/admin/sport_complex/:id",
+    path: "/admin/sport_complex/:arenaId",
     component: NameComplex,
     children: [
       {
         path: "",
         name: "complex-information",
         component: ComplexInformation,
+        props: true,
       },
       {
         path: "payment_portal",
         name: "admin-payment-portal",
         component: AdminPaymentPortal,
+        props: true,
       },
       {
         path: "schedule_event",
         name: "admin-schedule-event",
         component: AdminScheduleEvent,
+        props: true,
       },
       {
         path: "team_list",
         name: "admin-team-list",
         component: AdminTeamList,
+        props: true,
       },
       {
         path: "training_staff",
         name: "admin-train-staff",
         component: AdminTrainStaff,
+        props: true,
       },
       {
         path: "management_staff",
         name: "admin-manager",
         component: AdminManager,
+        props: true,
       },
     ],
   },
   {
-    path: "/admin/sport_complex/:id/edit",
+    path: "/admin/sport_complex/:arenaId/edit",
     component: EditNameComplex,
     children: [
       {
         path: "",
         name: "edit-complex-information",
         component: EditComplexInformation,
+        props: true,
       },
       {
         path: "payment_portal",
         name: "edit-admin-payment-portal",
         component: EditAdminPaymentPortal,
+        props: true,
       },
       {
         path: "payment_portal/create_service",
         name: "create-admin-service",
         component: CreateAdminService,
+        props: true,
       },
       {
         path: "payment_portal/price_list/:serviceId",
         name: "edit-admin-pricelist",
         component: EditAdminPriceList,
+        props: true,
       },
       {
         path: "payment_portal/:serviceId",
         name: "edit-admin-service",
         component: EditAdminService,
+        props: true,
       },
 
       {
         path: "schedule_event",
         name: "edit-admin-schedule-event",
         component: EditAdminScheduleEvent,
+        props: true,
       },
       {
         path: "schedule_event/create_event",
         name: "create-arena-event",
         component: CreateArenaEvent,
+        props: true,
       },
       {
         path: "team_list",
         name: "edit-admin-teamlist",
         component: EditAdminTeamList,
+        props: true,
       },
       {
         path: "training_staff",
         name: "edit-admin-train-staff",
         component: EditAdminTrainStaff,
+        props: true,
       },
     ],
   },

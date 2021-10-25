@@ -124,7 +124,8 @@
         <v-btn
           @click="
             $router.push({
-              path: `/admin/sport_complex/${arenaId}/edit/payment_portal`,
+              name: 'edit-admin-payment-portal',
+              params: { arenaId },
             })
           "
           class="mr-4 mb-2 my-auto"
@@ -138,7 +139,8 @@
           elevation="0"
           @click="
             $router.push({
-              path: `/admin/sport_complex/${arenaId}/edit/payment_portal`,
+              name: 'edit-admin-payment-portal',
+              params: { arenaId },
             })
           "
         >
@@ -252,7 +254,7 @@ export default {
     },
     fetchPriceList() {
       axios
-        .get(`/service/${this.serviceId}/prices`)
+        .get(`/service/${this.serviceId}/prices`) //TODO refactore
         .then((response) => {
           console.log("SET_PRICE", response.data);
           this.prices = response.data;

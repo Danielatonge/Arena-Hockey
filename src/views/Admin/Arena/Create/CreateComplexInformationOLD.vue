@@ -694,7 +694,14 @@ export default {
   },
   data() {
     return {
-      arena: { fullTitle: "", shortTitle: '', description: "", tags: [], address: "", route: "" },
+      arena: {
+        fullTitle: "",
+        shortTitle: "",
+        description: "",
+        tags: [],
+        address: "",
+        route: "",
+      },
       avatar: null,
       saving: false,
       saved: false,
@@ -949,13 +956,14 @@ export default {
         gallery: ["string"],
       };
       axios
-        .post(`/arena`, data)
+        .post(`/arena`, data) // TODO refactor
         .then((response) => {
           const arena = response.data;
           console.log(arena);
           this.$store.dispatch("setCurrentArena", arena).then(() => {
             this.$router.push({
-              path: `/admin/sport_complex/${arena.id}`,
+              name: "complex-information",
+              params: { arenaId: arena.id },
             });
           });
         })

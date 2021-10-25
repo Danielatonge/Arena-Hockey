@@ -69,14 +69,17 @@ export default {
   },
   methods: {
     goToAdminArena() {
-      this.$store.dispatch("setCurrentArena", this.arena);
+      this.$store.dispatch("arena/setArena", this.arena);
       const arenaId = this.arena.id;
-      this.$router.push({ path: `/admin/sport_complex/${arenaId}` });
+      this.$router.push({ name: "complex-information", params: { arenaId } });
     },
     goToAdminArenaEdit() {
-      this.$store.dispatch("setCurrentArena", this.arena);
+      this.$store.dispatch("arena/setArena", this.arena);
       const arenaId = this.arena.id;
-      this.$router.push({ path: `/admin/sport_complex/${arenaId}/edit` });
+      this.$router.push({
+        name: "edit-complex-information",
+        params: { arenaId },
+      });
     },
     selectToggle() {
       const arenaId = this.arena.id;
@@ -95,7 +98,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["arenasMapIdentifier"]),
+    ...mapState("arena", ["maps"]),
     checkPlus() {
       return this.selected ? "mdi-check" : "mdi-delete-outline";
     },

@@ -107,25 +107,25 @@ import AdminArenaCard from "@/components/Admin/AdminArenaCard.vue";
 export default {
   name: "Home",
   computed: {
-    ...mapState(["list_arenas"]),
+    ...mapState("arena", ["arenas"]),
     displayedArenas() {
-      return this.paginate(this.list_arenas);
+      return this.paginate(this.arenas);
     },
   },
   watch: {
     display_item(val) {
       this.perPage = val;
-      this.paginationLength = Math.ceil(this.list_arenas.length / this.perPage);
+      this.paginationLength = Math.ceil(this.arenas.length / this.perPage);
     },
   },
   methods: {
     goToMapAll() {
       this.$store
-        .dispatch("displayMapAll")
-        .then(() => this.$router.push({ path: "/arena_maps" }));
+        .dispatch("arena/showArenasOnMap")
+        .then(() => this.$router.push({ name: "arena-map-all" }));
     },
     setPaginationLength() {
-      this.paginationLength = Math.ceil(this.list_arenas.length / this.perPage);
+      this.paginationLength = Math.ceil(this.arenas.length / this.perPage);
     },
     paginate(items) {
       const cpage = this.page;
@@ -153,16 +153,7 @@ export default {
       perPage: 5,
       paginationLength: 10,
       team_tags: ["Москва", "Казань"],
-      team_items: [
-        "/arena_1",
-        "/arena_2",
-        "/arena_3",
-        "/arena_4",
-        "/arena_5",
-        "/arena_6",
-        "/arena_7",
-        "/arena_2",
-      ],
+
       sort_by_team: ["По популярности", "По именни"],
       display_item: { state: "Показывать по 5", value: 5 },
       display_items: [
@@ -175,8 +166,8 @@ export default {
   },
   components: { AdminArenaCard },
   mounted() {
-    this.$store.dispatch("getAllArenas");
-    this.setPaginationLength();
+    this.$store.dispatch("arena/getArenas");
+    this.setPaginationLength(); //TODO: dynamic pagination
   },
 };
 </script>

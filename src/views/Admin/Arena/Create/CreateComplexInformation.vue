@@ -819,7 +819,8 @@ export default {
           .dispatch("setCurrentArena", arena)
           .then(() => {
             this.$router.push({
-              path: `/admin/sport_complex/${arena.id}`,
+              name: "complex-information",
+              params: { arenaId: arena.id },
             });
           })
           .catch((err) => console.log(err));
@@ -828,7 +829,7 @@ export default {
     postArena(payload) {
       return new Promise((resolve) => {
         axios
-          .post(`/arena`, payload)
+          .post(`/arena`, payload) //TODO: Transfer vuex
           .then((response) => {
             const arena = response.data;
             resolve(arena);
@@ -843,7 +844,7 @@ export default {
       };
       return new Promise((resolve) => {
         axios
-          .post(`/arena/user`, payload)
+          .post(`/arena/user`, payload) //TODO: Transfer vuex
           .then((response) => {
             const arenaUser = response.data;
             resolve(arenaUser.id);

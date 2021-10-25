@@ -228,7 +228,8 @@ export default {
     goToAddEvent() {
       const arenaId = this.arena.id;
       this.$router.push({
-        path: `/admin/sport_complex/${arenaId}/edit/schedule_event/create_event`,
+        name: "create-arena-event",
+        params: { arenaId },
       });
     },
     intervalFormat(interval) {

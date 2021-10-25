@@ -68,12 +68,14 @@ export default {
   methods: {
     goToService() {
       this.$router.push({
-        path: `/arena/${this.data.arenaId}/service/${this.data.id}`,
+        name: "arena-premises",
+        params: { arenaId: this.data.arenaId, serviceId: this.data.id },
       });
     },
     goToBookService() {
       this.$router.push({
-        path: `/arena/${this.data.arenaId}/service/${this.data.id}`,
+        name: "arena-premises",
+        params: { arenaId: this.data.arenaId, serviceId: this.data.id },
       });
     },
   },
