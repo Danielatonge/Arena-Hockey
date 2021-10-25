@@ -276,7 +276,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch("getAllArenas");
+    this.$store.dispatch("arena/getArenas");
   },
   data() {
     return {
@@ -320,7 +320,7 @@ export default {
   },
   methods: {
     goToArena(arenaId) {
-      this.$router.push({ path: `/arena/${arenaId}/information` });
+      this.$router.push({ name: "arena-information", params: { arenaId } });
     },
   },
   filters: {

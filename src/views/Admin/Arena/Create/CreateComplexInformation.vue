@@ -816,7 +816,7 @@ export default {
       this.postArena(data).then((arena) => {
         this.linkArenaUser(arena.id, userId);
         this.$store
-          .dispatch("setCurrentArena", arena)
+          .dispatch("arena/setArena", arena)
           .then(() => {
             this.$router.push({
               name: "complex-information",

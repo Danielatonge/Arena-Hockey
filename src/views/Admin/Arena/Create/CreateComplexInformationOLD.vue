@@ -960,7 +960,7 @@ export default {
         .then((response) => {
           const arena = response.data;
           console.log(arena);
-          this.$store.dispatch("setCurrentArena", arena).then(() => {
+          this.$store.dispatch("arena/setArena", arena).then(() => {
             this.$router.push({
               name: "complex-information",
               params: { arenaId: arena.id },

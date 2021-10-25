@@ -103,7 +103,7 @@
             <template #hide="{ checked, toggle }">
               <v-col>
                 <v-checkbox
-                  value="checked"
+                  :value="checked"
                   @click="toggle"
                   label="Скрыть команду"
                 />
@@ -227,8 +227,8 @@ export default {
   mounted() {
     const arena_id = this.$route.params.id;
     this.arenaId = arena_id;
-    this.$store.dispatch("getAllTeams");
-    this.$store.dispatch("getArenaTeams", arena_id).then((data) => {
+    this.$store.dispatch("teamplayer/getTeams");
+    this.$store.dispatch("arena/getTeams", arena_id).then((data) => {
       this.arena_teams = data;
     });
   },

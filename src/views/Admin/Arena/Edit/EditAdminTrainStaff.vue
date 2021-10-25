@@ -208,12 +208,10 @@ export default {
   components: { AdminTrainerCard },
   props: ["arena"],
   mounted() {
-    const arenaId = this.$route.params.id;
-    this.arenaId = arenaId;
-    axios.get(`/arena/${arenaId}/users`).then((response) => {
+    axios.get(`/arena/${this.arenaId}/users`).then((response) => {
       this.arena_trainers = response.data;
     });
-    this.$store.dispatch("getAllTrainers");
+    this.$store.dispatch("arena/getTrainers", this.arenaId);
     this.breadcrumb_items = [
       {
         text: "Личный кабинет",

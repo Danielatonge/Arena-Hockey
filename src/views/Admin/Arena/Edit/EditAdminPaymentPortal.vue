@@ -148,7 +148,7 @@ export default {
   },
   methods: {
     goToModifyList(service) {
-      this.$store.dispatch("setCurrentPL", service.price);
+      this.$store.dispatch("arena/setCurrentPL", service.price); //TODO: understand whats going on
       this.$router.push({
         name: "edit-admin-pricelist",
         params: { arenaId: this.arenaId, serviceId: service.id },

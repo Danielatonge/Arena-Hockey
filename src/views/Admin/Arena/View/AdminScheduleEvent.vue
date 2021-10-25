@@ -64,7 +64,7 @@
           v-model="date"
           :weekdays="weekday"
           :type="type"
-          :events="events"
+          :events="ievents"
           :event-overlap-mode="mode"
           :event-overlap-threshold="30"
           :event-color="getEventColor"
@@ -94,17 +94,14 @@
             </v-card-actions>
           </v-card>
         </v-menu>
-        <div
-          v-show="value === 3 && arena_events.length === 0"
-          class="text-center"
-        >
+        <div v-show="value === 3 && events.length === 0" class="text-center">
           <h3 class="grey--text lighten-3--text text-h6 mb-2">
             Нет мероприятий
           </h3>
         </div>
         <div
           v-show="value === 3"
-          v-for="(event, index) in arena_events"
+          v-for="(event, index) in events"
           :key="index"
           class="mb-10 pl-5"
         >
@@ -138,10 +135,10 @@ export default {
     },
   },
   computed: {
-    ...mapState(["arena_events"]),
-    events() {
+    ...mapState("arena", ["events"]),
+    ievents() {
       const events = [];
-      this.arena_events.forEach((event) => {
+      this.events.forEach((event) => {
         const nEvents = this.generateEvents(event);
         events.push(...nEvents);
       });
@@ -151,7 +148,7 @@ export default {
   created() {
     const arenaId = this.$route.params.id;
     this.arenaId = arenaId;
-    this.$store.dispatch("getArenaEvents", arenaId);
+    this.$store.dispatch("arena/getEvents", arenaId);
   },
   data() {
     return {

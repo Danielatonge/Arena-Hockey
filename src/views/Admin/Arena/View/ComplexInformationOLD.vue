@@ -14,7 +14,7 @@
             Наименование катка (полное)
           </div>
           <div>
-            {{ current_arena.title }}
+            {{ arena.title }}
           </div>
         </div>
         <div class="mb-4">
@@ -22,7 +22,7 @@
             Наименование катка (полное)
           </div>
           <div>
-            {{ current_arena.title }}
+            {{ arena.title }}
           </div>
         </div>
         <div class="mb-6">
@@ -38,7 +38,7 @@
             Описание катка
           </div>
           <p>
-            {{ current_arena.description }}
+            {{ arena.description }}
           </p>
           <p>
             В окружении многочисленных водоемов, фонтанов и смешанного леса вас
@@ -59,7 +59,7 @@
         <div class="mb-4">
           <div class="body-2 font-weight-bold mb-1 grey--text">Адрес</div>
           <p>
-            {{ current_arena.address }}
+            {{ arena.address }}
           </p>
           <div style="width: 40%">
             <v-img src="https://via.placeholder.com/140x80"></v-img>
@@ -70,7 +70,7 @@
             Как проехать
           </div>
           <p>
-            {{ current_arena.route }}
+            {{ arena.route }}
           </p>
         </div>
         <div class="mb-4">
@@ -183,11 +183,11 @@ import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState(["current_arena"]),
+    ...mapState("arena",["arena"]),
   },
   mounted() {
-    const arena = this.$store.getters.current_arena;
-    this.$store.dispatch("updateCurrentArena", arena.id);
+    const arena = this.$store.getters.arena;
+    this.$store.dispatch("arena/updateCurrentArena", arena.id); // TODO : find whats happing
   },
   data() {
     return {

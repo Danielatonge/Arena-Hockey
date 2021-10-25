@@ -247,7 +247,7 @@ export default {
       this.player_room = true;
     },
     teamClicked() {
-      this.$router.push({ path: "teamname" });
+      this.$router.push({ name: "team-name" }); //TODO : should take params teamId
     },
   },
 };

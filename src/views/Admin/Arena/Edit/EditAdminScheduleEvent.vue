@@ -175,7 +175,7 @@ export default {
   created() {
     const arenaId = this.$route.params.id;
     this.arenaId = arenaId;
-    this.$store.dispatch("getArenaEvents", arenaId);
+    this.$store.dispatch("arena/getEvents", arenaId);
     this.fetchArenaEvent(arenaId);
   },
   computed: {

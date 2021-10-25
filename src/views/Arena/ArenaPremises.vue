@@ -254,7 +254,11 @@
                               elevation="0"
                               @click="
                                 $router.push({
-                                  path: `/arena/${item.arenaId}/event_schedule/${item.id}`,
+                                  name: 'katok-schedule-book',
+                                  params: {
+                                    arenaId: item.arenaId,
+                                    serviceId: item.id,
+                                  },
                                 })
                               "
                             >
@@ -309,13 +313,13 @@ export default {
       {
         text: "Москва",
         disabled: false,
-        to: { path: `/arena` },
+        to: { name: `arena` },
         exact: true,
       },
       {
         text: "Название арены",
         disabled: false,
-        to: { path: `/arena/${arenaId}/information` },
+        to: { name: "arena-information", params: { arenaId } },
         exact: true,
       },
       {
@@ -324,7 +328,7 @@ export default {
         href: "/",
       },
     ];
-    this.$store.dispatch("getServiceById", serviceId);
+    this.$store.dispatch("arena/getServiceById", serviceId); //TODO: function not found
   },
   data() {
     return {
@@ -333,16 +337,6 @@ export default {
       premises_nav: ["Катки", "Другие"],
       breadcrumb_items: null,
       readMore: null,
-      gallery_items: [
-        "/gallery_1",
-        "/gallery_2",
-        "/gallery_3",
-        "/gallery_4",
-        "/gallery_5",
-        "/gallery_6",
-        "/gallery_7",
-        "/gallery_8",
-      ],
       price_list: [
         { interval: "06:00–08:30", weekday: "8 000", weekend: "10 000" },
         { interval: "08:30–15:00", weekday: "8 000", weekend: "10 000" },
@@ -366,16 +360,6 @@ export default {
         "orange",
         "grey lighten-1",
       ],
-      names: [
-        "Meeting",
-        "Holiday",
-        "PTO",
-        "Travel",
-        "Event",
-        "Birthday",
-        "Conference",
-        "Party",
-      ],
     };
   },
   methods: {
@@ -386,5 +370,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

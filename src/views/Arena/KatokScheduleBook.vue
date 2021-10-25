@@ -183,7 +183,7 @@ export default {
       {
         text: "Название арены",
         disabled: false,
-        to: { path: `/arena/${arenaId}/information` },
+        to: { name: "arena-information", params: { arenaId } },
         exact: true,
       },
       {
@@ -193,7 +193,7 @@ export default {
       },
     ];
 
-    this.$store.dispatch("getServiceById", serviceId);
+    this.$store.dispatch("getServiceById", serviceId); // TODO
   },
   data() {
     return {
@@ -228,7 +228,7 @@ export default {
     };
   },
   methods: {
-    intervalFormat(interval){
+    intervalFormat(interval) {
       return interval.time;
     },
     myDayFormat(day) {
@@ -285,5 +285,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -24,7 +24,10 @@
           </v-row>
         </v-col>
       </v-row>
-      <v-btn @click="$router.push('/arena')" color="primary" elevation="0"
+      <v-btn
+        @click="$router.push({ name: 'arena' })"
+        color="primary"
+        elevation="0"
         >Добавить арену
       </v-btn>
     </v-container>
@@ -242,7 +245,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch("getEventsFromSelectedArena");
+    this.$store.dispatch("arena/getEventsFromSelectedArenas");
     this.categories = this.selected_arena.map((x) => x.title);
     this.generateEvents();
   },

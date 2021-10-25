@@ -9,7 +9,12 @@
     <v-img :src="require('@/assets/arena_1.jpg')" height="200px">
       <v-container>
         <v-row class="ma-2">
-          <v-btn @click.stop="goToAdminArenaEdit" class="rounded-lg white" small elevation="0">
+          <v-btn
+            @click.stop="goToAdminArenaEdit"
+            class="rounded-lg white"
+            small
+            elevation="0"
+          >
             редактировать
           </v-btn>
           <v-spacer></v-spacer>
@@ -49,8 +54,7 @@ export default {
   props: {
     arena: Object,
   },
-  mounted () {
-  },
+  mounted() {},
   data() {
     return {
       elevation: 0,
@@ -59,14 +63,17 @@ export default {
   },
   methods: {
     goToAdminArena() {
-      this.$store.dispatch("setCurrentArena", this.arena)
+      this.$store.dispatch("arena/setArena", this.arena);
       const arenaId = this.arena.id;
-      this.$router.push({ path: `/admin/sport_complex/${arenaId}` });
+      this.$router.push({ name: "complex-information", params: { arenaId } });
     },
     goToAdminArenaEdit() {
-      this.$store.dispatch("setCurrentArena", this.arena)
+      this.$store.dispatch("arena/setArena", this.arena);
       const arenaId = this.arena.id;
-      this.$router.push({ path: `/admin/sport_complex/${arenaId}/edit` });
+      this.$router.push({
+        name: "edit-complex-information",
+        params: { arenaId },
+      });
     },
     selectToggle() {
       this.selected = !this.selected;
@@ -79,7 +86,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["arenasMapIdentifier"]),
+    ...mapState(["maps"]),
     checkPlus() {
       return this.selected ? "mdi-check" : "mdi-delete-outline";
     },
@@ -87,5 +94,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -98,8 +98,8 @@ export default {
   },
   methods: {
     removeFromSelected() {
-      this.$store.dispatch("removeFromSelectedArena", this.arena);
-      this.$store.dispatch("removeFromSelectedArenaEvent", this.index);
+      this.$store.dispatch("arena/removeFromSelectedArenas", this.arena);
+      this.$store.dispatch("arena/removeFromSelectedEvents", this.index);
       this.$emit("arenaRemoved", this.index);
     },
   },

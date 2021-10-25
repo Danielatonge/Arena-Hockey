@@ -232,7 +232,7 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("getForums");
+    this.$store.dispatch("forum/getForums");
     this.fetchpteam();
     this.fetchtplayer();
     this.fetchttrainer();

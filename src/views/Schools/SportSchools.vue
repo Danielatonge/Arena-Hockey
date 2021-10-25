@@ -19,7 +19,7 @@
         <v-row dense>
           <v-col class="d-flex" cols="12" md="2">
             <v-select
-              :items="school_location"
+              :items="cities"
               v-model="sort_by_city"
               solo
               flat
@@ -141,7 +141,7 @@
         <v-row dense>
           <v-col class="d-flex" cols="12" md="2">
             <v-select
-              :items="school_location"
+              :items="cities"
               v-model="sort_by_city"
               solo
               flat
@@ -279,7 +279,7 @@ import axios from "axios";
 export default {
   name: "SportSchools",
   computed: {
-    ...mapState(["school_location"]),
+    ...mapState("school",["cities"]),
   },
   filters: {
     descriptionLength(value) {
@@ -296,8 +296,8 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch("getAllSchools");
-    this.$store.dispatch("getSchoolAddress");
+    this.$store.dispatch("school/getSchools");
+    this.$store.dispatch("school/getCities");
     this.fetchCom();
     this.fetchState();
   },
@@ -358,7 +358,7 @@ export default {
       this.state_room = true;
     },
     comClicked() {
-      this.$router.push({ path: "school" });
+      this.$router.push({ name: "sport-schools" });
     },
     fetchCom() {
       const city = this.sort_by_city,

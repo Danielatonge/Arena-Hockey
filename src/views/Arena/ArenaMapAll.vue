@@ -12,7 +12,7 @@
                 height="48px"
                 width="100%"
                 color="primary"
-                @click="$router.push({ path: `/arena` })"
+                @click="$router.push({ name: 'arena' })"
               >
                 Списком
               </v-btn>
@@ -60,7 +60,7 @@
             depressed
             height="48px"
             width="100%"
-            @click="$router.push({ path: `/event_schedule` })"
+            @click="$router.push({ name: 'event-schedule-all' })"
           >
             Расписание
             <span v-show="$vuetify.breakpoint.lgAndUp">мероприятий</span>

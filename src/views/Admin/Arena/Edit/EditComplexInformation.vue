@@ -869,7 +869,8 @@ export default {
       console.log(data);
       this.putArena(data).then(() => {
         this.$router.push({
-          path: `/admin/sport_complex/${arenaId}`,
+          name: "complex-information",
+          params: { arenaId },
         });
       });
     },
