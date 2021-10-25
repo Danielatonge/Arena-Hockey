@@ -19,7 +19,7 @@
         <v-row dense>
           <v-col class="d-flex" cols="12" md="2">
             <v-select
-              :items="team_cities"
+              :items="teamCities"
               v-model="team_city"
               solo
               flat
@@ -263,12 +263,11 @@
 
 <script>
 import { mapState } from "vuex";
-import axios from "axios";
 
 export default {
   name: "Room",
   computed: {
-    ...mapState(["team_cities"]),
+    ...mapState("teamplayer", ["teamCities", "teams", "players"]), // TODO Player cities
   },
   filters: {
     descriptionLength(value) {
@@ -284,8 +283,8 @@ export default {
       this.fetchPlayers();
     },
   },
-  mounted() {
-    this.$store.dispatch("getTeamCities");
+  created() {
+    this.$store.dispatch("teamplayer/getTeamCities");
     this.fetchTeams();
     this.fetchPlayers();
   },
@@ -326,9 +325,7 @@ export default {
         { key: 1, value: "По именни (от Я до А)" },
       ],
       numFoundTeam: 0,
-      teams: [],
       numFoundPlayer: 0,
-      players: [],
     };
   },
   methods: {
@@ -350,48 +347,33 @@ export default {
       this.$router.push({ path: "teamname" });
     },
     fetchTeams() {
-      const city = this.team_city,
-        currentPage = this.pageTeam,
-        pageSize = this.numItemsTeam.value,
-        queryString = this.searchTeam,
-        sortBy = this.sort_model.key;
-      const url =
-        `/team/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
-        `&queryString=${queryString}&sortBy=${sortBy}`;
-      console.log(url);
-      axios
-        .get(url)
-        .then((response) => {
-          const res = response.data;
-          this.teams = res.content;
-          this.paginationTeamLength = res.totalPages;
-          this.numFoundTeam = res.totalElements;
-        })
-        .catch((err) => {
-          console.log(err);
+      const filters = {
+        city: this.team_city,
+        currentPage: this.pageTeam,
+        pageSize: this.numItemsTeam.value,
+        queryString: this.searchTeam,
+        sortBy: this.sort_model.key,
+      };
+      this.$store
+        .dispatch("teamplayer/getTeams", filters)
+        .then(({ paginationLength, numFound }) => {
+          this.paginationTeamLength = paginationLength;
+          this.numFoundTeam = numFound;
         });
     },
     fetchPlayers() {
-      const city = this.player_city,
-        currentPage = this.pagePlayer,
-        pageSize = this.numItemsPlayer.value,
-        queryString = this.searchPlayer,
-        sortBy = this.sort_player.key;
-      const url =
-        `/user/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
-        `&queryString=${queryString}&sortBy=${sortBy}&role=PLAYER`;
-      console.log(url);
-      axios
-        .get(url)
-        .then((response) => {
-          console.log(response.data);
-          const res = response.data;
-          this.players = res.content;
-          this.paginationPlayerLength = res.totalPages;
-          this.numFoundPlayer = res.totalElements;
-        })
-        .catch((err) => {
-          console.log(err);
+      const filters = {
+        city: this.player_city,
+        currentPage: this.pagePlayer,
+        pageSize: this.numItemsPlayer.value,
+        queryString: this.searchPlayer,
+        sortBy: this.sort_player.key,
+      };
+      this.$store
+        .dispatch("teamplayer/getPlayers", filters)
+        .then(({ paginationLength, numFound }) => {
+          this.paginationPlayerLength = paginationLength;
+          this.numFoundPlayer = numFound;
         });
     },
   },

@@ -39,9 +39,9 @@ export const apiArena = {
   getCities() {
     return apiClient.get(`/arena/cities`);
   },
-  getPrices(serviceId){
-    return apiClient.get(`/service/${serviceId}/prices`)
-  }
+  getPrices(serviceId) {
+    return apiClient.get(`/service/${serviceId}/prices`);
+  },
 };
 
 export const apiTeam = {
@@ -59,9 +59,6 @@ export const apiTeam = {
   },
   getUsers(teamId) {
     return apiClient.get(`/team/${teamId}/users`);
-  },
-  getCities() {
-    return apiClient.get(`/team/cities`);
   },
   getForums(teamId) {
     return apiClient.get(`/team/${teamId}/forums`);
@@ -89,11 +86,24 @@ export const apiSchool = {
 };
 
 export const apiTeamPlayer = {
-  getTeams() {
-    return apiClient.get(`/teams`);
+  getTeams({ city, currentPage, pageSize, queryString, sortBy }) {
+    const url =
+      `/team/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
+      `&queryString=${queryString}&sortBy=${sortBy}`;
+    return apiClient.get(url);
   },
-  getPlayers() {
-    return apiClient.get(`/user?role=PLAYER`);
+  getPlayers({ city, currentPage, pageSize, queryString, sortBy }) {
+    const url =
+      `/user/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
+      `&queryString=${queryString}&sortBy=${sortBy}&role=PLAYER`;
+    console.log(url);
+    return apiClient.get(url);
+  },
+  getTeamCities() {
+    return apiClient.get(`/team/cities`);
+  },
+  getPlayerCities() {
+    return apiClient.get(`/user/cities`);
   },
   getTrainers() {
     return apiClient.get(`/user?role=TRAINER`);
