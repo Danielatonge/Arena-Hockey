@@ -14,9 +14,9 @@ Vue.use(Plugin);
 
 const requireComponent = require.context(
   // The relative path of the components folder
-  "./components",
+  "./components/AppUnit",
   // Whether or not to look in subfolders
-  true,
+  false,
   // The regular expression used to match base component filenames
   /App[A-Z]\w+\.(vue|js)$/
 );

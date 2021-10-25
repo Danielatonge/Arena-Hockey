@@ -4,7 +4,6 @@ import axios from "axios";
 import VuexPersistence from "vuex-persist";
 
 Vue.use(Vuex);
-// "https://api-hockey-io.herokuapp.com";
 axios.defaults.baseURL = "https://api-hockey-io.herokuapp.com";
 
 const vuexLocal = new VuexPersistence({
@@ -13,7 +12,6 @@ const vuexLocal = new VuexPersistence({
 const userId = "9dbc26d3-c45c-4180-a850-702464fa3f2d";
 export default new Vuex.Store({
   state: {
-    items: {},
     list_arenas: [],
     current_arena: {},
     current_team: {},
@@ -83,9 +81,6 @@ export default new Vuex.Store({
     SET_CURRENT_ARENA(state, arena) {
       state.current_arena = arena;
     },
-    SET_CURRENT_CONTACT(state, contact) {
-      state.current_contact = contact;
-    },
     SET_CURRENT_TEAM(state, team) {
       state.current_team = team;
     },
@@ -107,7 +102,7 @@ export default new Vuex.Store({
     SET_PLAYERS(state, players) {
       state.players = players;
     },
-    SETPRICELIST(state, sPriceList) {
+    SETPRICELIST(state, sPriceList) {//
       sPriceList.sort((a, b) =>
         a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1
       );
@@ -258,7 +253,7 @@ export default new Vuex.Store({
         })
         .catch((err) => console.log(err));
     },
-    getTeamContacts({ commit }, id) {
+    getTeamContacts({ commit }, id) { //
       return new Promise((resolve) => {
         axios
           .get(`/team/${id}/contact`)

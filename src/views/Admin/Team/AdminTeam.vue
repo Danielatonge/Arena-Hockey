@@ -19,32 +19,13 @@
 
     <div>
       <v-btn class="rounded-lg mr-2" large depressed color="primary">
-        <router-link to="/admin/sport_complex/create" class="reset-link d-flex">
+        <router-link to="{name: ''}" class="reset-link d-flex">
           <v-icon class="mr-2">mdi-plus</v-icon>
           <div class="my-auto">Создать Команду</div>
         </router-link>
       </v-btn>
-      <v-btn
-        v-show="false"
-        :disabled="!selectedList.length"
-        class="rounded-lg ml-2"
-        color="grey lighten-2"
-        @click="deleteSelected"
-        large
-        depressed
-      >
-        <div class="my-auto">Удалить</div>
-      </v-btn>
     </div>
   </v-container>
-  <!-- <div class="text-center py-10">
-    <v-pagination
-      color="grey"
-      v-model="page"
-      :length="paginationLength"
-      :total-visible="7"
-    ></v-pagination>
-  </div> -->
 </template>
 
 <script>

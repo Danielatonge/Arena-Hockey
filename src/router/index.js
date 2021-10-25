@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+
 import Main from "../views/Home/Home.vue";
 import Arena from "../views/Arena/Arena.vue";
 import Room from "../views/LockerRoom/Room.vue";
@@ -21,8 +22,8 @@ import ArenaMapAll from "../views/Arena/ArenaMapAll.vue";
 import BookRoom from "../views/LockerRoom/BookRoom.vue";
 import SubstituteBench from "../views/Bench/SubstituteBench.vue";
 
-// import AdminSportComplex from "../views/Admin/Arena/AdminSportComplex.vue";
 import AdminAddArenaSportComplex from "../views/Admin/Arena/AdminAddArenaSportComplex.vue";
+import AdminTeam from "../views/Admin/Team/AdminTeam";
 
 import NameComplex from "../views/Admin/Arena/View/NameComplex.vue";
 import ComplexInformation from "../views/Admin/Arena/View/ComplexInformation.vue";
@@ -52,112 +53,111 @@ import UserProfile from "../views/Admin/User/View/UserProfile";
 import CreateArenaEvent from "../views/Admin/Arena/Create/CreateArenaEvent";
 import EditAdminService from "../views/Admin/Arena/Edit/EditAdminService";
 import CreateAdminService from "../views/Admin/Arena/Create/CreateAdminService";
-import AdminTeam from "../views/Admin/Team/AdminTeam";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    name: "Main",
+    name: "main",
     component: Main,
   },
   {
     path: "/arena",
-    name: "Arena",
+    name: "arena",
     component: Arena,
   },
   {
     path: "/kids_tournement",
-    name: "KidsTournaments",
+    name: "kidsTournaments",
     component: KidsTournaments,
   },
   {
     path: "/arena/arena_maps",
-    name: "ArenaMapAll",
+    name: "arena-map-all",
     component: ArenaMapAll,
   },
   {
     path: "/event_schedule_all",
-    name: "EventScheduleAll",
+    name: "event-schedule-all",
     component: EventScheduleAll,
   },
   {
     path: "/arena/:id/",
-    name: "ArenaName",
+    name: "arena-name",
     component: ArenaName,
     children: [
       {
         path: "information",
-        name: "ArenaInformation",
+        name: "arena-information",
         component: ArenaInformation,
       },
       {
         path: "payment_portal",
-        name: "PaymentPortal",
+        name: "payment-portal",
         component: PaymentPortal,
       },
 
       {
         path: "list_teams",
-        name: "ArenaTeamList",
+        name: "arena-team-list",
         component: ArenaTeamList,
       },
       {
         path: "training_staff",
-        name: "ArenaTrainingStaff",
+        name: "arena-training-staff",
         component: ArenaTrainingStaff,
       },
       {
         path: "event_schedule",
-        name: "EventSchedule",
+        name: "event-schedule",
         component: EventSchedule,
       },
       {
         path: "leadership",
-        name: "ArenaLeadership",
+        name: "arena-leadership",
         component: ArenaLeadership,
       },
     ],
   },
   {
     path: "/arena/:arenaId/event_schedule/:serviceId",
-    name: "KatokScheduleBook",
+    name: "katok-schedule-book",
     component: KatokScheduleBook,
   },
   {
     path: "/arena/:arenaId/service/:serviceId",
-    name: "ArenaPremises",
+    name: "arena-premises",
     component: ArenaPremises,
   },
   {
     path: "/join_team",
-    name: "JoinTeam",
+    name: "join-team",
     component: JoinTeam,
   },
   {
     path: "/room",
-    name: "Room",
+    name: "room",
     component: Room,
   },
   {
     path: "/school",
-    name: "SportSchools",
+    name: "sport-schools",
     component: SportSchools,
   },
   {
     path: "/teamname/:teamId",
-    name: "TeamName",
+    name: "team-name",
     component: TeamName,
   },
   {
     path: "/book_room",
-    name: "BookRoom",
+    name: "book-room",
     component: BookRoom,
   },
   {
     path: "/subs_bench",
-    name: "SubstituteBench",
+    name: "substitute-bench",
     component: SubstituteBench,
   },
   {
@@ -166,24 +166,24 @@ const routes = [
     children: [
       {
         path: "",
-        name: "UserProfile",
+        name: "user-profile",
         component: UserProfile,
       },
       {
         path: "sport_complex",
-        name: "AdminAddArenaSportComplex",
+        name: "admin-add-arena-sportcomplex",
         component: AdminAddArenaSportComplex,
       },
       {
         path: "teams",
-        name: "AdminTeam",
+        name: "admin-team",
         component: AdminTeam,
       },
     ],
   },
   {
     path: "/admin/sport_complex/create",
-    name: "CreateComplexInformation",
+    name: "create-complex-information",
     component: CreateComplexInformation,
   },
   {
@@ -192,32 +192,32 @@ const routes = [
     children: [
       {
         path: "",
-        name: "ComplexInformation",
+        name: "complex-information",
         component: ComplexInformation,
       },
       {
         path: "payment_portal",
-        name: "AdminPaymentPortal",
+        name: "admin-payment-portal",
         component: AdminPaymentPortal,
       },
       {
         path: "schedule_event",
-        name: "AdminScheduleEvent",
+        name: "admin-schedule-event",
         component: AdminScheduleEvent,
       },
       {
         path: "team_list",
-        name: "AdminTeamList",
+        name: "admin-team-list",
         component: AdminTeamList,
       },
       {
         path: "training_staff",
-        name: "AdminTrainStaff",
+        name: "admin-train-staff",
         component: AdminTrainStaff,
       },
       {
         path: "management_staff",
-        name: "AdminManager",
+        name: "admin-manager",
         component: AdminManager,
       },
     ],
@@ -228,48 +228,48 @@ const routes = [
     children: [
       {
         path: "",
-        name: "EditComplexInformation",
+        name: "edit-complex-information",
         component: EditComplexInformation,
       },
       {
         path: "payment_portal",
-        name: "EditAdminPaymentPortal",
+        name: "edit-admin-payment-portal",
         component: EditAdminPaymentPortal,
       },
       {
         path: "payment_portal/create_service",
-        name: "CreateAdminService",
+        name: "create-admin-service",
         component: CreateAdminService,
       },
       {
         path: "payment_portal/price_list/:serviceId",
-        name: "EditAdminPriceList",
+        name: "edit-admin-pricelist",
         component: EditAdminPriceList,
       },
       {
         path: "payment_portal/:serviceId",
-        name: "EditAdminService",
+        name: "edit-admin-service",
         component: EditAdminService,
       },
 
       {
         path: "schedule_event",
-        name: "EditAdminScheduleEvent",
+        name: "edit-admin-schedule-event",
         component: EditAdminScheduleEvent,
       },
       {
         path: "schedule_event/create_event",
-        name: "CreateArenaEvent",
+        name: "create-arena-event",
         component: CreateArenaEvent,
       },
       {
         path: "team_list",
-        name: "EditAdminTeamList",
+        name: "edit-admin-teamlist",
         component: EditAdminTeamList,
       },
       {
         path: "training_staff",
-        name: "EditAdminTrainStaff",
+        name: "edit-admin-train-staff",
         component: EditAdminTrainStaff,
       },
     ],
@@ -277,27 +277,27 @@ const routes = [
 
   {
     path: "/admin/sport_complex/payment_portal/create",
-    name: "CreateAdminPaymentPortal",
+    name: "create-admin-payment-portal",
     component: CreateAdminPaymentPortal,
   },
   {
     path: "/admin/sport_complex/schedule_event/create",
-    name: "CreateAdminScheduleEvent",
+    name: "create-admin-schedule-event",
     component: CreateAdminScheduleEvent,
   },
   {
     path: "/admin/sport_complex/team_list/create",
-    name: "CreateAdminTeamList",
+    name: "create-admin-teamlist",
     component: CreateAdminTeamList,
   },
   {
     path: "/admin/sport_complex/training_staff/create",
-    name: "CreateAdminTrainStaff",
+    name: "create-admin-train-staff",
     component: CreateAdminTrainStaff,
   },
   {
     path: "/admin/sport_complex/management_staff/create",
-    name: "CreateAdminManager",
+    name: "create-admin-manager",
     component: CreateAdminManager,
   },
 ];

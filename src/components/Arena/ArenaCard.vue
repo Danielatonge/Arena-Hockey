@@ -79,7 +79,7 @@ export default {
     openCardMap() {
       console.log(this.arena);
       this.$store
-        .dispatch("displayMapOne", [this.arena])
+        .dispatch("arena/displayArena", this.arena)
         .then(() => this.$router.push({ path: "/arena/arena_maps" }));
     },
     selectArena(arena) {
