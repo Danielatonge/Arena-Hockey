@@ -20,7 +20,7 @@
     <div class="text-h6 mb-4">Дата и время<i class="error--text">*</i></div>
     <v-row class="mb-4">
       <v-col class="d-flex" cols="12" md="3">
-        <AppSelectDatePicker :date.sync="startDate" />
+        <SelectDatePicker :date.sync="startDate" />
       </v-col>
       <v-col class="d-flex" cols="12" md="2">
         <v-menu
@@ -72,7 +72,7 @@
       </v-col>
       <v-spacer></v-spacer>
       <v-col class="d-flex" cols="12" md="3">
-        <AppSelectDatePicker :date.sync="endDate" />
+        <SelectDatePicker :date.sync="endDate" />
       </v-col>
       <v-col class="d-flex" cols="12" md="10">
         <v-combobox
@@ -202,9 +202,11 @@
 <script>
 import axios from "axios";
 import moment from "moment";
+import SelectDatePicker from "@/components/AppUnit/SelectDatePicker";
 
 export default {
   name: "CreateArenaEvent",
+  components: { SelectDatePicker },
   created() {
     const arenaId = this.$route.params.id;
     this.fetchArenaById(arenaId);

@@ -6,6 +6,7 @@
 
 <script>
 export default {
+  name: "Breadcrumb",
   props: {
     items: {
       type: Array,

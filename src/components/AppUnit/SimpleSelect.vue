@@ -11,6 +11,7 @@
 
 <script>
 export default {
+  name: "SimpleSelect",
   props: {
     items: {
       type: Array,

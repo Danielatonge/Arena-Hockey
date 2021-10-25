@@ -5,7 +5,7 @@
         <v-row dense>
           <v-col class="d-flex" cols="12" md="2">
             <v-select
-              :items="cities"
+              :items="arena_cities"
               v-model="sort_by_city"
               solo
               flat
@@ -101,7 +101,7 @@
               flat
               return-object
               hide-details="auto"
-              @change="fetchDisplay"
+              @change="fetchArena"
             ></v-select>
           </v-col>
         </v-row>
@@ -169,40 +169,48 @@
 </template>
 
 <script>
+import axios from "axios";
 import { mapState } from "vuex";
 import ArenaCard from "@/components/Arena/ArenaCard.vue";
 
 export default {
-  computed: mapState("arena", ["cities", "arenas"]),
+  name: "Home",
+  computed: {
+    ...mapState(["arena_cities"]),
+  },
   watch: {
     page() {
       this.fetchArena();
     },
   },
   methods: {
-    fetchDisplay() {
-      this.page = 1;
-      this.fetchArena();
-    },
     fetchArena() {
-      const filters = {
-        city: this.sort_by_city,
-        currentPage: this.page,
-        pageSize: this.display_item.value,
-        queryString: this.search,
-        sortBy: this.sort_model.key,
-      };
-      this.$store
-        .dispatch("arena/getArenas", filters)
-        .then(({ paginationLength, numFound }) => {
-          this.paginationLength = paginationLength;
-          this.numFound = numFound;
+      const city = this.sort_by_city,
+        currentPage = this.page,
+        pageSize = this.display_item.value,
+        queryString = this.search,
+        sortBy = this.sort_model.key;
+      const url =
+        `/arena/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
+        `&queryString=${queryString}&sortBy=${sortBy}`;
+      console.log(url);
+      axios
+        .get(url)
+        .then((response) => {
+          console.log("SET_ARENAS", response.data);
+          const res = response.data;
+          this.arenas = res.content;
+          this.paginationLength = res.totalPages;
+          this.numFound = res.totalElements;
+        })
+        .catch((err) => {
+          console.log(err);
         });
     },
     goToMapAll() {
       this.$store
-        .dispatch("arena/showArenasOnMap", this.arenas)
-        .then(() => this.$router.push({ name: "arena-map-all" }));
+        .dispatch("displayMapAll")
+        .then(() => this.$router.push({ path: "/arena/arena_maps" }));
     },
   },
   data() {
@@ -211,6 +219,7 @@ export default {
       search: "",
       paginationLength: 10,
       numFound: 0,
+      arenas: [],
       display_id: 0,
       sort_by_city: "Москва",
       sort_order: [
@@ -231,8 +240,9 @@ export default {
   },
   components: { ArenaCard },
   created() {
+    this.$store.dispatch("getAllArenas");
+    this.$store.dispatch("getArenaCities");
     this.fetchArena();
-    this.$store.dispatch("arena/getCities");
   },
 };
 </script>

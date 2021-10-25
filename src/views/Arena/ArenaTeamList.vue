@@ -185,14 +185,9 @@
 <script>
 import { mapState } from "vuex";
 export default {
-  props: {
-    arenaId: {
-      type: String,
-      required: true,
-    },
-  },
   computed: {
-    ...mapState("arena", ["teams"]),
+    ...mapState(["current_arena"]),
+    ...mapState(["teams"]),
     children_team() {
       return this.teams.filter((x) => x.team.type == "CHILDREN");
     },
@@ -216,10 +211,13 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("arena/getTeams", this.arenaId);
+    const arenaId = this.$route.params.id;
+    this.arenaId = arenaId;
   },
   data() {
     return {
+      name: "ArenaTeamList",
+      arenaId: null,
       premises_tab: null,
       premises_nav: [
         "Все команды",

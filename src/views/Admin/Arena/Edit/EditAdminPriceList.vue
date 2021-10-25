@@ -89,7 +89,7 @@
                     <v-spacer></v-spacer>
                     <div class="my-auto mr-2">Применить с числа:</div>
                     <div style="width: 200px">
-                      <AppSelectDatePicker :date.sync="showDate" />
+                      <SelectDatePicker :date.sync="showDate" />
                     </div>
                   </div>
                 </v-card-text>
@@ -153,10 +153,11 @@
 import AdminArenaPrice from "@/components/Admin/AdminArenaPrice.vue";
 import { mapState } from "vuex";
 import axios from "axios";
+import SelectDatePicker from "@/components/AppUnit/SelectDatePicker";
 import moment from "moment";
 
 export default {
-  components: { AdminArenaPrice },
+  components: { SelectDatePicker, AdminArenaPrice },
   computed: {
     ...mapState(["currentPL"]),
   },
@@ -232,7 +233,6 @@ export default {
         weekdayPrice: Number(data.weekday),
         HolidayPrice: Number(data.weekend),
         serviceId: this.serviceId,
-        showDate: this.showDate,
       };
       console.log(price);
       axios

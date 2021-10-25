@@ -11,8 +11,7 @@
       </v-row>
 
       <v-sheet tile height="74" class="d-flex align-center" color="#EBF5FB">
-        <v-spacer></v-spacer>
-        <div style="width: 200px" class="mx-3">
+        <div style="width: 200px" class="ml-3">
           <v-menu
             v-model="date_picker"
             :close-on-content-click="false"
@@ -41,10 +40,46 @@
             ></v-date-picker>
           </v-menu>
         </div>
+        <div style="width: 200px">
+          <v-select
+            v-model="mode"
+            :items="mode_lesson"
+            dense
+            single-line
+            outlined
+            hide-details
+            label="Все виды занятий"
+            class="ma-2 white"
+          ></v-select>
+        </div>
+        <div style="width: 200px">
+          <v-select
+            v-model="mode"
+            :items="mode_lesson"
+            dense
+            single-line
+            outlined
+            hide-details
+            label="Каток 1"
+            class="ma-2 white"
+          ></v-select>
+        </div>
+
+        <v-spacer></v-spacer>
+        <!-- <v-btn class="ma-2" color="primary" elevation="0">
+            Загрузить расписание
+          </v-btn> -->
       </v-sheet>
       <v-sheet tile height="54" class="d-flex">
         <div></div>
         <v-spacer></v-spacer>
+
+        <!--        <v-btn icon class="ma-2" @click="$refs.calendar.prev()">-->
+        <!--          <v-icon>mdi-chevron-left</v-icon>-->
+        <!--        </v-btn>-->
+        <!--        <v-btn icon class="ma-2" @click="$refs.calendar.next()">-->
+        <!--          <v-icon>mdi-chevron-right</v-icon>-->
+        <!--        </v-btn>-->
       </v-sheet>
       <v-sheet height="600" class="px-4 pb-4 overflow-auto">
         <v-calendar
@@ -53,7 +88,7 @@
           v-model="date"
           :weekdays="weekday"
           :type="type"
-          :events="fevents"
+          :events="events"
           :event-overlap-mode="mode"
           :event-overlap-threshold="30"
           :event-color="getEventColor"
@@ -83,14 +118,17 @@
             </v-card-actions>
           </v-card>
         </v-menu>
-        <div v-show="value === 3 && fevents.length === 0" class="text-center">
+        <div
+          v-show="value === 3 && arena_events.length === 0"
+          class="text-center"
+        >
           <h3 class="grey--text lighten-3--text text-h6 mb-2">
             Нет мероприятий
           </h3>
         </div>
         <div
           v-show="value === 3"
-          v-for="(event, index) in events"
+          v-for="(event, index) in arena_events"
           :key="index"
           class="mb-10 pl-5"
         >
@@ -108,12 +146,6 @@ import ArenaEventCard from "@/components/Arena/ArenaEventCard";
 
 export default {
   components: { ArenaEventCard },
-  props: {
-    arenaId: {
-      type: String,
-      required: true,
-    },
-  },
   watch: {
     value(x) {
       if (x === 0) this.type = "day";
@@ -131,18 +163,20 @@ export default {
     },
   },
   computed: {
-    ...mapState("arena", ["events"]),
-    fevents() {
-      const ievents = [];
-      this.events.forEach((event) => {
+    ...mapState(["current_arena", "arena_events"]),
+    events() {
+      const events = [];
+      this.arena_events.forEach((event) => {
         const nEvents = this.generateEvents(event);
-        ievents.push(...nEvents);
+        events.push(...nEvents);
       });
-      return ievents;
+      return events;
     },
   },
   created() {
-    this.$store.dispatch("arena/getEvents", this.arenaId);
+    const arenaId = this.$route.params.id;
+    this.arenaId = arenaId;
+    this.$store.dispatch("getArenaEvents", arenaId);
   },
   data() {
     return {
@@ -156,7 +190,9 @@ export default {
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
-      date: moment().format("YYYY-MM-DD"),
+      date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
       date_picker: false,
       colors: [
         "blue",
@@ -167,6 +203,7 @@ export default {
         "orange",
         "grey lighten-1",
       ],
+      arenaId: "",
     };
   },
   methods: {

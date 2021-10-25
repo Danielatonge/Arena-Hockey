@@ -10,7 +10,19 @@
     />
     <v-row dense class="mx-n4 mb-4">
       <v-col class="pa-4" cols="12" v-for="team in teamList" :key="team.id">
-        <AdminTeamCard :arena-team="team"> </AdminTeamCard>
+        <AdminTeamCard :arena-team="team">
+          <template #button>
+            <v-col cols="12" md="4" lg="7" class="mt-3">
+              <v-btn
+                @click="removeTeam(teamObj.team.id)"
+                class="primary"
+                elevation="0"
+              >
+                Отправить заявку на вступление
+              </v-btn>
+            </v-col>
+          </template>
+        </AdminTeamCard>
       </v-col>
     </v-row>
     <div class="mb-3" v-if="!teamList.length">
@@ -19,13 +31,32 @@
 
     <div>
       <v-btn class="rounded-lg mr-2" large depressed color="primary">
-        <router-link to="{name: ''}" class="reset-link d-flex">
+        <router-link to="/admin/sport_complex/create" class="reset-link d-flex">
           <v-icon class="mr-2">mdi-plus</v-icon>
           <div class="my-auto">Создать Команду</div>
         </router-link>
       </v-btn>
+      <v-btn
+        v-show="false"
+        :disabled="!selectedList.length"
+        class="rounded-lg ml-2"
+        color="grey lighten-2"
+        @click="deleteSelected"
+        large
+        depressed
+      >
+        <div class="my-auto">Удалить</div>
+      </v-btn>
     </div>
   </v-container>
+  <!-- <div class="text-center py-10">
+    <v-pagination
+      color="grey"
+      v-model="page"
+      :length="paginationLength"
+      :total-visible="7"
+    ></v-pagination>
+  </div> -->
 </template>
 
 <script>

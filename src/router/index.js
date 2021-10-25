@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-
 import Main from "../views/Home/Home.vue";
 import Arena from "../views/Arena/Arena.vue";
 import Room from "../views/LockerRoom/Room.vue";
@@ -22,8 +21,8 @@ import ArenaMapAll from "../views/Arena/ArenaMapAll.vue";
 import BookRoom from "../views/LockerRoom/BookRoom.vue";
 import SubstituteBench from "../views/Bench/SubstituteBench.vue";
 
+// import AdminSportComplex from "../views/Admin/Arena/AdminSportComplex.vue";
 import AdminAddArenaSportComplex from "../views/Admin/Arena/AdminAddArenaSportComplex.vue";
-import AdminTeam from "../views/Admin/Team/AdminTeam";
 
 import NameComplex from "../views/Admin/Arena/View/NameComplex.vue";
 import ComplexInformation from "../views/Admin/Arena/View/ComplexInformation.vue";
@@ -53,116 +52,112 @@ import UserProfile from "../views/Admin/User/View/UserProfile";
 import CreateArenaEvent from "../views/Admin/Arena/Create/CreateArenaEvent";
 import EditAdminService from "../views/Admin/Arena/Edit/EditAdminService";
 import CreateAdminService from "../views/Admin/Arena/Create/CreateAdminService";
+import AdminTeam from "../views/Admin/Team/AdminTeam";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    name: "main",
+    name: "Main",
     component: Main,
   },
   {
     path: "/arena",
-    name: "arena",
+    name: "Arena",
     component: Arena,
   },
   {
     path: "/kids_tournement",
-    name: "kidsTournaments",
+    name: "KidsTournaments",
     component: KidsTournaments,
   },
   {
     path: "/arena/arena_maps",
-    name: "arena-map-all",
+    name: "ArenaMapAll",
     component: ArenaMapAll,
   },
   {
     path: "/event_schedule_all",
-    name: "event-schedule-all",
+    name: "EventScheduleAll",
     component: EventScheduleAll,
   },
   {
-    path: "/arena/:arenaId",
+    path: "/arena/:id/",
+    name: "ArenaName",
     component: ArenaName,
-    props: true,
     children: [
       {
-        path: "",
-        name: "arena-information",
+        path: "information",
+        name: "ArenaInformation",
         component: ArenaInformation,
-        props: true,
       },
       {
         path: "payment_portal",
-        name: "payment-portal",
+        name: "PaymentPortal",
         component: PaymentPortal,
-        props: true,
       },
 
       {
         path: "list_teams",
-        name: "arena-team-list",
+        name: "ArenaTeamList",
         component: ArenaTeamList,
-        props: true,
       },
       {
         path: "training_staff",
-        name: "arena-training-staff",
+        name: "ArenaTrainingStaff",
         component: ArenaTrainingStaff,
-        props: true,
       },
       {
         path: "event_schedule",
-        name: "event-schedule",
+        name: "EventSchedule",
         component: EventSchedule,
-        props: true,
       },
       {
         path: "leadership",
-        name: "arena-leadership",
+        name: "ArenaLeadership",
         component: ArenaLeadership,
       },
     ],
   },
   {
     path: "/arena/:arenaId/event_schedule/:serviceId",
-    name: "katok-schedule-book",
+    name: "KatokScheduleBook",
     component: KatokScheduleBook,
   },
   {
     path: "/arena/:arenaId/service/:serviceId",
-    name: "arena-premises",
+    name: "ArenaPremises",
     component: ArenaPremises,
   },
   {
     path: "/join_team",
-    name: "join-team",
+    name: "JoinTeam",
     component: JoinTeam,
   },
   {
     path: "/room",
-    name: "room",
+    name: "Room",
     component: Room,
   },
   {
     path: "/school",
-    name: "sport-schools",
+    name: "SportSchools",
     component: SportSchools,
   },
   {
     path: "/teamname/:teamId",
-    name: "team-name",
+    name: "TeamName",
     component: TeamName,
   },
   {
     path: "/book_room",
-    name: "book-room",
+    name: "BookRoom",
     component: BookRoom,
   },
   {
     path: "/subs_bench",
-    name: "substitute-bench",
+    name: "SubstituteBench",
     component: SubstituteBench,
   },
   {
@@ -171,24 +166,24 @@ const routes = [
     children: [
       {
         path: "",
-        name: "user-profile",
+        name: "UserProfile",
         component: UserProfile,
       },
       {
         path: "sport_complex",
-        name: "admin-add-arena-sportcomplex",
+        name: "AdminAddArenaSportComplex",
         component: AdminAddArenaSportComplex,
       },
       {
         path: "teams",
-        name: "admin-team",
+        name: "AdminTeam",
         component: AdminTeam,
       },
     ],
   },
   {
     path: "/admin/sport_complex/create",
-    name: "create-complex-information",
+    name: "CreateComplexInformation",
     component: CreateComplexInformation,
   },
   {
@@ -197,32 +192,32 @@ const routes = [
     children: [
       {
         path: "",
-        name: "complex-information",
+        name: "ComplexInformation",
         component: ComplexInformation,
       },
       {
         path: "payment_portal",
-        name: "admin-payment-portal",
+        name: "AdminPaymentPortal",
         component: AdminPaymentPortal,
       },
       {
         path: "schedule_event",
-        name: "admin-schedule-event",
+        name: "AdminScheduleEvent",
         component: AdminScheduleEvent,
       },
       {
         path: "team_list",
-        name: "admin-team-list",
+        name: "AdminTeamList",
         component: AdminTeamList,
       },
       {
         path: "training_staff",
-        name: "admin-train-staff",
+        name: "AdminTrainStaff",
         component: AdminTrainStaff,
       },
       {
         path: "management_staff",
-        name: "admin-manager",
+        name: "AdminManager",
         component: AdminManager,
       },
     ],
@@ -233,48 +228,48 @@ const routes = [
     children: [
       {
         path: "",
-        name: "edit-complex-information",
+        name: "EditComplexInformation",
         component: EditComplexInformation,
       },
       {
         path: "payment_portal",
-        name: "edit-admin-payment-portal",
+        name: "EditAdminPaymentPortal",
         component: EditAdminPaymentPortal,
       },
       {
         path: "payment_portal/create_service",
-        name: "create-admin-service",
+        name: "CreateAdminService",
         component: CreateAdminService,
       },
       {
         path: "payment_portal/price_list/:serviceId",
-        name: "edit-admin-pricelist",
+        name: "EditAdminPriceList",
         component: EditAdminPriceList,
       },
       {
         path: "payment_portal/:serviceId",
-        name: "edit-admin-service",
+        name: "EditAdminService",
         component: EditAdminService,
       },
 
       {
         path: "schedule_event",
-        name: "edit-admin-schedule-event",
+        name: "EditAdminScheduleEvent",
         component: EditAdminScheduleEvent,
       },
       {
         path: "schedule_event/create_event",
-        name: "create-arena-event",
+        name: "CreateArenaEvent",
         component: CreateArenaEvent,
       },
       {
         path: "team_list",
-        name: "edit-admin-teamlist",
+        name: "EditAdminTeamList",
         component: EditAdminTeamList,
       },
       {
         path: "training_staff",
-        name: "edit-admin-train-staff",
+        name: "EditAdminTrainStaff",
         component: EditAdminTrainStaff,
       },
     ],
@@ -282,27 +277,27 @@ const routes = [
 
   {
     path: "/admin/sport_complex/payment_portal/create",
-    name: "create-admin-payment-portal",
+    name: "CreateAdminPaymentPortal",
     component: CreateAdminPaymentPortal,
   },
   {
     path: "/admin/sport_complex/schedule_event/create",
-    name: "create-admin-schedule-event",
+    name: "CreateAdminScheduleEvent",
     component: CreateAdminScheduleEvent,
   },
   {
     path: "/admin/sport_complex/team_list/create",
-    name: "create-admin-teamlist",
+    name: "CreateAdminTeamList",
     component: CreateAdminTeamList,
   },
   {
     path: "/admin/sport_complex/training_staff/create",
-    name: "create-admin-train-staff",
+    name: "CreateAdminTrainStaff",
     component: CreateAdminTrainStaff,
   },
   {
     path: "/admin/sport_complex/management_staff/create",
-    name: "create-admin-manager",
+    name: "CreateAdminManager",
     component: CreateAdminManager,
   },
 ];

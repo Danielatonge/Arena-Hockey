@@ -76,6 +76,7 @@
             <v-chip
               v-bind="attrs"
               :input-value="selected"
+              close
               @click="select"
               @click:close="remove(item)"
             >
@@ -352,14 +353,9 @@
                     v-model="telephone"
                     hide-details="auto"
                     class="rounded-lg"
-                    @keyup.enter="addContactTelephone"
                   ></v-text-field>
-                  <v-icon
-                    v-if="telephone.length"
-                    class="ml-4"
-                    @click="addContactTelephone"
-                  >
-                    mdi-check
+                  <v-icon class="ml-4" @click="addContactTelephone">
+                    mdi-plus
                   </v-icon>
                 </v-col>
               </v-row>
@@ -386,14 +382,9 @@
                     dense
                     hide-details="auto"
                     class="rounded-lg"
-                    @keyup.enter="addContactMail"
                   ></v-text-field>
-                  <v-icon
-                    v-if="email.length"
-                    class="ml-4"
-                    @click="addContactMail"
-                  >
-                    mdi-check
+                  <v-icon class="ml-4" @click="addContactMail">
+                    mdi-plus
                   </v-icon>
                 </v-col>
               </v-row>

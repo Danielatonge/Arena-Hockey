@@ -55,40 +55,41 @@
         </v-row>
       </div>
     </v-card>
-    <slot name="price-list" :prices="priceList">
-      <v-row v-if="item.price.length">
-        <v-col
-          cols="2"
-          class="text-center border"
-          v-for="(itm, indx) in item.price"
-          :key="indx"
-        >
-          <div class="mb-3 grey--text">
-            {{ itm.startTime + " - " + itm.endTime }}
-          </div>
-          <div class="right-border mr-n3">
-            <p class="mb-0">{{ itm.weekdayPrice }}</p>
-            <p class="primary--text">
-              {{ itm.holidayPrice }}
-            </p>
-          </div>
-        </v-col>
-      </v-row>
-      <div class="mt-n8" v-show="item.price.length">
-        <span class="mr-5 font-weight-bold">
-          <v-icon style="font-size: 70px" color="#000" class="">
-            mdi-circle-small
-          </v-icon>
-          <span class="ml-n5">Будни</span>
-        </span>
-        <span class="font-weight-bold primary--text">
-          <v-icon style="font-size: 70px" color="primary" class="">
-            mdi-circle-small
-          </v-icon>
-          <span class="ml-n5"> Выходные </span>
-        </span>
-      </div>
-    </slot>
+    <v-row v-if="item.price.length">
+      <v-col
+        cols="2"
+        class="text-center border"
+        v-for="(itm, indx) in item.price"
+        :key="indx"
+      >
+        <div class="mb-3 grey--text">
+          {{ itm.startTime + " - " + itm.endTime }}
+        </div>
+        <div class="right-border mr-n3">
+          <p class="mb-0">{{ itm.weekdayPrice }}</p>
+          <p class="primary--text">
+            {{ itm.holidayPrice }}
+          </p>
+        </div>
+      </v-col>
+    </v-row>
+    <div class="mt-n8" v-show="item.price.length">
+      <span class="mr-5 font-weight-bold">
+        <v-icon style="font-size: 70px" color="#000" class="">
+          mdi-circle-small
+        </v-icon>
+        <span class="ml-n5">Будни</span>
+      </span>
+      <span class="font-weight-bold primary--text">
+        <v-icon style="font-size: 70px" color="primary" class="">
+          mdi-circle-small
+        </v-icon>
+        <span class="ml-n5"> Выходные </span>
+      </span>
+    </div>
+    <div class="mt-4">
+      <slot name="pricelist"></slot>
+    </div>
   </div>
 </template>
 
@@ -111,11 +112,9 @@ export default {
     priceList() {
       const now = moment();
       const prices = this.item.price;
-      console.log(prices);
       return prices.filter((x) => {
-        const showDate = x.showDate ? x.showDate : "";
-        const priceShowDate = moment(showDate);
-        if (priceShowDate.diff(now, "days") < 0) {
+        const priceShowDate = moment(`${x.showDate}`);
+        if (now.diff(priceShowDate) < 0) {
           return x;
         }
       });

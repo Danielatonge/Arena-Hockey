@@ -84,6 +84,7 @@
               <v-chip
                 v-bind="attrs"
                 :input-value="selected"
+                close
                 @click="select"
                 @click:close="remove(item)"
               >
@@ -356,7 +357,7 @@
                       class="rounded-lg"
                     ></v-text-field>
                     <v-icon class="ml-4" @click="addContactTelephone">
-                      mdi-check
+                      mdi-plus
                     </v-icon>
                   </v-col>
                 </v-row>
@@ -385,7 +386,7 @@
                       class="rounded-lg"
                     ></v-text-field>
                     <v-icon class="ml-4" @click="addContactMail">
-                      mdi-check
+                      mdi-plus
                     </v-icon>
                   </v-col>
                 </v-row>

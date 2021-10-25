@@ -32,6 +32,7 @@
 
 <script>
 export default {
+  name: "SelectDatePicker",
   props: {
     date: {
       type: String,

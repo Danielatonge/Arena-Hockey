@@ -1,24 +1,24 @@
 <template>
   <div>
-    <p class="text-h4">{{ arena.fullTitle }}</p>
+    <p class="text-h4">{{ current_arena.fullTitle }}</p>
     <p class="text-h6">Информация</p>
     <div class="ml-n2 mb-3">
       <v-chip
         color="primary"
         class="ma-2"
         label
-        v-for="(tag, i) in arena.tags"
+        v-for="(tag, i) in current_arena.tags"
         :key="i"
       >
         {{ tag }}
       </v-chip>
     </div>
-    <div v-if="arena.description">
-      <div v-if="arena.description.length < 580">
+    <div v-if="current_arena.description">
+      <div v-if="current_arena.description.length < 580">
         <p
           style="white-space: pre-line"
           class="text-justify"
-          v-html="arena.description"
+          v-html="current_arena.description"
         ></p>
       </div>
       <div v-else>
@@ -26,18 +26,18 @@
           style="white-space: pre-line"
           class="text-justify"
           v-if="!readMoreInfo"
-          v-html="arena.description.slice(0, 580) + '...'"
+          v-html="current_arena.description.slice(0, 580) + '...'"
         ></p>
         <p
           style="white-space: pre-line"
           class="text-justify"
           v-else
-          v-html="arena.description"
+          v-html="current_arena.description"
         ></p>
       </div>
       <v-btn
         color="grey lighten-2 mb-5"
-        v-show="arena.description.length > 580"
+        v-show="current_arena.description.length > 580"
         elevation="0"
         @click="readMoreInfo = !readMoreInfo"
       >
@@ -74,30 +74,32 @@
         </section>
       </v-col>
       <v-col cols="12" md="4">
-        <div v-if="arena.address">
+        <div v-if="current_arena.address">
           <p class="text-h6 mb-1">Адрес</p>
           <p class="blue--text">
-            {{ arena.address }}
+            {{ current_arena.address }}
           </p>
         </div>
-        <div v-if="arena.metro ? arena.metro.length : false">
+        <div v-if="current_arena.metro ? current_arena.metro.length : false">
           <p class="text-h6 mt-5 mb-1">Ближайшие станции метро:</p>
-          <span class="mr-3" v-for="(metro, i) in arena.metro" :key="i">
+          <span class="mr-3" v-for="(metro, i) in current_arena.metro" :key="i">
             {{ metro }}
           </span>
         </div>
         <p class="text-h6 font-weight-bold mt-10">Контакты</p>
         <div>
-          <p v-if="arena.phones">
-            <span v-for="x in arena.phones" :key="x"> {{ x }} <br /> </span>
+          <p v-if="current_arena.phones">
+            <span v-for="x in current_arena.phones" :key="x">
+              {{ x }} <br />
+            </span>
           </p>
-          <p v-if="arena.mails ? arena.mails.length : false">
+          <p v-if="current_arena.mails ? current_arena.mails.length : false">
             Email:
-            {{ arena.mails ? arena.mails.toString() : "" }}
+            {{ current_arena.mails ? current_arena.mails.toString() : "" }}
             <br />
           </p>
-          <a :href="arena.website" target="_blank">
-            {{ arena.website }}
+          <a :href="current_arena.website" target="_blank">
+            {{ current_arena.website }}
           </a>
         </div>
       </v-col>
@@ -115,12 +117,6 @@ export default {
     ArenaMap,
     LightBox,
   },
-  props: {
-    arenaId: {
-      type: String,
-      required: true,
-    },
-  },
   filters: {
     descriptionLength(value) {
       if (!value) return "";
@@ -131,14 +127,14 @@ export default {
     },
   },
   computed: {
-    ...mapState("arena", ["arena"]),
+    ...mapState(["current_arena"]),
     valid_contact_list() {
       return this.contact_list.filter((x) => x.link !== "");
     },
     media() {
       let _media = [];
-      if (this.arena.gallery) {
-        this.arena.gallery.forEach((x) => {
+      if (this.current_arena.gallery) {
+        this.current_arena.gallery.forEach((x) => {
           const item = {
             thumb: x,
             src: x,
@@ -150,43 +146,34 @@ export default {
       return _media;
     },
   },
-  created() {
-    // const coords = `${this.arena.lat}, ` + `${this.arena.lan}`;
-    // this.coords = [coords];
-    // const point = {
-    //   id: this.arenaId,
-    //   city: this.arena.city,
-    //   title: this.arena.title,
-    //   address: this.arena.address,
-    //   coords,
-    // };
-    // this.surfaces.push(point);
-  },
+  created() {},
   methods: {
     openGallery(index) {
       this.$refs.lightbox.showImage(index);
     },
   },
   data() {
+    console.log(this.$store.state);
     return {
       readMoreInfo: null,
       selectedItem: 0,
       readMoreActivated: false,
+
       zoom: 16,
       surfaces: [
         {
-          id: this.$store.state.arena.arena.id,
-          city: this.$store.state.arena.arena.city,
-          title: this.$store.state.arena.arena.title,
-          address: this.$store.state.arena.arena.address,
+          id: this.$route.params.id,
+          city: this.$store.state.current_arena.city,
+          title: this.$store.state.current_arena.title,
+          address: this.$store.state.current_arena.address,
           coords:
-            `${this.$store.state.arena.arena.lat}, ` +
-            `${this.$store.state.arena.arena.lan}`,
+            `${this.$store.state.current_arena.lat}, ` +
+            `${this.$store.state.current_arena.lan}`,
         },
       ],
       coords: [
-        `${this.$store.state.arena.arena.lat}, ` +
-          `${this.$store.state.arena.arena.lan}`,
+        this.$store.state.current_arena.lat,
+        this.$store.state.current_arena.lan,
       ],
     };
   },

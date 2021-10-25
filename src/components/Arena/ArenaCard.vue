@@ -59,7 +59,7 @@ export default {
     arena: Object,
   },
   mounted() {
-    this.selected_arenas.forEach((x) => {
+    this.selected_arena.forEach((x) => {
       if (x.id === this.arena.id) {
         this.selected = true;
       }
@@ -74,25 +74,22 @@ export default {
   methods: {
     goToArena() {
       const arenaId = this.arena.id;
-      this.$router.push({
-        name: "arena-information",
-        params: { arenaId },
-      });
+      this.$router.push({ path: `/arena/${arenaId}/information` });
     },
     openCardMap() {
       console.log(this.arena);
       this.$store
-        .dispatch("arena/showArenaOnMap", this.arena)
-        .then(() => this.$router.push({ name: "arena-map-all" }));
+        .dispatch("displayMapOne", [this.arena])
+        .then(() => this.$router.push({ path: "/arena/arena_maps" }));
     },
     selectArena(arena) {
       this.selected = !this.selected;
       if (this.selected) {
         // TODO add arena to list of selected arenas
-        this.$store.dispatch("arena/addToSelectedArenas", arena);
+        this.$store.dispatch("addToSelectedArena", arena);
       } else {
         // TODO remove arena from list of selected arenas
-        this.$store.dispatch("arena/removeFromSelectedArenas", arena);
+        this.$store.dispatch("removeFromSelectedArena", arena);
       }
     },
   },
@@ -108,7 +105,7 @@ export default {
     },
   },
   computed: {
-    ...mapState("arena", ["maps", "selected_arenas"]),
+    ...mapState(["arenasMapIdentifier", "selected_arena"]),
     checkPlus() {
       return this.selected ? "mdi-check" : "mdi-plus";
     },

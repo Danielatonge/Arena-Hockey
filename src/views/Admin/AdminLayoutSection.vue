@@ -3,7 +3,7 @@
     <div class="white">
       <v-container class="pb-0">
         <v-row class="">
-          <AppBreadcrumb :items="breadcrumb_items" />
+          <Breadcrumb :items="breadcrumb_items" />
         </v-row>
         <v-row class="mb-4">
           <v-col cols="4" md="3" class="text-center">
@@ -55,7 +55,7 @@
       <v-container>
         <v-row>
           <v-col cols="12" md="3">
-            <AppVerticalSidebar :items="sidebar_items" />
+            <VerticalSidebar :items="sidebar_items" />
           </v-col>
           <v-col cols="12" md="9">
             <router-view :user="user" :loading="loading"></router-view>
@@ -69,9 +69,12 @@
 <script>
 import axios from "axios";
 import { mapState } from "vuex";
+import Breadcrumb from "@/components/AppUnit/Breadcrumb";
+import VerticalSidebar from "@/components/AppUnit/VerticalSidebar";
 
 export default {
   name: "AdminLayoutSection",
+  components: { VerticalSidebar, Breadcrumb },
   created() {
     const userId = this.userId;
     this.fetchUser(userId);
