@@ -566,7 +566,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["userId"]),
+    ...mapState("user",["userId"]),
     social_media_display() {
       return this.social_media.filter((x) => x.link);
     },

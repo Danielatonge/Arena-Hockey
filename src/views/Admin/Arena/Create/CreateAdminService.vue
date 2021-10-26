@@ -87,16 +87,18 @@ import axios from "axios";
 import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
 
 export default {
-  name: "EditAdminService",
   components: {
     AdminImageUploader,
   },
-  created() {
-    this.arenaId = this.$route.params.id;
+  props: {
+    arenaId: {
+      type: String,
+      required: true,
+    },
   },
+  created() {},
   data() {
     return {
-      arenaId: "",
       serviceTypes: [
         { value: "RENT", translation: "Аренда" },
         { value: "OTHER", translation: "Прочее" },

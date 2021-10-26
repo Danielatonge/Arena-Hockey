@@ -108,7 +108,7 @@ import axios from "axios";
 export default {
   name: "Home",
   computed: {
-    ...mapState(["userId"]),
+    ...mapState("user",["userId"]),
   },
   components: { AdminArenaCard },
   mounted() {

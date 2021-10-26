@@ -143,7 +143,7 @@ import { mapState } from "vuex";
 export default {
   components: { ArenaChosen },
   computed: {
-    ...mapState(["selected_arena", "selected_arena_events"]),
+    ...mapState("arena", ["selected_arenas", "selected_events"]),
   },
   data() {
     return {

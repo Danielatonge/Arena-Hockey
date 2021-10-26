@@ -159,14 +159,20 @@ import moment from "moment";
 
 export default {
   components: { AdminArenaPrice },
-  computed: {
-    ...mapState(["currentPL"]),
+  props: {
+    arenaId: {
+      type: String,
+      required: true,
+    },
+    serviceId: {
+      type: String,
+      required: true,
+    },
   },
-  mounted() {
-    const arenaId = this.$route.params.id;
-    const serviceId = this.$route.params.serviceId;
-    this.arenaId = arenaId;
-    this.serviceId = serviceId;
+  computed: {
+    ...mapState(["currentPL"]), // Figure out what is happening here
+  },
+  created() {
     this.fetchPriceList();
   },
   data() {
@@ -181,8 +187,6 @@ export default {
         weekday: "",
         weekend: "",
       },
-      arenaId: "",
-      serviceId: "",
       service_nav: ["Катки", "Другие помещения"],
       breadcrumb_items: [
         {

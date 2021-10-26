@@ -77,7 +77,7 @@ export default {
     this.fetchUser(userId);
   },
   computed: {
-    ...mapState(["userId"]),
+    ...mapState("user",["userId"]),
   },
   data() {
     return {

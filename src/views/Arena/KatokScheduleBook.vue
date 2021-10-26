@@ -168,13 +168,23 @@
 <script>
 import { mapState } from "vuex";
 export default {
+  props: {
+    arenaId: {
+      type: String,
+      required: true,
+    },
+    serviceId: {
+      type: String,
+      required: true,
+    },
+  },
   watch: {
     value(x) {
       this.type = x == 1 ? "week" : "day";
     },
   },
   computed: {
-    ...mapState({ service: "current_service" }),
+    ...mapState("arena", ["service"]),
   },
   created() {
     let arenaId = this.$route.params.arenaId;

@@ -279,7 +279,7 @@ import axios from "axios";
 export default {
   name: "SportSchools",
   computed: {
-    ...mapState("school",["cities"]),
+    ...mapState("school", ["cities"]),
   },
   filters: {
     descriptionLength(value) {

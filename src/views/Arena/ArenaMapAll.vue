@@ -113,7 +113,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["list_arenas"]),
+    ...mapState("arena",["arenas"]),
     searchList() {
       return this.list_arenas.filter((x) => {
         const term = this.search.toLowerCase();

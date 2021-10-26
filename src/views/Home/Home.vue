@@ -270,9 +270,9 @@ export default {
   name: "Home",
   components: { ArenaCard },
   computed: {
-    ...mapState(["list_arenas"]),
+    ...mapState("arena",["arenas"]),
     displayedArena() {
-      return this.list_arenas.slice(0, 4);
+      return this.arenas.slice(0, 4);
     },
   },
   mounted() {

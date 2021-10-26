@@ -86,7 +86,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["maps"]),
+    ...mapState("arena", ["maps"]),
     checkPlus() {
       return this.selected ? "mdi-check" : "mdi-delete-outline";
     },

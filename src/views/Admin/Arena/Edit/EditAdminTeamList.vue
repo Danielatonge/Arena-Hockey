@@ -220,15 +220,19 @@ import AdminTeamCard from "@/components/Admin/Team/AdminTeamCard";
 
 export default {
   components: { AdminTeamCard },
+  props: {
+    arenaId: {
+      type: String,
+      required: true 
+    },
+  },
   computed: {
-    ...mapState(["teams"]),
+    ...mapState("arena", ["teams"]),
   },
   watch: {},
   mounted() {
-    const arena_id = this.$route.params.id;
-    this.arenaId = arena_id;
     this.$store.dispatch("teamplayer/getTeams");
-    this.$store.dispatch("arena/getTeams", arena_id).then((data) => {
+    this.$store.dispatch("arena/getTeams", this.arenaId).then((data) => {
       this.arena_teams = data;
     });
   },
@@ -236,7 +240,6 @@ export default {
     return {
       page: 1,
       perPage: 5,
-      arenaId: null,
       arena_teams: [],
       current_team: -1,
       paginationLength: 1,
@@ -299,9 +302,8 @@ export default {
       this.teamId = id;
     },
     deleteTeam() {
-      const arena_id = this.$route.params.id;
       axios
-        .delete(`/arena/${arena_id}/team/${this.teamId}`)
+        .delete(`/arena/${this.arenaId}/team/${this.teamId}`)
         .then((response) => {
           console.log("RESPONSE_DELETE_TEAM", response);
           this.arena_teams = this.arena_teams.filter(
@@ -318,9 +320,8 @@ export default {
     addTeam() {
       this.adding_team = true;
       console.log("SELECTED", this.selected_team);
-      const arena_id = this.$route.params.id;
       const data = {
-        arenaId: arena_id,
+        arenaId: this.arenaId,
         teamId: this.selected_team.id,
         visibility: this.hide_team ? 0 : 1,
       };

@@ -48,6 +48,12 @@ export default {
     ArenaServiceCard,
     ArenaPaymentCard,
   },
+  props: {
+    arenaId: {
+      type: String,
+      required: true,
+    },
+  },
   computed: {
     rentedService() {
       return this.services.filter((x) => x.serviceType === "RENT");
@@ -66,8 +72,6 @@ export default {
     },
   },
   created() {
-    const arenaId = this.$route.params.id;
-    this.arenaId = arenaId;
     this.fetchArenaServices(this.arenaId).then((services) => {
       this.fetchServicePriceList(services);
     });
@@ -77,7 +81,6 @@ export default {
     return {
       premises_tab: null,
       premises_nav: ["аренда", "прочее"],
-      arenaId: "",
       services: [],
     };
   },

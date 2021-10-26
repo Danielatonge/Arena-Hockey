@@ -7,7 +7,7 @@ import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState(["current_arena"]),
+    ...mapState("arena",["arena"]),
   },
   created() {},
   data() {

@@ -302,13 +302,21 @@ export default {
     ArenaServiceCard,
     LightBox,
   },
+  props: {
+    arenaId: {
+      type: String,
+      required: true,
+    },
+    serviceId: {
+      type: String,
+      required: true,
+    },
+  },
   computed: {
-    ...mapGetters(["katok_services", "others_services"]),
-    ...mapState({ service: "current_service" }),
+    ...mapGetters("arena", ["rentServices", "otherServices"]),
+    ...mapState("user", ["service"]),
   },
   created() {
-    let arenaId = this.$route.params.arenaId;
-    let serviceId = this.$route.params.serviceId;
     this.breadcrumb_items = [
       {
         text: "Москва",
@@ -319,7 +327,7 @@ export default {
       {
         text: "Название арены",
         disabled: false,
-        to: { name: "arena-information", params: { arenaId } },
+        to: { name: "arena-information", params: { arenaId: this.arenaId } },
         exact: true,
       },
       {
@@ -328,7 +336,7 @@ export default {
         href: "/",
       },
     ];
-    this.$store.dispatch("arena/getServiceById", serviceId); //TODO: function not found
+    this.$store.dispatch("arena/getServiceById", this.serviceId); //TODO: function not found
   },
   data() {
     return {

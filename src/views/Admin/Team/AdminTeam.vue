@@ -37,7 +37,7 @@ import AdminTeamCard from "@/components/Admin/Team/AdminTeamCard";
 export default {
   name: "AdminTeam",
   computed: {
-    ...mapState(["userId"]),
+    ...mapState("user",["userId"]),
   },
   components: { AdminTeamCard, AdminTeamFilter },
   mounted() {

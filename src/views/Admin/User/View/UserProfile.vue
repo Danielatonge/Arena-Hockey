@@ -73,7 +73,7 @@ import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState(["userId"]),
+    ...mapState("user",["userId"]),
   },
   props: {
     user: {

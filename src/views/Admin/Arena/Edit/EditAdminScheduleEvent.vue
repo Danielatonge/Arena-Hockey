@@ -155,6 +155,10 @@ export default {
       type: Object,
       required: true,
     },
+    arenaId: {
+      type: String,
+      required: true,
+    },
   },
   watch: {
     value(x) {
@@ -173,10 +177,8 @@ export default {
     },
   },
   created() {
-    const arenaId = this.$route.params.id;
-    this.arenaId = arenaId;
-    this.$store.dispatch("arena/getEvents", arenaId);
-    this.fetchArenaEvent(arenaId);
+    this.$store.dispatch("arena/getEvents", this.arenaId);
+    this.fetchArenaEvent(this.arenaId);
   },
   computed: {
     getEvents() {
@@ -211,7 +213,6 @@ export default {
         "orange",
         "grey lighten-1",
       ],
-      arenaId: "",
       arena_events: [],
       events: [],
     };

@@ -183,8 +183,14 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "axios"; // TODO: Remove all axios calls
 export default {
+  props: {
+    arenaId: {
+      type: String,
+      required: true,
+    },
+  },
   computed: {
     children_team() {
       return this.teams.filter((x) => x.team.type === "CHILDREN");
@@ -209,14 +215,10 @@ export default {
     },
   },
   created() {
-    const arenaId = this.$route.params.id;
-    this.arenaId = arenaId;
-    this.fetchArenaTeam(arenaId);
+    this.fetchArenaTeam(this.arenaId);
   },
   data() {
     return {
-      name: "ArenaTeamList",
-      arenaId: null,
       premises_tab: null,
       premises_nav: [
         "Все команды",

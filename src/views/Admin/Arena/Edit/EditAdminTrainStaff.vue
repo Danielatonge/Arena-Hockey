@@ -206,8 +206,17 @@ import AdminTrainerCard from "@/components/Admin/Trainer/AdminTrainerCard";
 
 export default {
   components: { AdminTrainerCard },
-  props: ["arena"],
-  mounted() {
+  props: {
+    arena: {
+      type: Object,
+      required: true,
+    },
+    arenaId: {
+      type: String,
+      required: true,
+    },
+  },
+  created() {
     axios.get(`/arena/${this.arenaId}/users`).then((response) => {
       this.arena_trainers = response.data;
     });
@@ -236,7 +245,7 @@ export default {
     ];
   },
   computed: {
-    ...mapState(["trainers"]),
+    ...mapState("arena", ["trainers"]),
     trainersList() {
       return this.trainers.map((x) => {
         return { ...x, fullName: `${x.name} ${x.middleName} ${x.surname}` };
@@ -325,7 +334,6 @@ export default {
       adding_player: false,
       search_text: "",
       adding: false,
-      arenaId: null,
       userId: null,
     };
   },

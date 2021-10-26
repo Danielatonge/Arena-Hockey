@@ -18,20 +18,26 @@ export const apiArena = {
     // console.log(url);
     return apiClient.get(url);
   },
-  getArena(id) {
-    return apiClient.get(`/arena/${id}`);
-  },
-  postArena(arena) {
-    return apiClient.post("events", arena);
+  getArena(arenaId) {
+    return apiClient.get(`/arena/${arenaId}`);
   },
   getServices(arenaId) {
     return apiClient.get(`/arena/${arenaId}/services`);
   },
-  getTeams(arenaId) {
-    return apiClient.get(`/arena/${arenaId}/teams/visible`);
+  getService(serviceId) {
+    return apiClient.get(`/service/${serviceId}`);
   },
-  getTrainers(arenaId) {
-    return apiClient.get(`/arena/${arenaId}/users/visible`);
+  getTeams(arenaId, visible) {
+    if (visible) {
+      return apiClient.get(`/arena/${arenaId}/teams/visible`);
+    }
+    return apiClient.get(`/arena/${arenaId}/teams`);
+  },
+  getTrainers(arenaId, visible) {
+    if (visible) {
+      return apiClient.get(`/arena/${arenaId}/users/visible`);
+    }
+    return apiClient.get(`/arena/${arenaId}/users`);
   },
   getEvents(arenaId) {
     return apiClient.get(`/arena/${arenaId}/events`);
@@ -41,6 +47,93 @@ export const apiArena = {
   },
   getPrices(serviceId) {
     return apiClient.get(`/service/${serviceId}/prices`);
+  },
+  getArenaByUserId(userId) {
+    return apiClient.get(`/user/${userId}/arenas`);
+  },
+  getServicePrices(serviceId) {
+    return apiClient.get(`/service/${serviceId}/prices`);
+  },
+
+  putArenaTeam({ arenaTeam, checked }) {
+    const payload = {
+      arenaId: arenaTeam.arenaId,
+      teamId: arenaTeam.team.id,
+      visibility: checked ? 0 : 1,
+    };
+    const id = arenaTeam.id;
+    return apiClient.put(`/arena/team?id=${id}`, payload);
+  },
+  putArenaUser({ arenaUser, checked }) {
+    const payload = {
+      arenaId: arenaUser.arenaId,
+      teamId: arenaUser.user.id,
+      visibility: checked ? 0 : 1,
+    };
+    const id = arenaUser.id;
+    return apiClient.put(`/arena/user?id=${id}`, payload);
+  },
+  putService({ serviceId, service }) {
+    return apiClient.put(`/service/${serviceId}`, service);
+  },
+  putArena({ arenaId, arena }) {
+    return apiClient.put(`/arena/${arenaId}`, arena);
+  },
+
+  postArena(arena) {
+    return apiClient.post("/arena", arena);
+  },
+  postService(service) {
+    return apiClient.post("/service", service);
+  },
+  postPrice(price) {
+    return apiClient.post(`/price`, price);
+  },
+  postEvent(event) {
+    return apiClient.post("/event", event);
+  },
+
+  createArenaUser({ arenaId, userId }) {
+    const payload = {
+      arenaId: arenaId,
+      userId: userId,
+    };
+    return apiClient.post(`/arena/user`, payload);
+  },
+  createArenaTeam({ arenaId, teamId, visibility }) {
+    const payload = {
+      arenaId,
+      teamId,
+      visibility,
+    };
+    return apiClient.post(`/arena/team`, payload);
+  },
+  createArenaTrainer({ arenaId, trainerId, visibility }) {
+    const payload = {
+      arenaId,
+      userId: trainerId,
+      visibility,
+    };
+    return apiClient.post(`/arena/user`, payload);
+  },
+
+  deleteService(serviceId) {
+    return apiClient.delete(`/service/${serviceId}`);
+  },
+  deletePrice(priceId) {
+    return apiClient.delete(`/price/${priceId}`);
+  },
+  deleteArena(arenaId) {
+    return apiClient.delete(`/arena/${arenaId}`);
+  },
+  deleteEvent(eventId) {
+    return apiClient.delete(`/event/${eventId}`);
+  },
+  deleteTeam({ arenaId, teamId }) {
+    return apiClient.delete(`/arena/${arenaId}/team/${teamId}`);
+  },
+  deleteTrainer({ arenaId, trainerId }) {
+    return apiClient.delete(`/arena/${arenaId}/user/${trainerId}`);
   },
 };
 
@@ -63,11 +156,36 @@ export const apiTeam = {
   getForums(teamId) {
     return apiClient.get(`/team/${teamId}/forums`);
   },
+
+  deleteTeam(teamId) {
+    return apiClient.delete(`/team/${teamId}`);
+  },
 };
 
-export const apiUser = {};
+export const apiUser = {
+  filterTeams({ userId, userTeamFilter }) {
+    //TODO: will finally change to this in future
+    const { page, search, numItems, sort_asc, address, type } = userTeamFilter;
+    const url =
+      `/user/${userId}/teams/search?city=${address}&currentPage=${page}&pageSize=${numItems.value}` +
+      `&queryString=${search}&sortBy=${sort_asc.key}&type=${type.key}`;
+    return apiClient.get(url);
+  },
+  getTeams(userId) {
+    // TODO: Temporal
+    return apiClient.get(`/user/${userId}/teams`);
+  },
+};
 
 export const apiForum = {
+  filterForum(filter, type) {
+    const { page, search, numItems, sort_asc, address } = filter;
+    const url =
+      `/forum/search?city=${address}&currentPage=${page}&pageSize=${numItems.value}` +
+      `&queryString=${search}&sortBy=${sort_asc.key}&type=${type}`;
+    console.log(url);
+    return apiClient.get(url);
+  },
   getForums() {
     return apiClient.get(`/forums`);
   },
@@ -77,6 +195,14 @@ export const apiForum = {
 };
 
 export const apiSchool = {
+  filterSchools(filter, type) {
+    const { city, currentPage, pageSize, queryString, sortBy } = filter;
+    const url =
+      `/school/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
+      `&queryString=${queryString}&sortBy=${sortBy}&type=${type}`;
+    console.log(url);
+    return apiClient.get(url);
+  },
   getSchools() {
     return apiClient.get(`/schools`);
   },

@@ -113,7 +113,16 @@ export default {
     ArenaMap,
     LightBox,
   },
-  props: ["arena"],
+  props: {
+    arena: {
+      type: Object,
+      required: true,
+    },
+    arenaId: {
+      type: String,
+      required: true,
+    },
+  },
   filters: {
     descriptionLength(value) {
       if (!value) return "";

@@ -78,9 +78,17 @@ export default {
   components: {
     AdminImageUploader,
   },
+  props: {
+    arenaId: {
+      type: String,
+      required: true,
+    },
+    serviceId: {
+      type: String,
+      required: true,
+    },
+  },
   created() {
-    this.arenaId = this.$route.params.id;
-    this.serviceId = this.$route.params.serviceId;
     this.fetchArenaServices(this.serviceId).then((service) => {
       this.item = service;
       this.avatar.imageURL = this.item.profilePicture;
@@ -88,8 +96,6 @@ export default {
   },
   data() {
     return {
-      arenaId: "",
-      serviceId: "",
       item: {},
       avatar: {
         imageURL: "",

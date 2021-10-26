@@ -206,8 +206,13 @@ import moment from "moment";
 export default {
   name: "CreateArenaEvent",
   created() {
-    const arenaId = this.$route.params.id;
-    this.fetchArenaById(arenaId);
+    this.fetchArenaById(this.arenaId);
+  },
+  props: {
+    arenaId: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {

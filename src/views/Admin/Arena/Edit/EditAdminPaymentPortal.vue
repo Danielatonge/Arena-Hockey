@@ -94,6 +94,12 @@ import axios from "axios";
 import ArenaPaymentCard from "@/components/Arena/ArenaPaymentCard";
 export default {
   components: { ArenaPaymentCard },
+  props: {
+    arenaId: {
+      type: String,
+      required: true,
+    },
+  },
   computed: {
     rentedService() {
       return this.services.filter((x) => x.serviceType === "RENT");
@@ -103,7 +109,6 @@ export default {
     },
   },
   mounted() {
-    this.arenaId = this.$route.params.id;
     this.fetchArenaServices(this.arenaId).then((services) => {
       this.fetchServicePriceList(services);
     });
@@ -112,7 +117,7 @@ export default {
     return {
       value_tab: 0,
       service_nav: ["аренда", "прочее"],
-      arenaId: "",
+
       breadcrumb_items: [
         {
           text: "Личный кабинет",

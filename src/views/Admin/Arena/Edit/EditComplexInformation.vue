@@ -553,7 +553,16 @@ export default {
     yandexMap,
     ymapMarker,
   },
-  props: ["arena"],
+  props: {
+    arena: {
+      type: Object,
+      required: true,
+    },
+    arenaId: {
+      type: String,
+      required: true,
+    },
+  },
   watch: {
     avatar: {
       handler: function () {
