@@ -9,12 +9,12 @@
       <v-row class="mb-3">
         <v-col cols="12">
           <p class="text-h5">Выбранные арены</p>
-          <p class="grey--text" v-show="!selected_arena.length">
+          <p class="grey--text" v-show="!selected_arenas.length">
             Нет выбранных арен. Чтобы добавить арену, нажмите на значок добавить
             на карточке арены.
           </p>
           <v-row>
-            <v-col cols="4" v-for="(arena, i) in selected_arena" :key="i">
+            <v-col cols="4" v-for="(arena, i) in selected_arenas" :key="i">
               <ArenaChosen
                 :arena="arena"
                 :index="i"
@@ -34,7 +34,12 @@
     <v-container class="mt-14">
       <p class="text-h4">Расписание мероприятий</p>
       <div class="rounded-lg white">
-        <v-sheet tile height="54" class="d-flex align-center" color="#EBF5FB">
+        <v-sheet
+          tile
+          height="54"
+          class="d-flex align-center py-6"
+          color="#EBF5FB"
+        >
           <div style="width: 200px" class="ml-3">
             <v-menu
               v-model="date_picker"
@@ -64,7 +69,7 @@
               ></v-date-picker>
             </v-menu>
           </div>
-          <div style="width: 200px">
+          <!-- <div style="width: 200px">
             <v-select
               v-model="mode"
               :items="mode_lesson"
@@ -75,17 +80,9 @@
               label="Все виды занятий"
               class="ma-2 white"
             ></v-select>
-          </div>
+          </div> -->
 
           <v-spacer></v-spacer>
-          <v-btn class="ma-2" color="primary" elevation="0">
-            Загрузить расписание
-          </v-btn>
-        </v-sheet>
-        <v-sheet tile height="54" class="d-flex">
-          <div></div>
-          <v-spacer></v-spacer>
-
           <v-btn icon class="ma-2" @click="$refs.calendar.prev()">
             <v-icon>mdi-chevron-left</v-icon>
           </v-btn>
@@ -191,13 +188,13 @@ export default {
     },
     generateEvents() {
       let _events = [];
-      const arenaCount = this.selected_arena.length;
+      const arenaCount = this.selected_arenas.length;
       for (let i = 0; i < arenaCount; i++) {
-        const eventCount = this.selected_arena_events[i]
-          ? this.selected_arena_events[i].length
+        const eventCount = this.selected_events[i]
+          ? this.selected_events[i].length
           : 0;
         for (let j = 0; j < eventCount; j++) {
-          const event = this.selected_arena_events[i][j];
+          const event = this.selected_events[i][j];
 
           _events.push({
             name: event.title,
@@ -217,7 +214,7 @@ export default {
       this.events = _events;
     },
     reInitCalendar() {
-      this.categories = this.selected_arena.map((x) => x.title);
+      this.categories = this.selected_arenas.map((x) => x.title);
       this.generateEvents();
     },
     getEventColor(event) {
@@ -246,7 +243,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("arena/getEventsFromSelectedArenas");
-    this.categories = this.selected_arena.map((x) => x.title);
+    this.categories = this.selected_arenas.map((x) => x.title);
     this.generateEvents();
   },
 };

@@ -25,7 +25,10 @@
               <div>{{ validAge(user.age) }}</div>
             </div>
             <div>
-              <router-link :to="`/admin/${user.id}/edit`" class="reset-link">
+              <router-link
+                :to="{ name: '', params: { userId: user.id } }"
+                class="reset-link"
+              >
                 <v-btn large class="mr-2 mb-2" color="primary" elevation="0">
                   Редактировать
                 </v-btn>
@@ -77,7 +80,7 @@ export default {
     this.fetchUser(userId);
   },
   computed: {
-    ...mapState("user",["userId"]),
+    ...mapState("user", ["userId"]),
   },
   data() {
     return {

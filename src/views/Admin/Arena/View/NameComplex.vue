@@ -23,7 +23,10 @@
             </div>
             <div>
               <router-link
-                :to="`/admin/sport_complex/${arena.id}/edit`"
+                :to="{
+                  name: 'edit-complex-information',
+                  params: { arenaId: arena.id },
+                }"
                 class="reset-link"
               >
                 <v-btn class="mr-2 mb-2" color="primary" elevation="0">

@@ -18,6 +18,7 @@
             <v-tab
               v-for="(item, i) in sections"
               :key="i"
+              exact-path
               router
               :to="item.link"
             >
@@ -42,23 +43,23 @@ export default {
       this.sections = [
         {
           text: "Информация",
-          link: `/admin/sport_complex/${id}/edit`,
+          link: { name: "edit-complex-information", params: { arenaId: id } },
         },
         {
           text: "Платные услуги",
-          link: `/admin/sport_complex/${id}/edit/payment_portal`,
+          link: { name: "edit-admin-payment-portal", params: { arenaId: id } },
         },
         {
           text: "Расписание мероприятий",
-          link: `/admin/sport_complex/${id}/edit/schedule_event`,
+          link: { name: "edit-admin-schedule-event", params: { arenaId: id } },
         },
         {
           text: "Список команд",
-          link: `/admin/sport_complex/${id}/edit/team_list`,
+          link: { name: "edit-admin-teamlist", params: { arenaId: id } },
         },
         {
           text: "Тренерский состав",
-          link: `/admin/sport_complex/${id}/edit/training_staff`,
+          link: { name: "edit-admin-train-staff", params: { arenaId: id } },
         },
       ];
     });

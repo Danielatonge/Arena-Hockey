@@ -112,7 +112,6 @@ export default {
     priceList() {
       const now = moment();
       const prices = this.item.price;
-      console.log(prices);
       return prices.filter((x) => {
         const showDate = x.showDate ? x.showDate : "";
         const priceShowDate = moment(showDate);

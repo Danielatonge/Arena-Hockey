@@ -93,20 +93,18 @@ export default {
       drawer: null,
       tab: null,
       items: [
-        { text: "Ледовые дворцы и арены", route: "/arena" },
-        { text: "Лиги и турниры", route: "/league" },
-        { text: "Детские турниры", route: "/kids_tournement" },
-        { text: "Раздевалка", route: "/room" },
-        { text: "Скамейка запасных", route: "/subs_bench" },
-        { text: "Школы", route: "/school" },
-        { text: "Лагеря и сборы", route: "/team" },
-        { text: "Сушилка", route: "/dryer" },
+        { text: "Ледовые дворцы и арены", route: { name: "arena" } },
+        { text: "Лиги и турниры", route: { name: "" } },
+        { text: "Детские турниры", route: { name: "kidsTournaments" } },
+        { text: "Раздевалка", route: { name: "room" } },
+        { text: "Скамейка запасных", route: { name: "substitute-bench" } },
+        { text: "Школы", route: { name: "sport-schools" } },
+        { text: "Лагеря и сборы", route: { name: "" } },
+        { text: "Сушилка", route: { name: "" } },
       ],
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     };
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>

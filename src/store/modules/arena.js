@@ -5,8 +5,6 @@ export const namespaced = true;
 export const state = () => ({
   arenas: [],
   arena: {},
-  maps: [],
-  map: {},
   teams: [],
   events: [],
   cities: [],
@@ -20,14 +18,21 @@ export const state = () => ({
 });
 
 export const getters = {
-  arena(state) {
-    return state.arena;
-  },
   rentServices(state) {
     return state.services.filter((x) => x.serviceType === "RENT");
   },
   otherServices(state) {
     return state.services.filter((x) => x.serviceType === "OTHER");
+  },
+  showArenasOnMap(state) {
+    return state.arenas.map(({ id, lat, lan, title, city, address }) => ({
+      id,
+      address,
+      coords:
+        lat && lan ? lat.toString() + ", " + lan.toString() : "55.55,37.32",
+      title,
+      city,
+    }));
   },
 };
 
@@ -73,28 +78,6 @@ export const mutations = {
   REMOVE_FROM_SELECTED_EVENTS(state, index) {
     state.selected_events.splice(index, 1);
   },
-  SET_MAPS(state, arenas) {
-    state.maps = arenas.map(({ id, lat, lan, title, city, address }) => ({
-      id,
-      address,
-      coords:
-        lat && lan ? lat.toString() + ", " + lan.toString() : "55.55,37.32",
-      title,
-      city,
-    }));
-  },
-  SET_MAP(state, arena) {
-    const { id, lat, lan, title, city, address } = arena;
-    const coords =
-      lat && lan ? lat.toString() + ", " + lan.toString() : "55.55,37.32";
-    state.map = { id, address, coords, title, city };
-  },
-  SET_PAGINATION(state, plength) {
-    state.paginationLength = plength;
-  },
-  SET_NUMFOUND(state, numFound) {
-    state.numFound = numFound;
-  },
 };
 
 export const actions = {
@@ -103,9 +86,8 @@ export const actions = {
       .getArenas(filters)
       .then((response) => {
         const res = response.data;
+
         commit("SET_ARENAS", res.content);
-        commit("SET_PAGINATION", res.totalPages);
-        commit("SET_NUMFOUND", res.totalElements);
         return {
           paginationLength: res.totalPages,
           numFound: res.totalElements,
@@ -114,23 +96,6 @@ export const actions = {
       .catch((err) => {
         console.log(err);
       });
-  },
-  getArena({ commit }, arenaId) {
-    api
-      .getArena(arenaId)
-      .then((response) => {
-        commit("SET_ARENA", response.data);
-      })
-      .catch((err) => console.log(err));
-  },
-  setArena({ commit }, arena) {
-    commit("SET_ARENA", arena);
-  },
-  showArenaOnMap({ commit }, arena) {
-    commit("SET_MAP", arena);
-  },
-  showArenasOnMap({ commit }, arenas) {
-    commit("SET_MAPS", arenas);
   },
   getServices({ dispatch }, arenaId) {
     dispatch("fetchServices", arenaId).then((services) => {
@@ -192,14 +157,13 @@ export const actions = {
       commit("SET_SELECTED_EVENTS", response);
     });
   },
-  addToSelectedArenas({ commit }, arena) {
-    commit("ADD_TO_SELECTED_ARENAS", arena);
-  },
-  removeFromSelectedArenas({ commit }, arena) {
-    commit("REMOVE_FROM_SELECTED_ARENAS", arena);
-  },
-  removeFromSelectedEvents({ commit }, index) {
-    commit("REMOVE_FROM_SELECTED_EVENTS", index);
+  getArena({ commit }, arenaId) {
+    api
+      .getArena(arenaId)
+      .then((response) => {
+        commit("SET_ARENA", response.data);
+      })
+      .catch((err) => console.log(err));
   },
   fetchServices(_context, arenaId) {
     return new Promise((resolve, reject) => {
@@ -234,5 +198,20 @@ export const actions = {
     Promise.all(priceList).then(() => {
       commit("SET_SERVICES", final);
     });
+  },
+
+  setArena({ commit }, arena) {
+    commit("SET_ARENA", arena);
+  },
+
+  addToSelectedArenas({ commit }, arena) {
+    commit("ADD_TO_SELECTED_ARENAS", arena);
+  },
+
+  removeFromSelectedArenas({ commit }, arena) {
+    commit("REMOVE_FROM_SELECTED_ARENAS", arena);
+  },
+  removeFromSelectedEvents({ commit }, index) {
+    commit("REMOVE_FROM_SELECTED_EVENTS", index);
   },
 };

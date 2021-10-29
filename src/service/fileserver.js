@@ -1,5 +1,5 @@
 import axios from "axios";
-// import fileApi from "@/service/fileserver"
+
 const fileApi = axios.create({
   baseURL: "https://file-hockey.herokuapp.com",
   withCredentials: false,

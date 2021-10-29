@@ -270,13 +270,20 @@ export default {
   name: "Home",
   components: { ArenaCard },
   computed: {
-    ...mapState("arena",["arenas"]),
+    ...mapState("arena", ["arenas"]),
     displayedArena() {
       return this.arenas.slice(0, 4);
     },
   },
   mounted() {
-    this.$store.dispatch("arena/getArenas");
+    const filters = {
+      city: "Москва",
+      currentPage: 1,
+      pageSize: 9,
+      queryString: "",
+      sortBy: 1,
+    };
+    this.$store.dispatch("arena/getArenas", filters);
   },
   data() {
     return {
@@ -294,35 +301,9 @@ export default {
         "/team_room_1",
         "/team_room_4",
       ],
-      arenas: [
-        {
-          image: "/home_arena_1.png",
-          name: "Los Angeles Clippers",
-          address: "ул. Лермонтова, д. 14, пом. 3, г. Чита",
-        },
-        {
-          image: "/home_arena_2.png",
-          name: "Los Angeles Clippers",
-          address: "ул. Лермонтова, д. 14, пом. 3, г. Чита",
-        },
-        {
-          image: "/home_arena_3.png",
-          name: "Los Angeles Clippers",
-          address: "ул. Лермонтова, д. 14, пом. 3, г. Чита",
-        },
-        {
-          image: "/home_arena_2.png",
-          name: "Los Angeles Clippers",
-          address: "ул. Лермонтова, д. 14, пом. 3, г. Чита",
-        },
-      ],
     };
   },
-  methods: {
-    goToArena(arenaId) {
-      this.$router.push({ name: "arena-information", params: { arenaId } });
-    },
-  },
+  methods: {},
   filters: {
     addressDescription: (value) => {
       if (!value) return "";

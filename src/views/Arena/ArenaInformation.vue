@@ -151,16 +151,18 @@ export default {
     },
   },
   created() {
-    // const coords = `${this.arena.lat}, ` + `${this.arena.lan}`;
-    // this.coords = [coords];
-    // const point = {
-    //   id: this.arenaId,
-    //   city: this.arena.city,
-    //   title: this.arena.title,
-    //   address: this.arena.address,
-    //   coords,
-    // };
-    // this.surfaces.push(point);
+    const lat = this.arena.lat;
+    const lan = this.arena.lan;
+    const coords = `${lat}, ` + `${lan}`;
+    this.coords = [Number(lat), Number(lan)];
+    const point = {
+      id: this.arenaId,
+      city: this.arena.city,
+      title: this.arena.title,
+      address: this.arena.address,
+      coords,
+    };
+    this.surfaces.push(point);
   },
   methods: {
     openGallery(index) {
@@ -173,21 +175,8 @@ export default {
       selectedItem: 0,
       readMoreActivated: false,
       zoom: 16,
-      surfaces: [
-        {
-          id: this.$store.state.arena.arena.id,
-          city: this.$store.state.arena.arena.city,
-          title: this.$store.state.arena.arena.title,
-          address: this.$store.state.arena.arena.address,
-          coords:
-            `${this.$store.state.arena.arena.lat}, ` +
-            `${this.$store.state.arena.arena.lan}`,
-        },
-      ],
-      coords: [
-        `${this.$store.state.arena.arena.lat}, ` +
-          `${this.$store.state.arena.arena.lan}`,
-      ],
+      surfaces: [],
+      coords: [],
     };
   },
 };
@@ -202,9 +191,6 @@ export default {
   border-right: unset;
 }
 
-div.my-sidetabs [role="tab"] {
-  justify-content: flex-start;
-}
 
 .wrapper-map {
   background-color: #ccc;

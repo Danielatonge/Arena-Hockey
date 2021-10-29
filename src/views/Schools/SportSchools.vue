@@ -14,7 +14,7 @@
         </v-row>
       </v-container>
     </div>
-    <v-container class="pt-16 pb-0" v-show="value == 0">
+    <v-container class="pt-16 pb-0" v-show="value === 0">
       <div class="pb-16">
         <v-row dense>
           <v-col class="d-flex" cols="12" md="2">
@@ -136,7 +136,7 @@
         ></v-pagination>
       </div>
     </v-container>
-    <v-container class="pt-16 pb-0" v-show="value == 1">
+    <v-container class="pt-16 pb-0" v-show="value === 1">
       <div class="pb-16">
         <v-row dense>
           <v-col class="d-flex" cols="12" md="2">

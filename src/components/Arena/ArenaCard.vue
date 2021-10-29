@@ -80,10 +80,10 @@ export default {
       });
     },
     openCardMap() {
-      console.log(this.arena);
-      this.$store
-        .dispatch("arena/showArenaOnMap", this.arena)
-        .then(() => this.$router.push({ name: "arena-map-all" }));
+      this.$router.push({
+        name: "arena-map-all",
+        query: { arenaTitle: `${this.arena.title}` },
+      });
     },
     selectArena(arena) {
       this.selected = !this.selected;
@@ -108,7 +108,7 @@ export default {
     },
   },
   computed: {
-    ...mapState("arena", ["maps", "selected_arenas"]),
+    ...mapState("arena", ["selected_arenas"]),
     checkPlus() {
       return this.selected ? "mdi-check" : "mdi-plus";
     },

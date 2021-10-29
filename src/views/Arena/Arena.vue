@@ -45,7 +45,7 @@
               depressed
               height="48px"
               width="100%"
-              @click="$router.push({ name: 'event_schedule_all' })"
+              @click="$router.push({ name: 'event-schedule-all' })"
             >
               Расписание мероприятий
             </v-btn>
@@ -200,9 +200,7 @@ export default {
         });
     },
     goToMapAll() {
-      this.$store
-        .dispatch("arena/showArenasOnMap", this.arenas)
-        .then(() => this.$router.push({ name: "arena-map-all" }));
+      this.$router.push({ name: "arena-map-all" });
     },
   },
   data() {

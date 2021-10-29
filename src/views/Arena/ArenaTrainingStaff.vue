@@ -126,6 +126,7 @@
         </v-row>
       </v-tab-item>
     </v-tabs-items>
+    
   </div>
 </template>
 

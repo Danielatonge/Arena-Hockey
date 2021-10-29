@@ -66,12 +66,13 @@
           <v-tabs
             vertical
             class="pl-4 rounded-lg my-sidetabs"
-            v-model="sidebar_tab"
+            v-model="sideTab"
           >
             <v-tab
               v-for="(item, i) in sidebar_items"
               :key="i"
               router
+              exact
               :to="item.link"
             >
               {{ item.text }}
@@ -109,19 +110,28 @@ export default {
   created() {
     this.$store.dispatch("arena/getArena", this.arenaId);
     this.sidebar_items = [
-      { text: "Информация", link: `/arena/${this.arenaId}` },
+      {
+        text: "Информация",
+        link: { name: "arena-information", params: { arenaId: this.arenaId } },
+      },
       {
         text: "Платные услуги",
-        link: `/arena/${this.arenaId}/payment_portal`,
+        link: { name: "payment-portal", params: { arenaId: this.arenaId } },
       },
       {
         text: "Расписание мероприятий",
-        link: `/arena/${this.arenaId}/event_schedule`,
+        link: { name: "event-schedule", params: { arenaId: this.arenaId } },
       },
-      { text: "Список команд", link: `/arena/${this.arenaId}/list_teams` },
+      {
+        text: "Список команд",
+        link: { name: "arena-team-list", params: { arenaId: this.arenaId } },
+      },
       {
         text: "Тренерский состав",
-        link: `/arena/${this.arenaId}/training_staff`,
+        link: {
+          name: "arena-training-staff",
+          params: { arenaId: this.arenaId },
+        },
       },
     ];
 
@@ -160,7 +170,7 @@ export default {
     return {
       name: "ArenaName",
       contact_list: null,
-      sidebar_tab: 0,
+      sideTab: 0,
       breadcrumb_items: null,
       selectedItem: 0,
       sidebar_items: null,
