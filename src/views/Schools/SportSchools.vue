@@ -274,12 +274,11 @@
 
 <script>
 import { mapState } from "vuex";
-import axios from "axios";
 
 export default {
   name: "SportSchools",
   computed: {
-    ...mapState("school", ["cities"]),
+    ...mapState("school", ["cities", "com", "state"]),
   },
   filters: {
     descriptionLength(value) {
@@ -296,7 +295,6 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch("school/getSchools");
     this.$store.dispatch("school/getCities");
     this.fetchCom();
     this.fetchState();
@@ -337,9 +335,7 @@ export default {
         { key: 1, value: "По именни (от Я до А)" },
       ],
       numFoundCom: 0,
-      com: [],
       numFoundState: 0,
-      state: [],
     };
   },
   methods: {
@@ -361,47 +357,35 @@ export default {
       this.$router.push({ name: "sport-schools" });
     },
     fetchCom() {
-      const city = this.sort_by_city,
-        currentPage = this.pageCom,
-        pageSize = this.numItemsCom.value,
-        queryString = this.searchCom,
-        sortBy = this.sort_com.key;
-      const url =
-        `/school/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
-        `&queryString=${queryString}&sortBy=${sortBy}&type=COMMERCIAL`;
-      console.log(url);
-      axios
-        .get(url)
-        .then((response) => {
-          const res = response.data;
-          this.com = res.content;
-          this.paginationComLength = res.totalPages;
-          this.numFoundCom = res.totalElements;
-        })
-        .catch((err) => {
-          console.log(err);
+      const filters = {
+        city: this.sort_by_city,
+        currentPage: this.pageCom,
+        pageSize: this.numItemsCom.value,
+        queryString: this.searchCom,
+        sortBy: this.sort_com.key,
+      };
+
+      this.$store
+        .dispatch("school/filterSchools", { filters, type: "COMMERCIAL" })
+        .then(({ pagination, numFound }) => {
+          this.paginationComLength = pagination;
+          this.numFoundCom = numFound;
         });
     },
     fetchState() {
-      const city = this.sort_by_city,
-        currentPage = this.pageState,
-        pageSize = this.numItemsState.value,
-        queryString = this.searchState,
-        sortBy = this.sort_state.key;
-      const url =
-        `/school/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
-        `&queryString=${queryString}&sortBy=${sortBy}&type=STATE`;
-      console.log(url);
-      axios
-        .get(url)
-        .then((response) => {
-          const res = response.data;
-          this.state = res.content;
-          this.paginationStateLength = res.totalPages;
-          this.numFoundState = res.totalElements;
-        })
-        .catch((err) => {
-          console.log(err);
+      const filters = {
+        city: this.sort_by_city,
+        currentPage: this.pageState,
+        pageSize: this.numItemsState.value,
+        queryString: this.searchState,
+        sortBy: this.sort_state.key,
+      };
+
+      this.$store
+        .dispatch("school/filterSchools", { filters, type: "STATE" })
+        .then(({ pagination, numFound }) => {
+          this.paginationStateLength = pagination;
+          this.numFoundState = numFound;
         });
     },
   },

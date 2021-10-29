@@ -3,13 +3,17 @@ import { apiSchool as api } from "@/service";
 export const namespaced = true;
 
 export const state = () => ({
-  schools: [],
+  com: [],
+  state: [],
   cities: [],
 });
 
 export const mutations = {
-  SET_SCHOOLS(state, schools) {
-    state.schools = schools;
+  SET_COM(state, schools) {
+    state.com = schools;
+  },
+  SET_STATE(state, schools) {
+    state.state = schools;
   },
   SET_CITIES(state, cities) {
     state.cities = cities;
@@ -17,11 +21,25 @@ export const mutations = {
 };
 
 export const actions = {
-  getSchools({ commit }) {
-    api
-      .getSchools()
+  // getSchools({ commit }) {
+  //   api
+  //     .getSchools()
+  //     .then((response) => {
+  //       commit("SET_SCHOOLS", response.data);
+  //     })
+  //     .catch((err) => console.log(err));
+  // },
+  filterSchools({ commit }, { filters, type }) {
+    return api
+      .filterSchools(filters, type)
       .then((response) => {
-        commit("SET_SCHOOLS", response.data);
+        const res = response.data;
+        if (type === 'STATE') commit("SET_STATE", res.content);
+        else commit("SET_COM", res.content);
+        return {
+          pagination: res.totalPages,
+          numFound: res.totalElements,
+        };
       })
       .catch((err) => console.log(err));
   },

@@ -15,7 +15,6 @@ export const apiArena = {
     const url =
       `/arena/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
       `&queryString=${queryString}&sortBy=${sortBy}`;
-    // console.log(url);
     return apiClient.get(url);
   },
   getArena(arenaId) {
@@ -207,7 +206,7 @@ export const apiSchool = {
     return apiClient.get(`/schools`);
   },
   getCities() {
-    return apiClient.get(`/schools/cities`);
+    return apiClient.get(`/schools/cites`); //TODO: correctly spell out
   },
 };
 
