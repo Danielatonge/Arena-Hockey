@@ -58,8 +58,12 @@ import { mapState } from "vuex";
 export default {
   name: "AdminArenaCard",
   props: {
-    arena: Object,
+    arena: {
+      type: Object,
+      required: true,
+    },
   },
+
   mounted() {},
   data() {
     return {
@@ -71,11 +75,20 @@ export default {
     goToAdminArena() {
       this.$store.dispatch("arena/setArena", this.arena);
       const arenaId = this.arena.id;
-      this.$router.push({ name: "complex-information", params: { arenaId } });
+      
+      this.$router.push({
+        name: "complex-information",
+        params: { arenaId },
+      });
     },
     goToAdminArenaEdit() {
       this.$store.dispatch("arena/setArena", this.arena);
       const arenaId = this.arena.id;
+      console.log(
+        "🚀 ~ file: AdminArenaCard.vue ~ line 90 ~ goToAdminArenaEdit ~ arenaId",
+        arenaId
+      );
+
       this.$router.push({
         name: "edit-complex-information",
         params: { arenaId },

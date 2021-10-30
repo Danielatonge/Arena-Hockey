@@ -21,14 +21,6 @@ export const mutations = {
 };
 
 export const actions = {
-  // getSchools({ commit }) {
-  //   api
-  //     .getSchools()
-  //     .then((response) => {
-  //       commit("SET_SCHOOLS", response.data);
-  //     })
-  //     .catch((err) => console.log(err));
-  // },
   filterSchools({ commit }, { filters, type }) {
     return api
       .filterSchools(filters, type)

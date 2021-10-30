@@ -70,7 +70,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import { mapState } from "vuex";
 
 export default {
@@ -80,7 +79,7 @@ export default {
     this.fetchUser(userId);
   },
   computed: {
-    ...mapState("user", ["userId"]),
+    ...mapState("user", ["userId", "user"]),
   },
   data() {
     return {
@@ -135,7 +134,6 @@ export default {
         { text: "Календарь мероприятий", link: `` },
       ],
       sidebar_tab: 0,
-      user: {},
       loading: false,
     };
   },
@@ -146,10 +144,7 @@ export default {
       }
     },
     fetchUser(userId) {
-      axios.get(`/user/${userId}`).then((response) => {
-        this.user = response.data;
-        console.log(this.user);
-      });
+      this.$store.dispatch("user/getUser", userId);
     },
   },
 };

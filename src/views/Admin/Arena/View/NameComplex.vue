@@ -59,6 +59,7 @@
                 v-for="(item, i) in sections"
                 :key="i"
                 router
+                exact
                 :to="item.link"
               >
                 {{ item.text }}
@@ -66,7 +67,7 @@
             </v-tabs>
           </v-col>
           <v-col cols="7" md="9">
-            <router-view :arena="arena" v-if="arenaLoaded"></router-view>
+            <router-view :arena="arena"></router-view>
           </v-col>
         </v-row>
       </v-container>
@@ -75,40 +76,44 @@
 </template>
 
 <script>
-import axios from "axios";
+import { mapState } from "vuex";
 export default {
+  props: {
+    arenaId: {
+      type: String,
+      required: true,
+    },
+  },
+  computed: mapState("arena", ["arena"]),
   created() {
-    const arenaId = this.$route.params.id;
-    this.fetchArenaById(arenaId).then((id) => {
-      this.sections = [
-        {
-          text: "Информация",
-          link: `/admin/sport_complex/${id}`,
-        },
-        {
-          text: "Платные услуги",
-          link: `/admin/sport_complex/${id}/payment_portal`,
-        },
-        {
-          text: "Расписание мероприятий",
-          link: `/admin/sport_complex/${id}/schedule_event`,
-        },
-        {
-          text: "Список команд",
-          link: `/admin/sport_complex/${id}/team_list`,
-        },
-        {
-          text: "Тренерский состав",
-          link: `/admin/sport_complex/${id}/training_staff`,
-        },
-      ];
-    });
+    const id = this.arenaId;
+    this.sections = [
+      {
+        text: "Информация",
+        link: `/admin/sport_complex/${id}`,
+      },
+      {
+        text: "Платные услуги",
+        link: `/admin/sport_complex/${id}/payment_portal`,
+      },
+      {
+        text: "Расписание мероприятий",
+        link: `/admin/sport_complex/${id}/schedule_event`,
+      },
+      {
+        text: "Список команд",
+        link: `/admin/sport_complex/${id}/team_list`,
+      },
+      {
+        text: "Тренерский состав",
+        link: `/admin/sport_complex/${id}/training_staff`,
+      },
+    ];
   },
   data() {
     return {
       checkbox: null,
       sidebar_tab: 0,
-      arena: {},
       breadcrumb_items: [
         {
           text: "Личный кабинет",
@@ -127,23 +132,9 @@ export default {
         },
       ],
       sections: [],
-      arenaLoaded: false,
     };
   },
-  methods: {
-    fetchArenaById(arenaId) {
-      return new Promise((resolve) => {
-        axios
-          .get(`/arena/${arenaId}`)
-          .then((response) => {
-            this.arena = response.data;
-            this.arenaLoaded = true;
-            resolve(response.data.id);
-          })
-          .catch((err) => console.log(err));
-      });
-    },
-  },
+  methods: {},
 };
 </script>
 

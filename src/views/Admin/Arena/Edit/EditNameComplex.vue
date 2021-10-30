@@ -21,13 +21,14 @@
               exact-path
               router
               :to="item.link"
+              exact
             >
               {{ item.text }}
             </v-tab>
           </v-tabs>
         </v-col>
         <v-col cols="7" md="9">
-          <router-view :arena="arena" v-if="arenaLoaded"></router-view>
+          <router-view :arena="arena"></router-view>
         </v-col>
       </v-row>
     </v-container>
@@ -35,40 +36,47 @@
 </template>
 
 <script>
-import axios from "axios";
+import { mapState } from "vuex";
+
 export default {
+  computed: {
+    ...mapState("arena", ["arena"]),
+  },
+  props: {
+    arenaId: {
+      type: String,
+      required: true,
+    },
+  },
   created() {
-    const arenaId = this.$route.params.id;
-    this.fetchArenaById(arenaId).then((id) => {
-      this.sections = [
-        {
-          text: "Информация",
-          link: { name: "edit-complex-information", params: { arenaId: id } },
-        },
-        {
-          text: "Платные услуги",
-          link: { name: "edit-admin-payment-portal", params: { arenaId: id } },
-        },
-        {
-          text: "Расписание мероприятий",
-          link: { name: "edit-admin-schedule-event", params: { arenaId: id } },
-        },
-        {
-          text: "Список команд",
-          link: { name: "edit-admin-teamlist", params: { arenaId: id } },
-        },
-        {
-          text: "Тренерский состав",
-          link: { name: "edit-admin-train-staff", params: { arenaId: id } },
-        },
-      ];
-    });
+    const arenaId = this.arenaId;
+    this.sections = [
+      {
+        text: "Информация",
+        link: { name: "edit-complex-information", params: { arenaId } },
+      },
+      {
+        text: "Платные услуги",
+        link: { name: "edit-admin-payment-portal", params: { arenaId } },
+      },
+      {
+        text: "Расписание мероприятий",
+        link: { name: "edit-admin-schedule-event", params: { arenaId } },
+      },
+      {
+        text: "Список команд",
+        link: { name: "edit-admin-teamlist", params: { arenaId } },
+      },
+      {
+        text: "Тренерский состав",
+        link: { name: "edit-admin-train-staff", params: { arenaId } },
+      },
+    ];
   },
   data() {
     return {
       checkbox: null,
       sidebar_tab: 0,
-      arena: {},
       breadcrumb_items: [
         {
           text: "Личный кабинет",
@@ -87,22 +95,17 @@ export default {
         },
       ],
       sections: [],
-      arenaLoaded: false,
     };
   },
   methods: {
-    fetchArenaById(arenaId) {
-      return new Promise((resolve) => {
-        axios
-          .get(`/arena/${arenaId}`)
-          .then((response) => {
-            this.arena = response.data;
-            this.arenaLoaded = true;
-            resolve(response.data.id);
-          })
-          .catch((err) => console.log(err));
-      });
-    },
+    // fetchArenaById(arenaId) {
+    //   return axios
+    //     .get(`/arena/${arenaId}`)
+    //     .then((response) => {
+    //       this.arena = response.data;
+    //     })
+    //     .catch((err) => console.log(err));
+    // },
   },
 };
 </script>

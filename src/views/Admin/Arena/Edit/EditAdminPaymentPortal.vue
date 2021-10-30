@@ -37,7 +37,7 @@
             <v-col
               cols="12"
               class="mb-4"
-              v-for="item in rentedService"
+              v-for="item in rentServices"
               :key="item.id"
             >
               <ArenaPaymentCard :item="item" :arenaId="arenaId">
@@ -68,7 +68,7 @@
             </v-col>
           </v-row>
           <div v-show="value_tab == 1">
-            <div v-for="(item, i) in otherService" :key="i">
+            <div v-for="(item, i) in otherServices" :key="i">
               <ArenaPaymentCard :item="item" :arenaId="arenaId">
                 <template #edit-delete>
                   <div style="position: absolute; top: 0px; right: 0px">
@@ -90,8 +90,9 @@
 </template>
 
 <script>
-import axios from "axios";
 import ArenaPaymentCard from "@/components/Arena/ArenaPaymentCard";
+import { mapState, mapGetters } from "vuex";
+
 export default {
   components: { ArenaPaymentCard },
   props: {
@@ -101,54 +102,16 @@ export default {
     },
   },
   computed: {
-    rentedService() {
-      return this.services.filter((x) => x.serviceType === "RENT");
-    },
-    otherService() {
-      return this.services.filter((x) => x.serviceType === "OTHER");
-    },
+    ...mapState("arena", ["services"]),
+    ...mapGetters("arena", ["rentServices", "otherServices"]),
   },
   mounted() {
-    this.fetchArenaServices(this.arenaId).then((services) => {
-      this.fetchServicePriceList(services);
-    });
+    this.$store.dispatch("arena/getServices", this.arenaId);
   },
   data() {
     return {
       value_tab: 0,
       service_nav: ["аренда", "прочее"],
-
-      breadcrumb_items: [
-        {
-          text: "Личный кабинет",
-          disabled: false,
-          href: "/",
-        },
-        {
-          text: "Мои спортивные комплексы",
-          disabled: false,
-          href: "/admin/sport_complex",
-        },
-        {
-          text: "Название комплекса",
-          disabled: false,
-          href: "/admin/sport_complex",
-        },
-        {
-          text: "Платные услуги",
-          disabled: true,
-          href: "",
-        },
-      ],
-      price_list: [
-        { interval: "06:00–08:30", weekday: "8 000", weekend: "10 000" },
-        { interval: "08:30–15:00", weekday: "8 000", weekend: "10 000" },
-        { interval: "15:00–17:00", weekday: "8 000", weekend: "10 000" },
-        { interval: "17:00–19:00", weekday: "10 000", weekend: "10 000" },
-        { interval: "19:00–22:30", weekday: "12 000", weekend: "10 000" },
-        { interval: "22:30–00:00", weekday: "10 000", weekend: "10 000" },
-      ],
-      services: [],
     };
   },
   methods: {
@@ -159,40 +122,6 @@ export default {
         params: { arenaId: this.arenaId, serviceId: service.id },
       });
     },
-    async fetchArenaServices(arenaId) {
-      return new Promise((resolve, reject) => {
-        axios
-          .get(`/arena/${arenaId}/services`) // TODO : transfer to vuex
-          .then((response) => {
-            resolve(response.data);
-          })
-          .catch((err) => reject(err));
-      });
-    },
-    async fetchServicePriceList(serviceList) {
-      let priceList = [];
-      let final = [];
-      serviceList.forEach((x) => {
-        priceList.push(
-          axios
-            .get(`/service/${x.id}/prices`)
-            .then((response) => {
-              let nItem = {
-                ...x,
-                price: response.data,
-              };
-              final.push(nItem);
-            })
-            .catch((err) => {
-              console.log(err);
-            })
-        );
-      });
-
-      Promise.all(priceList).then(() => {
-        this.services = final;
-      });
-    },
     goToEdit(serviceId) {
       this.$router.push({
         name: "edit-admin-service",
@@ -200,13 +129,7 @@ export default {
       });
     },
     deleteService(serviceId) {
-      axios
-        .delete(`/service/${serviceId}`) //TODO: Vuex store
-        .then((response) => {
-          console.log(response.data);
-          this.services = this.services.filter((x) => x.id !== serviceId);
-        })
-        .catch((err) => console.log(err));
+      this.$store.dispatch("arena/deleteService", serviceId);
     },
   },
 };

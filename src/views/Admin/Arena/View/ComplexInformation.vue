@@ -170,7 +170,6 @@ export default {
       readMoreInfo: null,
       selectedItem: 0,
       readMoreActivated: false,
-
       zoom: 16,
       surfaces: [],
       coords: [],

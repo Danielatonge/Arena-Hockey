@@ -74,7 +74,6 @@ import axios from "axios";
 import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
 
 export default {
-  name: "EditAdminService",
   components: {
     AdminImageUploader,
   },

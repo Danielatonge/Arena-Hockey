@@ -47,7 +47,10 @@
         </v-row>
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 1">
           <v-col cols="12" v-for="(item, i) in children_team" :key="i">
-            <router-link :to="{ name: 'team-name', params: { teamId: item.id } }" class="undo-link-default">
+            <router-link
+              :to="{ name: 'team-name', params: { teamId: item.id } }"
+              class="undo-link-default"
+            >
               <v-card color="transparent" elevation="0">
                 <div class="d-flex flex-no-wrap">
                   <v-avatar class="ma-3 rounded-lg" size="125" tile>
@@ -80,7 +83,10 @@
         </v-row>
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 2">
           <v-col cols="12" v-for="(item, i) in youth_team" :key="i">
-            <router-link :to="{ name: 'team-name', params: { teamId: item.id } }" class="undo-link-default">
+            <router-link
+              :to="{ name: 'team-name', params: { teamId: item.id } }"
+              class="undo-link-default"
+            >
               <v-card color="transparent" elevation="0">
                 <div class="d-flex flex-no-wrap">
                   <v-avatar class="ma-3 rounded-lg" size="125" tile>
@@ -113,7 +119,10 @@
         </v-row>
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 3">
           <v-col cols="12" v-for="(item, i) in adult_team" :key="i">
-            <router-link :to="{ name: 'team-name', params: { teamId: item.id } }" class="undo-link-default">
+            <router-link
+              :to="{ name: 'team-name', params: { teamId: item.id } }"
+              class="undo-link-default"
+            >
               <v-card color="transparent" elevation="0">
                 <div class="d-flex flex-no-wrap">
                   <v-avatar class="ma-3 rounded-lg" size="125" tile>
@@ -146,7 +155,10 @@
         </v-row>
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 4">
           <v-col cols="12" v-for="(item, i) in female_team" :key="i">
-            <router-link :to="{ name: 'team-name', params: { teamId: item.id } }" class="undo-link-default">
+            <router-link
+              :to="{ name: 'team-name', params: { teamId: item.id } }"
+              class="undo-link-default"
+            >
               <v-card color="transparent" elevation="0">
                 <div class="d-flex flex-no-wrap">
                   <v-avatar class="ma-3 rounded-lg" size="125" tile>
@@ -183,7 +195,7 @@
 </template>
 
 <script>
-import axios from "axios"; // TODO: Remove all axios calls
+import { mapState } from "vuex";
 export default {
   props: {
     arenaId: {
@@ -192,6 +204,7 @@ export default {
     },
   },
   computed: {
+    ...mapState("arena", ["teams"]),
     children_team() {
       return this.teams.filter((x) => x.team.type === "CHILDREN");
     },
@@ -215,7 +228,7 @@ export default {
     },
   },
   created() {
-    this.fetchArenaTeam(this.arenaId);
+    this.$store.dispatch("arena/getTeams", this.arenaId);
   },
   data() {
     return {
@@ -227,21 +240,7 @@ export default {
         "Взрослые команды",
         "Женские команда",
       ],
-      teams: [],
     };
-  },
-  methods: {
-    fetchArenaTeam(arenaId) {
-      return new Promise((resolve) => {
-        axios
-          .get(`/arena/${arenaId}/teams`)
-          .then((response) => {
-            this.teams = response.data;
-            resolve(response.data);
-          })
-          .catch((err) => console.log(err));
-      });
-    },
   },
 };
 </script>

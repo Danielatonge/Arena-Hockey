@@ -170,10 +170,28 @@ export const apiUser = {
       `&queryString=${search}&sortBy=${sort_asc.key}&type=${type.key}`;
     return apiClient.get(url);
   },
+  filterArenas({ userId, userArenaFilter }) {
+    //TODO: will finally change to this in future
+    const { page, search, numItems, sort_asc, address, type } = userArenaFilter;
+    const url =
+      `/user/${userId}/arenas/search?city=${address}&currentPage=${page}&pageSize=${numItems.value}` +
+      `&queryString=${search}&sortBy=${sort_asc.key}&type=${type.key}`;
+    return apiClient.get(url);
+  },
   getTeams(userId) {
     // TODO: Temporal
     return apiClient.get(`/user/${userId}/teams`);
   },
+  getArenas(userId) {
+    // TODO: Temporal
+    return apiClient.get(`/user/${userId}/arenas`);
+  },
+  deleteArena(arenaId){
+    return apiClient.delete(`/arena/${arenaId}`)
+  },
+  getUser(userId) {
+    return apiClient.get(`/user/${userId}`)
+  }
 };
 
 export const apiForum = {

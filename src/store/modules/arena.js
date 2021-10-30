@@ -78,6 +78,9 @@ export const mutations = {
   REMOVE_FROM_SELECTED_EVENTS(state, index) {
     state.selected_events.splice(index, 1);
   },
+  DELETE_SERVICE(state, serviceId) {
+    state.services = state.services.filter((x) => x.id !== serviceId);
+  },
 };
 
 export const actions = {
@@ -213,5 +216,14 @@ export const actions = {
   },
   removeFromSelectedEvents({ commit }, index) {
     commit("REMOVE_FROM_SELECTED_EVENTS", index);
+  },
+
+  deleteService({ commit }, serviceId) {
+    api
+      .deleteService(serviceId)
+      .then(() => {
+        commit("DELETE_SERVICE", serviceId);
+      })
+      .catch((err) => console.log(err));
   },
 };

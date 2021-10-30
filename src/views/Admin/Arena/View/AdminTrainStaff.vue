@@ -150,7 +150,9 @@ export default {
     },
   },
   computed: {
-    ...mapState("arena", ["trainers"]),
+    ...mapState({
+      trainers: (state) => state.arena.trainers.map((user) => user.user),
+    }),
     kid_trainers() {
       return this.trainers.filter((x) => x.level === "KID");
     },
@@ -162,11 +164,10 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("arena/Trainers", this.arenaId);
+    this.$store.dispatch("arena/getTrainers", this.arenaId);
   },
   data() {
     return {
-      name: "ArenaTeamList",
       premises_tab: null,
       premises_nav: [
         "Все тренеры",

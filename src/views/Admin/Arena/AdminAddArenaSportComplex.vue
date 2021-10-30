@@ -36,7 +36,7 @@
         </v-col>
         <v-col class="my-auto" cols="6" md="4">
           <div class="body-1 grey--text">
-            Найдено: {{ arenaList ? arenaList.length : 0 }} результатов
+            Найдено: {{ arenas ? arenas.length : 0 }} результатов
           </div>
         </v-col>
         <v-spacer></v-spacer>
@@ -57,17 +57,17 @@
         cols="12"
         md="6"
         xl="4"
-        v-for="arena in arenaList"
+        v-for="arena in arenas"
         :key="arena.id"
       >
         <AdminArenaCard
           :arena="arena"
-          @remove-selected="removeFromSelected"
-          @add-selected="addToSelected"
+          @remove-selected="removeFromSelected(arena)"
+          @add-selected="addToSelected(arena)"
         />
       </v-col>
     </v-row>
-    <div class="mb-3" v-if="!arenaList.length">
+    <div class="mb-3" v-if="!arenas.length">
       По вашему запросу ничего не найдено.
     </div>
 
@@ -79,7 +79,7 @@
         </router-link>
       </v-btn>
       <v-btn
-        :disabled="!selectedList.length"
+        :disabled="!selected_arenas.length"
         class="rounded-lg ml-2"
         color="grey lighten-2"
         @click="deleteSelected"
@@ -103,66 +103,32 @@
 <script>
 import { mapState } from "vuex";
 import AdminArenaCard from "@/components/Admin/AdminArenaCard.vue";
-import axios from "axios";
 
 export default {
   name: "Home",
   computed: {
-    ...mapState("user",["userId"]),
+    ...mapState("user", {
+      userId: "userId",
+      arenas: (state) => state.arenas.map((item) => item.arena),
+      selected_arenas: "selected_arenas",
+    }),
   },
   components: { AdminArenaCard },
-  mounted() {
-    const userId = this.userId;
-    this.fetchArenaByUserId(userId);
+  created() {
+    this.fetchArenaByUserId(this.userId);
   },
-  watch: {},
   methods: {
-    removeFromSelected(arenaId) {
-      this.selectedList = this.selectedList.filter((x) => x !== arenaId);
+    removeFromSelected(arena) {
+      this.$store.dispatch("user/removeFromSelectedArenas", arena);
     },
-    addToSelected(arenaId) {
-      this.selectedList.push(arenaId);
+    addToSelected(arena) {
+      this.$store.dispatch("user/addToSelectedArenas", arena);
     },
-    goToMapAll() {
-      this.$store
-        .dispatch("arena/showArenasOnMap")
-        .then(() => this.$router.push({ name: 'arena-map-all'}));
-    },
-    fetchArenaByUserId(userId) { //TODO : Take to vuex store
-      return new Promise((resolve) => {
-        axios
-          .get(`/user/${userId}/arenas`)
-          .then((response) => {
-            this.arenaList = this.processArenaListObject(response.data);
-            resolve(this.arenaList);
-          })
-          .catch((err) => console.log(err));
-      });
-    },
-    processArenaListObject(arenaList) {
-      return arenaList.map((item) => item.arena);
+    fetchArenaByUserId(userId) {
+      this.$store.dispatch("user/getArenas", userId);
     },
     deleteSelected() {
-      let promiseDeleting = [];
-      this.selectedList.forEach((arenaId) => {
-        promiseDeleting.push(
-          new Promise((resolve, reject) => {
-            axios
-              .delete(`/arena/${arenaId}`)
-              .then((response) => {
-                resolve(response.data);
-                this.arenaList = this.arenaList.filter((x) => x.id !== arenaId);
-              })
-              .catch((err) => {
-                console.log(err);
-                reject(err);
-              });
-          })
-        );
-      });
-      Promise.all(promiseDeleting).then(() => {
-        this.selectedList = [];
-      });
+      this.$store.dispatch("user/deleteSelected");
     },
   },
   data() {
@@ -187,19 +153,8 @@ export default {
       ],
       page: 1,
       perPage: 3,
-      arenaList: [],
       paginationLength: 10,
       team_tags: ["Москва", "Казань"],
-      team_items: [
-        "/arena_1",
-        "/arena_2",
-        "/arena_3",
-        "/arena_4",
-        "/arena_5",
-        "/arena_6",
-        "/arena_7",
-        "/arena_2",
-      ],
       sort_by_team: ["По популярности", "По именни"],
       display_items: ["Показывать по 12", "Показывать по 25"],
     };
