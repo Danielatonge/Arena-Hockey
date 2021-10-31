@@ -83,7 +83,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
 
 export default {
@@ -129,16 +128,12 @@ export default {
         width: width,
       };
       console.log(data);
-      axios
-        .post(`service`, data)
-        .then((response) => {
-          console.log(response.data);
-          this.$router.push({
-            name: "edit-admin-payment-portal",
-            params: { arenaId: this.arenaId },
-          });
-        })
-        .catch((err) => console.log(err));
+      this.$store.dispatch("arena/saveService", data).then(() => {
+        this.$router.push({
+          name: "edit-admin-payment-portal",
+          params: { arenaId: this.arenaId },
+        });
+      });
     },
   },
 };

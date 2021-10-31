@@ -33,9 +33,9 @@ export const mutations = {
 };
 
 export const actions = {
-  getPlayers({ commit }, filters) {
+  filterPlayers({ commit }, filters) {
     return api
-      .getPlayers(filters)
+      .filterPlayers(filters)
       .then((response) => {
         const res = response.data;
         commit("SET_PLAYERS", res.content);
@@ -49,9 +49,9 @@ export const actions = {
       })
       .catch((err) => console.log(err));
   },
-  getTeams({ commit }, filters) {
+  filterTeams({ commit }, filters) {
     return api
-      .getTeams(filters)
+      .filterTeams(filters)
       .then((response) => {
         const res = response.data;
         commit("SET_TEAMS", res.content);
@@ -61,6 +61,22 @@ export const actions = {
         };
         commit("SET_TEAM_CONFIG", config);
         return config;
+      })
+      .catch((err) => console.log(err));
+  },
+  getTeams({ commit }) {
+    return api
+      .getTeams()
+      .then((response) => {
+        commit("SET_TEAMS", response.data);
+      })
+      .catch((err) => console.log(err));
+  },
+  getPlayers({ commit }) {
+    return api
+      .getPlayers()
+      .then((response) => {
+        commit("SET_PLAYERS", response.data);
       })
       .catch((err) => console.log(err));
   },

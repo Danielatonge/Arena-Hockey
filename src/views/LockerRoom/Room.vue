@@ -355,7 +355,7 @@ export default {
         sortBy: this.sort_model.key,
       };
       this.$store
-        .dispatch("teamplayer/getTeams", filters)
+        .dispatch("teamplayer/filterTeams", filters)
         .then(({ paginationLength, numFound }) => {
           this.paginationTeamLength = paginationLength;
           this.numFoundTeam = numFound;
@@ -370,7 +370,7 @@ export default {
         sortBy: this.sort_player.key,
       };
       this.$store
-        .dispatch("teamplayer/getPlayers", filters)
+        .dispatch("teamplayer/filterPlayers", filters)
         .then(({ paginationLength, numFound }) => {
           this.paginationPlayerLength = paginationLength;
           this.numFoundPlayer = numFound;

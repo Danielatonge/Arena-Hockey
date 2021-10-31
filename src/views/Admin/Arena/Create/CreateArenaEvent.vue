@@ -192,6 +192,12 @@
         large
         class="body-2 px-6 ml-2 rounded-lg"
         elevation="0"
+        @click="
+          $router.push({
+            name: 'edit-admin-schedule-event',
+            params: { arenaId },
+          })
+        "
       >
         Отменить
       </v-btn>
@@ -200,17 +206,17 @@
 </template>
 
 <script>
-import axios from "axios";
 import moment from "moment";
 
 export default {
-  name: "CreateArenaEvent",
-  created() {
-    this.fetchArenaById(this.arenaId);
-  },
+  created() {},
   props: {
     arenaId: {
       type: String,
+      required: true,
+    },
+    arena: {
+      type: Object,
       required: true,
     },
   },
@@ -238,21 +244,9 @@ export default {
       ],
       description: "",
       title: "",
-      arena: {},
     };
   },
   methods: {
-    fetchArenaById(arenaId) {
-      return new Promise((resolve) => {
-        axios
-          .get(`/arena/${arenaId}`)
-          .then((response) => {
-            this.arena = response.data;
-            resolve(response.data.id);
-          })
-          .catch((err) => console.log(err));
-      });
-    },
     remove(item) {
       this.choosen_days.splice(this.choosen_days.indexOf(item), 1);
       this.choosen_days = [...this.choosen_days];
@@ -269,7 +263,7 @@ export default {
       });
     },
     saveEvent() {
-      const arenaId = this.arena.id;
+      const arenaId = this.arenaId;
       let startDate = this.startDate;
       let startDateTime = new Date(`${startDate}T${this.time}:00`);
       let startMoment = moment(startDateTime);
@@ -291,17 +285,12 @@ export default {
         arenaId: arenaId,
         repeat: this.repeat ? 1 : 0,
       };
-      console.log(event);
-      axios
-        .post(`/event`, event)
-        .then((response) => {
-          console.log(response.data);
-          this.$router.push({
-            name: "edit-admin-schedule-event",
-            params: { arenaId },
-          });
-        })
-        .catch((err) => console.log(err));
+      this.$store.dispatch("arena/saveEvent", event).then(() => {
+        this.$router.push({
+          name: "edit-admin-schedule-event",
+          params: { arenaId },
+        });
+      });
     },
   },
 };

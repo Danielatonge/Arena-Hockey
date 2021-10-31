@@ -64,6 +64,18 @@ export const mutations = {
   SET_SELECTED_EVENTS(state, events) {
     state.selected_events = events;
   },
+  ADD_TEAM(state, team) {
+    state.teams.push(team);
+  },
+  ADD_TRAINER(state, trainer) {
+    state.trainers.push(trainer);
+  },
+  ADD_SERVICE(state, service) {
+    state.services.push(service);
+  },
+  ADD_EVENT(state, event) {
+    state.events.push(event);
+  },
   ADD_TO_SELECTED_ARENAS(state, arena) {
     state.selected_arenas.push(arena);
   },
@@ -80,6 +92,15 @@ export const mutations = {
   },
   DELETE_SERVICE(state, serviceId) {
     state.services = state.services.filter((x) => x.id !== serviceId);
+  },
+  DELETE_TEAM(state, { teamId }) {
+    state.teams = state.teams.filter((x) => x.team.id !== teamId);
+  },
+  DELETE_EVENT(state, eventId) {
+    state.events = state.events.filter((x) => x.id !== eventId);
+  },
+  DELETE_TRAINER(state, { trainerId }) {
+    state.trainers = state.trainers.filter((x) => x.user.id !== trainerId);
   },
 };
 
@@ -114,10 +135,11 @@ export const actions = {
       .catch((err) => console.log(err));
   },
   getTeams({ commit }, arenaId) {
-    api
+    return api
       .getTeams(arenaId)
       .then((response) => {
         commit("SET_TEAMS", response.data);
+        return response.data;
       })
       .catch((err) => console.log(err));
   },
@@ -206,6 +228,62 @@ export const actions = {
   setArena({ commit }, arena) {
     commit("SET_ARENA", arena);
   },
+  createArenaTeam({ commit }, { data, team }) {
+    api
+      .createArenaTeam(data)
+      .then((response) => {
+        const res = response.data;
+        const arenaTeam = {
+          id: res.id,
+          arenaId: res.arenaId,
+          visibility: res.visibility,
+          team,
+        };
+        commit("ADD_TEAM", arenaTeam);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  createArenaUser({ commit }, { data, user }) {
+    return api
+      .createArenaUser(data)
+      .then((response) => {
+        const res = response.data;
+        const arenaUser = {
+          id: res.id,
+          arenaId: res.arenaId,
+          visibility: res.visibility,
+          user,
+        };
+        commit("ADD_TRAINER", arenaUser);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  saveService({ commit }, service) {
+    return api
+      .postService(service)
+      .then((response) => {
+        const res = response.data;
+        commit("ADD_SERVICE", res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  saveEvent({ commit }, event) {
+    return api
+      .postEvent(event)
+      .then((response) => {
+        const res = response.data;
+        commit("ADD_EVENT", res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
 
   addToSelectedArenas({ commit }, arena) {
     commit("ADD_TO_SELECTED_ARENAS", arena);
@@ -223,6 +301,30 @@ export const actions = {
       .deleteService(serviceId)
       .then(() => {
         commit("DELETE_SERVICE", serviceId);
+      })
+      .catch((err) => console.log(err));
+  },
+  deleteTeam({ commit }, arenaTeamId) {
+    api
+      .deleteTeam(arenaTeamId)
+      .then(() => {
+        commit("DELETE_TEAM", arenaTeamId);
+      })
+      .catch((err) => console.log(err));
+  },
+  deleteEvent({ commit }, eventId) {
+    api
+      .deleteEvent(eventId)
+      .then(() => {
+        commit("DELETE_EVENT", eventId);
+      })
+      .catch((err) => console.log(err));
+  },
+  deleteTrainer({ commit }, arenaTrainerId) {
+    return api
+      .deleteTrainer(arenaTrainerId)
+      .then(() => {
+        commit("DELETE_TRAINER", arenaTrainerId);
       })
       .catch((err) => console.log(err));
   },

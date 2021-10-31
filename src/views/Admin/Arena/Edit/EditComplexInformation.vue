@@ -2,7 +2,17 @@
   <div>
     <div>
       <div class="text-h4 pb-3">Информация</div>
-
+      <v-btn
+        large
+        class="mr-2 mb-2"
+        color="grey lighten-2"
+        elevation="0"
+        @click="
+          $router.push({ name: 'complex-information', params: { arenaId } })
+        "
+      >
+        Вернуться к просмотру
+      </v-btn>
       <div class="text-h6 mb-4">Основная информация</div>
       <div class="mb-4">
         <v-text-field
