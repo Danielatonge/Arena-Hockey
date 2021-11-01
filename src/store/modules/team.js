@@ -95,6 +95,17 @@ export const actions = {
       })
       .catch((err) => console.log(err));
   },
+
+  postTeam(_context, team) {
+    return api
+      .postTeam(team)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
 };
 
 export const getters = {};

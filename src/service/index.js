@@ -66,7 +66,7 @@ export const apiArena = {
   putArenaUser({ arenaUser, checked }) {
     const payload = {
       arenaId: arenaUser.arenaId,
-      teamId: arenaUser.user.id,
+      userId: arenaUser.user.id,
       visibility: checked ? 0 : 1,
     };
     const id = arenaUser.id;
@@ -156,6 +156,10 @@ export const apiTeam = {
   getForums(teamId) {
     return apiClient.get(`/team/${teamId}/forums`);
   },
+  postTeam(team) {
+    return apiClient.post(`/team`, team);
+  },
+  
 
   deleteTeam(teamId) {
     return apiClient.delete(`/team/${teamId}`);
@@ -190,8 +194,14 @@ export const apiUser = {
   deleteArena(arenaId) {
     return apiClient.delete(`/arena/${arenaId}`);
   },
+  deleteTeam(teamId) {
+    return apiClient.delete(`/team/${teamId}`);
+  },
   getUser(userId) {
     return apiClient.get(`/user/${userId}`);
+  },
+  createUserTeam(userTeamId) {
+    return apiClient.post(`/team/user`, userTeamId);
   },
 };
 

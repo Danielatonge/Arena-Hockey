@@ -32,6 +32,9 @@ export const mutations = {
   ADD_TO_SELECTED_ARENAS(state, arena) {
     state.selected_arenas.push(arena);
   },
+  ADD_TEAM(state, team) {
+    state.teams.push(team);
+  },
   REMOVE_FROM_SELECTED_ARENAS(state, arena) {
     state.selected_arenas = state.selected_arenas.filter(
       (x) => x.id !== arena.id
@@ -39,6 +42,9 @@ export const mutations = {
   },
   EMPTY_SELECTED_ARENAS(state) {
     state.selected_arenas = [];
+  },
+  DELETE_TEAM(state, teamId) {
+    state.teams = state.teams.filter((x) => x.team.id !== teamId);
   },
 };
 
@@ -76,6 +82,16 @@ export const actions = {
         console.log(err);
       });
   },
+  createUserTeam({ commit }, { userTeamId, team }) {
+    return api
+      .createUserTeam(userTeamId)
+      .then(() => {
+        commit("ADD_TEAM", team);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   addToSelectedArenas({ commit }, arena) {
     commit("ADD_TO_SELECTED_ARENAS", arena);
   },
@@ -100,6 +116,14 @@ export const actions = {
     Promise.all(promiseDeleting).then(() => {
       commit("EMPTY_SELECTED_ARENAS");
     });
+  },
+  deleteTeam({ commit }, { teamId }) {
+    api
+      .deleteTeam(teamId)
+      .then(() => {
+        commit("DELETE_TEAM", teamId);
+      })
+      .catch((err) => console.log(err));
   },
 };
 

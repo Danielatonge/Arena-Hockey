@@ -51,8 +51,6 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   name: "AdminTrainerCard",
   props: {
@@ -71,21 +69,11 @@ export default {
   },
   methods: {
     toggleVisibility() {
-      const payload = {
-        arenaId: this.arenaUser.arenaId,
-        userId: this.arenaUser.user.id,
-        visibility: this.checked ? 0 : 1,
-      };
-      const id = this.arenaUser.id;
-      console.log(payload);
-      axios
-        .put(`/arena/user?id=${id}`, payload)
-        .then((response) => {
-          console.log("RESPONSE_UPDATE_ARENAUSER", response.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      console.log(this.arenaUser);
+      this.$store.dispatch("arena/updateArenaUser", {
+        arenaUser: this.arenaUser,
+        checked: this.checked,
+      });
     },
     isValidCityOutput(input) {
       return input && input !== "string" ? ", " + input : null;

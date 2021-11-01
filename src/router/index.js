@@ -41,6 +41,8 @@ import EditAdminTrainStaff from "../views/Admin/Arena/Edit/EditAdminTrainStaff.v
 import EditAdminPriceList from "../views/Admin/Arena/Edit/EditAdminPriceList.vue";
 
 import CreateComplexInformation from "../views/Admin/Arena/Create/CreateComplexInformation.vue";
+import CreateAdminTeam from "../views/Admin/Team/Create/CreateAdminTeam.vue";
+import EditAdminTeam from "../views/Admin/Team/Edit/EditAdminTeam.vue";
 
 import KidsTournaments from "../views/KidsTournaments/Home.vue";
 import AdminLayoutSection from "../views/Admin/AdminLayoutSection";
@@ -287,6 +289,17 @@ const routes = [
         props: true,
       },
     ],
+  },
+  {
+    path: "/admin/teams/create",
+    name: "admin-team-create",
+    component: CreateAdminTeam,
+  },
+  {
+    path: "/admin/teams/:teamId/edit",
+    name: "admin-team-edit",
+    component: EditAdminTeam,
+    props: true,
   },
 ];
 

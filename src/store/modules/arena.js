@@ -262,6 +262,22 @@ export const actions = {
         console.log(err);
       });
   },
+  updateArenaUser(_context, arenaUserObj) {
+    return api
+      .putArenaUser(arenaUserObj)
+      .then(() => {})
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  updateArenaTeam(_context, arenaTeamObj) {
+    return api
+      .putArenaTeam(arenaTeamObj)
+      .then(() => {})
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   saveService({ commit }, service) {
     return api
       .postService(service)

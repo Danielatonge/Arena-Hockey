@@ -21,7 +21,11 @@
           {{ processType(arenaTeam.team.type) }}
         </div>
         <v-row no-gutters class="align-center">
-          <slot name="button"></slot>
+          <slot
+            name="button"
+            :deleteTeam="deleteTeam"
+            :teamId="arenaTeam.team.id"
+          ></slot>
           <slot
             name="hide"
             :checked="checked"
@@ -34,8 +38,6 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   name: "AdminTeamCard",
   props: {
@@ -60,20 +62,19 @@ export default {
       if (type === "FEMALE") return "Женская";
     },
     toggleVisibility() {
+      console.log(this.arenaTeam);
+      this.$store.dispatch("arena/updateArenaTeam", {
+        arenaTeam: this.arenaTeam,
+        checked: this.checked,
+      });
+    },
+    deleteTeam() {
+      console.log(this.arenaTeam);
       const payload = {
-        arenaId: this.arenaTeam.arenaId,
+        userId: this.arenaTeam.userId,
         teamId: this.arenaTeam.team.id,
-        visibility: this.checked ? 0 : 1,
       };
-      const id = this.arenaTeam.id;
-      axios
-        .put(`/arena/team?id=${id}`, payload)
-        .then((response) => {
-          console.log("RESPONSE_UPDATE_ARENATEAM", response.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      this.$store.dispatch("user/deleteTeam", payload);
     },
   },
 };

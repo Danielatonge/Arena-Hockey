@@ -48,7 +48,7 @@
           color="primary"
           @click="fetchTeam"
         >
-          Добавить команду
+          Найти команду
         </v-btn>
       </v-col>
     </v-row>
