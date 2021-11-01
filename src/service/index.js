@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "https://api-hockey-io.herokuapp.com",
+  baseURL: "http://193.187.173.125:8090/",
   withCredentials: false,
   headers: {
     Accept: "application/json",
@@ -159,7 +159,6 @@ export const apiTeam = {
   postTeam(team) {
     return apiClient.post(`/team`, team);
   },
-  
 
   deleteTeam(teamId) {
     return apiClient.delete(`/team/${teamId}`);
