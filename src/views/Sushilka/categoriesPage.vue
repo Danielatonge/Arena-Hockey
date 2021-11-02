@@ -86,11 +86,20 @@ export default {
     myMethod(){
       this.userRole = localStorage.getItem('user_role')
       //console.log(this.userRole)
+    },
+
+    deleteAuthInfo(){
+      localStorage.removeItem('auth')
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('user_role')
     }
   },
   created(){
     this.getCategories()
     this.myMethod();
+
+    //Запустить этот метод, если нужно очистить localStorage
+    //this.deleteAuthInfo();
   },
   computed: {
     ...mapGetters(["USER_ROLE"]),

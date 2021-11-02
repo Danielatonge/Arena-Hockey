@@ -50,6 +50,9 @@ import EditAdminService from "../views/Admin/Arena/Edit/EditAdminService";
 import CreateAdminService from "../views/Admin/Arena/Create/CreateAdminService";
 
 import categoriesPage from '../views/Sushilka/categoriesPage.vue'
+import authorizationForm from '../views/Sushilka/authorizationForm.vue'
+import productCatalog from '../components/Sushilka/categoriesPage/productCatalog.vue'
+import productCard from '../components/Sushilka/categoriesPage/productCard/productCard.vue'
 
 Vue.use(VueRouter);
 
@@ -291,6 +294,11 @@ const routes = [
     ],
   },
   {
+    path: '/authorization',
+    name: 'authorizationForm',
+    component: authorizationForm
+  },
+  {
     path: '/catalog/',
     name: 'categoriesPage',
     component: categoriesPage,
@@ -313,14 +321,27 @@ const routes = [
         next({name: 'authorizationForm'})
       }
     },
-    // children:[
-    //   {
-    //     path: "/",
-    //     name: 'productCatalog',
-    //     component: productCatalog,
-    //     props: true,
-    //   },
-    // ]
+    children:[
+      {
+        path: "/",
+        name: 'productCatalog',
+        component: productCatalog,
+        props: true,
+      },
+    ]
+  },
+  {
+    path: "/catalog/:categoryName/:productNumber",
+    name: 'productCard',
+    component: productCard,
+    props: true,
+    beforeEnter: (to, from, next) => {
+      if(localStorage.getItem('auth')){
+        next()
+      } else {
+        next({name: 'authorizationForm'})
+      }
+    },
   },
 ];
 
