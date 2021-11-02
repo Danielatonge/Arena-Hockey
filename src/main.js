@@ -46,6 +46,20 @@ requireComponent.keys().forEach((fileName) => {
   );
 });
 
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!store.getters["auth/loggedIn"]) {
+      next({
+        name: "login",
+      });
+    } else {
+      next();
+    }
+  } else {
+    next(); // make sure to always call next()!
+  }
+});
+
 new Vue({
   router,
   store,

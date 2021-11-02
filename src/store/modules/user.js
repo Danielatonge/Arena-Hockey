@@ -2,9 +2,7 @@ import { apiUser as api } from "@/service";
 
 export const namespaced = true;
 
-const userId = "9dbc26d3-c45c-4180-a850-702464fa3f2d";
 export const state = () => ({
-  userId,
   user: {},
   arenas: [],
   arena: {},
@@ -13,6 +11,11 @@ export const state = () => ({
   forums: [],
   selected_arenas: [],
 });
+export const getters = {
+  userId: (state) => {
+    state.user.id;
+  },
+};
 
 export const mutations = {
   SET_ARENAS(state, arenas) {
@@ -180,5 +183,3 @@ export const actions = {
       .catch((err) => console.log(err));
   },
 };
-
-export const getters = {};

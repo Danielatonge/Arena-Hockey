@@ -55,6 +55,9 @@ import CreateAdminService from "../views/Admin/Arena/Create/CreateAdminService";
 import UserInformation from "../views/Admin/User/View/UserInformation.vue";
 import EditUserInformation from "../views/Admin/User/Edit/EditUserInformation.vue";
 
+import Login from "../views/Admin/Auth/Login.vue";
+import Registration from "../views/Admin/Auth/Registration.vue";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -170,23 +173,30 @@ const routes = [
     component: SubstituteBench,
   },
   {
-    path: "/admin",
+    path: "/admin/:userId",
     component: AdminLayoutSection,
+    props: true,
     children: [
       {
         path: "",
         name: "user-profile",
         component: UserProfile,
+        props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "sport_complex",
         name: "admin-add-arena-sportcomplex",
         component: AdminAddArenaSportComplex,
+        props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "teams",
         name: "admin-team",
         component: AdminTeam,
+        props: true,
+        meta: { requiresAuth: true },
       },
     ],
   },
@@ -194,29 +204,34 @@ const routes = [
     path: "/admin/sport_complex/create",
     name: "create-complex-information",
     component: CreateComplexInformation,
+    meta: { requiresAuth: true },
   },
   {
     path: "/admin/sport_complex/:arenaId",
     component: NameComplex,
     props: true,
+    meta: { requiresAuth: true },
     children: [
       {
         path: "",
         name: "complex-information",
         component: ComplexInformation,
         props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "payment_portal",
         name: "admin-payment-portal",
         component: AdminPaymentPortal,
         props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "schedule_event",
         name: "admin-schedule-event",
         component: AdminScheduleEvent,
         props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "team_list",
@@ -229,6 +244,7 @@ const routes = [
         name: "admin-train-staff",
         component: AdminTrainStaff,
         props: true,
+        meta: { requiresAuth: true },
       },
     ],
   },
@@ -242,30 +258,35 @@ const routes = [
         name: "edit-complex-information",
         component: EditComplexInformation,
         props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "payment_portal",
         name: "edit-admin-payment-portal",
         component: EditAdminPaymentPortal,
         props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "payment_portal/create_service",
         name: "create-admin-service",
         component: CreateAdminService,
         props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "payment_portal/price_list/:serviceId",
         name: "edit-admin-pricelist",
         component: EditAdminPriceList,
         props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "payment_portal/:serviceId",
         name: "edit-admin-service",
         component: EditAdminService,
         props: true,
+        meta: { requiresAuth: true },
       },
 
       {
@@ -273,24 +294,28 @@ const routes = [
         name: "edit-admin-schedule-event",
         component: EditAdminScheduleEvent,
         props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "schedule_event/create_event",
         name: "create-arena-event",
         component: CreateArenaEvent,
         props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "team_list",
         name: "edit-admin-teamlist",
         component: EditAdminTeamList,
         props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "training_staff",
         name: "edit-admin-train-staff",
         component: EditAdminTrainStaff,
         props: true,
+        meta: { requiresAuth: true },
       },
     ],
   },
@@ -298,30 +323,45 @@ const routes = [
     path: "/admin/teams/create",
     name: "admin-team-create",
     component: CreateAdminTeam,
+    meta: { requiresAuth: true },
   },
   {
     path: "/admin/user/:userId",
     name: "admin-user-view",
     component: UserInformation,
     props: true,
+    meta: { requiresAuth: true },
   },
   {
     path: "/admin/user/:userId/edit",
     name: "admin-user-edit",
     component: EditUserInformation,
     props: true,
+    meta: { requiresAuth: true },
   },
   {
     path: "/admin/teams/:teamId",
     name: "admin-team-view",
     component: AdminTeamView,
     props: true,
+    meta: { requiresAuth: true },
   },
   {
     path: "/admin/teams/:teamId/edit",
     name: "admin-team-edit",
     component: EditAdminTeam,
     props: true,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/auth/login",
+    name: "login",
+    component: Login,
+  },
+  {
+    path: "/auth/register",
+    name: "registration",
+    component: Registration,
   },
 ];
 

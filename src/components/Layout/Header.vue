@@ -23,24 +23,42 @@
           class="rounded-lg"
         ></v-text-field>
 
-        <router-link to="/admin" class="reset-link">
-          <v-btn
-            class="ml-4 rounded-lg fix-margin-right"
-            height="40px"
-            depressed
-            color="primary"
-          >
-            Личный кабинет
-          </v-btn>
-        </router-link>
+        <v-btn
+          class="ml-4 rounded-lg fix-margin-right"
+          height="40px"
+          depressed
+          color="primary"
+          @click="$router.push({ name: 'user-profile' })"
+        >
+          Личный кабинет
+        </v-btn>
+
+        <v-btn
+          class="ml-7 rounded-lg fix-margin-right"
+          height="40px"
+          depressed
+          color="primary"
+          v-show="loggedIn"
+          @click="logout"
+        >
+          Выйти
+        </v-btn>
       </div>
     </v-toolbar>
   </v-container>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "Header",
+  computed: mapGetters("auth", ["loggedIn"]),
+  methods: {
+    logout() {
+      this.$store.dispatch("auth/logoutUser");
+      this.$router.push({ name: "login" });
+    },
+  },
 };
 </script>
 

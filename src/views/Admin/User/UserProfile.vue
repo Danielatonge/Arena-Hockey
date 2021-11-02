@@ -79,19 +79,20 @@ import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState("user", ["userId"]),
+    ...mapState("user", ["user"]),
     showPersonalData() {
       const { birthDate, gender, phone, address, mail } = this.user;
       return birthDate || gender || phone || address || mail;
     },
   },
   props: {
-    user: {
-      type: Object,
+    userId: {
+      type: String,
       required: true,
     },
   },
   mounted() {
+    this.$store.dispatch("user/getUser", this.userId);
     const id = this.userId;
     this.sections = [
       {

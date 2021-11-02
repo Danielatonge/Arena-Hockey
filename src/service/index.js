@@ -1,12 +1,15 @@
 import axios from "axios";
 // http://193.187.173.125:8090/
 // https://api-hockey-io.herokuapp.com
+const token = JSON.parse(localStorage.getItem("user", ["token"]));
+
 const apiClient = axios.create({
-  baseURL: "http://193.187.173.125:8090",
+  baseURL: "https://api-hockey-io.herokuapp.com",
   withCredentials: false,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
+    "x-access-token": token,
   },
   timeout: 10000,
 });
@@ -285,5 +288,14 @@ export const apiTeamPlayer = {
   },
   getTrainers() {
     return apiClient.get(`/user?role=TRAINER`);
+  },
+};
+
+export const apiAuth = {
+  postUser(user) {
+    return apiClient.post(`/registration`, user);
+  },
+  login(credential) {
+    return apiClient.post(`/login`, credential);
   },
 };

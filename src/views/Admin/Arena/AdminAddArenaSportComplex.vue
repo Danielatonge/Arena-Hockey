@@ -105,10 +105,14 @@ import { mapState } from "vuex";
 import AdminArenaCard from "@/components/Admin/AdminArenaCard.vue";
 
 export default {
-  name: "Home",
+  props: {
+    userId: {
+      type: String,
+      required: true,
+    },
+  },
   computed: {
     ...mapState("user", {
-      userId: "userId",
       arenas: (state) => state.arenas.map((item) => item.arena),
       selected_arenas: "selected_arenas",
     }),

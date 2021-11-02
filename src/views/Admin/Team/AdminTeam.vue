@@ -59,9 +59,14 @@ import AdminTeamFilter from "@/components/Admin/Team/AdminTeamFilter";
 import AdminTeamCard from "@/components/Admin/Team/AdminTeamCard";
 
 export default {
-  name: "AdminTeam",
+  props: {
+    userId: {
+      type: String,
+      required:true
+    },
+  },
   computed: {
-    ...mapState("user", ["userId", "teams"]),
+    ...mapState("user", ["teams"]),
   },
   components: { AdminTeamCard, AdminTeamFilter },
   mounted() {
