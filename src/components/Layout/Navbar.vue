@@ -100,7 +100,7 @@ export default {
         { text: "Скамейка запасных", route: { name: "substitute-bench" } },
         { text: "Школы", route: { name: "sport-schools" } },
         { text: "Лагеря и сборы", route: { name: "" } },
-        { text: "Сушилка", route: { name: "" } },
+        { text: "Сушилка", route: { name: "categoriesPage" } },
       ],
     };
   },

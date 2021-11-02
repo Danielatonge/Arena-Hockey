@@ -49,6 +49,8 @@ import CreateArenaEvent from "../views/Admin/Arena/Create/CreateArenaEvent";
 import EditAdminService from "../views/Admin/Arena/Edit/EditAdminService";
 import CreateAdminService from "../views/Admin/Arena/Create/CreateAdminService";
 
+import categoriesPage from '../views/Sushilka/categoriesPage.vue'
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -287,6 +289,38 @@ const routes = [
         props: true,
       },
     ],
+  },
+  {
+    path: '/catalog/',
+    name: 'categoriesPage',
+    component: categoriesPage,
+    beforeEnter: (to, from, next) => {
+      if(localStorage.getItem('auth')){
+        next()
+      } else {
+        next({name: 'authorizationForm'})
+      }
+    },
+  },
+  {
+    path: '/catalog/:categoryName/',
+    name: 'categoriesPage',
+    component: categoriesPage,
+    beforeEnter: (to, from, next) => {
+      if(localStorage.getItem('auth')){
+        next()
+      } else {
+        next({name: 'authorizationForm'})
+      }
+    },
+    // children:[
+    //   {
+    //     path: "/",
+    //     name: 'productCatalog',
+    //     component: productCatalog,
+    //     props: true,
+    //   },
+    // ]
   },
 ];
 
