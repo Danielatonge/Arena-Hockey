@@ -25,29 +25,19 @@
               <div>{{ validAge(user.age) }}</div>
             </div>
             <div>
-              <router-link
-                :to="{ name: '', params: { userId: user.id } }"
-                class="reset-link"
-              >
-                <v-btn large class="mr-2 mb-2" color="primary" elevation="0">
-                  Редактировать
-                </v-btn>
-              </router-link>
               <v-btn
                 large
                 class="mr-2 mb-2"
                 color="grey lighten-2"
                 elevation="0"
+                @click="
+                  $router.push({
+                    name: 'admin-user-view',
+                    params: { userId: user.id },
+                  })
+                "
               >
-                Изменить пароль
-              </v-btn>
-              <v-btn
-                large
-                class="mr-2 mb-2"
-                color="grey lighten-2"
-                elevation="0"
-              >
-                Обратиться в тех.поддержку
+                перейти к пользователю
               </v-btn>
             </div>
           </v-col>

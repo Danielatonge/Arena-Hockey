@@ -1,35 +1,41 @@
 <template>
   <div class="grey lighten-4">
     <v-container class="pb-0">
-      <div class="mb-4 text-h5">Персональные данные</div>
+      <div class="mb-4 text-h5" v-show="showPersonalData">
+        Персональные данные
+      </div>
       <v-row class="mb-4">
-        <v-col cols="6" class="mb-2">
+        <v-col cols="6" class="mb-2" v-show="user.birthDate">
           <div class="body-1 mb-2 grey--text">День рождения</div>
-          <div class="">21 сентября 1999 {{ user.birthDate }}</div>
+          <div class="">
+            {{ user.birthDate ? user.birthDate : "21 сентября 1999" }}
+          </div>
         </v-col>
-        <v-col cols="6" class="mb-2">
+        <v-col cols="6" class="mb-2" v-show="user.gender">
           <div class="body-1 mb-2 grey--text">Пол</div>
-          <div class="">Мужской</div>
+          <div class="">{{ user.gender ? user.gender : "Мужской" }}</div>
         </v-col>
-        <v-col cols="6" class="mb-2">
+        <v-col cols="6" class="mb-2" v-show="user.phone">
           <div class="body-1 mb-2 grey--text">Номер телефона</div>
-          <div class="">+7 (999) 999 99-99</div>
+          <div class="">
+            {{ user.phone ? user.phone : "+7 (999) 999 99-99" }}
+          </div>
         </v-col>
-        <v-col cols="6" class="mb-2">
+        <v-col cols="6" class="mb-2" v-show="user.mail">
           <div class="body-1 mb-2 grey--text">Электронная почта</div>
           <div class="blue--text">
-            jackson.graham@example.com {{ user.mail }}
+            {{ user.mail ? user.mail : "jackson.graham@example.com" }}
           </div>
         </v-col>
-        <v-col cols="6" class="mb-2">
+        <v-col cols="6" class="mb-2" v-show="user.address">
           <div class="body-1 mb-2 grey--text">Адрес</div>
           <div class="">
-            Промышленная ул., 32, Ульяновск, Ульяновская обл., 432006
+            {{
+              user.address
+                ? user.address
+                : " Промышленная ул., 32, Ульяновск, Ульяновская обл., 432006"
+            }}
           </div>
-        </v-col>
-        <v-col cols="6" class="mb-2">
-          <div class="body-1 mb-2 grey--text">Рабочий номер продавца</div>
-          <div class="">+7 (999) 999 99-99</div>
         </v-col>
       </v-row>
       <div class="mb-4 text-h5">Ведение ролей</div>
@@ -73,7 +79,11 @@ import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState("user",["userId"]),
+    ...mapState("user", ["userId"]),
+    showPersonalData() {
+      const { birthDate, gender, phone, address, mail } = this.user;
+      return birthDate || gender || phone || address || mail;
+    },
   },
   props: {
     user: {

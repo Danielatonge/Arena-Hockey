@@ -11,6 +11,7 @@
         <v-row>
           <v-col cols="4" class="pr-10">
             <div class="body-1 mb-4 font-weight-bold">Эмблема команды</div>
+
             <admin-image-uploader v-model="avatar">
               <div slot="activator">
                 <v-avatar
@@ -447,7 +448,7 @@
       </div>
       <div class="d-flex mt-16">
         <v-btn
-          @click="saveNewTeam"
+          @click="updateTeam"
           large
           elevation="0"
           color="primary"
@@ -477,6 +478,12 @@ export default {
   components: {
     AdminImageUploader,
   },
+  props: {
+    teamId: {
+      type: String,
+      required: true,
+    },
+  },
   watch: {
     avatar: {
       handler: function () {
@@ -486,13 +493,34 @@ export default {
     },
   },
   computed: {
-    ...mapState("user", ["userId"]),
+    ...mapState("user", ["userId", "team"]),
     social_media_display() {
       return this.social_media.filter((x) => x.link);
     },
     profilePicture() {
-      return this.avatar ? this.avatar.name : "";
+      return this.avatar ? this.avatar.imageURL : "";
     },
+  },
+  created() {
+    this.$store.dispatch("user/getTeam", this.teamId).then(() => {
+      const team = this.team;
+      this.galleryPics = team.gallery;
+      this.fullTitle = team.title;
+      this.shortTitle = team.title;
+      this.location = team.city;
+      this.category = team.type;
+      this.avatar = team.profilePicture
+        ? { imageURL: team.profilePicture }
+        : null;
+      this.contact.tel = team.phones;
+      this.contact.mail = team.mails;
+      this.social_media[0].link = team.vk;
+      this.social_media[1].link = team.whatsApp;
+      this.social_media[2].link = team.website;
+      this.social_media[3].link = team.instagram;
+      this.social_media[4].link = team.facebook;
+      this.description = team.description;
+    });
   },
   data() {
     return {
@@ -638,7 +666,7 @@ export default {
       }
       this.social_media_text = "";
     },
-    saveNewTeam() {
+    updateTeam() {
       let whatsapp = "";
       if (this.social_media[1].link) {
         whatsapp = `https://wa.me/${this.social_media[1].link
@@ -648,13 +676,13 @@ export default {
       }
       const data = {
         title: this.shortTitle,
-        fullTitle: this.fullTitle,
+        // fullTitle: this.fullTitle,
         miniDescription: "",
         city: this.location,
         type: this.category,
         level: "",
         description: this.description,
-        profilePicture: `https://file-hockey.herokuapp.com/file/${this.profilePicture}`,
+        profilePicture: this.profilePicture,
         gallery: this.galleryPics,
         phones: this.contact.tel,
         mails: this.contact.mail,
@@ -666,39 +694,18 @@ export default {
         classmates: "",
         tiktok: "",
         youtube: "",
+        arena: null,
+        twitter: null,
       };
       console.log(data);
-      // const userId = this.userId;
-      this.$store.dispatch("team/postTeam", data).then((response) => {
-        const { id } = response;
-        const userTeamId = { userId: this.userId, teamId: id };
-        this.$store
-          .dispatch("user/createUserTeam", {
-            userTeamId,
-            team: response,
-          })
-          .then((response) => {
-            console.log(response);
-            this.$router.push({
-              name: "admin-team",
-            });
+      this.$store
+        .dispatch("team/putTeam", { teamId: this.teamId, team: data })
+        .then((response) => {
+          console.log(response);
+          this.$router.push({
+            name: "admin-team",
           });
-      });
-    },
-    linkArenaUser(arenaId, userId) {
-      const payload = {
-        arenaId: arenaId,
-        userId: userId,
-      };
-      return new Promise((resolve) => {
-        axios
-          .post(`/arena/user`, payload) //TODO: Transfer vuex
-          .then((response) => {
-            const arenaUser = response.data;
-            resolve(arenaUser.id);
-          })
-          .catch((err) => console.log(err));
-      });
+        });
     },
   },
 };

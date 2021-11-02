@@ -12,7 +12,7 @@
         ></v-img>
       </v-avatar>
 
-      <v-card-text>
+      <v-card-text @click="goToTeam">
         <div class="body-1 blue--text mb-2" style="text-decoration: none">
           {{ arenaTeam.team.city }}
         </div>
@@ -24,7 +24,7 @@
           <slot
             name="button"
             :deleteTeam="deleteTeam"
-            :teamId="arenaTeam.team.id"
+            :editTeam="editTeam"
           ></slot>
           <slot
             name="hide"
@@ -75,6 +75,18 @@ export default {
         teamId: this.arenaTeam.team.id,
       };
       this.$store.dispatch("user/deleteTeam", payload);
+    },
+    editTeam() {
+      this.$router.push({
+        name: "admin-team-edit",
+        params: { teamId: this.arenaTeam.team.id },
+      });
+    },
+    goToTeam() {
+      this.$router.push({
+        name: "admin-team-view",
+        params: { teamId: this.arenaTeam.team.id },
+      });
     },
   },
 };

@@ -1,7 +1,8 @@
 import axios from "axios";
-
+// http://193.187.173.125:8090/
+// https://api-hockey-io.herokuapp.com
 const apiClient = axios.create({
-  baseURL: "https://api-hockey-io.herokuapp.com",
+  baseURL: "http://193.187.173.125:8090",
   withCredentials: false,
   headers: {
     Accept: "application/json",
@@ -159,7 +160,9 @@ export const apiTeam = {
   postTeam(team) {
     return apiClient.post(`/team`, team);
   },
-  
+  putTeam({ teamId, team }) {
+    return apiClient.put(`/team/${teamId}`, team);
+  },
 
   deleteTeam(teamId) {
     return apiClient.delete(`/team/${teamId}`);
@@ -187,6 +190,9 @@ export const apiUser = {
     // TODO: Temporal
     return apiClient.get(`/user/${userId}/teams`);
   },
+  getTeam(teamId) {
+    return apiClient.get(`/team/${teamId}`);
+  },
   getArenas(userId) {
     // TODO: Temporal
     return apiClient.get(`/user/${userId}/arenas`);
@@ -202,6 +208,18 @@ export const apiUser = {
   },
   createUserTeam(userTeamId) {
     return apiClient.post(`/team/user`, userTeamId);
+  },
+  getForums(userId) {
+    return apiClient.get(`/user/${userId}/forums`);
+  },
+  postForum(forum) {
+    return apiClient.post(`/forum`, forum);
+  },
+  putForum({ forumId, forum }) {
+    return apiClient.put(`/forum/${forumId}`, forum);
+  },
+  putUser({ userId, user }) {
+    return apiClient.put(`/user/${userId}`, user);
   },
 };
 

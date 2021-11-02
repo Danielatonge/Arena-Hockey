@@ -17,7 +17,7 @@ export const mutations = {
     state.teams = teams;
   },
   SET_TEAM(state, team) {
-    state.teams = team;
+    state.team = team;
   },
   SET_USERS(state, trainers) {
     state.trainers = trainers;
@@ -51,9 +51,15 @@ export const actions = {
       });
   },
   getTeam({ commit }, teamId) {
-    api
+    console.log("🚀 ~ file: team.js ~ line 54 ~ getTeam ~ teamId", teamId);
+    return api
       .getTeam(teamId)
       .then((response) => {
+        console.log(
+          "🚀 ~ file: team.js ~ line 57 ~ .then ~ response",
+          response.data
+        );
+
         commit("SET_TEAM", response.data);
       })
       .catch((err) => console.log(err));
@@ -99,6 +105,16 @@ export const actions = {
   postTeam(_context, team) {
     return api
       .postTeam(team)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  putTeam(_context, teamObj) {
+    return api
+      .putTeam(teamObj)
       .then((response) => {
         return response.data;
       })

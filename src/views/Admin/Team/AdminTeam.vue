@@ -11,14 +11,14 @@
     <v-row dense class="mx-n4 mb-4">
       <v-col class="pa-4" cols="12" v-for="team in teams" :key="team.id">
         <AdminTeamCard :arena-team="team">
-          <template #button="{ deleteTeam, teamId }">
+          <template #button="{ deleteTeam, editTeam }">
             <div class="mt-2">
               <v-btn
                 class="rounded-lg mr-2"
                 large
                 depressed
                 color="primary"
-                @click="$router.push({ name: 'admin-team-edit', params: {teamId} })"
+                @click.stop="editTeam"
               >
                 Редактировать
               </v-btn>
@@ -27,7 +27,7 @@
                 large
                 depressed
                 color="grey lighten-1"
-                @click="deleteTeam"
+                @click.stop="deleteTeam"
               >
                 Удалить
               </v-btn>
@@ -48,9 +48,6 @@
         >
           <div class="my-auto">Создать Команду</div>
         </router-link>
-      </v-btn>
-      <v-btn class="rounded-lg" large depressed color="primary">
-        Добавить команду
       </v-btn>
     </div>
   </v-container>

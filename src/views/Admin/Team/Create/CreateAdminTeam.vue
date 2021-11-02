@@ -491,7 +491,7 @@ export default {
       return this.social_media.filter((x) => x.link);
     },
     profilePicture() {
-      return this.avatar ? this.avatar.name : "";
+      return this.avatar ? this.avatar.imageURL : "";
     },
   },
   data() {
@@ -646,6 +646,7 @@ export default {
           .replace(")", "")
           .replace(" ", "")}`;
       }
+
       const data = {
         title: this.shortTitle,
         fullTitle: this.fullTitle,
@@ -654,7 +655,7 @@ export default {
         type: this.category,
         level: "",
         description: this.description,
-        profilePicture: `https://file-hockey.herokuapp.com/file/${this.profilePicture}`,
+        profilePicture: this.profilePicture,
         gallery: this.galleryPics,
         phones: this.contact.tel,
         mails: this.contact.mail,
@@ -677,27 +678,11 @@ export default {
             userTeamId,
             team: response,
           })
-          .then((response) => {
-            console.log(response);
+          .then(() => {
             this.$router.push({
               name: "admin-team",
             });
           });
-      });
-    },
-    linkArenaUser(arenaId, userId) {
-      const payload = {
-        arenaId: arenaId,
-        userId: userId,
-      };
-      return new Promise((resolve) => {
-        axios
-          .post(`/arena/user`, payload) //TODO: Transfer vuex
-          .then((response) => {
-            const arenaUser = response.data;
-            resolve(arenaUser.id);
-          })
-          .catch((err) => console.log(err));
       });
     },
   },

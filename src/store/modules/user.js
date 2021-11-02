@@ -10,6 +10,7 @@ export const state = () => ({
   arena: {},
   teams: [],
   team: {},
+  forums: [],
   selected_arenas: [],
 });
 
@@ -29,8 +30,14 @@ export const mutations = {
   SET_USER(state, user) {
     state.user = user;
   },
+  SET_FORUMS(state, forums) {
+    state.forums = forums;
+  },
   ADD_TO_SELECTED_ARENAS(state, arena) {
     state.selected_arenas.push(arena);
+  },
+  ADD_FORUM(state, forum) {
+    state.forums.push(forum);
   },
   ADD_TEAM(state, team) {
     state.teams.push(team);
@@ -72,11 +79,32 @@ export const actions = {
         console.log(err);
       });
   },
+  getTeam({ commit }, teamId) {
+    return api
+      .getTeam(teamId)
+      .then((response) => {
+        const res = response.data;
+        commit("SET_TEAM", res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   getUser({ commit }, userId) {
     return api
       .getUser(userId)
       .then((response) => {
         commit("SET_USER", response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  getForums({ commit }, userId) {
+    return api
+      .getForums(userId)
+      .then((response) => {
+        commit("SET_FORUMS", response.data);
       })
       .catch((err) => {
         console.log(err);
@@ -88,6 +116,32 @@ export const actions = {
       .then(() => {
         commit("ADD_TEAM", team);
       })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  postForum({ commit }, forum) {
+    return api
+      .postForum(forum)
+      .then(() => {
+        commit("ADD_FORUM", forum);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  putForum(_commit, forumObj) {
+    return api
+      .putForum(forumObj)
+      .then(() => {})
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  putUser(_commit, userObj) {
+    return api
+      .putUser(userObj)
+      .then(() => {})
       .catch((err) => {
         console.log(err);
       });

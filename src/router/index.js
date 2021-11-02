@@ -43,13 +43,17 @@ import EditAdminPriceList from "../views/Admin/Arena/Edit/EditAdminPriceList.vue
 import CreateComplexInformation from "../views/Admin/Arena/Create/CreateComplexInformation.vue";
 import CreateAdminTeam from "../views/Admin/Team/Create/CreateAdminTeam.vue";
 import EditAdminTeam from "../views/Admin/Team/Edit/EditAdminTeam.vue";
+import AdminTeamView from "../views/Admin/Team/View/AdminTeamView.vue";
 
 import KidsTournaments from "../views/KidsTournaments/Home.vue";
 import AdminLayoutSection from "../views/Admin/AdminLayoutSection";
-import UserProfile from "../views/Admin/User/View/UserProfile";
+import UserProfile from "../views/Admin/User/UserProfile";
 import CreateArenaEvent from "../views/Admin/Arena/Create/CreateArenaEvent";
 import EditAdminService from "../views/Admin/Arena/Edit/EditAdminService";
 import CreateAdminService from "../views/Admin/Arena/Create/CreateAdminService";
+
+import UserInformation from "../views/Admin/User/View/UserInformation.vue";
+import EditUserInformation from "../views/Admin/User/Edit/EditUserInformation.vue";
 
 Vue.use(VueRouter);
 
@@ -294,6 +298,24 @@ const routes = [
     path: "/admin/teams/create",
     name: "admin-team-create",
     component: CreateAdminTeam,
+  },
+  {
+    path: "/admin/user/:userId",
+    name: "admin-user-view",
+    component: UserInformation,
+    props: true,
+  },
+  {
+    path: "/admin/user/:userId/edit",
+    name: "admin-user-edit",
+    component: EditUserInformation,
+    props: true,
+  },
+  {
+    path: "/admin/teams/:teamId",
+    name: "admin-team-view",
+    component: AdminTeamView,
+    props: true,
   },
   {
     path: "/admin/teams/:teamId/edit",
