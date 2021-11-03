@@ -53,6 +53,7 @@ import categoriesPage from '../views/Sushilka/categoriesPage.vue';
 import authorizationForm from '../views/Sushilka/authorizationForm.vue';
 import productCatalog from '../components/Sushilka/categoriesPage/productCatalog.vue';
 import productCard from '../components/Sushilka/categoriesPage/productCard/productCard.vue';
+import vendorCard from '../components/Sushilka/categoriesPage/vendorCard/vendorCard.vue'
 
 import vCarte from '../views/Sushilka/vCarte.vue';
 import vendorAds from '../views/Sushilka/vendorAds.vue';
@@ -443,6 +444,18 @@ const routes = [
         next({name: 'authorizationForm'})
       }
     }
+  },
+  {
+    path: "/catalog/vendor/card/:vendorNumber",
+    name: 'vendorCard',
+    component: vendorCard,
+    beforeEnter: (to, from, next) => {
+      if(localStorage.getItem('auth')){
+        next()
+      } else {
+        next({name: 'authorizationForm'})
+      }
+    },
   },
 ];
 

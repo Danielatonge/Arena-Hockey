@@ -1,5 +1,5 @@
 <template>
-<div style="margin-top: 50px">
+<div style="margin-top: 50px;padding-top: 25px;max-width:1170px;margin:0 auto;">
     <v-row>
       <v-col style="padding: 0px; padding-bottom: 30px">
         <v-breadcrumbs style="padding: 0px" :items="path"></v-breadcrumbs>
@@ -61,7 +61,7 @@
                                         </div>
                                         <div v-if="item.name == 'В контакте'" style="margin: 0 5px">
                                             <a :href="item.linq">
-                                                <img style="margin-right: 30px" src="../../../assets/vk.svg"/>
+                                                <img style="margin-right: 30px" src="@/assets/vk.svg"/>
                                             </a>
                                         </div>
                                     </div>
@@ -206,7 +206,7 @@
                                 "
                                     @click="addToCart(item.product_id)"
                                 >
-                                <img src="../../../assets/cart.svg" />
+                                <img src="@/assets/cart.svg" />
                                 </v-btn>
                             </div>
                             <div v-else>
@@ -236,7 +236,7 @@
                                 border-radius: 8px;
                             "
                             >
-                            <img src="../../../assets/star.svg" />
+                            <img src="@/assets/star.svg" />
                             </v-btn>
                         </div>
                         </v-list-item-content>
@@ -373,7 +373,7 @@ export default {
         headers: {
           'Authorization': `Bearer ${token}`
         }
-      })
+      })/* eslint-disable */
       .then((res) => {
         this.vendor_products.forEach(item => {
         if(item.product_id == this.productNumberToCart)
