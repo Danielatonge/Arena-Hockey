@@ -222,6 +222,10 @@ export default {
       type: String,
       required: true,
     },
+    userId: {
+      type: String,
+      required: true,
+    },
   },
   created() {
     this.$store.dispatch("arena/getTrainers", this.arenaId);
@@ -320,7 +324,6 @@ export default {
       adding_player: false,
       search_text: "",
       adding: false,
-      userId: null,
     };
   },
 };

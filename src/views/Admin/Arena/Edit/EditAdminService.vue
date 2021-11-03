@@ -86,6 +86,10 @@ export default {
       type: String,
       required: true,
     },
+    userId: {
+      type: String,
+      required: true,
+    },
   },
   created() {
     this.fetchArenaServices(this.serviceId).then((service) => {

@@ -460,6 +460,12 @@
           large
           class="body-2 px-6 ml-2"
           elevation="0"
+          @click="
+            $router.push({
+              name: 'admin-team',
+              params: { userId },
+            })
+          "
         >
           Отменить
         </v-btn>
@@ -471,11 +477,17 @@
 <script>
 import axios from "axios";
 import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
-import { mapState } from "vuex";
+// import { mapState } from "vuex";
 
 export default {
   components: {
     AdminImageUploader,
+  },
+  props: {
+    userId: {
+      type: String,
+      required: true,
+    },
   },
   watch: {
     avatar: {
@@ -486,7 +498,6 @@ export default {
     },
   },
   computed: {
-    ...mapState("user", ["userId"]),
     social_media_display() {
       return this.social_media.filter((x) => x.link);
     },

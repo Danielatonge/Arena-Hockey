@@ -33,29 +33,42 @@
         <div class="mb-4">
           <div class="text-h6 mb-4">Основное изображение арены</div>
           <v-row>
-            <v-col class="pa-2" cols="4" md="3" lg="2">
+            <v-col class="pa-2" cols="6" sm="4" md="3">
               <admin-image-uploader v-model="avatar">
                 <div slot="activator">
-                  <v-avatar
-                    width="100%"
-                    height="160"
-                    v-ripple
-                    tile
-                    v-if="!avatar"
-                    class="grey lighten-3 mb-3 rounded-lg"
-                  >
-                    <span><v-icon large>mdi-upload</v-icon></span>
-                  </v-avatar>
-                  <v-avatar
-                    width="100%"
-                    height="160"
-                    tile
-                    v-ripple
-                    v-else
-                    class="mb-3 rounded-lg"
-                  >
-                    <img :src="avatar.imageURL" alt="avatar" />
-                  </v-avatar>
+                  <div v-if="!avatar" class="white rounded-xl pa-4">
+                    <v-avatar
+                      width="100%"
+                      height="200"
+                      v-ripple
+                      tile
+                      class="white"
+                    >
+                      <div class="upload-border rounded-xl pa-4">
+                        <div class="my-4">
+                          <v-icon large color="#379AD3"
+                            >mdi-cloud-upload-outline</v-icon
+                          >
+                        </div>
+                        <div class="body-1 mb-2 font-weight-bold">
+                          Загрузите логотип
+                        </div>
+                        <div class="body-2 mb-4 grey--text">
+                          Поддерживаемые форматы: PNG, JPG
+                        </div>
+                      </div>
+                    </v-avatar>
+                  </div>
+                  <div v-else class="white rounded-xl pa-4">
+                    <v-avatar width="100%" height="200" tile v-ripple>
+                      <v-img
+                        class="ma-10 rounded-xl"
+                        :src="avatar.imageURL"
+                        alt="avatar"
+                        cover
+                      ></v-img>
+                    </v-avatar>
+                  </div>
                 </div>
               </admin-image-uploader>
             </v-col>
@@ -537,6 +550,12 @@
           large
           class="body-2 px-6 ml-2"
           elevation="0"
+          @click="
+            $router.push({
+              name: 'admin-add-arena-sportcomplex',
+              params: { userId },
+            })
+          "
         >
           Отменить
         </v-btn>
@@ -549,7 +568,7 @@
 import axios from "axios";
 import { yandexMap, ymapMarker } from "vue-yandex-maps";
 import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
-import { mapState } from "vuex";
+// import { mapState } from "vuex";
 
 export default {
   components: {
@@ -565,8 +584,13 @@ export default {
       deep: true,
     },
   },
+  props: {
+    userId: {
+      type: String,
+      required: true,
+    },
+  },
   computed: {
-    ...mapState("user",["userId"]),
     social_media_display() {
       return this.social_media.filter((x) => x.link);
     },

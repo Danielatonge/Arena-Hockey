@@ -24,7 +24,7 @@
           @change="fetchTeam"
         ></v-text-field>
       </v-col>
-      <v-col cols="3" md="3" lg="2">
+      <v-col cols="3" md="4" lg="3">
         <v-select
           :items="types"
           v-model="team.type"
@@ -38,7 +38,7 @@
           @change="fetchTeam"
         ></v-select>
       </v-col>
-      <v-col cols="3" md="3" lg="3">
+      <v-col cols="3" md="2" lg="2">
         <v-btn
           class="rounded-lg"
           large
@@ -48,7 +48,7 @@
           color="primary"
           @click="fetchTeam"
         >
-          Найти команду
+          Найти
         </v-btn>
       </v-col>
     </v-row>

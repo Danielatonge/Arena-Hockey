@@ -139,6 +139,10 @@ export default {
       type: String,
       required: true,
     },
+    userId: {
+      type: String,
+      required: true,
+    },
   },
   filters: {
     descriptionLength(value) {

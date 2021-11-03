@@ -111,6 +111,10 @@ export default {
       type: String,
       required: true,
     },
+    userId: {
+      type: String,
+      required: true,
+    },
   },
   computed: {
     ...mapState("arena", ["services"]),

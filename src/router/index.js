@@ -198,16 +198,18 @@ const routes = [
         props: true,
         meta: { requiresAuth: true },
       },
+      {
+        path: "sport_complex/create",
+        name: "create-complex-information",
+        component: CreateComplexInformation,
+        meta: { requiresAuth: true },
+        props: true,
+      },
     ],
   },
+
   {
-    path: "/admin/sport_complex/create",
-    name: "create-complex-information",
-    component: CreateComplexInformation,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/admin/sport_complex/:arenaId",
+    path: "/admin/:userId/sport_complex/:arenaId",
     component: NameComplex,
     props: true,
     meta: { requiresAuth: true },
@@ -249,7 +251,7 @@ const routes = [
     ],
   },
   {
-    path: "/admin/sport_complex/:arenaId/edit",
+    path: "/admin/:userId/sport_complex/:arenaId/edit",
     component: EditNameComplex,
     props: true,
     children: [
@@ -320,10 +322,11 @@ const routes = [
     ],
   },
   {
-    path: "/admin/teams/create",
+    path: "/admin/:userId/teams/create",
     name: "admin-team-create",
     component: CreateAdminTeam,
     meta: { requiresAuth: true },
+    props: true,
   },
   {
     path: "/admin/user/:userId",
@@ -340,14 +343,14 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: "/admin/teams/:teamId",
+    path: "/admin/:userId/teams/:teamId",
     name: "admin-team-view",
     component: AdminTeamView,
     props: true,
     meta: { requiresAuth: true },
   },
   {
-    path: "/admin/teams/:teamId/edit",
+    path: "/admin/:userId/teams/:teamId/edit",
     name: "admin-team-edit",
     component: EditAdminTeam,
     props: true,

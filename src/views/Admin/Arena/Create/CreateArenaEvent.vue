@@ -219,6 +219,10 @@ export default {
       type: Object,
       required: true,
     },
+    userId: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {

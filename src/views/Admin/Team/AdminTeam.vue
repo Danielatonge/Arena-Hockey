@@ -41,13 +41,19 @@
     </div>
 
     <div>
-      <v-btn class="rounded-lg mr-2" large depressed color="primary">
-        <router-link
-          :to="{ name: 'admin-team-create' }"
-          class="reset-link d-flex"
-        >
-          <div class="my-auto">Создать Команду</div>
-        </router-link>
+      <v-btn
+        class="rounded-lg mr-2"
+        large
+        depressed
+        color="primary"
+        @click="
+          $router.push({
+            name: 'admin-team-create',
+            params: { userId },
+          })
+        "
+      >
+        <div class="my-auto">Создать Команду</div>
       </v-btn>
     </div>
   </v-container>
@@ -62,7 +68,7 @@ export default {
   props: {
     userId: {
       type: String,
-      required:true
+      required: true,
     },
   },
   computed: {

@@ -72,11 +72,20 @@
     </div>
 
     <div>
-      <v-btn class="rounded-lg mr-2" large depressed color="primary">
-        <router-link to="/admin/sport_complex/create" class="reset-link d-flex">
-          <v-icon class="mr-2">mdi-plus</v-icon>
-          <div class="my-auto">Создать Арену</div>
-        </router-link>
+      <v-btn
+        class="rounded-lg mr-2"
+        large
+        depressed
+        color="primary"
+        @click="
+          $router.push({
+            name: 'create-complex-information',
+            params: { userId },
+          })
+        "
+      >
+        <!-- <v-icon class="mr-2">mdi-plus</v-icon> -->
+        <div class="my-auto">Создать Арену</div>
       </v-btn>
       <v-btn
         :disabled="!selected_arenas.length"
