@@ -32,10 +32,12 @@
           >
             Личный кабинет
           </v-btn>
-          <router-link :to="{name: 'vCarte'}">
+        </router-link>
+
+        <router-link :to="{name: 'vCarte'}">
         <v-badge
-        style="color:black !important;position: relative;
-          left:80px;"
+        style="position: relative;
+          left:60px;"
         color = "rgba(234, 234, 234, 1)"
         :content="CART_COUNT"
         :value="CART_COUNT"
@@ -63,15 +65,49 @@
           </v-btn>
         </v-badge>
       </router-link>
-        </router-link>
+
+      <!-- <div v-if="(USER_ROLE == 'Продавец') || (userRole == 'Продавец')" > -->
+        <v-btn
+        style = "position: relative;
+          left:70px;"
+        :to="'/vendor-ads'"
+        icon>
+          <v-icon
+          color="#0681C8">mdi-file-document-multiple-outline</v-icon>
+        </v-btn>
+      <!-- </div> -->
+        
       </div>
     </v-toolbar>
   </v-container>
 </template>
 
 <script>
+import Axios from "axios";
+import { mapGetters, mapActions } from "vuex";
+import { GET_CLIENT_CART_COUNT } from "@/api";
 export default {
   name: "Header",
+  methods: {
+    ...mapActions(["CHANGE_CART_COUNT"]),
+    async getCartCount() {
+      const token = localStorage.getItem("access_token");
+      await Axios.get(`${GET_CLIENT_CART_COUNT}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => {
+          this.CHANGE_CART_COUNT(res.data.result);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+  },
+  computed: {
+    ...mapGetters(["CART_COUNT", "USER_ROLE"]),
+  },
 };
 </script>
 
@@ -83,7 +119,9 @@ export default {
 .fix-margin-right {
   margin-right: -16px;
 }
-
+.v-badge__badge {
+  color: black !important;
+}
 .my-logo {
   width: 40px;
   height: 40px;

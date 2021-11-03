@@ -18,4 +18,42 @@ const vuexLocal = new VuexPersistence({
 export default new Vuex.Store({
   modules: { arena, forum, school, teamplayer, team, tournament, user },
   plugins: [vuexLocal.plugin],
+  state: {
+    cartCount: 0,
+    userRole: "",
+    unAuthtorise: false,
+  },
+  mutations: {
+    SET_CART_COUNT: (state, cartCount) => {
+      state.cartCount = cartCount
+    },
+    SER_USER_ROLE: (state, userRole) => {
+      state.userRole = userRole
+    },
+    SET_UNAUTHTORISE: (state) => {
+      state.unAuthtorise = true
+    },
+  },
+  actions: {
+    CHANGE_CART_COUNT({commit}, res) {
+      commit('SET_CART_COUNT', res);
+    },
+    CHANGE_USER_ROLE({commit}, res) {
+      commit('SER_USER_ROLE', res);
+    },
+    CHANGE_UNAUTHTORISE({commit}) {
+      commit('SET_UNAUTHTORISE');
+    },
+  },
+  getters:{
+    CART_COUNT(state){
+      return state.cartCount
+    },
+    USER_ROLE(state){
+      return state.userRole
+    },
+    UNAUTHTORISE(state){
+      return state.unAuthtorise
+    },
+  },
 });

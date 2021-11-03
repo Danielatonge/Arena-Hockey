@@ -1,5 +1,5 @@
 <template >
-  <div style="padding-top: 25px">
+  <div style="padding-top: 25px;max-width:1170px;margin:0 auto;">
     <v-col style="padding: 0px; padding-bottom: 30px">
         <v-breadcrumbs style="padding: 0px" :items="path"></v-breadcrumbs>
       </v-col>
@@ -129,7 +129,7 @@ line-height: 48px;"
 </template>
 <script>
 
-import vCartItem from '.../components/Sushilka/vCarte/vCartItem.vue'
+import vCartItem from '@/components/Sushilka/vCarte/vCartItem.vue'
 import Axios from "axios";
 import { GET_CLIENT_CART } from "@/api";
 import { mapGetters, mapActions  } from "vuex";

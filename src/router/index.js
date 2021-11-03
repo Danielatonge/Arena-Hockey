@@ -55,7 +55,14 @@ import productCatalog from '../components/Sushilka/categoriesPage/productCatalog
 import productCard from '../components/Sushilka/categoriesPage/productCard/productCard.vue';
 
 import vCarte from '../views/Sushilka/vCarte.vue';
+import vendorAds from '../views/Sushilka/vendorAds.vue';
 
+import myAds from '../components/Sushilka/vendorAds/myAds/myAds.vue'
+import myDraftAds from '../components/Sushilka/vendorAds/myDraftAds/myDraftAds.vue'
+import myArchiveAds from '../components/Sushilka/vendorAds/myArchiveAds/myArchiveAds.vue'
+import createNewAds from '../components/Sushilka/vendorAds/myAds/createNewAds/createNewAds.vue'
+import editAd from '../components/Sushilka/vendorAds/myAds/editAd/editAd.vue'
+import createNewProduct from '../components/Sushilka/vendorAds/myAds/createNewAds/createNewProduct.vue'
 Vue.use(VueRouter);
 
 const routes = [
@@ -345,18 +352,98 @@ const routes = [
       }
     },
   },
-  // {
-  //   path: '/cart',
-  //   name: 'vCarte',
-  //   component: vCarte,
-  //   beforeEnter: (to, from, next) => {
-  //     if(localStorage.getItem('auth')){
-  //       next()
-  //     } else {
-  //       next({name: 'authorizationForm'})
-  //     }
-  //   }
-  // },
+  {
+    path: '/cart',
+    name: 'vCarte',
+    component: vCarte,
+    beforeEnter: (to, from, next) => {
+      if(localStorage.getItem('auth')){
+        next()
+      } else {
+        next({name: 'authorizationForm'})
+      }
+    }
+  },
+  {
+    path: '/vendor-ads',
+    name: 'vendorAds',
+    component: vendorAds,
+    beforeEnter: (to, from, next) => {
+      if(localStorage.getItem('auth')){
+        next()
+      } else {
+        next({name: 'authorizationForm'})
+      }
+    }
+  },
+  {
+    path: '/vendor-ads/my-ads',
+    name: 'my-ads',
+    component: myAds,
+    beforeEnter: (to, from, next) => {
+      if(localStorage.getItem('auth')){
+        next()
+      } else {
+        next({name: 'authorizationForm'})
+      }
+    }
+  },
+  {
+    path: '/vendor-ads/my-draft-ads',
+    name: 'my-draft-ads',
+    component: myDraftAds,
+    beforeEnter: (to, from, next) => {
+      if(localStorage.getItem('auth')){
+        next()
+      } else {
+        next({name: 'authorizationForm'})
+      }
+    }
+  },
+  {
+    path: '/vendor-ads/my-archive-ads',
+    name: 'my-archive-ads',
+    component: myArchiveAds,
+    beforeEnter: (to, from, next) => {
+      if(localStorage.getItem('auth')){
+        next()
+      } else {
+        next({name: 'authorizationForm'})
+      }
+    }
+  },
+  {
+    path: '/vendor-ads/my-ads/create-new-ad',
+    name: 'createNewAds',
+    component: createNewAds,
+    children:[
+      {
+        path: '/create-new-product',
+        name: 'createNewProduct',
+        component: createNewProduct,
+      }
+    ],
+    beforeEnter: (to, from, next) => {
+      if(localStorage.getItem('auth')){
+        next()
+      } else {
+        next({name: 'authorizationForm'})
+      }
+    }
+  },
+  {
+    path: '/vendor-ads/my-ads/edit-my-ad/:productNumber',
+    name: 'editAd',
+    component: editAd,
+    props: true,
+    beforeEnter: (to, from, next) => {
+      if(localStorage.getItem('auth')){
+        next()
+      } else {
+        next({name: 'authorizationForm'})
+      }
+    }
+  },
 ];
 
 const router = new VueRouter({
