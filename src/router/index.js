@@ -49,10 +49,12 @@ import CreateArenaEvent from "../views/Admin/Arena/Create/CreateArenaEvent";
 import EditAdminService from "../views/Admin/Arena/Edit/EditAdminService";
 import CreateAdminService from "../views/Admin/Arena/Create/CreateAdminService";
 
-import categoriesPage from '../views/Sushilka/categoriesPage.vue'
-import authorizationForm from '../views/Sushilka/authorizationForm.vue'
-import productCatalog from '../components/Sushilka/categoriesPage/productCatalog.vue'
-import productCard from '../components/Sushilka/categoriesPage/productCard/productCard.vue'
+import categoriesPage from '../views/Sushilka/categoriesPage.vue';
+import authorizationForm from '../views/Sushilka/authorizationForm.vue';
+import productCatalog from '../components/Sushilka/categoriesPage/productCatalog.vue';
+import productCard from '../components/Sushilka/categoriesPage/productCard/productCard.vue';
+
+import vCarte from '../views/Sushilka/vCarte.vue';
 
 Vue.use(VueRouter);
 
@@ -343,6 +345,18 @@ const routes = [
       }
     },
   },
+  // {
+  //   path: '/cart',
+  //   name: 'vCarte',
+  //   component: vCarte,
+  //   beforeEnter: (to, from, next) => {
+  //     if(localStorage.getItem('auth')){
+  //       next()
+  //     } else {
+  //       next({name: 'authorizationForm'})
+  //     }
+  //   }
+  // },
 ];
 
 const router = new VueRouter({

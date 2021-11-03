@@ -32,6 +32,37 @@
           >
             Личный кабинет
           </v-btn>
+          <router-link :to="{name: 'vCarte'}">
+        <v-badge
+        style="color:black !important;position: relative;
+          left:80px;"
+        color = "rgba(234, 234, 234, 1)"
+        :content="CART_COUNT"
+        :value="CART_COUNT"
+        overlap>
+          <v-btn
+          style="background:#0681C8;
+          min-width: 1px;
+          width: 50px;
+          height: 40px;
+          border: 1px solid #83c0e4;
+          box-sizing: border-box;
+          border-radius: 8px;">
+            <img src="@/assets/big_cart.svg" />              
+              <!-- <p
+              style="
+              position: absolute;
+              background-color: #EAEAEA;
+              border-radius: 50%;
+              width:18px;
+              height:18px;
+              bottom:5px;
+              left:29px;
+              "
+              >{{CART_COUNT}}</p> -->
+          </v-btn>
+        </v-badge>
+      </router-link>
         </router-link>
       </div>
     </v-toolbar>
