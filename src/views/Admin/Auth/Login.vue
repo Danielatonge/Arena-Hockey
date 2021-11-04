@@ -19,10 +19,10 @@
                 label="Почта или номер телефона"
                 outlined
                 v-model="mail"
+                :rules="[rules.required]"
                 flat
                 hide-details="auto"
                 class="rounded-lg"
-                :rules="[rules.required]"
               ></v-text-field>
             </v-col>
             <v-col cols="12">
@@ -48,7 +48,7 @@
             <div class="text-center">
               <v-btn
                 tile
-                class=""
+                class="mb-10"
                 large
                 color="grey lighten-0"
                 elevation="0"
@@ -56,7 +56,7 @@
               >
                 Продолжить
               </v-btn>
-              <p class="mt-4">
+              <p class="mt-0">
                 Нет аккаунта?
                 <router-link
                   style="text-decoration: unset"
@@ -66,10 +66,95 @@
                   >Зарегистрироваться</router-link
                 >
               </p>
+              <p class="my-0">
+                Забыли пароль?
+                <a
+                  @click.prevent="restorePassword"
+                  style="text-decoration: unset"
+                  >Восстановить доступ</a
+                >
+              </p>
             </div>
           </div>
         </v-col>
       </v-row>
+      <v-dialog v-model="changePassword" origin="" max-width="700">
+        <v-card class="py-3">
+          <v-card-title class="justify-center">
+            <div class="text-h5 black--text font-weight-bold">
+              Восстановить доступ
+            </div>
+          </v-card-title>
+          <v-card-text v-if="enterMail">
+            <p class="body-1 mb-1">Введите адрес электронной почты</p>
+            <v-row>
+              <v-col>
+                <div class="mb-2">
+                  <v-text-field
+                    v-model="mail"
+                    :rules="[rules.required]"
+                    label="Ссылка на социальную сеть"
+                    outlined
+                    solo
+                    dense
+                    persistent-hint
+                    flat
+                    hide-details="auto"
+                    class="rounded-lg"
+                  >
+                  </v-text-field>
+                </div>
+              </v-col>
+              <v-col class="my-0">
+                <v-btn
+                  elevation="0"
+                  color="primary"
+                  class="body-2"
+                  height="40px"
+                  @click="sendCode"
+                >
+                  Отправить код
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-text>
+          <v-card-text v-else>
+            <p class="body-1 mb-1">
+              На ваш почтовый ящик было отправлено письмо
+            </p>
+            <v-row>
+              <v-col>
+                <div class="mb-2">
+                  <v-text-field
+                    v-model="passCode"
+                    :rules="[rules.required]"
+                    outlined
+                    placeholder="Введите код"
+                    solo
+                    dense
+                    persistent-hint
+                    flat
+                    hide-details="auto"
+                    class="rounded-lg"
+                  >
+                  </v-text-field>
+                </div>
+              </v-col>
+              <v-col class="my-0">
+                <v-btn
+                  elevation="0"
+                  color="primary"
+                  class="body-2"
+                  height="40px"
+                  @click="verifyCode"
+                >
+                  Проверить код
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
     </v-container>
   </div>
 </template>
@@ -79,6 +164,9 @@ export default {
   name: "Login",
   data() {
     return {
+      enterMail: false,
+      changePassword: false,
+
       checkbox: false,
       showPass: false,
       rules: {
@@ -86,6 +174,7 @@ export default {
       },
       password: "",
       mail: "",
+      passCode: "",
     };
   },
   methods: {
@@ -100,6 +189,26 @@ export default {
           this.$router.push({ name: "user-profile", params: { userId } });
         })
         .catch(() => {});
+    },
+    sendCode() {
+      this.$store
+        .dispatch("auth/forgetPassword", this.mail)
+        .then(() => {
+          this.enterMail = false;
+        })
+        .catch(() => {});
+    },
+    verifyCode() {
+      this.$store
+        .dispatch("auth/verifyCode", this.passCode)
+        .then(() => {
+          this.changePassword = false;
+        })
+        .catch(() => {});
+    },
+    restorePassword() {
+      this.changePassword = true;
+      this.enterMail = true;
     },
   },
 };

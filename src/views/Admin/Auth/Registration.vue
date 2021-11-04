@@ -26,8 +26,10 @@
             outlined
             v-model="user.phone"
             flat
+            placeholder="+9 (999) 999-9999"
             hide-details="auto"
             class="rounded-lg"
+            @input="enforcePhoneFormat"
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="6" class="mb-2">
@@ -373,8 +375,9 @@ export default {
         profilePicture: this.profilePicture,
       };
 
-      this.$router.push({ name: "login" });
-      this.$store.dispatch("auth/postUser", userParams).then(() => {});
+      this.$store.dispatch("auth/postUser", userParams).then(() => {
+        this.$router.push({ name: "register-role" });
+      });
     },
     removeSocialMedia(item) {
       console.log(item);
@@ -391,6 +394,16 @@ export default {
         this.errMessage = "Ссылка уже существует";
       }
       this.social_media_text = "";
+    },
+    enforcePhoneFormat() {
+      let x = this.user.phone
+        .replace(/\D/g, "")
+        .match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,4})/);
+
+      let value = !x[2]
+        ? x[1]
+        : x[1] + " " + "(" + x[2] + ") " + x[3] + (x[4] ? "-" + x[4] : "");
+      this.user.phone = "+" + value;
     },
   },
 };

@@ -114,7 +114,7 @@
                 </v-card-text>
                 <v-card-actions class="pl-4 bottom">
                   <router-link
-                    :to="`/arena/${arenaId}/information`"
+                    :to="{ name: 'arena-information', params: { arenaId } }"
                     class="reset-link"
                   >
                     <v-btn

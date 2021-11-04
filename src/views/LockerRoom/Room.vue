@@ -91,7 +91,10 @@
       </div>
       <v-row dense class="mx-n4">
         <v-col cols="12" md="6" v-for="(item, i) in teams" :key="i">
-          <router-link :to="`/teamname/${item.id}`" class="undo-link-default">
+          <router-link
+            :to="{ name: 'team-name', params: { teamId: item.id } }"
+            class="undo-link-default"
+          >
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
                 <v-avatar class="ma-3 rounded-lg" size="125" tile>

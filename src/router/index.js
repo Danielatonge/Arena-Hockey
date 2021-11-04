@@ -58,6 +58,7 @@ import EditUserInformation from "../views/Admin/User/Edit/EditUserInformation.vu
 
 import Login from "../views/Admin/Auth/Login.vue";
 import Registration from "../views/Admin/Auth/Registration.vue";
+import RegisterRole from "../views/Admin/Auth/RegisterRole.vue";
 
 Vue.use(VueRouter);
 
@@ -372,6 +373,11 @@ const routes = [
     path: "/auth/register",
     name: "registration",
     component: Registration,
+  },
+  {
+    path: "/auth/roles",
+    name: "register-role",
+    component: RegisterRole,
   },
 ];
 

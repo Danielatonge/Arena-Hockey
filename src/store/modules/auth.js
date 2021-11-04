@@ -45,7 +45,6 @@ export const actions = {
     return api
       .postUser(userObj)
       .then(() => {
-      
         const notification = {
           type: "success",
           message: "Your account was created Successfully",
@@ -100,6 +99,34 @@ export const actions = {
       .then(() => {})
       .catch((err) => {
         console.log(err);
+      });
+  },
+  forgetPassword(_commit, mail) {
+    return api
+      .forgetPassword(mail)
+      .then((response) => {
+        console.log(
+          "🚀 ~ file: auth.js ~ line 109 ~ .then ~ response",
+          response.data
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
+  },
+  verifyCode(_commit, code) {
+    return api
+      .verifyCode(code)
+      .then((response) => {
+        console.log(
+          "🚀 ~ file: auth.js ~ line 109 ~ .then ~ response",
+          response.data
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        throw err;
       });
   },
 };

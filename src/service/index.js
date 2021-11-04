@@ -301,4 +301,18 @@ export const apiAuth = {
   login(credential) {
     return apiClient.post(`/login`, credential);
   },
+  forgetPassword(mail) {
+    console.log("🚀 ~ file: index.js ~ line 305 ~ forgetPassword ~ mail", {
+      email: mail,
+    });
+
+    return apiClient.post(`/forgetPassword`, { email: mail });
+  },
+  verifyCode(code) {
+    console.log("🚀 ~ file: index.js ~ line 305 ~ forgetPassword ~ mail", {
+      code,
+    });
+
+    return apiClient.post(`/verifyCode`, { code });
+  },
 };
