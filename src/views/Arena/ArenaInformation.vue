@@ -101,7 +101,7 @@
           </a>
         </div>
       </v-col>
-    </v-row>
+  </v-row>
   </div>
 </template>
 

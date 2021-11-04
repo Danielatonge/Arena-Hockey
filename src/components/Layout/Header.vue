@@ -28,7 +28,7 @@
           height="40px"
           depressed
           color="primary"
-          @click="$router.push({ name: 'user-profile' })"
+          @click="$router.push({ name: 'user-profile', params: { userId } })"
         >
           Личный кабинет
         </v-btn>
@@ -49,14 +49,19 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
+
 export default {
   name: "Header",
-  computed: mapGetters("auth", ["loggedIn"]),
+  computed: {
+    ...mapGetters("auth", ["loggedIn"]),
+    ...mapState("auth", ["userId"]),
+  },
   methods: {
     logout() {
+      const userId = this.userId;
       this.$store.dispatch("auth/logoutUser");
-      this.$router.push({ name: "login" });
+      this.$router.push({ name: "login", params: { userId } });
     },
   },
 };

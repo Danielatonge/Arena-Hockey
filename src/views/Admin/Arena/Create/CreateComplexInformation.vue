@@ -608,7 +608,7 @@ export default {
       return [this.coordinate.lat, this.coordinate.lon];
     },
     profilePicture() {
-      return this.avatar ? this.avatar.name : "";
+      return this.avatar ? this.avatar.imageURL : "";
     },
   },
   data() {

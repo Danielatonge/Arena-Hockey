@@ -3,7 +3,7 @@ import { apiAuth as api } from "@/service";
 export const namespaced = true;
 export const state = () => ({
   token: "",
-  arena: {},
+  userId: "",
   teams: [],
   team: {},
   forums: [],
@@ -15,9 +15,18 @@ export const mutations = {
   SET_TOKEN(state, token) {
     state.token = token;
   },
+  SET_USERID(state, userId) {
+    state.userId = userId;
+  },
   DELETE_TOKEN(state) {
     localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     state.token = "";
+    state.userId = "";
+  },
+  DELETE_USERID(state) {
+    localStorage.removeItem("userId");
+    state.userId = "";
   },
 };
 
@@ -35,11 +44,8 @@ export const actions = {
   postUser({ dispatch }, userObj) {
     return api
       .postUser(userObj)
-      .then((response) => {
-        console.log(
-          "🚀 ~ file: auth.js ~ line 33 ~ .then ~ response",
-          response
-        );
+      .then(() => {
+      
         const notification = {
           type: "success",
           message: "Your account was created Successfully",
@@ -65,7 +71,7 @@ export const actions = {
         );
         const { jwt, userId } = response.data;
         commit("SET_TOKEN", jwt);
-
+        commit("SET_USERID", userId);
         const notification = {
           type: "success",
           message: "You Successfully Logged In",
@@ -86,6 +92,7 @@ export const actions = {
   },
   logoutUser({ commit }) {
     commit("DELETE_TOKEN");
+    commit("DELETE_USERID");
   },
   putUser(_commit, userObj) {
     return api

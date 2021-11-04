@@ -14,7 +14,13 @@
               height="250px"
               width="100%"
             >
-              <v-img :src="user.profilePicture"></v-img>
+              <v-img
+                :src="
+                  user.profilePicture
+                    ? user.profilePicture
+                    : require('@/assets/unknown.jpeg')
+                "
+              ></v-img>
             </v-avatar>
           </v-col>
           <v-col cols="8" md="9">

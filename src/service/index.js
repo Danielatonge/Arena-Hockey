@@ -227,7 +227,7 @@ export const apiUser = {
 };
 
 export const apiForum = {
-  filterForum(filter, type) {
+  filterForum({ filter, type }) {
     const { page, search, numItems, sort_asc, address } = filter;
     const url =
       `/forum/search?city=${address}&currentPage=${page}&pageSize=${numItems.value}` +
@@ -254,6 +254,9 @@ export const apiSchool = {
   },
   getSchools() {
     return apiClient.get(`/schools`);
+  },
+  getSchool(schoolId) {
+    return apiClient.get(`/school/${schoolId}`);
   },
   getCities() {
     return apiClient.get(`/schools/cites`); //TODO: correctly spell out
