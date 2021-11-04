@@ -418,7 +418,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["CHANGE_UNAUTHTORISE"]),
+    ...mapActions('sushilka',["CHANGE_UNAUTHTORISE"]),
     archiveProductAds(){
       if(this.productStat == "Выставлен"){
         this.snackbar = true;

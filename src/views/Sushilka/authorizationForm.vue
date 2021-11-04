@@ -82,7 +82,7 @@ export default {
     }
   },
   methods:{
-    ...mapActions(["CHANGE_USER_ROLE"]),
+    ...mapActions('sushilka',["CHANGE_USER_ROLE"]),
     async authorization() {
         await Axios.post(`${AUTHORIZE}`, { 'login': this.userLogin, 'password': this.userPassword })
         .then( (res) => {
@@ -114,7 +114,7 @@ export default {
         this.CHANGE_USER_ROLE("Покупатель")
       }
     },
-    ...mapActions(["CHANGE_CART_COUNT"]),
+    ...mapActions('sushilka',["CHANGE_CART_COUNT"]),
     async getCartCount() {
       const token = localStorage.getItem("access_token");
       await Axios.get(`${GET_CLIENT_CART_COUNT}?clientNumber=1`, {
@@ -133,7 +133,7 @@ export default {
   created(){
   },
   computed: {
-    ...mapGetters(["UNAUTHTORISE"]),
+    ...mapGetters('sushilka',["UNAUTHTORISE"]),
   },
 
 };

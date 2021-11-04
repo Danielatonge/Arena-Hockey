@@ -391,7 +391,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["CHANGE_CART_COUNT", "CHANGE_UNAUTHTORISE"]),
+    ...mapActions('sushilka',["CHANGE_CART_COUNT", "CHANGE_UNAUTHTORISE"]),
     addToCart() {
       this.productNumberToCart = this.product.productId;
       this.addProductToCart();

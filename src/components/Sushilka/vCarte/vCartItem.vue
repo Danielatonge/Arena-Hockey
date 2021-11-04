@@ -472,7 +472,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["CHANGE_CART_COUNT", "CHANGE_UNAUTHTORISE"]),
+    ...mapActions('sushilka',["CHANGE_CART_COUNT", "CHANGE_UNAUTHTORISE"]),
 
     async getCartCount() {
       const token = localStorage.getItem("access_token");

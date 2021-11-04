@@ -633,7 +633,7 @@ export default {
       }
     },
     methods:{
-        ...mapActions(["CHANGE_UNAUTHTORISE"]),
+        ...mapActions('sushilka',["CHANGE_UNAUTHTORISE"]),
 
         async getCatalogProducts() {
             this.drawer = false

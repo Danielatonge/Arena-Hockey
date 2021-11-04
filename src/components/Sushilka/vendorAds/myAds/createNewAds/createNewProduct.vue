@@ -639,7 +639,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["CHANGE_UNAUTHTORISE"]),
+    ...mapActions('sushilka',["CHANGE_UNAUTHTORISE"]),
     changeCategoryFirst(data){
         localStorage.setItem("productCategory", data)
         localStorage.removeItem("productSubCategory")

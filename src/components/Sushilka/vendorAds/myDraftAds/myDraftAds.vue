@@ -167,7 +167,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["CHANGE_UNAUTHTORISE"]),
+    ...mapActions('sushilka',["CHANGE_UNAUTHTORISE"]),
     async getMyDraftProducts() {
       const token = localStorage.getItem("access_token");
       await Axios.get(`${GET_MY_DRAFT_PRODUCTS}`, {

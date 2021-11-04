@@ -165,7 +165,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["CHANGE_UNAUTHTORISE"]),
+    ...mapActions('sushilka',["CHANGE_UNAUTHTORISE"]),
     
     async getClientCart() {
       const token = localStorage.getItem('access_token')
@@ -228,7 +228,7 @@ export default {
     this.getClientCart();
   },
   computed:{
-    ...mapGetters(["CART_COUNT"]),
+    ...mapGetters('sushilka',["CART_COUNT"]),
     _seconds: () => 1000,
     _minutes(){
       return this._seconds * 60

@@ -580,7 +580,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["CHANGE_UNAUTHTORISE"]),
+    ...mapActions('sushilka',["CHANGE_UNAUTHTORISE"]),
 
     async getProductCard() {
       const number = this.productNumber;

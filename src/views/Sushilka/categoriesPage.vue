@@ -53,7 +53,7 @@ export default {
     }
   },
   methods:{
-    ...mapActions(["CHANGE_UNAUTHTORISE"]),
+    ...mapActions('sushilka',["CHANGE_UNAUTHTORISE"]),
 
     async getCategories() {
       const token = localStorage.getItem('access_token')
@@ -102,7 +102,7 @@ export default {
     //this.deleteAuthInfo();
   },
   computed: {
-    ...mapGetters(["USER_ROLE"]),
+    ...mapGetters('sushilka',["USER_ROLE"]),
     categoryName() {
       return this.$route.params.categoryName;
     },

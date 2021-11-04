@@ -341,7 +341,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["CHANGE_UNAUTHTORISE", "CHANGE_CART_COUNT"]),
+    ...mapActions('sushilka',["CHANGE_UNAUTHTORISE", "CHANGE_CART_COUNT"]),
     async getCartCount() {
       const token = localStorage.getItem('access_token')
       await Axios.get(`${GET_CLIENT_CART_COUNT}`,

@@ -89,7 +89,7 @@ import { GET_CLIENT_CART_COUNT } from "@/api";
 export default {
   name: "Header",
   methods: {
-    ...mapActions(["CHANGE_CART_COUNT"]),
+    ...mapActions('sushilka',["CHANGE_CART_COUNT"]),
     async getCartCount() {
       const token = localStorage.getItem("access_token");
       await Axios.get(`${GET_CLIENT_CART_COUNT}`, {
@@ -106,7 +106,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["CART_COUNT", "USER_ROLE"]),
+    ...mapGetters('sushilka',["CART_COUNT", "USER_ROLE"]),
   },
 };
 </script>
