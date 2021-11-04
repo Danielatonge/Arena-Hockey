@@ -224,6 +224,12 @@ export const apiUser = {
   putUser({ userId, user }) {
     return apiClient.put(`/user/${userId}`, user);
   },
+  getRoleID(roleName) {
+    return apiClient.get(`/role?title=${roleName}`);
+  },
+  createUserRole(userRoleId) {
+    return apiClient.post(`/roles`, userRoleId);
+  },
 };
 
 export const apiForum = {
@@ -301,12 +307,12 @@ export const apiAuth = {
   login(credential) {
     return apiClient.post(`/login`, credential);
   },
-  forgetPassword(mail) {
+  sendConfirmationCode(mail) {
     console.log("🚀 ~ file: index.js ~ line 305 ~ forgetPassword ~ mail", {
-      email: mail,
+      mail,
     });
 
-    return apiClient.post(`/forgetPassword`, { email: mail });
+    return apiClient.post(`/sendConfirmationCode`, { mail });
   },
   verifyCode(code) {
     console.log("🚀 ~ file: index.js ~ line 305 ~ forgetPassword ~ mail", {

@@ -149,6 +149,25 @@ export const actions = {
         console.log(err);
       });
   },
+  getRoleID(_commit, roleName) {
+    return api
+      .getRoleID(roleName)
+      .then((response) => {
+        const roleId = response.data.id;
+        return { roleId };
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  createUserRole(_commit, userRoleId) {
+    return api
+      .createUserRole(userRoleId)
+      .then(() => {})
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   addToSelectedArenas({ commit }, arena) {
     commit("ADD_TO_SELECTED_ARENAS", arena);
   },

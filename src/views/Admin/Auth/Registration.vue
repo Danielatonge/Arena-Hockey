@@ -370,14 +370,34 @@ export default {
   },
   methods: {
     registerUser() {
+      let whatsapp = "";
+      if (this.social_media[1].link) {
+        whatsapp = `https://wa.me/${this.social_media[1].link
+          .replace("(", "")
+          .replace(")", "")
+          .replace(" ", "")}`;
+      }
+
       const userParams = {
         ...this.user,
         profilePicture: this.profilePicture,
+        instagram: this.social_media[3].link,
+        vk: this.social_media[0].link,
+        website: this.social_media[2].link,
+        whatsApp: whatsapp,
+        facebook: this.social_media[4].link,
       };
+      console.log(
+        "🚀 ~ file: Registration.vue ~ line 383 ~ registerUser ~ userParams",
+        userParams
+      );
 
-      this.$store.dispatch("auth/postUser", userParams).then(() => {
-        this.$router.push({ name: "register-role" });
-      });
+      this.$store
+        .dispatch("auth/postUser", userParams)
+        .then(() => {
+          this.$router.push({ name: "register-role" });
+        })
+        .catch(() => {});
     },
     removeSocialMedia(item) {
       console.log(item);

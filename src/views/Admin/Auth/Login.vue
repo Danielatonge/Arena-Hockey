@@ -126,6 +126,23 @@
               <v-col>
                 <div class="mb-2">
                   <v-text-field
+                    v-model="mail"
+                    :rules="[rules.required]"
+                    label="Ссылка на социальную сеть"
+                    outlined
+                    solo
+                    dense
+                    persistent-hint
+                    flat
+                    hide-details="auto"
+                    class="rounded-lg"
+                  >
+                  </v-text-field>
+                </div>
+              </v-col>
+              <v-col>
+                <div class="mb-2">
+                  <v-text-field
                     v-model="passCode"
                     :rules="[rules.required]"
                     outlined
@@ -150,6 +167,20 @@
                 >
                   Проверить код
                 </v-btn>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  label="Пароль"
+                  outlined
+                  v-model="password"
+                  flat
+                  hide-details="auto"
+                  class="rounded-lg"
+                  :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
+                  :rules="[rules.required]"
+                  :type="showPass ? 'text' : 'password'"
+                  @click:append="showPass = !showPass"
+                ></v-text-field>
               </v-col>
             </v-row>
           </v-card-text>
@@ -192,7 +223,7 @@ export default {
     },
     sendCode() {
       this.$store
-        .dispatch("auth/forgetPassword", this.mail)
+        .dispatch("auth/sendConfirmationCode", this.mail)
         .then(() => {
           this.enterMail = false;
         })

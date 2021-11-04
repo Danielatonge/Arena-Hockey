@@ -58,6 +58,7 @@ export const actions = {
             "There was a problem Creating your account: " + error.message,
         };
         dispatch("notification/add", notification, { root: true });
+        throw error;
       });
   },
   loginUser({ commit, dispatch }, credential) {
@@ -93,17 +94,10 @@ export const actions = {
     commit("DELETE_TOKEN");
     commit("DELETE_USERID");
   },
-  putUser(_commit, userObj) {
+
+  sendConfirmationCode(_commit, mail) {
     return api
-      .putUser(userObj)
-      .then(() => {})
-      .catch((err) => {
-        console.log(err);
-      });
-  },
-  forgetPassword(_commit, mail) {
-    return api
-      .forgetPassword(mail)
+      .sendConfirmationCode(mail)
       .then((response) => {
         console.log(
           "🚀 ~ file: auth.js ~ line 109 ~ .then ~ response",

@@ -52,6 +52,17 @@
           </v-sheet>
         </v-col>
       </v-row>
+      <div class="mt-6">
+        <v-btn
+          large
+          class="mr-2 mb-2"
+          color="primary"
+          elevation="0"
+          @click="doneCreatingUser"
+        >
+          Сохранить
+        </v-btn>
+      </div>
     </v-container>
     <v-dialog
       v-model="dialog"
@@ -61,27 +72,28 @@
       scrollable
     >
       <v-card tile>
-        <v-toolbar flat dark color="primary">
-          <v-btn icon dark @click="dialog = false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-          <v-toolbar-title>Заполнение роли «{{ section }}»</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-toolbar-items>
-            <v-btn dark text @click="dialog = false"> Save </v-btn>
-          </v-toolbar-items>
-        </v-toolbar>
-        <v-card-text>
+        <v-sheet color="primary">
           <v-container>
-            <div class="mb-4 text-h6">
-              ПрофессиЗаполните биографию и данные о своих профессиональных
-              навыках
+            <v-row class="my-auto">
+              <v-btn class="mr-4 pb-1" icon dark @click="dialog = false">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+              <div class="text-h5 white--text">
+                Заполнение роли «{{ section }}»
+              </div>
+            </v-row>
+          </v-container>
+        </v-sheet>
+        <v-card-text class="grey lighten-4">
+          <v-container>
+            <div class="my-8 text-h6">
+              Заполните биографию и данные о своих профессиональных навыках
             </div>
             <v-row>
               <v-col cols="12" class="">
                 <v-select
                   :items="positions"
-                  v-model="nuser.position"
+                  v-model="nuser.role"
                   placeholder="Амплуа"
                   solo
                   flat
@@ -139,13 +151,13 @@
                 ></v-textarea>
               </v-col>
             </v-row>
-            <div>
+            <div class="mt-6">
               <v-btn
                 large
                 class="mr-2 mb-2"
                 color="primary"
                 elevation="0"
-                @click="updateUser"
+                @click="updateUserRole"
               >
                 Сохранить
               </v-btn>
@@ -154,12 +166,7 @@
                 class="ml-2 mb-2"
                 color="grey lighten-2"
                 elevation="0"
-                @click="
-                  $router.push({
-                    name: 'admin-user-view',
-                    params: { userId },
-                  })
-                "
+                @click="dialog = false"
               >
                 Назад
               </v-btn>
@@ -172,7 +179,6 @@
 </template>
 
 <script>
-import moment from "moment";
 import { mapState } from "vuex";
 export default {
   computed: { ...mapState("auth", ["userId"]), ...mapState("user", ["user"]) },
@@ -201,18 +207,18 @@ export default {
     return {
       checkbox: null,
       sections: null,
-      dialog: true,
+      dialog: false,
       section: "",
       nuser: {
         biography: "",
         grip: "",
-        level: "",
-        position: "",
-        qualification: "",
+        role: "",
         weight: 0,
+        height: "",
       },
-      positions: [],
+      positions: ["игрок", "тренер"],
       grips: [],
+      roleId: "",
     };
   },
   methods: {
@@ -221,36 +227,42 @@ export default {
         "🚀 ~ file: RegisterRole.vue ~ line 116 ~ openDialog ~ dialogCode",
         dialogCode
       );
+      this.$store.dispatch("user/getRoleID", dialogCode).then((roleId) => {
+        this.roleId = roleId;
+      });
       this.section = dialogCode;
       this.dialog = true;
     },
-    updateUser() {
+    updateUserRole() {
       const userId = this.userId;
-      const { biography, position, grip, find } = this.nuser;
-      const updateInfo = {
-        date: moment().format("YYYY-MM-DD"),
-        picture: "",
-        name: this.fullName,
+      const { biography, role, grip, weight, height } = this.nuser;
+      const updateUser = {
         biography,
         grip,
-        age: "",
-        position,
-        level: "",
-        type: find,
-        userId: this.userId,
+        role,
+        weight,
+        height,
       };
-      this.$store.dispatch("user/putUser", { userId, updateInfo }).then(() => {
-        this.nuser = this.initUserDialog();
-      });
+      this.$store
+        .dispatch("user/putUser", { userId, user: updateUser })
+        .then(() => {
+          this.$store.dispatch("user/createUserRole", {
+            userId: this.userId,
+            roleId: this.roleId,
+          });
+          this.nuser = this.initUserDialog();
+        });
+    },
+    doneCreatingUser() {
+      this.$router.push({ name: "login" });
     },
     initForumDialog() {
       return {
         biography: "",
         grip: "",
-        level: "",
-        position: "",
-        qualification: "",
+        role: "",
         weight: 0,
+        height: "",
       };
     },
   },
