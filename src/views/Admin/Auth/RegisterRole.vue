@@ -216,8 +216,8 @@ export default {
         weight: 0,
         height: "",
       },
-      positions: ["игрок", "тренер"],
-      grips: [],
+      positions: ["Защитник", "Нападающий", "Вратарь"],
+      grips: ["левый", "правый"],
       roleId: "",
     };
   },
@@ -251,12 +251,13 @@ export default {
             roleId: this.roleId,
           });
           this.nuser = this.initUserDialog();
-        });
+        })
+        .catch(() => {});
     },
     doneCreatingUser() {
       this.$router.push({ name: "login" });
     },
-    initForumDialog() {
+    initUserDialog() {
       return {
         biography: "",
         grip: "",

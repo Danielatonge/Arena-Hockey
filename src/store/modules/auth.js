@@ -41,10 +41,13 @@ export const actions = {
         console.log(err);
       });
   },
-  postUser({ dispatch }, userObj) {
+  postUser({ commit, dispatch }, userObj) {
     return api
       .postUser(userObj)
-      .then(() => {
+      .then((response) => {
+        const data = response.data;
+        console.log("🚀 ~ file: auth.js ~ line 49 ~ .then ~ data", data);
+        commit("SET_USERID", data.id);
         const notification = {
           type: "success",
           message: "Your account was created Successfully",

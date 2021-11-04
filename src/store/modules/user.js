@@ -142,11 +142,15 @@ export const actions = {
       });
   },
   putUser(_commit, userObj) {
+    console.log(userObj);
     return api
       .putUser(userObj)
-      .then(() => {})
+      .then((response) => {
+        console.log(response.data);
+      })
       .catch((err) => {
         console.log(err);
+        throw err;
       });
   },
   getRoleID(_commit, roleName) {

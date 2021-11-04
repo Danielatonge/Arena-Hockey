@@ -222,7 +222,7 @@ export const apiUser = {
     return apiClient.put(`/forum/${forumId}`, forum);
   },
   putUser({ userId, user }) {
-    return apiClient.put(`/user/${userId}`, user);
+    return apiClient.patch(`/user/${userId}`, user);
   },
   getRoleID(roleName) {
     return apiClient.get(`/role?title=${roleName}`);
