@@ -82,7 +82,6 @@ export const apiArena = {
   putArena({ arenaId, arena }) {
     return apiClient.put(`/arena/${arenaId}`, arena);
   },
-
   postArena(arena) {
     return apiClient.post("/arena", arena);
   },

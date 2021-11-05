@@ -64,6 +64,9 @@ export const mutations = {
   SET_SELECTED_EVENTS(state, events) {
     state.selected_events = events;
   },
+  ADD_ARENA(state, arena) {
+    state.arenas.push(arena);
+  },
   ADD_TEAM(state, team) {
     state.teams.push(team);
   },
@@ -274,6 +277,17 @@ export const actions = {
     return api
       .putArenaTeam(arenaTeamObj)
       .then(() => {})
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  saveArena({ commit }, arena) {
+    return api
+      .postArena(arena)
+      .then((response) => {
+        const res = response.data;
+        commit("ADD_ARENA", res);
+      })
       .catch((err) => {
         console.log(err);
       });

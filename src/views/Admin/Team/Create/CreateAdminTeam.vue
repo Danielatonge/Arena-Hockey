@@ -9,32 +9,33 @@
       <div>
         <div class="text-h5 pb-3 pt-5 font-weight-bold">Создать команду</div>
         <v-row>
-          <v-col cols="4" class="pr-10">
+          <v-col cols="12" sm="6" md="4" class="pr-10">
             <div class="body-1 mb-4 font-weight-bold">Эмблема команды</div>
             <admin-image-uploader v-model="avatar">
               <div slot="activator">
-                <v-avatar
-                  width="100%"
-                  height="200"
-                  v-ripple
-                  tile
-                  v-if="!avatar"
-                  class="white rounded-xl"
-                >
-                  <div class="upload-border rounded-xl pa-4">
-                    <div class="my-4">
-                      <v-icon large color="#379AD3"
-                        >mdi-cloud-upload-outline</v-icon
-                      >
+                <div v-if="!avatar" class="white rounded-xl pa-4">
+                  <v-avatar
+                    width="100%"
+                    height="200"
+                    v-ripple
+                    tile
+                    class="white rounded-xl"
+                  >
+                    <div class="upload-border rounded-xl pa-4">
+                      <div class="my-4">
+                        <v-icon large color="#379AD3"
+                          >mdi-cloud-upload-outline</v-icon
+                        >
+                      </div>
+                      <div class="body-1 mb-2 font-weight-bold">
+                        Загрузите логотип
+                      </div>
+                      <div class="body-2 mb-4 grey--text">
+                        Поддерживаемые форматы: PNG, JPG
+                      </div>
                     </div>
-                    <div class="body-1 mb-2 font-weight-bold">
-                      Загрузите логотип
-                    </div>
-                    <div class="body-2 mb-4 grey--text">
-                      Поддерживаемые форматы: PNG, JPG
-                    </div>
-                  </div>
-                </v-avatar>
+                  </v-avatar>
+                </div>
                 <div v-else class="white rounded-xl pa-4">
                   <v-avatar width="100%" height="200" tile v-ripple>
                     <v-img
@@ -116,10 +117,11 @@
         <div class="mb-4">
           <div class="text-h6 mb-2">Социальные сети</div>
           <v-row class="mb-2">
-            <v-col cols="6" md="4">
+            <v-col cols="6" md="12">
               <v-row>
                 <v-col
                   cols="12"
+                  md="3"
                   class="d-flex align-center"
                   v-for="(item, i) in social_media_display"
                   :key="i"
@@ -185,11 +187,14 @@
                     v-model="social_media_text"
                     label="Ссылка на социальную сеть"
                     outlined
+                    autofocus
+                    @keyup.enter="addSocialMedia"
                     :hint="errMessage"
                     persistent-hint
                     flat
                     hide-details="auto"
                     class="rounded-lg"
+                    ref="socialMediaText"
                   >
                     <template v-slot:message="{ message }">
                       <span class="error--text" v-html="message"></span>
@@ -234,9 +239,25 @@
                 width="100%"
                 tile
                 v-ripple
-                class="mb-3 rounded-lg"
+                class="mb-3 white rounded-lg"
               >
-                <v-img :src="i"></v-img>
+                <v-img :src="i">
+                  <v-container class="pa-0">
+                    <v-row class="ma-2">
+                      <div></div>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        @click.stop="deleteGalleryItem(indx)"
+                        x-small
+                        class="rounded-lg white"
+                        height="30px"
+                        elevation="0"
+                      >
+                        <v-icon>mdi-close</v-icon>
+                      </v-btn>
+                    </v-row>
+                  </v-container>
+                </v-img>
               </v-avatar>
             </v-col>
           </v-row>
@@ -380,15 +401,21 @@
                   </v-col>
                   <v-col class="mb-2 d-flex">
                     <v-text-field
-                      label="служба :- номер телефона"
+                      placeholder="служба :- номер телефона"
                       outlined
                       flat
                       dense
+                      autofocus
                       v-model="telephone"
                       hide-details="auto"
                       class="rounded-lg"
+                      @keyup.enter="addContactTelephone"
                     ></v-text-field>
-                    <v-icon class="ml-4" @click="addContactTelephone">
+                    <v-icon
+                      class="ml-4"
+                      v-if="telephone.length"
+                      @click="addContactTelephone"
+                    >
                       mdi-check
                     </v-icon>
                   </v-col>
@@ -409,15 +436,20 @@
                   </v-col>
                   <v-col class="mb-2 d-flex">
                     <v-text-field
-                      label="служба :- Почта"
+                      placeholder="служба :- Почта"
                       outlined
                       flat
                       v-model="email"
                       dense
                       hide-details="auto"
                       class="rounded-lg"
+                      @keyup.enter="addContactMail"
                     ></v-text-field>
-                    <v-icon class="ml-4" @click="addContactMail">
+                    <v-icon
+                      class="ml-4"
+                      v-if="email.length"
+                      @click="addContactMail"
+                    >
                       mdi-check
                     </v-icon>
                   </v-col>
@@ -490,6 +522,9 @@ export default {
     },
   },
   watch: {
+    toggle_social_media() {
+      this.$refs["socialMediaText"].$refs.input.focus();
+    },
     avatar: {
       handler: function () {
         this.saved = false;
@@ -583,6 +618,9 @@ export default {
     };
   },
   methods: {
+    deleteGalleryItem(index) {
+      this.galleryPics.splice(index, 1);
+    },
     selectGalleryItems(fieldName, files) {
       this.galleryPics = [];
       console.log(fieldName, files);
@@ -692,6 +730,7 @@ export default {
           .then(() => {
             this.$router.push({
               name: "admin-team",
+              params: { userId: this.userId },
             });
           });
       });

@@ -123,9 +123,7 @@ export default {
       breadcrumb_items: [
         {
           text: "Личный кабинет",
-          disabled: false,
-          exact: true,
-          to: { name: "user-profile", params: { userId: this.user.id } },
+          disabled: true,
         },
       ],
       sidebar_items: [],

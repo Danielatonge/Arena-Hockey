@@ -7,7 +7,9 @@
         </div>
       </v-row>
       <div>
-        <div class="text-h5 pb-3 pt-5 font-weight-bold">Создать команду</div>
+        <div class="text-h5 pb-3 pt-5 font-weight-bold">
+          Редактировать команду
+        </div>
         <v-row>
           <v-col cols="4" class="pr-10">
             <div class="body-1 mb-4 font-weight-bold">Эмблема команды</div>
@@ -117,10 +119,11 @@
         <div class="mb-4">
           <div class="text-h6 mb-2">Социальные сети</div>
           <v-row class="mb-2">
-            <v-col cols="6" md="4">
+            <v-col cols="6" md="12">
               <v-row>
                 <v-col
                   cols="12"
+                  md="3"
                   class="d-flex align-center"
                   v-for="(item, i) in social_media_display"
                   :key="i"
@@ -186,11 +189,14 @@
                     v-model="social_media_text"
                     label="Ссылка на социальную сеть"
                     outlined
+                    autofocus
                     :hint="errMessage"
                     persistent-hint
+                    @keyup.enter="addSocialMedia"
                     flat
                     hide-details="auto"
                     class="rounded-lg"
+                    ref="socialMediaText"
                   >
                     <template v-slot:message="{ message }">
                       <span class="error--text" v-html="message"></span>
@@ -235,9 +241,25 @@
                 width="100%"
                 tile
                 v-ripple
-                class="mb-3 rounded-lg"
+                class="mb-3 white rounded-lg"
               >
-                <v-img :src="i"></v-img>
+                <v-img :src="i">
+                  <v-container class="pa-0">
+                    <v-row class="ma-2">
+                      <div></div>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        @click.stop="deleteGalleryItem(indx)"
+                        x-small
+                        class="rounded-lg white"
+                        height="30px"
+                        elevation="0"
+                      >
+                        <v-icon>mdi-close</v-icon>
+                      </v-btn>
+                    </v-row>
+                  </v-container>
+                </v-img>
               </v-avatar>
             </v-col>
           </v-row>
@@ -313,7 +335,7 @@
             </v-card>
           </v-dialog>
         </div>
-
+       
         <div class="mb-4">
           <div class="body-2 font-weight-bold mb-4 grey--text">Контакты</div>
           <v-row v-show="contact.tel.length">
@@ -381,15 +403,21 @@
                   </v-col>
                   <v-col class="mb-2 d-flex">
                     <v-text-field
-                      label="служба :- номер телефона"
+                      placeholder="служба :- номер телефона"
                       outlined
                       flat
                       dense
+                      autofocus
                       v-model="telephone"
                       hide-details="auto"
                       class="rounded-lg"
+                      @keyup.enter="addContactTelephone"
                     ></v-text-field>
-                    <v-icon class="ml-4" @click="addContactTelephone">
+                    <v-icon
+                      class="ml-4"
+                      v-if="telephone.length"
+                      @click="addContactTelephone"
+                    >
                       mdi-check
                     </v-icon>
                   </v-col>
@@ -410,15 +438,20 @@
                   </v-col>
                   <v-col class="mb-2 d-flex">
                     <v-text-field
-                      label="служба :- Почта"
+                      placeholder="служба :- Почта"
                       outlined
                       flat
                       v-model="email"
                       dense
                       hide-details="auto"
                       class="rounded-lg"
+                      @keyup.enter="addContactMail"
                     ></v-text-field>
-                    <v-icon class="ml-4" @click="addContactMail">
+                    <v-icon
+                      class="ml-4"
+                      v-if="email.length"
+                      @click="addContactMail"
+                    >
                       mdi-check
                     </v-icon>
                   </v-col>
@@ -461,6 +494,12 @@
           large
           class="body-2 px-6 ml-2"
           elevation="0"
+          @click="
+            $router.push({
+              name: 'admin-team',
+              params: { userId: userId },
+            })
+          "
         >
           Отменить
         </v-btn>
@@ -483,6 +522,10 @@ export default {
       type: String,
       required: true,
     },
+    userId: {
+      type: String,
+      required: true,
+    },
   },
   watch: {
     avatar: {
@@ -493,7 +536,7 @@ export default {
     },
   },
   computed: {
-    ...mapState("user", ["userId", "team"]),
+    ...mapState("user", ["team"]),
     social_media_display() {
       return this.social_media.filter((x) => x.link);
     },
@@ -502,6 +545,28 @@ export default {
     },
   },
   created() {
+    this.breadcrumb_items = [
+      {
+        text: "Личный кабинет",
+        disabled: false,
+        exact: true,
+        to: { name: "user-profile", params: { userId: this.userId } },
+      },
+      {
+        text: "Мои команды",
+        disabled: false,
+        exact: true,
+        to: {
+          name: "admin-team",
+          params: { userId: this.userId },
+        },
+      },
+      {
+        text: "Редактировать команду",
+        disabled: true,
+        to: "",
+      },
+    ];
     this.$store.dispatch("user/getTeam", this.teamId).then(() => {
       const team = this.team;
       this.galleryPics = team.gallery;
@@ -580,26 +645,13 @@ export default {
           icon: "mdi-facebook",
         },
       ],
-      breadcrumb_items: [
-        {
-          text: "Личный кабинет",
-          disabled: false,
-          to: "/admin",
-        },
-        {
-          text: "Мои команды",
-          disabled: false,
-          to: "/admin/teams",
-        },
-        {
-          text: "Создать команду",
-          disabled: true,
-          to: "",
-        },
-      ],
+      breadcrumb_items: [],
     };
   },
   methods: {
+    deleteGalleryItem(index) {
+      this.galleryPics.splice(index, 1);
+    },
     selectGalleryItems(fieldName, files) {
       this.galleryPics = [];
       console.log(fieldName, files);
@@ -703,7 +755,7 @@ export default {
         .then((response) => {
           console.log(response);
           this.$router.push({
-            name: "admin-team",
+            name: "admin-team", params: {userId: this.userId}
           });
         });
     },
