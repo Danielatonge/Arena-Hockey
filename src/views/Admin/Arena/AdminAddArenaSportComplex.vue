@@ -64,7 +64,17 @@
           :arena="arena"
           @remove-selected="removeFromSelected(arena)"
           @add-selected="addToSelected(arena)"
-        />
+        >
+          <v-btn
+            x-small
+            class="rounded-lg white"
+            height="30px"
+            elevation="0"
+            @click.stop="deleteArena(arena.id)"
+          >
+            <v-icon>mdi-delete-outline</v-icon>
+          </v-btn>
+        </AdminArenaCard>
       </v-col>
     </v-row>
     <div class="mb-3" v-if="!arenas.length">
@@ -86,16 +96,6 @@
       >
         <!-- <v-icon class="mr-2">mdi-plus</v-icon> -->
         <div class="my-auto">Создать Арену</div>
-      </v-btn>
-      <v-btn
-        :disabled="!selected_arenas.length"
-        class="rounded-lg ml-2"
-        color="grey lighten-2"
-        @click="deleteSelected"
-        large
-        depressed
-      >
-        <div class="my-auto">Удалить</div>
       </v-btn>
     </div>
   </v-container>
@@ -143,11 +143,14 @@ export default {
     deleteSelected() {
       this.$store.dispatch("user/deleteSelected");
     },
+    deleteArena(arenaId) {
+      this.$store.dispatch("user/deleteArena", arenaId);
+    },
   },
   data() {
     return {
       selectedList: [],
-      
+
       page: 1,
       perPage: 3,
       paginationLength: 10,

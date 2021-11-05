@@ -8,7 +8,10 @@
         color="grey lighten-2"
         elevation="0"
         @click="
-          $router.push({ name: 'complex-information', params: { arenaId } })
+          $router.push({
+            name: 'complex-information',
+            params: { arenaId, userId },
+          })
         "
       >
         Вернуться к просмотру
@@ -37,27 +40,42 @@
       <div class="mb-4">
         <div class="text-h6 mb-4">Основное изображение арены</div>
         <v-row>
-          <v-col cols="3">
+          <v-col cols="6" md="4">
             <admin-image-uploader v-model="avatar">
               <div slot="activator">
-                <v-avatar
-                  size="200px"
-                  v-ripple
-                  tile
-                  v-if="!avatar"
-                  class="grey lighten-3 mb-3 rounded-lg"
-                >
-                  <span><v-icon large>mdi-upload</v-icon></span>
-                </v-avatar>
-                <v-avatar
-                  size="200px"
-                  tile
-                  v-ripple
-                  v-else
-                  class="mb-3 rounded-lg"
-                >
-                  <img :src="avatar.imageURL" alt="avatar" />
-                </v-avatar>
+                <div v-if="!avatar" class="white rounded-xl pa-4">
+                  <v-avatar
+                    width="100%"
+                    height="200"
+                    v-ripple
+                    tile
+                    class="white rounded-xl"
+                  >
+                    <div class="upload-border rounded-xl pa-4">
+                      <div class="my-4">
+                        <v-icon large color="#379AD3"
+                          >mdi-cloud-upload-outline</v-icon
+                        >
+                      </div>
+                      <div class="body-1 mb-2 font-weight-bold">
+                        Загрузите логотип
+                      </div>
+                      <div class="body-2 mb-4 grey--text">
+                        Поддерживаемые форматы: PNG, JPG
+                      </div>
+                    </div>
+                  </v-avatar>
+                </div>
+                <div v-else class="white rounded-xl pa-4">
+                  <v-avatar width="100%" height="200" tile v-ripple>
+                    <v-img
+                      class="ma-10 rounded-xl"
+                      :src="avatar.imageURL"
+                      alt="avatar"
+                      cover
+                    ></v-img>
+                  </v-avatar>
+                </div>
               </div>
             </admin-image-uploader>
           </v-col>
@@ -188,10 +206,11 @@
       <div class="mb-4">
         <div class="text-h6 mb-2">Социальные сети</div>
         <v-row class="mb-2">
-          <v-col cols="6" md="4">
+          <v-col cols="6" md="12">
             <v-row>
               <v-col
                 cols="12"
+                md="3"
                 class="d-flex align-center"
                 v-for="(item, i) in social_media_display"
                 :key="i"
@@ -255,13 +274,16 @@
               <div class="mb-2">
                 <v-text-field
                   v-model="social_media_text"
+                  @keyup.enter="addSocialMedia"
                   label="Ссылка на социальную сеть"
                   outlined
+                  autofocus
                   :hint="errMessage"
                   persistent-hint
                   flat
                   hide-details="auto"
                   class="rounded-lg"
+                  ref="socialMediaText"
                 >
                   <template v-slot:message="{ message }">
                     <span class="error--text" v-html="message"></span>
@@ -290,8 +312,8 @@
           </v-card>
         </v-dialog>
       </div>
-      <div class="mb-4">
-        <div class="body-2 font-weight-bold mb-4 grey--text">Контакты</div>
+      <div class="mb-6">
+        <div class="text-h6">Контакты</div>
         <v-row v-show="contact.tel.length">
           <v-col cols="12" class="">Телефоны:</v-col>
           <v-col
@@ -336,7 +358,7 @@
             <v-card-title class="justify-space-between">
               <div class="text-h5 black--text">Добавить контакт</div>
               <div class="mb-4">
-                <v-icon @click.stop="contact_dialog = false">mdi-close</v-icon>
+                <v-icon @click.stop="contact_dialog = false">mdi-close </v-icon>
               </div>
             </v-card-title>
             <v-card-text class="mb-4">
@@ -355,18 +377,19 @@
                 </v-col>
                 <v-col class="mb-2 d-flex">
                   <v-text-field
-                    label="служба :- номер телефона"
+                    placeholder="служба :- номер телефона"
                     outlined
                     flat
                     dense
+                    autofocus
                     v-model="telephone"
                     hide-details="auto"
                     class="rounded-lg"
                     @keyup.enter="addContactTelephone"
                   ></v-text-field>
                   <v-icon
-                    v-if="telephone.length"
                     class="ml-4"
+                    v-if="telephone.length"
                     @click="addContactTelephone"
                   >
                     mdi-check
@@ -389,7 +412,7 @@
                 </v-col>
                 <v-col class="mb-2 d-flex">
                   <v-text-field
-                    label="служба :- Почта"
+                    placeholder="служба :- Почта"
                     outlined
                     flat
                     v-model="email"
@@ -399,8 +422,8 @@
                     @keyup.enter="addContactMail"
                   ></v-text-field>
                   <v-icon
-                    v-if="email.length"
                     class="ml-4"
+                    v-if="email.length"
                     @click="addContactMail"
                   >
                     mdi-check
@@ -429,14 +452,13 @@
           </v-card>
         </v-dialog>
       </div>
-      <div class="mb-4">
-        <div class="body-2 font-weight-bold mb-4 grey--text">Галерея</div>
+      <div class="mb-6">
+        <div class="text-h6 mb-4">Галерея</div>
         <v-row class="pb-6">
           <v-col
             class="pa-2"
             cols="4"
             md="3"
-            lg="2"
             v-for="(i, indx) in galleryPics"
             :key="indx"
           >
@@ -445,9 +467,25 @@
               width="100%"
               tile
               v-ripple
-              class="mb-3 rounded-lg"
+              class="mb-3 white rounded-lg"
             >
-              <v-img :src="i"></v-img>
+              <v-img :src="i">
+                <v-container class="pa-0">
+                  <v-row class="ma-2">
+                    <div></div>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      @click.stop="deleteGalleryItem(indx)"
+                      x-small
+                      class="rounded-lg white"
+                      height="30px"
+                      elevation="0"
+                    >
+                      <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                  </v-row>
+                </v-container>
+              </v-img>
             </v-avatar>
           </v-col>
         </v-row>
@@ -578,6 +616,9 @@ export default {
     },
   },
   watch: {
+    toggle_social_media() {
+      this.$refs["socialMediaText"].$refs.input.focus();
+    },
     avatar: {
       handler: function () {
         this.saved = false;
@@ -614,7 +655,9 @@ export default {
     this.galleryPics = arena.gallery;
     this.fullTitle = arena.fullTitle;
     this.shortTitle = arena.title;
-    this.avatar = { imageURL: arena.profilePicture };
+    this.avatar = arena.profilePicture
+      ? { imageURL: arena.profilePicture }
+      : null;
     this.tag_chips = arena.tags;
     this.coordinate.lat = arena.lat;
     this.coordinate.lon = arena.lan;
@@ -730,6 +773,9 @@ export default {
     };
   },
   methods: {
+    deleteGalleryItem(index) {
+      this.galleryPics.splice(index, 1);
+    },
     assignCoordinates() {
       const coords = this.address.coords;
       this.coordinate.lat = coords[0];
@@ -835,7 +881,6 @@ export default {
       this.social_media_text = "";
     },
     updateArena() {
-      const arenaId = this.arena.id;
       let whatsapp = "";
       if (this.social_media[1].link) {
         whatsapp = `https://wa.me/${this.social_media[1].link
@@ -852,11 +897,9 @@ export default {
         tags: this.tag_chips,
         address: this.address.address,
         description: this.description,
-        route: "",
-        sledgeHockey: "",
-        sledgeHockeyLink: "",
+
         metro: this.metro ? this.metro.split(",") : [],
-        courtSize: 0,
+
         city: this.city,
         lat: Number(this.coordinate.lat),
         lan: Number(this.coordinate.lon),
@@ -874,28 +917,29 @@ export default {
         youtube: "",
       };
       console.log(data);
-      this.putArena(data).then(() => {
-        this.$router.push({
-          name: "complex-information",
-          params: { arenaId },
+      this.$store
+        .dispatch("arena/putArena", {
+          arenaId: this.arenaId,
+          arena: data,
+        })
+        .then((nArena) => {
+          console.log(
+            "🚀 ~ file: EditComplexInformation.vue ~ line 926 ~ .then ~ nArena",
+            nArena
+          );
+
+          this.$router.push({
+            name: "complex-information",
+            params: { arenaId: this.arenaId, userId: this.userId },
+          });
         });
-      });
-    },
-    putArena(payload) {
-      const arenaId = this.arena.id;
-      return new Promise((resolve) => {
-        axios
-          .put(`/arena/${arenaId}`, payload)
-          .then((response) => {
-            const arena = response.data;
-            console.log(arena);
-            resolve(arena);
-          })
-          .catch((err) => console.log(err));
-      });
     },
   },
 };
 </script>
 
-<style></style>
+<style>
+.upload-border {
+  border: 1px dashed #c3e1f2;
+}
+</style>

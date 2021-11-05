@@ -47,29 +47,60 @@ export default {
       type: String,
       required: true,
     },
+    userId: {
+      type: String,
+      required: true,
+    },
   },
   created() {
     const arenaId = this.arenaId;
+    const userId = this.userId;
     this.sections = [
       {
         text: "Информация",
-        link: { name: "edit-complex-information", params: { arenaId } },
+        link: { name: "edit-complex-information", params: { userId, arenaId } },
       },
       {
         text: "Платные услуги",
-        link: { name: "edit-admin-payment-portal", params: { arenaId } },
+        link: {
+          name: "edit-admin-payment-portal",
+          params: { userId, arenaId },
+        },
       },
       {
         text: "Расписание мероприятий",
-        link: { name: "edit-admin-schedule-event", params: { arenaId } },
+        link: {
+          name: "edit-admin-schedule-event",
+          params: { userId, arenaId },
+        },
       },
       {
         text: "Список команд",
-        link: { name: "edit-admin-teamlist", params: { arenaId } },
+        link: { name: "edit-admin-teamlist", params: { userId, arenaId } },
       },
       {
         text: "Тренерский состав",
-        link: { name: "edit-admin-train-staff", params: { arenaId } },
+        link: { name: "edit-admin-train-staff", params: { userId, arenaId } },
+      },
+    ];
+
+    this.breadcrumb_items = [
+      {
+        text: "Личный кабинет",
+        disabled: false,
+        exact: true,
+        to: { name: "user-profile", params: { userId } },
+      },
+      {
+        text: "Мои спортивные комплексы",
+        disabled: false,
+        exact: true,
+        to: { name: "admin-add-arena-sportcomplex", params: { userId } },
+      },
+      {
+        text: this.arena.title,
+        disabled: true,
+        to: "",
       },
     ];
   },
@@ -77,23 +108,7 @@ export default {
     return {
       checkbox: null,
       sidebar_tab: 0,
-      breadcrumb_items: [
-        {
-          text: "Личный кабинет",
-          disabled: false,
-          to: "/",
-        },
-        {
-          text: "Мои спортивные комплексы",
-          disabled: false,
-          to: "/admin/sport_complex",
-        },
-        {
-          text: "Название комплекса",
-          disabled: true,
-          to: "",
-        },
-      ],
+      breadcrumb_items: [],
       sections: [],
     };
   },

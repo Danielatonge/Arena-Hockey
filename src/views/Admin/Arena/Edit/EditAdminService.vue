@@ -2,43 +2,68 @@
   <div>
     <div class="text-h4 pb-5">Платные услуги</div>
     <v-card color="transparent" elevation="0" class="mb-5 d-flex flex-no-wrap">
-      <div class="mr-10 ml-5">
-        <admin-image-uploader v-model="avatar">
-          <div slot="activator">
-            <v-avatar
-              size="200px"
-              v-ripple
-              tile
-              v-if="!avatar"
-              class="grey lighten-3 mb-3 rounded-lg"
-            >
-              <span><v-icon large>mdi-upload</v-icon></span>
-            </v-avatar>
-            <v-avatar size="200px" tile v-ripple v-else class="mb-3 rounded-lg">
-              <img :src="avatar.imageURL" alt="avatar" />
-            </v-avatar>
-          </div>
-        </admin-image-uploader>
-      </div>
       <v-row>
-        <v-col cols="6">
-          <v-text-field
-            label="Название"
-            v-model="item.title"
-            outlined
-            flat
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-text-field>
+        <v-col class="pa-2" cols="6" sm="4" md="4">
+          <admin-image-uploader v-model="avatar">
+            <div slot="activator">
+              <div v-if="!avatar" class="white rounded-xl pa-4">
+                <v-avatar
+                  width="100%"
+                  height="200"
+                  v-ripple
+                  tile
+                  class="white rounded-xl"
+                >
+                  <div class="upload-border rounded-xl pa-4">
+                    <div class="my-4">
+                      <v-icon large color="#379AD3"
+                        >mdi-cloud-upload-outline</v-icon
+                      >
+                    </div>
+                    <div class="body-1 mb-2 font-weight-bold">
+                      Загрузите логотип
+                    </div>
+                    <div class="body-2 mb-4 grey--text">
+                      Поддерживаемые форматы: PNG, JPG
+                    </div>
+                  </div>
+                </v-avatar>
+              </div>
+              <div v-else class="white rounded-xl pa-4">
+                <v-avatar width="100%" height="200" tile v-ripple>
+                  <v-img
+                    class="ma-10 rounded-xl"
+                    :src="avatar.imageURL"
+                    alt="avatar"
+                    cover
+                  ></v-img>
+                </v-avatar>
+              </div>
+            </div>
+          </admin-image-uploader>
         </v-col>
-        <v-col cols="12">
-          <v-textarea
-            solo
-            v-model="item.description"
-            name=""
-            flat
-            elevation="0"
-          ></v-textarea>
+        <v-col>
+          <v-row>
+            <v-col cols="6">
+              <v-text-field
+                label="Название"
+                v-model="service.title"
+                outlined
+                flat
+                hide-details="auto"
+                class="rounded-lg"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-textarea
+                solo
+                v-model="service.description"
+                name=""
+                flat
+                elevation="0"
+              ></v-textarea>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
     </v-card>
@@ -72,7 +97,7 @@
 <script>
 import axios from "axios";
 import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
-
+import { mapState } from "vuex";
 export default {
   components: {
     AdminImageUploader,
@@ -91,18 +116,18 @@ export default {
       required: true,
     },
   },
+  computed: {
+    ...mapState("arena", ["service"]),
+  },
   created() {
-    this.fetchArenaServices(this.serviceId).then((service) => {
-      this.item = service;
-      this.avatar.imageURL = this.item.profilePicture;
+    this.$store.dispatch("arena/getService", this.serviceId).then(() => {
+      const image = this.service.profilePicture;
+      this.avatar = image ? { imageURL: image } : null;
     });
   },
   data() {
     return {
-      item: {},
-      avatar: {
-        imageURL: "",
-      },
+      avatar: null,
     };
   },
   methods: {
@@ -126,7 +151,7 @@ export default {
         serviceType,
         length,
         width,
-      } = this.item;
+      } = this.service;
       const data = {
         title: title,
         description: description ? description : "",

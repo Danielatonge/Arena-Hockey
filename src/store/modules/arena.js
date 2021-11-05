@@ -10,6 +10,7 @@ export const state = () => ({
   cities: [],
   trainers: [],
   services: [],
+  service: {},
   pricelist: [],
   selected_arenas: [],
   selected_events: [],
@@ -51,6 +52,9 @@ export const mutations = {
   },
   SET_SERVICES(state, services) {
     state.services = services;
+  },
+  SET_SERVICE(state, service) {
+    state.service = service;
   },
   SET_TRAINERS(state, trainers) {
     state.trainers = trainers;
@@ -128,6 +132,14 @@ export const actions = {
     dispatch("fetchServices", arenaId).then((services) => {
       dispatch("fetchServicePriceList", services);
     });
+  },
+  getService({ commit }, serviceId) {
+    api
+      .getService(serviceId)
+      .then((response) => {
+        commit("SET_SERVICE", response.data);
+      })
+      .catch((err) => console.log(err));
   },
   getTrainers({ commit }, arenaId) {
     api
@@ -281,12 +293,25 @@ export const actions = {
         console.log(err);
       });
   },
+  putArena(_commit, arenaObj) {
+    return api
+      .putArena(arenaObj)
+      .then((response) => {
+        const res = response.data;
+        return res;
+      })
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
+  },
   saveArena({ commit }, arena) {
     return api
       .postArena(arena)
       .then((response) => {
         const res = response.data;
         commit("ADD_ARENA", res);
+        return res;
       })
       .catch((err) => {
         console.log(err);

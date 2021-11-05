@@ -63,6 +63,9 @@ export const mutations = {
   DELETE_TEAM(state, teamId) {
     state.teams = state.teams.filter((x) => x.team.id !== teamId);
   },
+  DELETE_ARENA(state, arenaId) {
+    state.arenas = state.arenas.filter((x) => x.arena.id !== arenaId);
+  },
 };
 
 export const actions = {
@@ -213,6 +216,14 @@ export const actions = {
     Promise.all(promiseDeleting).then(() => {
       commit("EMPTY_SELECTED_ARENAS");
     });
+  },
+  deleteArena({ commit }, arenaId) {
+    api
+      .deleteArena(arenaId)
+      .then(() => {
+        commit("DELETE_ARENA", arenaId);
+      })
+      .catch((err) => console.log(err));
   },
   deleteTeam({ commit }, { teamId }) {
     api

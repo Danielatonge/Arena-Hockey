@@ -15,42 +15,42 @@
             <div class="body-1 mb-4 font-weight-bold">Эмблема команды</div>
 
             <admin-image-uploader v-model="avatar">
-              <div slot="activator">
-                <v-avatar
-                  width="100%"
-                  height="200"
-                  v-ripple
-                  tile
-                  v-if="!avatar"
-                  class="white rounded-xl"
-                >
-                  <div class="upload-border rounded-xl pa-4">
-                    <div class="my-4">
-                      <v-icon large color="#379AD3"
-                        >mdi-cloud-upload-outline</v-icon
-                      >
-                    </div>
-                    <div class="body-1 mb-2 font-weight-bold">
-                      Загрузите логотип
-                    </div>
-                    <div class="body-2 mb-4 grey--text">
-                      Поддерживаемые форматы: PNG, JPG
-                    </div>
+                <div slot="activator">
+                  <div v-if="!avatar" class="white rounded-xl pa-4">
+                    <v-avatar
+                      width="100%"
+                      height="200"
+                      v-ripple
+                      tile
+                      class="white rounded-xl"
+                    >
+                      <div class="upload-border rounded-xl pa-4">
+                        <div class="my-4">
+                          <v-icon large color="#379AD3"
+                            >mdi-cloud-upload-outline</v-icon
+                          >
+                        </div>
+                        <div class="body-1 mb-2 font-weight-bold">
+                          Загрузите логотип
+                        </div>
+                        <div class="body-2 mb-4 grey--text">
+                          Поддерживаемые форматы: PNG, JPG
+                        </div>
+                      </div>
+                    </v-avatar>
                   </div>
-                </v-avatar>
-                <div v-else class="white rounded-xl pa-4">
-                  <v-avatar width="100%" height="200" tile v-ripple>
-                    <v-img
-                      class="ma-10 rounded-xl"
-                      :src="avatar.imageURL"
-                      alt="avatar"
-                      cover
-                    ></v-img>
-                  </v-avatar>
+                  <div v-else class="white rounded-xl pa-4">
+                    <v-avatar width="100%" height="200" tile v-ripple>
+                      <v-img
+                        class="ma-10 rounded-xl"
+                        :src="avatar.imageURL"
+                        alt="avatar"
+                        cover
+                      ></v-img>
+                    </v-avatar>
+                  </div>
                 </div>
-              </div>
-            </admin-image-uploader>
-            <!-- class="grey lighten-3 mb-3 rounded-lg" -->
+              </admin-image-uploader>
           </v-col>
           <v-col>
             <div class="body-1 mb-4 font-weight-bold">Основная информация</div>
