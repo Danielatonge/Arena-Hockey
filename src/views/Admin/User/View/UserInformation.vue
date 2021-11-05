@@ -68,27 +68,27 @@
       <v-container>
         <div class="mb-4 text-h5">Профессиональные навыки</div>
         <v-row class="mb-4">
-          <v-col cols="6" md="3" class="mb-2">
+          <v-col cols="6" md="3" class="mb-2" v-show="user.position">
             <div class="body-1 mb-2 grey--text">Амплуа</div>
             <div class="">
-              {{ user.birthDate ? user.birthDate : "Защитник" }}
+              {{ user.position }}
             </div>
           </v-col>
-          <v-col cols="6" md="3" class="mb-2">
+          <v-col cols="6" md="3" class="mb-2" v-show="user.grip">
             <div class="body-1 mb-2 grey--text">Хват</div>
-            <div class="">{{ user.gender ? user.gender : "Правый" }}</div>
+            <div class="">{{ user.grip }}</div>
           </v-col>
         </v-row>
         <v-row class="mb-4">
-          <v-col cols="6" md="3" class="mb-2">
+          <v-col cols="6" md="3" class="mb-2" v-show="user.height">
             <div class="body-1 mb-2 grey--text">Рост</div>
             <div class="">
-              {{ user.birthDate ? user.birthDate : "162 см" }}
+              {{ user.height + " см" }}
             </div>
           </v-col>
-          <v-col cols="6" md="3" class="mb-2">
+          <v-col cols="6" md="3" class="mb-2" v-show="user.weight">
             <div class="body-1 mb-2 grey--text">Вес</div>
-            <div class="">{{ user.gender ? user.gender : "58 кг" }}</div>
+            <div class="">{{ user.weight + " кг" }}</div>
           </v-col>
         </v-row>
         <v-row class="mb-4">
@@ -378,6 +378,19 @@ export default {
   },
   created() {
     const userId = this.userId;
+    this.breadcrumb_items = [
+      {
+        text: "Личный кабинет",
+        disabled: false,
+        exact: true,
+        to: { name: "user-profile", params: { userId } },
+      },
+      {
+        text: "информация об игроке",
+        disabled: true,
+        to: "",
+      },
+    ];
     this.$store.dispatch("user/getUser", userId).then(() => {
       this.getSocialMedia();
     });
@@ -395,23 +408,7 @@ export default {
   },
   data() {
     return {
-      breadcrumb_items: [
-        {
-          text: "Личный кабинет",
-          disabled: false,
-          href: "/",
-        },
-        {
-          text: "Название подраздела",
-          disabled: false,
-          href: "/admin/sport_complex",
-        },
-        {
-          text: "Название раздела",
-          disabled: true,
-          href: "",
-        },
-      ],
+      breadcrumb_items: [],
       loading: false,
       social_media: [],
       createForumDialog: false,

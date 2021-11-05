@@ -267,7 +267,6 @@
 
 <script>
 import { mapState } from "vuex";
-import moment from "moment";
 
 export default {
   props: {
@@ -278,8 +277,23 @@ export default {
   },
   created() {
     const userId = this.userId;
+    this.breadcrumb_items = [
+      {
+        text: "Личный кабинет",
+        disabled: false,
+        exact: true,
+        to: { name: "user-profile", params: { userId } },
+      },
+
+      {
+        text: "информация об игроке",
+        disabled: true,
+        to: "",
+      },
+    ];
     this.$store.dispatch("user/getUser", userId).then(() => {
       this.getSocialMedia();
+      this.nuser = this.user;
     });
     this.$store.dispatch("user/getForums", this.userId);
   },
@@ -295,35 +309,18 @@ export default {
   },
   data() {
     return {
-      breadcrumb_items: [
-        {
-          text: "Личный кабинет",
-          disabled: false,
-          href: "/",
-        },
-        {
-          text: "Название подраздела",
-          disabled: false,
-          href: "/admin/sport_complex",
-        },
-        {
-          text: "Название раздела",
-          disabled: true,
-          href: "",
-        },
-      ],
+      breadcrumb_items: [],
       loading: false,
       social_media: [],
       nuser: {
         biography: "",
         grip: "",
-        level: "",
         position: "",
-        qualification: "",
-        weight: 0,
+        weight: "",
+        height: "",
       },
-      positions: [],
-      grips: [],
+      positions: ["Защитник", "Нападающий", "Вратарь"],
+      grips: ["левый", "правый"],
       socialMediaDialog: false,
       social_media_text: "",
       toggleSocialMedia: null,
@@ -333,18 +330,14 @@ export default {
   methods: {
     updateUser() {
       const userId = this.userId;
-      const { biography, position, grip, find } = this.nuser;
+      const { biography, position, grip, weight, height } = this.nuser;
       const updateInfo = {
-        date: moment().format("YYYY-MM-DD"),
-        picture: "",
         name: this.fullName,
         biography,
         grip,
-        age: "",
         position,
-        level: "",
-        type: find,
-        userId: this.userId,
+        weight,
+        height,
       };
       this.$store.dispatch("user/putUser", { userId, updateInfo }).then(() => {
         this.nuser = this.initUserDialog();
@@ -407,7 +400,7 @@ export default {
         level: "",
         position: "",
         qualification: "",
-        weight: 0,
+        weight: "",
       };
     },
   },

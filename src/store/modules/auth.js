@@ -4,9 +4,7 @@ export const namespaced = true;
 export const state = () => ({
   token: "",
   userId: "",
-  teams: [],
-  team: {},
-  forums: [],
+  user: {},
 });
 export const getters = {
   loggedIn: (state) => !!state.token,
@@ -27,6 +25,12 @@ export const mutations = {
   DELETE_USERID(state) {
     localStorage.removeItem("userId");
     state.userId = "";
+  },
+  SAVE_USER(state, user) {
+    state.user = user;
+  },
+  MODIFY_USER(state, updatedUser) {
+    state.user = { ...state.user, ...updatedUser };
   },
 };
 
@@ -53,6 +57,7 @@ export const actions = {
           message: "Your account was created Successfully",
         };
         dispatch("notification/add", notification, { root: true });
+        return data.id;
       })
       .catch((error) => {
         const notification = {
@@ -125,5 +130,11 @@ export const actions = {
         console.log(err);
         throw err;
       });
+  },
+  saveUserLocally({ commit }, user) {
+    commit("SAVE_USER", user);
+  },
+  modifyUserInfo({ commit }, updatedUser) {
+    commit("MODIFY_USER", updatedUser);
   },
 };

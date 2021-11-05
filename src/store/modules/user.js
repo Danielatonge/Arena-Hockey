@@ -10,6 +10,7 @@ export const state = () => ({
   team: {},
   forums: [],
   selected_arenas: [],
+  roles: [],
 });
 export const getters = {
   userId: (state) => {
@@ -33,6 +34,9 @@ export const mutations = {
   SET_USER(state, user) {
     state.user = user;
   },
+  SET_ROLES(state, roles) {
+    state.roles = roles;
+  },
   SET_FORUMS(state, forums) {
     state.forums = forums;
   },
@@ -44,6 +48,9 @@ export const mutations = {
   },
   ADD_TEAM(state, team) {
     state.teams.push(team);
+  },
+  ADD_ROLE(state, role) {
+    state.roles.push(role);
   },
   REMOVE_FROM_SELECTED_ARENAS(state, arena) {
     state.selected_arenas = state.selected_arenas.filter(
@@ -113,6 +120,16 @@ export const actions = {
         console.log(err);
       });
   },
+  getUserRoles({ commit }, userId) {
+    return api
+      .getRoles(userId)
+      .then((response) => {
+        commit("SET_ROLES", response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   createUserTeam({ commit }, { userTeamId, team }) {
     return api
       .createUserTeam(userTeamId)
@@ -158,7 +175,7 @@ export const actions = {
       .getRoleID(roleName)
       .then((response) => {
         const roleId = response.data.id;
-        return { roleId };
+        return roleId;
       })
       .catch((err) => {
         console.log(err);

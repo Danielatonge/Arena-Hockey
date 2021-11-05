@@ -333,7 +333,7 @@ export default {
       {
         text: "Название помещения",
         disabled: true,
-        href: "/",
+        to: "/",
       },
     ];
     this.$store.dispatch("arena/getServiceById", this.serviceId); //TODO: function not found

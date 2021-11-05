@@ -590,6 +590,29 @@ export default {
       required: true,
     },
   },
+  created() {
+    const userId = this.userId;
+    this.breadcrumb_items = [
+      {
+        text: "Личный кабинет",
+        disabled: false,
+        exact: true,
+        to: { name: "user-profile", params: { userId } },
+      },
+      {
+        text: "Мои спортивные комплексы",
+        disabled: false,
+        exact: true,
+        to: { name: "admin-add-arena-sportcomplex", params: { userId } },
+      },
+      {
+        text: "Создать арену",
+        disabled: true,
+        exact: true,
+        to: "",
+      },
+    ];
+  },
   computed: {
     social_media_display() {
       return this.social_media.filter((x) => x.link);
@@ -695,23 +718,7 @@ export default {
           icon: "mdi-facebook",
         },
       ],
-      breadcrumb_items: [
-        {
-          text: "Личный кабинет",
-          disabled: false,
-          href: "/admin/sport_complex/add",
-        },
-        {
-          text: "Мои спортивные комплексы",
-          disabled: false,
-          href: "/admin/sport_complex",
-        },
-        {
-          text: "Создать арену",
-          disabled: true,
-          href: "",
-        },
-      ],
+      breadcrumb_items: [],
     };
   },
   methods: {

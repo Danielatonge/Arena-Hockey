@@ -141,12 +141,17 @@ export default {
         {
           text: "Личный кабинет",
           disabled: false,
-          href: "/",
+          exact: true,
+          to: { name: "user-profile", params: {} },
         },
         {
           text: "Мои спортивные комплексы",
           disabled: true,
-          href: "/admin/sport_complex",
+          exact: true,
+          to: {
+            name: "admin-add-arena-sportcomplex",
+            params: {},
+          },
         },
       ],
       page: 1,

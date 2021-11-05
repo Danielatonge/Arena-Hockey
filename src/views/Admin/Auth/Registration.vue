@@ -392,12 +392,14 @@ export default {
         userParams
       );
 
-      this.$store
-        .dispatch("auth/postUser", userParams)
-        .then(() => {
-          this.$router.push({ name: "register-role" });
-        })
-        .catch(() => {});
+      // this.$store
+      //   .dispatch("auth/postUser", userParams)
+      //   .then(() => {
+      //     this.$router.push({ name: "register-role" });
+      //   })
+      //   .catch(() => {});
+      this.$store.dispatch("auth/saveUserLocally", userParams);
+      this.$router.push({ name: "register-role" });
     },
     removeSocialMedia(item) {
       console.log(item);

@@ -8,33 +8,29 @@
         <v-col cols="6" class="mb-2" v-show="user.birthDate">
           <div class="body-1 mb-2 grey--text">День рождения</div>
           <div class="">
-            {{ user.birthDate ? user.birthDate : "21 сентября 1999" }}
+            {{ user.birthDate }}
           </div>
         </v-col>
         <v-col cols="6" class="mb-2" v-show="user.gender">
           <div class="body-1 mb-2 grey--text">Пол</div>
-          <div class="">{{ user.gender ? user.gender : "Мужской" }}</div>
+          <div class="">{{ user.gender }}</div>
         </v-col>
         <v-col cols="6" class="mb-2" v-show="user.phone">
           <div class="body-1 mb-2 grey--text">Номер телефона</div>
           <div class="">
-            {{ user.phone ? user.phone : "+7 (999) 999 99-99" }}
+            {{ user.phone }}
           </div>
         </v-col>
         <v-col cols="6" class="mb-2" v-show="user.mail">
           <div class="body-1 mb-2 grey--text">Электронная почта</div>
           <div class="blue--text">
-            {{ user.mail ? user.mail : "jackson.graham@example.com" }}
+            {{ user.mail }}
           </div>
         </v-col>
         <v-col cols="6" class="mb-2" v-show="user.address">
           <div class="body-1 mb-2 grey--text">Адрес</div>
           <div class="">
-            {{
-              user.address
-                ? user.address
-                : " Промышленная ул., 32, Ульяновск, Ульяновская обл., 432006"
-            }}
+            {{ user.address }}
           </div>
         </v-col>
       </v-row>
@@ -44,7 +40,7 @@
           class="pa-2"
           cols="4"
           md="4"
-          v-for="(section, i) in sections"
+          v-for="(role, i) in displayRoles"
           :key="i"
         >
           <v-sheet
@@ -60,7 +56,7 @@
             "
           >
             <div class="pa-2">
-              {{ section.text }}
+              {{ role }}
             </div>
           </v-sheet>
         </v-col>
@@ -79,10 +75,20 @@ import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState("user", ["user"]),
+    ...mapState("user", ["user", "roles"]),
     showPersonalData() {
       const { birthDate, gender, phone, address, mail } = this.user;
       return birthDate || gender || phone || address || mail;
+    },
+    displayRoles() {
+      const parseRoles = this.roles.map(({ roles }) => roles);
+      const filtered = parseRoles.filter((role) => role.name === "");
+      return filtered.map(({ name }) => {
+        if (name === "PLAYER") return "Игрок";
+        if (name === "TRAINER") return "Тренер";
+        if (name === "SELLER") return "Продавец";
+        if (name === "string") return "недопустимая роль";
+      });
     },
   },
   props: {
@@ -93,6 +99,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("user/getUser", this.userId);
+    this.$store.dispatch("user/getUserRoles", this.userId);
     const id = this.userId;
     this.sections = [
       {
@@ -128,23 +135,6 @@ export default {
   data() {
     return {
       checkbox: null,
-      breadcrumb_items: [
-        {
-          text: "Личный кабинет",
-          disabled: false,
-          href: "/",
-        },
-        {
-          text: "Мои спортивные комплексы",
-          disabled: false,
-          href: "/admin/sport_complex",
-        },
-        {
-          text: "Название комплекса",
-          disabled: true,
-          href: "",
-        },
-      ],
       sections: null,
     };
   },

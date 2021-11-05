@@ -416,12 +416,13 @@ export default {
       {
         text: "Школы",
         disabled: false,
-        href: `/school`,
+        to: { name: "sport-schools", params: { schoolId } },
+        exact: true,
       },
       {
         text: this.school.title,
         disabled: true,
-        href: "",
+        to: "",
       },
     ];
     const schoolItem = this.school;

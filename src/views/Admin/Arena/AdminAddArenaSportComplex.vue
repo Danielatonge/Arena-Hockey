@@ -147,23 +147,7 @@ export default {
   data() {
     return {
       selectedList: [],
-      breadcrumb_items: [
-        {
-          text: "Личный кабинет",
-          disabled: false,
-          href: "/",
-        },
-        {
-          text: "Мои спортивные комплексы",
-          disabled: false,
-          href: "/admin/sport_complex",
-        },
-        {
-          text: "Добавить арену",
-          disabled: true,
-          href: "/",
-        },
-      ],
+      
       page: 1,
       perPage: 3,
       paginationLength: 10,

@@ -257,28 +257,7 @@ export default {
       paginationLength: 1,
       confirm_dialog: false,
       add_team_dialog: false,
-      breadcrumb_items: [
-        {
-          text: "Личный кабинет",
-          disabled: false,
-          href: "",
-        },
-        {
-          text: "Мои спортивные комплексы",
-          disabled: false,
-          href: "/admin/sport_complex",
-        },
-        {
-          text: "Редактирование спортивного комплекса",
-          disabled: true,
-          href: "/admin/sport_complex/edit",
-        },
-        {
-          text: "Список команд",
-          disabled: true,
-          href: "",
-        },
-      ],
+
       team_tags: [
         { value: null, text: "Город" },
         { value: "Москва", text: "Москва" },

@@ -567,17 +567,17 @@ export default {
         {
           text: "Личный кабинет",
           disabled: false,
-          href: "/admin",
+          to: "/admin",
         },
         {
           text: "Мои команды",
           disabled: false,
-          href: "/admin/teams",
+          to: "/admin/teams",
         },
         {
           text: "Создать команду",
           disabled: true,
-          href: "",
+          to: "",
         },
       ],
     };

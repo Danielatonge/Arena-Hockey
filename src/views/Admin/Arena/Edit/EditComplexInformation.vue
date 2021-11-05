@@ -717,23 +717,7 @@ export default {
           icon: "mdi-facebook",
         },
       ],
-      breadcrumb_items: [
-        {
-          text: "Личный кабинет",
-          disabled: false,
-          href: "/admin/sport_complex/add",
-        },
-        {
-          text: "Мои спортивные комплексы",
-          disabled: false,
-          href: "/admin/sport_complex",
-        },
-        {
-          text: "Создать арену",
-          disabled: true,
-          href: "",
-        },
-      ],
+
       settings: {
         apiKey: "cd43d2ef-9a2e-465e-b60b-fd240a2ec37a",
         lang: "ru_RU",

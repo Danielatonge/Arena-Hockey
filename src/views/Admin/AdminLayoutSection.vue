@@ -124,17 +124,8 @@ export default {
         {
           text: "Личный кабинет",
           disabled: false,
-          href: "/",
-        },
-        {
-          text: "Название подраздела",
-          disabled: false,
-          href: "/admin/sport_complex",
-        },
-        {
-          text: "Название раздела",
-          disabled: true,
-          href: "",
+          exact: true,
+          to: { name: "user-profile", params: { userId: this.user.id } },
         },
       ],
       sidebar_items: [],

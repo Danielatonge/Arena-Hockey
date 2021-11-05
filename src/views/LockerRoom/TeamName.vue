@@ -414,12 +414,13 @@ export default {
       {
         text: "Список команд",
         disabled: false,
-        href: `/room`,
+        exact: true,
+        to: { name: "room" },
       },
       {
         text: this.team.title,
         disabled: true,
-        href: "",
+        to: "",
       },
     ];
     const teamItem = this.team;

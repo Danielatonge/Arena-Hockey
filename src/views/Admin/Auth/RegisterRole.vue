@@ -181,9 +181,12 @@
 <script>
 import { mapState } from "vuex";
 export default {
-  computed: { ...mapState("auth", ["userId"]), ...mapState("user", ["user"]) },
+  computed: {
+    ...mapState("auth", ["userId", "user"]),
+    //   ...mapState("user", ["user"])
+  },
   mounted() {
-    this.$store.dispatch("user/getUser", this.userId).then(() => {});
+    // this.$store.dispatch("user/getUser", this.userId).then(() => {});
     const sections = [
       {
         text: "Игрок",
@@ -213,7 +216,7 @@ export default {
         biography: "",
         grip: "",
         role: "",
-        weight: 0,
+        weight: "",
         height: "",
       },
       positions: ["Защитник", "Нападающий", "Вратарь"],
@@ -234,7 +237,6 @@ export default {
       this.dialog = true;
     },
     updateUserRole() {
-      const userId = this.userId;
       const { biography, role, grip, weight, height } = this.nuser;
       const updateUser = {
         biography,
@@ -243,26 +245,51 @@ export default {
         weight,
         height,
       };
-      this.$store
-        .dispatch("user/putUser", { userId, user: updateUser })
-        .then(() => {
-          this.$store.dispatch("user/createUserRole", {
-            userId: this.userId,
-            roleId: this.roleId,
-          });
-          this.nuser = this.initUserDialog();
-        })
-        .catch(() => {});
+      //   this.$store
+      //     .dispatch("user/putUser", { userId, user: updateUser })
+      //     .then(() => {
+      //       this.$store.dispatch("user/createUserRole", {
+      //         userId: this.userId,
+      //         roleId: this.roleId,
+      //       });
+      //       this.nuser = this.initUserDialog();
+      //     })
+      //     .catch(() => {});
+
+      this.$store.dispatch("auth/modifyUserInfo", updateUser);
+      this.dialog = false;
     },
     doneCreatingUser() {
-      this.$router.push({ name: "login" });
+      const myUser = this.user;
+      console.log(
+        "🚀 ~ file: RegisterRole.vue ~ line 263 ~ doneCreatingUser ~ myUser",
+        myUser
+      );
+      this.$store
+        .dispatch("auth/postUser", myUser)
+        .then((userId) => {
+          console.log(
+            "🚀 ~ file: RegisterRole.vue ~ line 271 ~ .then ~ userId",
+            {
+              userId,
+              roleId: this.roleId,
+            }
+          );
+          this.$store.dispatch("user/createUserRole", {
+            userId,
+            roleId: this.roleId,
+          });
+
+          this.$router.push({ name: "login" });
+        })
+        .catch(() => {});
     },
     initUserDialog() {
       return {
         biography: "",
         grip: "",
         role: "",
-        weight: 0,
+        weight: "",
         height: "",
       };
     },

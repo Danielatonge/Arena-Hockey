@@ -142,22 +142,22 @@ export default {
         {
           text: "Название арены",
           disabled: false,
-          href: "/arena",
+          to: "/arena",
         },
         {
           text: "Список команд",
           disabled: false,
-          href: "/team",
+          to: "/team",
         },
         {
           text: "Название команды",
           disabled: false,
-          href: "/teamname",
+          to: "/teamname",
         },
         {
           text: "Вступить в команду",
           disabled: true,
-          href: "/",
+          to: "/",
         },
       ],
     };

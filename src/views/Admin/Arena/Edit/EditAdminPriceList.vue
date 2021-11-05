@@ -188,33 +188,7 @@ export default {
         weekend: "",
       },
       service_nav: ["Катки", "Другие помещения"],
-      breadcrumb_items: [
-        {
-          text: "Личный кабинет",
-          disabled: false,
-          href: "/",
-        },
-        {
-          text: "Мои спортивные комплексы",
-          disabled: false,
-          href: "/admin/sport_complex",
-        },
-        {
-          text: "Редактирование спортивного комплекса",
-          disabled: false,
-          href: "/admin/sport_complex",
-        },
-        {
-          text: "Информация",
-          disabled: false,
-          href: "/admin/sport_complex",
-        },
-        {
-          text: "Изменить прайс-лист",
-          disabled: true,
-          href: "",
-        },
-      ],
+
       prices: [],
       showDate: moment().format("YYYY-MM-DD"),
     };

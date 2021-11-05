@@ -81,17 +81,17 @@ export default {
         {
           text: "Личный кабинет",
           disabled: false,
-          href: "/",
+          to: "/",
         },
         {
           text: "Мои спортивные комплексы",
           disabled: false,
-          href: "/admin/sport_complex",
+          to: "/admin/sport_complex",
         },
         {
           text: "Название комплекса",
           disabled: true,
-          href: "",
+          to: "",
         },
       ],
       sections: [],

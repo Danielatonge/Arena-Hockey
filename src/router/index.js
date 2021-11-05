@@ -206,14 +206,28 @@ const routes = [
         props: true,
         meta: { requiresAuth: true },
       },
-      {
-        path: "sport_complex/create",
-        name: "create-complex-information",
-        component: CreateComplexInformation,
-        meta: { requiresAuth: true },
-        props: true,
-      },
     ],
+  },
+  {
+    path: "/admin/:userId/teams/create",
+    name: "admin-team-create",
+    component: CreateAdminTeam,
+    meta: { requiresAuth: true },
+    props: true,
+  },
+  {
+    path: "/admin/:userId/sport_complex/create",
+    name: "create-complex-information",
+    component: CreateComplexInformation,
+    meta: { requiresAuth: true },
+    props: true,
+  },
+  {
+    path: "/admin/user/:userId",
+    name: "admin-user-view",
+    component: UserInformation,
+    props: true,
+    meta: { requiresAuth: true },
   },
 
   {
@@ -329,20 +343,7 @@ const routes = [
       },
     ],
   },
-  {
-    path: "/admin/:userId/teams/create",
-    name: "admin-team-create",
-    component: CreateAdminTeam,
-    meta: { requiresAuth: true },
-    props: true,
-  },
-  {
-    path: "/admin/user/:userId",
-    name: "admin-user-view",
-    component: UserInformation,
-    props: true,
-    meta: { requiresAuth: true },
-  },
+
   {
     path: "/admin/user/:userId/edit",
     name: "admin-user-edit",

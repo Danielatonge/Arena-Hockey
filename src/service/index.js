@@ -209,6 +209,9 @@ export const apiUser = {
   getUser(userId) {
     return apiClient.get(`/user/${userId}`);
   },
+  getRoles(userId) {
+    return apiClient.get(`/user/${userId}/roles`);
+  },
   createUserTeam(userTeamId) {
     return apiClient.post(`/team/user`, userTeamId);
   },
