@@ -107,7 +107,7 @@ export const actions = {
         commit("SET_USERID", userId);
         const notification = {
           type: "success",
-          message: "You Successfully Logged In",
+          message: "Вы успешно вошли в систему",
         };
         dispatch("notification/add", notification, { root: true });
         return userId;
@@ -116,8 +116,8 @@ export const actions = {
         const notification = {
           type: "error",
           message:
-            "There was a problem Logging you into your account: " +
-            error.message,
+            "При входе в учетную запись возникла проблема: " +
+            error.response.data.message,
         };
         dispatch("notification/add", notification, { root: true });
         throw error;

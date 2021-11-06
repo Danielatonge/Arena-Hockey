@@ -38,8 +38,8 @@
                 elevation="0"
                 @click="
                   $router.push({
-                    name: 'admin-user-edit',
-                    params: { userId: user.id },
+                    name: 'admin-user-role-edit',
+                    params: { userId, roleId },
                   })
                 "
               >
@@ -375,6 +375,10 @@ export default {
       type: String,
       required: true,
     },
+    roleId: {
+      type: String,
+      required: true,
+    },
   },
   created() {
     const userId = this.userId;
@@ -386,7 +390,7 @@ export default {
         to: { name: "user-profile", params: { userId } },
       },
       {
-        text: "информация об игроке",
+        text: "роль пользователя",
         disabled: true,
         to: "",
       },

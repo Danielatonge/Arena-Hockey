@@ -47,8 +47,8 @@
                 elevation="0"
                 @click="
                   $router.push({
-                    name: 'admin-user-view',
-                    params: { userId },
+                    name: 'admin-user-role',
+                    params: { userId , roleId},
                   })
                 "
               >

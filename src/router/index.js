@@ -61,21 +61,21 @@ import Login from "../views/Admin/Auth/Login.vue";
 import Registration from "../views/Admin/Auth/Registration.vue";
 import RegisterRole from "../views/Admin/Auth/RegisterRole.vue";
 
-import categoriesPage from '../views/Sushilka/categoriesPage.vue';
-import authorizationForm from '../views/Sushilka/authorizationForm.vue';
-import productCatalog from '../components/Sushilka/categoriesPage/productCatalog.vue';
-import productCard from '../components/Sushilka/categoriesPage/productCard/productCard.vue';
-import vendorCard from '../components/Sushilka/categoriesPage/vendorCard/vendorCard.vue'
+import categoriesPage from "../views/Sushilka/categoriesPage.vue";
+import authorizationForm from "../views/Sushilka/authorizationForm.vue";
+import productCatalog from "../components/Sushilka/categoriesPage/productCatalog.vue";
+import productCard from "../components/Sushilka/categoriesPage/productCard/productCard.vue";
+import vendorCard from "../components/Sushilka/categoriesPage/vendorCard/vendorCard.vue";
 
-import vCarte from '../views/Sushilka/vCarte.vue';
-import vendorAds from '../views/Sushilka/vendorAds.vue';
+import vCarte from "../views/Sushilka/vCarte.vue";
+import vendorAds from "../views/Sushilka/vendorAds.vue";
 
-import myAds from '../components/Sushilka/vendorAds/myAds/myAds.vue'
-import myDraftAds from '../components/Sushilka/vendorAds/myDraftAds/myDraftAds.vue'
-import myArchiveAds from '../components/Sushilka/vendorAds/myArchiveAds/myArchiveAds.vue'
-import createNewAds from '../components/Sushilka/vendorAds/myAds/createNewAds/createNewAds.vue'
-import editAd from '../components/Sushilka/vendorAds/myAds/editAd/editAd.vue'
-import createNewProduct from '../components/Sushilka/vendorAds/myAds/createNewAds/createNewProduct.vue'
+import myAds from "../components/Sushilka/vendorAds/myAds/myAds.vue";
+import myDraftAds from "../components/Sushilka/vendorAds/myDraftAds/myDraftAds.vue";
+import myArchiveAds from "../components/Sushilka/vendorAds/myArchiveAds/myArchiveAds.vue";
+import createNewAds from "../components/Sushilka/vendorAds/myAds/createNewAds/createNewAds.vue";
+import editAd from "../components/Sushilka/vendorAds/myAds/editAd/editAd.vue";
+import createNewProduct from "../components/Sushilka/vendorAds/myAds/createNewAds/createNewProduct.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -239,9 +239,16 @@ const routes = [
     props: true,
   },
   {
-    path: "/admin/user/:userId",
-    name: "admin-user-view",
+    path: "/admin/:userId/role/:roleId",
+    name: "admin-user-role",
     component: UserInformation,
+    props: true,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/admin/:userId/role/:roleId/edit",
+    name: "admin-user-role-edit",
+    component: EditUserInformation,
     props: true,
     meta: { requiresAuth: true },
   },
@@ -368,13 +375,6 @@ const routes = [
   },
 
   {
-    path: "/admin/user/:userId/edit",
-    name: "admin-user-edit",
-    component: EditUserInformation,
-    props: true,
-    meta: { requiresAuth: true },
-  },
-  {
     path: "/admin/:userId/teams/:teamId",
     name: "admin-team-view",
     component: AdminTeamView,
@@ -404,156 +404,156 @@ const routes = [
     component: RegisterRole,
   },
   {
-    path: '/authorization',
-    name: 'authorizationForm',
-    component: authorizationForm
+    path: "/authorization",
+    name: "authorizationForm",
+    component: authorizationForm,
   },
   {
-    path: '/catalog/',
-    name: 'categoriesPage',
+    path: "/catalog/",
+    name: "categoriesPage",
     component: categoriesPage,
     beforeEnter: (to, from, next) => {
-      if(localStorage.getItem('auth')){
-        next()
+      if (localStorage.getItem("auth")) {
+        next();
       } else {
-        next({name: 'authorizationForm'})
+        next({ name: "authorizationForm" });
       }
     },
   },
   {
-    path: '/catalog/:categoryName/',
-    name: 'categoriesPage',
+    path: "/catalog/:categoryName/",
+    name: "categoriesPage",
     component: categoriesPage,
     beforeEnter: (to, from, next) => {
-      if(localStorage.getItem('auth')){
-        next()
+      if (localStorage.getItem("auth")) {
+        next();
       } else {
-        next({name: 'authorizationForm'})
+        next({ name: "authorizationForm" });
       }
     },
-    children:[
+    children: [
       {
         path: "/",
-        name: 'productCatalog',
+        name: "productCatalog",
         component: productCatalog,
         props: true,
       },
-    ]
+    ],
   },
   {
     path: "/catalog/:categoryName/:productNumber",
-    name: 'productCard',
+    name: "productCard",
     component: productCard,
     props: true,
     beforeEnter: (to, from, next) => {
-      if(localStorage.getItem('auth')){
-        next()
+      if (localStorage.getItem("auth")) {
+        next();
       } else {
-        next({name: 'authorizationForm'})
+        next({ name: "authorizationForm" });
       }
     },
   },
   {
-    path: '/cart',
-    name: 'vCarte',
+    path: "/cart",
+    name: "vCarte",
     component: vCarte,
     beforeEnter: (to, from, next) => {
-      if(localStorage.getItem('auth')){
-        next()
+      if (localStorage.getItem("auth")) {
+        next();
       } else {
-        next({name: 'authorizationForm'})
+        next({ name: "authorizationForm" });
       }
-    }
+    },
   },
   {
-    path: '/vendor-ads',
-    name: 'vendorAds',
+    path: "/vendor-ads",
+    name: "vendorAds",
     component: vendorAds,
     beforeEnter: (to, from, next) => {
-      if(localStorage.getItem('auth')){
-        next()
+      if (localStorage.getItem("auth")) {
+        next();
       } else {
-        next({name: 'authorizationForm'})
+        next({ name: "authorizationForm" });
       }
-    }
+    },
   },
   {
-    path: '/vendor-ads/my-ads',
-    name: 'my-ads',
+    path: "/vendor-ads/my-ads",
+    name: "my-ads",
     component: myAds,
     beforeEnter: (to, from, next) => {
-      if(localStorage.getItem('auth')){
-        next()
+      if (localStorage.getItem("auth")) {
+        next();
       } else {
-        next({name: 'authorizationForm'})
+        next({ name: "authorizationForm" });
       }
-    }
+    },
   },
   {
-    path: '/vendor-ads/my-draft-ads',
-    name: 'my-draft-ads',
+    path: "/vendor-ads/my-draft-ads",
+    name: "my-draft-ads",
     component: myDraftAds,
     beforeEnter: (to, from, next) => {
-      if(localStorage.getItem('auth')){
-        next()
+      if (localStorage.getItem("auth")) {
+        next();
       } else {
-        next({name: 'authorizationForm'})
+        next({ name: "authorizationForm" });
       }
-    }
+    },
   },
   {
-    path: '/vendor-ads/my-archive-ads',
-    name: 'my-archive-ads',
+    path: "/vendor-ads/my-archive-ads",
+    name: "my-archive-ads",
     component: myArchiveAds,
     beforeEnter: (to, from, next) => {
-      if(localStorage.getItem('auth')){
-        next()
+      if (localStorage.getItem("auth")) {
+        next();
       } else {
-        next({name: 'authorizationForm'})
+        next({ name: "authorizationForm" });
       }
-    }
+    },
   },
   {
-    path: '/vendor-ads/my-ads/create-new-ad',
-    name: 'createNewAds',
+    path: "/vendor-ads/my-ads/create-new-ad",
+    name: "createNewAds",
     component: createNewAds,
-    children:[
+    children: [
       {
-        path: '/create-new-product',
-        name: 'createNewProduct',
+        path: "/create-new-product",
+        name: "createNewProduct",
         component: createNewProduct,
-      }
+      },
     ],
     beforeEnter: (to, from, next) => {
-      if(localStorage.getItem('auth')){
-        next()
+      if (localStorage.getItem("auth")) {
+        next();
       } else {
-        next({name: 'authorizationForm'})
+        next({ name: "authorizationForm" });
       }
-    }
+    },
   },
   {
-    path: '/vendor-ads/my-ads/edit-my-ad/:productNumber',
-    name: 'editAd',
+    path: "/vendor-ads/my-ads/edit-my-ad/:productNumber",
+    name: "editAd",
     component: editAd,
     props: true,
     beforeEnter: (to, from, next) => {
-      if(localStorage.getItem('auth')){
-        next()
+      if (localStorage.getItem("auth")) {
+        next();
       } else {
-        next({name: 'authorizationForm'})
+        next({ name: "authorizationForm" });
       }
-    }
+    },
   },
   {
     path: "/catalog/vendor/card/:vendorNumber",
-    name: 'vendorCard',
+    name: "vendorCard",
     component: vendorCard,
     beforeEnter: (to, from, next) => {
-      if(localStorage.getItem('auth')){
-        next()
+      if (localStorage.getItem("auth")) {
+        next();
       } else {
-        next({name: 'authorizationForm'})
+        next({ name: "authorizationForm" });
       }
     },
   },

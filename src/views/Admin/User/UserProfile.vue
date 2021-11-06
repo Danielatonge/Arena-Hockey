@@ -55,10 +55,15 @@
               align-center
               rounded-lg
             "
-            @click="openDialog(section.code)"
+            @click="
+              $router.push({
+                name: 'admin-user-role',
+                params: { userId: userId, roleId: role.id },
+              })
+            "
           >
             <div class="pa-2">
-              {{ role }}
+              {{ role.name }}
             </div>
           </v-sheet>
         </v-col>
@@ -84,11 +89,11 @@ export default {
     },
     displayRoles() {
       const parseRoles = this.roles.map(({ role }) => role);
-      return parseRoles.map(({ name }) => {
-        if (name === "PLAYER") return "Игрок";
-        if (name === "TRAINER") return "Тренер";
-        if (name === "SELLER") return "Продавец";
-        if (name === "string") return "недопустимая роль";
+      return parseRoles.map(({ id, name }) => {
+        if (name === "PLAYER") return { id, name: "Игрок" };
+        if (name === "TRAINER") return { id, name: "Тренер" };
+        if (name === "SELLER") return { id, name: "Продавец" };
+        if (name === "string") return { id, name: "недопустимая роль" };
       });
     },
   },
