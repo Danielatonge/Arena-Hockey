@@ -1,6 +1,11 @@
 <template>
   <div class="grey lighten-4">
-    <v-container class="pb-10 mt-10">
+    <v-container class="pb-10">
+      <v-row class="">
+        <div>
+          <v-breadcrumbs :items="breadcrumb_items" class="px-3"></v-breadcrumbs>
+        </div>
+      </v-row>
       <v-row>
         <v-col cols="4" md="3">
           <admin-image-uploader v-model="avatar">
@@ -273,7 +278,28 @@ export default {
   components: {
     AdminImageUploader,
   },
+  props: {
+    userId: {
+      type: String,
+      required: true,
+    },
+  },
   created() {
+    const userId = this.userId;
+    this.breadcrumb_items = [
+      {
+        text: "Личный кабинет",
+        disabled: false,
+        exact: true,
+        to: { name: "user-profile", params: { userId } },
+      },
+      {
+        text: "изменить пользователя",
+        disabled: true,
+        exact: true,
+        to: "",
+      },
+    ];
     const user = this.currentUser;
     this.user = user;
     this.avatar = user.profilePicture
@@ -350,6 +376,7 @@ export default {
           icon: "mdi-facebook",
         },
       ],
+      breadcrumb_items: [],
     };
   },
   methods: {

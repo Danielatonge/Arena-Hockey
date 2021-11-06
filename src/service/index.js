@@ -307,7 +307,7 @@ export const apiAuth = {
     return apiClient.post(`/registration`, user);
   },
   putUser({ userId, user }) {
-    return apiClient.put(`/user/${userId}`, user);
+    return apiClient.patch(`/user/${userId}`, user);
   },
   login(credential) {
     return apiClient.post(`/login`, credential);

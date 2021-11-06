@@ -47,6 +47,7 @@
             elevation="0"
             height="70"
             width="100%"
+            v-ripple
             class="
               font-weight-light
               d-flex
@@ -54,6 +55,7 @@
               align-center
               rounded-lg
             "
+            @click="openDialog(section.code)"
           >
             <div class="pa-2">
               {{ role }}
