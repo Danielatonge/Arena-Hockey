@@ -44,9 +44,6 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col class="burger_menu">
-                <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-            </v-col>
             <v-col cols="11">
                 <p class="text">Сушилка</p>
             </v-col>
@@ -58,7 +55,7 @@
                 <v-row >
                     <v-col style="padding-left: 0">                        
                         <v-card
-                        style="width: 100%; border-radius: 16px; padding: 0px; margin: 0"
+                        style="width: 100%; border-radius: 16px; padding: 0px; margin: 0; padding-top: 10px"
                         elevation="0">
                             <v-row style="margin-top: 10px; margin-bottom: 15px">
                                 <v-spacer></v-spacer>
@@ -313,7 +310,7 @@
                             label="Сортировка:">
                             </v-select>
                         </div>
-                        <div style="width: 155px; margin-right: 10px">
+                        <div style="width: 160px; margin-right: 10px">
                             <v-checkbox
                             style="padding: 0; margin-top: 6px;"
                                 v-model="rating_checkbox"
@@ -326,8 +323,8 @@
                                 style="font-family: Roboto;
                                 font-style: normal;
                                 font-weight: normal;
-                                font-size: 14px;
-                                line-height: 20px;
+                                font-size: 12px;
+                                line-height: 10px;
                                 color: #757575;">
                                 Найдено: {{quantity}} результатов
                             </p>
@@ -379,189 +376,6 @@
                 </v-row>
             </template>
         </v-snackbar>
-        <v-navigation-drawer
-        v-model="drawer"
-        absolute
-        right
-        temporary
-        width="400px"
-        >
-            <div class="nuv_filters_header">
-                <v-btn
-                icon
-                @click="drawer = false">
-                    <v-icon
-                    color="#fff">mdi-close</v-icon>
-                </v-btn>
-                <p class="nuv_header">Фильтры</p>
-            </div>
-            <p
-            class="nuv_header"
-            style="color: #0681C8; cursor: pointer;"
-            @click="resetFilters()">Сбросить фильтры</p>
-            <v-card
-            style="width: 100%; border-radius: 16px; padding: 0px; margin: 0"
-            elevation="0">
-                <v-row style="margin-top: 10px; margin-bottom: 15px">
-                    <v-spacer></v-spacer>
-                    <v-col
-                    class="d-flex"
-                    cols="12"
-                    sm="11">
-                        <v-checkbox
-                        @click="getCatalogProducts()"
-                        @mousedown="filterBTN = true"
-                        v-model="checkbox"
-                        :label="`Товар есть в наличии`"
-                        ></v-checkbox>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-spacer></v-spacer>
-                    <v-col
-                    class="d-flex"
-                    cols="12"
-                    sm="11">
-                        <p class="filter_header">Ценовой диапазон</p>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-spacer></v-spacer>
-                    <v-col
-                    class="d-flex"
-                    cols="12"
-                    sm="4">
-                        <v-text-field
-                        v-model="fromFieldPrice"
-                        @input="workingWithDateAndYearFilters('Цена')"
-                        placeholder="От"
-                        dense
-                        elevation="0"
-                        outlined
-                        ></v-text-field>
-                    </v-col>
-                    <v-spacer></v-spacer>
-                    <v-col
-                    class="d-flex"
-                    cols="12"
-                    sm="4">
-                        <v-text-field
-                        v-model="toFieldPrice"
-                        @input="workingWithDateAndYearFilters('Цена')"
-                        placeholder="До"
-                        dense
-                        elevation="0"
-                        outlined
-                        ></v-text-field>
-                    </v-col>
-                    <v-spacer></v-spacer>
-                </v-row>
-                <v-row style="margin-top: 30px" >
-                    <v-spacer></v-spacer>
-                    <v-col
-                    class="d-flex"
-                    cols="12"
-                    sm="11">
-                        <p class="filter_header">Тип товара</p>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-spacer></v-spacer>
-                    <v-col
-                    class="d-flex"
-                    cols="12"
-                    sm="11">
-                        <v-radio-group style="padding-top: 0px; margin-top: 0px" 
-                        v-model="radioGroup"
-                        @change="getCatalogProducts()">
-                            <v-radio
-                            v-for="n in type"
-                            :key="n.value"
-                            :label="`${n.text}`"
-                            :value="n.value"
-                            ></v-radio>
-                        </v-radio-group>
-                    </v-col>
-                </v-row>
-                <v-row style="margin-top: 30px">
-                    <v-spacer></v-spacer>
-                    <v-col
-                    class="d-flex"
-                    cols="12"
-                    sm="11">
-                        <p class="filter_header">Год выпуска</p>
-                    </v-col>
-                </v-row>
-                <v-row style="margin-bottom: 20px">
-                    <v-spacer></v-spacer>
-                    <v-col
-                    class="d-flex"
-                    cols="12"
-                    sm="4">
-                        <v-text-field
-                        v-model="fromFieldYear"
-                        @input="workingWithDateAndYearFilters('Год выпуска')"
-                        placeholder="От"
-                        dense
-                        elevation="0"
-                        outlined
-                        ></v-text-field>
-                    </v-col>
-                    <v-spacer></v-spacer>
-                    <v-col
-                    class="d-flex"
-                    cols="12"
-                    sm="4">
-                        <v-text-field
-                        v-model="toFieldYear"
-                        @input="workingWithDateAndYearFilters('Год выпуска')"
-                        placeholder="До"
-                        dense
-                        elevation="0"
-                        outlined
-                        ></v-text-field>
-                    </v-col>
-                    <v-spacer></v-spacer>
-                </v-row>
-                <v-expansion-panels
-                accordion
-                flat
-                tile>
-                    <v-expansion-panel
-                    v-for="(item,i) in categoriesParameters"
-                    :key="i"
-                    >
-                    <v-expansion-panel-header class="filter_header">
-                        {{item.name}}
-                    </v-expansion-panel-header>
-                    <v-expansion-panel-content>
-                        <div
-                        v-for="(checkitem, c) in item.values"
-                        :key="c">
-                            <v-checkbox
-                            @click="workingWithFilters(item.name, checkitem.vName)"
-                            @mousedown="filterBTN = true"
-                            color="primary"
-                            v-model="checkitem.vVal"
-                            :label="`${checkitem.vName}`"
-                            hide-details
-                            ></v-checkbox>
-                        </div>
-                    </v-expansion-panel-content>
-                    </v-expansion-panel>
-                </v-expansion-panels>
-            </v-card>
-            <!-- <div v-if="filterBTN">
-                <v-btn
-                tile
-                elevation="0"
-                style="color: #fff"
-                color="#0681C8"
-                width="100%">
-                    Отфильтровать
-                </v-btn>
-            </div> -->
-        </v-navigation-drawer>
     </div>
 </template>
 
@@ -581,7 +395,6 @@ export default {
     },
     data () {
       return {
-        drawer: false,
         isEmpty: false,
         show: false,
         checkbox: false,
@@ -636,7 +449,6 @@ export default {
         ...mapActions('sushilka',["CHANGE_UNAUTHTORISE"]),
 
         async getCatalogProducts() {
-            this.drawer = false
             const categor = this.categoryName
             const token = localStorage.getItem('access_token')
             if(this.selectCity == "Все города"){
@@ -1024,26 +836,5 @@ export default {
     color: #fff;
     padding-top: 6px;
     margin: 0;
-}
-
-.burger_menu{
-    display: none;
-}
-
-@media (max-width: 992px) {
-    .menu{
-        display: none;
-    }
-
-    .burger_menu{
-        max-width: 40px;
-        display: flex;
-        align-items: center;
-        margin-right: 10px;
-    }
-
-    .container{
-        padding: 0;
-    }
 }
 </style>
