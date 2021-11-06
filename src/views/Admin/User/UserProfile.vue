@@ -81,9 +81,8 @@ export default {
       return birthDate || gender || phone || address || mail;
     },
     displayRoles() {
-      const parseRoles = this.roles.map(({ roles }) => roles);
-      const filtered = parseRoles.filter((role) => role.name === "");
-      return filtered.map(({ name }) => {
+      const parseRoles = this.roles.map(({ role }) => role);
+      return parseRoles.map(({ name }) => {
         if (name === "PLAYER") return "Игрок";
         if (name === "TRAINER") return "Тренер";
         if (name === "SELLER") return "Продавец";

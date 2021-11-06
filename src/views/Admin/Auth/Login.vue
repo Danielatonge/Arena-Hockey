@@ -122,42 +122,38 @@
             <p class="body-1 mb-1">
               На ваш почтовый ящик было отправлено письмо
             </p>
-            <v-row>
-              <v-col>
-                <div class="mb-2">
-                  <v-text-field
-                    v-model="mail"
-                    :rules="[rules.required]"
-                    label="Ссылка на социальную сеть"
-                    outlined
-                    solo
-                    dense
-                    persistent-hint
-                    flat
-                    hide-details="auto"
-                    class="rounded-lg"
-                  >
-                  </v-text-field>
-                </div>
-              </v-col>
-              <v-col>
-                <div class="mb-2">
-                  <v-text-field
-                    v-model="passCode"
-                    :rules="[rules.required]"
-                    outlined
-                    placeholder="Введите код"
-                    solo
-                    dense
-                    persistent-hint
-                    flat
-                    hide-details="auto"
-                    class="rounded-lg"
-                  >
-                  </v-text-field>
-                </div>
-              </v-col>
-              <v-col class="my-0">
+            <div>
+              <div class="mb-2">
+                <v-text-field
+                  v-model="passCode"
+                  :rules="[rules.required]"
+                  outlined
+                  placeholder="Введите код"
+                  solo
+                  dense
+                  persistent-hint
+                  flat
+                  hide-details="auto"
+                  class="rounded-lg"
+                >
+                </v-text-field>
+              </div>
+
+              <div>введите ваш новый пароль</div>
+              <v-text-field
+                outlined
+                v-model="password"
+                flat
+                dense
+                solo
+                hide-details="auto"
+                class="rounded-lg"
+                :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
+                :rules="[rules.required]"
+                :type="showPass ? 'text' : 'password'"
+                @click:append="showPass = !showPass"
+              ></v-text-field>
+              <div class="my-4">
                 <v-btn
                   elevation="0"
                   color="primary"
@@ -165,24 +161,10 @@
                   height="40px"
                   @click="verifyCode"
                 >
-                  Проверить код
+                  изменить пароль
                 </v-btn>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="Пароль"
-                  outlined
-                  v-model="password"
-                  flat
-                  hide-details="auto"
-                  class="rounded-lg"
-                  :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
-                  :rules="[rules.required]"
-                  :type="showPass ? 'text' : 'password'"
-                  @click:append="showPass = !showPass"
-                ></v-text-field>
-              </v-col>
-            </v-row>
+              </div>
+            </div>
           </v-card-text>
         </v-card>
       </v-dialog>
@@ -230,8 +212,14 @@ export default {
         .catch(() => {});
     },
     verifyCode() {
+      const credentials = {
+        email: this.mail,
+        code: this.passCode,
+        password: this.password,
+      };
+
       this.$store
-        .dispatch("auth/verifyCode", this.passCode)
+        .dispatch("auth/changePassword", credentials)
         .then(() => {
           this.changePassword = false;
         })

@@ -257,6 +257,7 @@ export default {
       //     .catch(() => {});
 
       this.$store.dispatch("auth/modifyUserInfo", updateUser);
+      this.nuser = this.initUserDialog();
       this.dialog = false;
     },
     doneCreatingUser() {

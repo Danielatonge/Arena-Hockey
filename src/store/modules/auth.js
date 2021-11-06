@@ -103,7 +103,7 @@ export const actions = {
     commit("DELETE_USERID");
   },
 
-  sendConfirmationCode(_commit, mail) {
+  sendConfirmationCode({ dispatch }, mail) {
     return api
       .sendConfirmationCode(mail)
       .then((response) => {
@@ -111,23 +111,38 @@ export const actions = {
           "🚀 ~ file: auth.js ~ line 109 ~ .then ~ response",
           response.data
         );
+        const notification = {
+          type: "success",
+          message: response.data.message,
+        };
+        dispatch("notification/add", notification, { root: true });
       })
       .catch((err) => {
         console.log(err);
         throw err;
       });
   },
-  verifyCode(_commit, code) {
+  changePassword({ dispatch }, credentials) {
     return api
-      .verifyCode(code)
+      .changePassword(credentials)
       .then((response) => {
         console.log(
           "🚀 ~ file: auth.js ~ line 109 ~ .then ~ response",
           response.data
         );
+        const notification = {
+          type: "success",
+          message: "Password successfully changed",
+        };
+        dispatch("notification/add", notification, { root: true });
       })
       .catch((err) => {
         console.log(err);
+        const notification = {
+          type: "Failure",
+          message: err.message,
+        };
+        dispatch("notification/add", notification, { root: true });
         throw err;
       });
   },

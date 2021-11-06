@@ -34,6 +34,20 @@
               <v-btn
                 large
                 class="mr-2 mb-2"
+                color="primary"
+                elevation="0"
+                @click="
+                  $router.push({
+                    name: 'admin-edit-user',
+                    params: { userId: user.id },
+                  })
+                "
+              >
+                редактировать
+              </v-btn>
+              <v-btn
+                large
+                class="mr-2 mb-2"
                 color="grey lighten-2"
                 elevation="0"
                 @click="
