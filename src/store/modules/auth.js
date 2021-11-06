@@ -50,20 +50,22 @@ export const actions = {
       .postUser(userObj)
       .then((response) => {
         const data = response.data;
+        const userId = data.user.id;
         console.log("🚀 ~ file: auth.js ~ line 49 ~ .then ~ data", data);
-        commit("SET_USERID", data.id);
+        commit("SET_USERID", userId);
         const notification = {
           type: "success",
           message: "Your account was created Successfully",
         };
         dispatch("notification/add", notification, { root: true });
-        return data.id;
+        return userId;
       })
       .catch((error) => {
         const notification = {
           type: "error",
           message:
-            "There was a problem Creating your account: " + error.message,
+            "There was a problem Creating your account: " +
+            error.response.data.message,
         };
         dispatch("notification/add", notification, { root: true });
         throw error;
@@ -75,7 +77,6 @@ export const actions = {
       .then((response) => {
         const data = response.data;
         console.log("🚀 ~ file: auth.js ~ line 49 ~ .then ~ data", data);
-        
         const notification = {
           type: "success",
           message: "Your account was successfully Modified",

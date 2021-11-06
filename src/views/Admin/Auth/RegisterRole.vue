@@ -193,16 +193,16 @@ export default {
         edited: false,
         code: "PLAYER",
       },
-      {
-        text: "Представитель команды",
-        edited: false,
-        code: "TEAM",
-      },
-      {
-        text: "Тренер",
-        edited: false,
-        code: "TRAINER",
-      },
+      // {
+      //   text: "Представитель команды",
+      //   edited: false,
+      //   code: "TEAM",
+      // },
+      // {
+      //   text: "Тренер",
+      //   edited: false,
+      //   code: "TRAINER",
+      // },
     ];
     this.sections = sections;
   },
