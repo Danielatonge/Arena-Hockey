@@ -69,6 +69,30 @@ export const actions = {
         throw error;
       });
   },
+  updateUser({ dispatch }, userObj) {
+    return api
+      .putUser(userObj)
+      .then((response) => {
+        const data = response.data;
+        console.log("🚀 ~ file: auth.js ~ line 49 ~ .then ~ data", data);
+        
+        const notification = {
+          type: "success",
+          message: "Your account was successfully Modified",
+        };
+        dispatch("notification/add", notification, { root: true });
+        return data.id;
+      })
+      .catch((error) => {
+        const notification = {
+          type: "error",
+          message:
+            "There was a problem Creating your account: " + error.message,
+        };
+        dispatch("notification/add", notification, { root: true });
+        throw error;
+      });
+  },
   loginUser({ commit, dispatch }, credential) {
     return api
       .login(credential)

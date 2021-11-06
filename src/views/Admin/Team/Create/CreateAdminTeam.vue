@@ -540,6 +540,29 @@ export default {
       return this.avatar ? this.avatar.imageURL : "";
     },
   },
+  created() {
+    const userId = this.userId;
+    this.breadcrumb_items = [
+      {
+        text: "Личный кабинет",
+        disabled: false,
+        exact: true,
+        to: { name: "user-profile", params: { userId } },
+      },
+      {
+        text: "Мои спортивные комплексы",
+        disabled: false,
+        exact: true,
+        to: { name: "admin-add-arena-sportcomplex", params: { userId } },
+      },
+      {
+        text: "Создать арену",
+        disabled: true,
+        exact: true,
+        to: "",
+      },
+    ];
+  },
   data() {
     return {
       files: {},
@@ -598,23 +621,7 @@ export default {
           icon: "mdi-facebook",
         },
       ],
-      breadcrumb_items: [
-        {
-          text: "Личный кабинет",
-          disabled: false,
-          to: "/admin",
-        },
-        {
-          text: "Мои команды",
-          disabled: false,
-          to: "/admin/teams",
-        },
-        {
-          text: "Создать команду",
-          disabled: true,
-          to: "",
-        },
-      ],
+      breadcrumb_items: [],
     };
   },
   methods: {
