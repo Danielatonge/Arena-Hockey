@@ -62,7 +62,7 @@
                     </v-icon>
                   </div>
                 </template>
-                <template #pricelist>
+                <template #price-list>
                   <v-btn
                     color="primary"
                     elevation="0"
