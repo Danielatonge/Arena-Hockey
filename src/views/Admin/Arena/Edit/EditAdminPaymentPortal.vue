@@ -24,6 +24,17 @@
         >
           Добавить новую услугу
         </v-btn>
+        <v-btn
+          large
+          class="ml-2"
+          color="grey lighten-2"
+          elevation="0"
+          @click="
+            $router.push({ name: 'complex-information', params: { arenaId } })
+          "
+        >
+          Вернуться к просмотру
+        </v-btn>
       </div>
       <v-tabs v-model="value_tab" class="d-flex flex-no-wrap rounded-lg">
         <v-tab class="px-6" v-for="item in service_nav" :key="item">
@@ -97,6 +108,10 @@ export default {
   components: { ArenaPaymentCard },
   props: {
     arenaId: {
+      type: String,
+      required: true,
+    },
+    userId: {
       type: String,
       required: true,
     },

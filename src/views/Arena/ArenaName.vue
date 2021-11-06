@@ -151,7 +151,8 @@ export default {
       {
         text: "Ледовые дворцы и арены",
         disabled: false,
-        href: "/arena",
+        exact: true,
+        to: { name: "arena" },
       },
       {
         text: `${arenaItem.title}`,

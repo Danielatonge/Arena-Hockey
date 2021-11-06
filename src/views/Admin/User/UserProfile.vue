@@ -1,35 +1,37 @@
 <template>
   <div class="grey lighten-4">
     <v-container class="pb-0">
-      <div class="mb-4 text-h5">Персональные данные</div>
+      <div class="mb-4 text-h5" v-show="showPersonalData">
+        Персональные данные
+      </div>
       <v-row class="mb-4">
-        <v-col cols="6" class="mb-2">
+        <v-col cols="6" class="mb-2" v-show="user.birthDate">
           <div class="body-1 mb-2 grey--text">День рождения</div>
-          <div class="">21 сентября 1999 {{ user.birthDate }}</div>
+          <div class="">
+            {{ user.birthDate }}
+          </div>
         </v-col>
-        <v-col cols="6" class="mb-2">
+        <v-col cols="6" class="mb-2" v-show="user.gender">
           <div class="body-1 mb-2 grey--text">Пол</div>
-          <div class="">Мужской</div>
+          <div class="">{{ user.gender }}</div>
         </v-col>
-        <v-col cols="6" class="mb-2">
+        <v-col cols="6" class="mb-2" v-show="user.phone">
           <div class="body-1 mb-2 grey--text">Номер телефона</div>
-          <div class="">+7 (999) 999 99-99</div>
+          <div class="">
+            {{ user.phone }}
+          </div>
         </v-col>
-        <v-col cols="6" class="mb-2">
+        <v-col cols="6" class="mb-2" v-show="user.mail">
           <div class="body-1 mb-2 grey--text">Электронная почта</div>
           <div class="blue--text">
-            jackson.graham@example.com {{ user.mail }}
+            {{ user.mail }}
           </div>
         </v-col>
-        <v-col cols="6" class="mb-2">
+        <v-col cols="6" class="mb-2" v-show="user.address">
           <div class="body-1 mb-2 grey--text">Адрес</div>
           <div class="">
-            Промышленная ул., 32, Ульяновск, Ульяновская обл., 432006
+            {{ user.address }}
           </div>
-        </v-col>
-        <v-col cols="6" class="mb-2">
-          <div class="body-1 mb-2 grey--text">Рабочий номер продавца</div>
-          <div class="">+7 (999) 999 99-99</div>
         </v-col>
       </v-row>
       <div class="mb-4 text-h5">Ведение ролей</div>
@@ -38,7 +40,7 @@
           class="pa-2"
           cols="4"
           md="4"
-          v-for="(section, i) in sections"
+          v-for="(role, i) in displayRoles"
           :key="i"
         >
           <v-sheet
@@ -54,7 +56,7 @@
             "
           >
             <div class="pa-2">
-              {{ section.text }}
+              {{ role }}
             </div>
           </v-sheet>
         </v-col>
@@ -73,15 +75,31 @@ import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState("user",["userId"]),
+    ...mapState("user", ["user", "roles"]),
+    showPersonalData() {
+      const { birthDate, gender, phone, address, mail } = this.user;
+      return birthDate || gender || phone || address || mail;
+    },
+    displayRoles() {
+      const parseRoles = this.roles.map(({ roles }) => roles);
+      const filtered = parseRoles.filter((role) => role.name === "");
+      return filtered.map(({ name }) => {
+        if (name === "PLAYER") return "Игрок";
+        if (name === "TRAINER") return "Тренер";
+        if (name === "SELLER") return "Продавец";
+        if (name === "string") return "недопустимая роль";
+      });
+    },
   },
   props: {
-    user: {
-      type: Object,
+    userId: {
+      type: String,
       required: true,
     },
   },
   mounted() {
+    this.$store.dispatch("user/getUser", this.userId);
+    this.$store.dispatch("user/getUserRoles", this.userId);
     const id = this.userId;
     this.sections = [
       {
@@ -117,23 +135,6 @@ export default {
   data() {
     return {
       checkbox: null,
-      breadcrumb_items: [
-        {
-          text: "Личный кабинет",
-          disabled: false,
-          href: "/",
-        },
-        {
-          text: "Мои спортивные комплексы",
-          disabled: false,
-          href: "/admin/sport_complex",
-        },
-        {
-          text: "Название комплекса",
-          disabled: true,
-          href: "",
-        },
-      ],
       sections: null,
     };
   },

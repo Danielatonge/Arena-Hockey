@@ -14,7 +14,15 @@
         <v-btn large class="mr-2 mb-2" color="grey lighten-2" elevation="0">
           Обратить в тех. поддержку
         </v-btn>
-        <v-btn large class="mr-2 mb-2" color="grey lighten-2" elevation="0">
+        <v-btn
+          large
+          class="mr-2 mb-2"
+          color="grey lighten-2"
+          elevation="0"
+          @click="
+            $router.push({ name: 'complex-information', params: { arenaId } })
+          "
+        >
           Вернуться к просмотру
         </v-btn>
       </div>
@@ -74,7 +82,7 @@
           </v-col>
           <v-col class="my-auto" cols="6" md="4">
             <div class="body-1 grey--text">
-              Найдено: {{ filteredTrainers.length }} результатов
+              Найдено: {{ atrainersList.length }} результатов
             </div>
           </v-col>
           <v-spacer></v-spacer>
@@ -90,7 +98,7 @@
         </v-row>
       </div>
       <v-row dense class="mx-n4">
-        <v-col cols="12" v-for="(item, i) in arena_trainers" :key="i">
+        <v-col cols="12" v-for="(item, i) in atrainers" :key="i">
           <AdminTrainerCard :arenaUser="item" @trainer-remove="removeTeam" />
         </v-col>
       </v-row>
@@ -115,7 +123,7 @@
           <v-card-text>
             <v-autocomplete
               v-model="selected_user"
-              :items="trainersList"
+              :items="tptrainersList"
               :loading="is_searching"
               :search-input.sync="search_text"
               color="white"
@@ -201,7 +209,6 @@
 
 <script>
 import { mapState } from "vuex";
-import axios from "axios";
 import AdminTrainerCard from "@/components/Admin/Trainer/AdminTrainerCard";
 
 export default {
@@ -215,40 +222,38 @@ export default {
       type: String,
       required: true,
     },
+    userId: {
+      type: String,
+      required: true,
+    },
   },
   created() {
-    axios.get(`/arena/${this.arenaId}/users`).then((response) => {
-      this.arena_trainers = response.data;
-    });
     this.$store.dispatch("arena/getTrainers", this.arenaId);
-    this.breadcrumb_items = [
-      {
-        text: "Личный кабинет",
-        disabled: false,
-        href: "",
-      },
-      {
-        text: "Мои спортивные комплексы",
-        disabled: false,
-        href: "/admin/sport_complex",
-      },
-      {
-        text: this.arena.title,
-        disabled: false,
-        href: "/admin/sport_complex/edit",
-      },
-      {
-        text: "Список команд",
-        disabled: true,
-        href: "",
-      },
-    ];
+    this.$store.dispatch("teamplayer/getPlayers");
   },
   computed: {
-    ...mapState("arena", ["trainers"]),
-    trainersList() {
-      return this.trainers.map((x) => {
-        return { ...x, fullName: `${x.name} ${x.middleName} ${x.surname}` };
+    ...mapState("teamplayer", {
+      tptrainers: "players",
+    }),
+    ...mapState("arena", {
+      atrainers: "trainers",
+    }),
+    atrainersList() {
+      return this.atrainers.map((x) => {
+        const user = x.user;
+        return {
+          ...user,
+          fullName: `${user.name} ${user.middleName} ${user.surname}`,
+        };
+      });
+    },
+    tptrainersList() {
+      return this.tptrainers.map((x) => {
+        const user = x;
+        return {
+          ...user,
+          fullName: `${user.name} ${user.middleName} ${user.surname}`,
+        };
       });
     },
   },
@@ -265,18 +270,14 @@ export default {
     },
     deleteTrainer() {
       const arenaId = this.arenaId;
-      axios
-        .delete(`/arena/${arenaId}/user/${this.userId}`)
-        .then((response) => {
-          console.log("RESPONSE_DELETE_TEAM", response);
-          this.arena_trainers = this.arena_trainers.filter(
-            (x) => x.user.id !== this.userId
-          );
+      this.$store
+        .dispatch("arena/deleteTrainer", {
+          arenaId,
+          trainerId: this.userId,
         })
-        .catch((err) => {
-          console.log(err);
+        .then(() => {
+          this.confirm_dialog = false;
         });
-      this.confirm_dialog = false;
     },
     removeTeam(id) {
       this.confirm_dialog = true;
@@ -285,31 +286,20 @@ export default {
     addTrainer() {
       this.adding = true;
       console.log("SELECTED", this.selected_user);
-      const arena_id = this.$route.params.id;
       const data = {
-        arenaId: arena_id,
+        arenaId: this.arenaId,
         userId: this.selected_user.id,
         visibility: this.hide_trainer ? 0 : 1,
       };
       console.log(data);
-
-      axios
-        .post("/arena/user", data)
-        .then((response) => {
-          console.log("RESPONSE", response.data);
-          const res = response.data;
-          const arenaUser = {
-            id: res.id,
-            arenaId: res.arenaId,
-            visibility: res.visibility,
-            user: this.selected_user,
-          };
-          this.arena_trainers.push(arenaUser);
+      this.$store
+        .dispatch("arena/createArenaUser", {
+          data,
+          user: this.selected_user,
+        })
+        .then(() => {
           this.add_trainer_dialog = false;
           this.selected_user = null;
-        })
-        .catch((err) => {
-          console.log(err);
         })
         .finally(() => (this.adding = false));
     },
@@ -334,7 +324,6 @@ export default {
       adding_player: false,
       search_text: "",
       adding: false,
-      userId: null,
     };
   },
 };

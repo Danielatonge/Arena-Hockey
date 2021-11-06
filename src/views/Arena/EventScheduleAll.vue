@@ -151,12 +151,12 @@ export default {
         {
           text: "Ледовые дворцы и арены",
           disabled: false,
-          href: "/arena",
+          to: "/arena",
         },
         {
           text: "Расписание мероприятий",
           disabled: true,
-          href: "/event_schedule",
+          to: "/event_schedule",
         },
       ],
       dialog: false,

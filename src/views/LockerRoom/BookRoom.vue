@@ -141,17 +141,17 @@ export default {
         {
           text: "Название арены",
           disabled: false,
-          href: "/arena",
+          to: "/arena",
         },
         {
           text: "Бронирование",
           disabled: false,
-          href: "/team",
+          to: "/team",
         },
         {
           text: "Контактная информация",
           disabled: true,
-          href: "/teamname",
+          to: "/teamname",
         },
       ],
     };

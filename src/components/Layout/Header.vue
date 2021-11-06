@@ -23,17 +23,26 @@
           class="rounded-lg"
         ></v-text-field>
 
-        <router-link to="/admin" class="reset-link">
-          <v-btn
-            class="ml-4 rounded-lg fix-margin-right"
-            height="40px"
-            depressed
-            color="primary"
-          >
-            Личный кабинет
-          </v-btn>
-        </router-link>
+        <v-btn
+          class="ml-4 rounded-lg fix-margin-right"
+          height="40px"
+          depressed
+          color="primary"
+          @click="$router.push({ name: 'user-profile', params: { userId } })"
+        >
+          Личный кабинет
+        </v-btn>
 
+        <v-btn
+          class="ml-7 rounded-lg fix-margin-right"
+          height="40px"
+          depressed
+          color="primary"
+          v-show="loggedIn"
+          @click="logout"
+        >
+          Выйти
+        </v-btn>
         <router-link :to="{name: 'vCarte'}">
         <v-badge
         style="position: relative;
@@ -88,8 +97,18 @@ import { mapGetters, mapActions } from "vuex";
 import { GET_CLIENT_CART_COUNT } from "@/api";
 export default {
   name: "Header",
+  computed: {
+    ...mapGetters("auth", ["loggedIn"]),
+    ...mapState("auth", ["userId"]),
+    ...mapGetters('sushilka',["CART_COUNT", "USER_ROLE"]),
+  },
   methods: {
-    ...mapActions('sushilka',["CHANGE_CART_COUNT"]),
+       ...mapActions('sushilka',["CHANGE_CART_COUNT"]),
+    logout() {
+      const userId = this.userId;
+      this.$store.dispatch("auth/logoutUser");
+      this.$router.push({ name: "login", params: { userId } });
+    },
     async getCartCount() {
       const token = localStorage.getItem("access_token");
       await Axios.get(`${GET_CLIENT_CART_COUNT}`, {
@@ -104,9 +123,6 @@ export default {
           console.error(error);
         });
     },
-  },
-  computed: {
-    ...mapGetters('sushilka',["CART_COUNT", "USER_ROLE"]),
   },
 };
 </script>

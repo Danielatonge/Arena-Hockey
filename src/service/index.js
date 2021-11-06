@@ -1,4 +1,7 @@
 import axios from "axios";
+// http://193.187.173.125:8090/
+// https://api-hockey-io.herokuapp.com
+const token = JSON.parse(localStorage.getItem("user", ["token"]));
 
 const apiClient = axios.create({
   baseURL: "https://api-hockey-io.herokuapp.com",
@@ -6,6 +9,7 @@ const apiClient = axios.create({
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
+    "x-access-token": token,
   },
   timeout: 10000,
 });
@@ -66,7 +70,7 @@ export const apiArena = {
   putArenaUser({ arenaUser, checked }) {
     const payload = {
       arenaId: arenaUser.arenaId,
-      teamId: arenaUser.user.id,
+      userId: arenaUser.user.id,
       visibility: checked ? 0 : 1,
     };
     const id = arenaUser.id;
@@ -78,7 +82,6 @@ export const apiArena = {
   putArena({ arenaId, arena }) {
     return apiClient.put(`/arena/${arenaId}`, arena);
   },
-
   postArena(arena) {
     return apiClient.post("/arena", arena);
   },
@@ -92,10 +95,11 @@ export const apiArena = {
     return apiClient.post("/event", event);
   },
 
-  createArenaUser({ arenaId, userId }) {
+  createArenaUser({ arenaId, userId, visibility }) {
     const payload = {
-      arenaId: arenaId,
-      userId: userId,
+      arenaId,
+      userId,
+      visibility,
     };
     return apiClient.post(`/arena/user`, payload);
   },
@@ -155,6 +159,12 @@ export const apiTeam = {
   getForums(teamId) {
     return apiClient.get(`/team/${teamId}/forums`);
   },
+  postTeam(team) {
+    return apiClient.post(`/team`, team);
+  },
+  putTeam({ teamId, team }) {
+    return apiClient.put(`/team/${teamId}`, team);
+  },
 
   deleteTeam(teamId) {
     return apiClient.delete(`/team/${teamId}`);
@@ -182,20 +192,50 @@ export const apiUser = {
     // TODO: Temporal
     return apiClient.get(`/user/${userId}/teams`);
   },
+  getTeam(teamId) {
+    return apiClient.get(`/team/${teamId}`);
+  },
   getArenas(userId) {
     // TODO: Temporal
     return apiClient.get(`/user/${userId}/arenas`);
   },
-  deleteArena(arenaId){
-    return apiClient.delete(`/arena/${arenaId}`)
+  deleteArena(arenaId) {
+    return apiClient.delete(`/arena/${arenaId}`);
+  },
+  deleteTeam(teamId) {
+    return apiClient.delete(`/team/${teamId}`);
   },
   getUser(userId) {
-    return apiClient.get(`/user/${userId}`)
-  }
+    return apiClient.get(`/user/${userId}`);
+  },
+  getRoles(userId) {
+    return apiClient.get(`/user/${userId}/roles`);
+  },
+  createUserTeam(userTeamId) {
+    return apiClient.post(`/team/user`, userTeamId);
+  },
+  getForums(userId) {
+    return apiClient.get(`/user/${userId}/forums`);
+  },
+  postForum(forum) {
+    return apiClient.post(`/forum`, forum);
+  },
+  putForum({ forumId, forum }) {
+    return apiClient.put(`/forum/${forumId}`, forum);
+  },
+  putUser({ userId, user }) {
+    return apiClient.patch(`/user/${userId}`, user);
+  },
+  getRoleID(roleName) {
+    return apiClient.get(`/role?title=${roleName}`);
+  },
+  createUserRole(userRoleId) {
+    return apiClient.post(`/roles`, userRoleId);
+  },
 };
 
 export const apiForum = {
-  filterForum(filter, type) {
+  filterForum({ filter, type }) {
     const { page, search, numItems, sort_asc, address } = filter;
     const url =
       `/forum/search?city=${address}&currentPage=${page}&pageSize=${numItems.value}` +
@@ -223,24 +263,33 @@ export const apiSchool = {
   getSchools() {
     return apiClient.get(`/schools`);
   },
+  getSchool(schoolId) {
+    return apiClient.get(`/school/${schoolId}`);
+  },
   getCities() {
     return apiClient.get(`/schools/cites`); //TODO: correctly spell out
   },
 };
 
 export const apiTeamPlayer = {
-  getTeams({ city, currentPage, pageSize, queryString, sortBy }) {
+  filterTeams({ city, currentPage, pageSize, queryString, sortBy }) {
     const url =
       `/team/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
       `&queryString=${queryString}&sortBy=${sortBy}`;
     return apiClient.get(url);
   },
-  getPlayers({ city, currentPage, pageSize, queryString, sortBy }) {
+  filterPlayers({ city, currentPage, pageSize, queryString, sortBy }) {
     const url =
       `/user/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
       `&queryString=${queryString}&sortBy=${sortBy}&role=PLAYER`;
     console.log(url);
     return apiClient.get(url);
+  },
+  getTeams() {
+    return apiClient.get(`/teams`);
+  },
+  getPlayers() {
+    return apiClient.get(`/users`);
   },
   getTeamCities() {
     return apiClient.get(`/team/cities`);
@@ -250,5 +299,28 @@ export const apiTeamPlayer = {
   },
   getTrainers() {
     return apiClient.get(`/user?role=TRAINER`);
+  },
+};
+
+export const apiAuth = {
+  postUser(user) {
+    return apiClient.post(`/registration`, user);
+  },
+  login(credential) {
+    return apiClient.post(`/login`, credential);
+  },
+  sendConfirmationCode(mail) {
+    console.log("🚀 ~ file: index.js ~ line 305 ~ forgetPassword ~ mail", {
+      mail,
+    });
+
+    return apiClient.post(`/sendConfirmationCode`, { mail });
+  },
+  verifyCode(code) {
+    console.log("🚀 ~ file: index.js ~ line 305 ~ forgetPassword ~ mail", {
+      code,
+    });
+
+    return apiClient.post(`/verifyCode`, { code });
   },
 };

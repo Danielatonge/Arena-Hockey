@@ -64,7 +64,17 @@
           :arena="arena"
           @remove-selected="removeFromSelected(arena)"
           @add-selected="addToSelected(arena)"
-        />
+        >
+          <v-btn
+            x-small
+            class="rounded-lg white"
+            height="30px"
+            elevation="0"
+            @click.stop="deleteArena(arena.id)"
+          >
+            <v-icon>mdi-delete-outline</v-icon>
+          </v-btn>
+        </AdminArenaCard>
       </v-col>
     </v-row>
     <div class="mb-3" v-if="!arenas.length">
@@ -72,21 +82,20 @@
     </div>
 
     <div>
-      <v-btn class="rounded-lg mr-2" large depressed color="primary">
-        <router-link to="/admin/sport_complex/create" class="reset-link d-flex">
-          <v-icon class="mr-2">mdi-plus</v-icon>
-          <div class="my-auto">Создать Арену</div>
-        </router-link>
-      </v-btn>
       <v-btn
-        :disabled="!selected_arenas.length"
-        class="rounded-lg ml-2"
-        color="grey lighten-2"
-        @click="deleteSelected"
+        class="rounded-lg mr-2"
         large
         depressed
+        color="primary"
+        @click="
+          $router.push({
+            name: 'create-complex-information',
+            params: { userId },
+          })
+        "
       >
-        <div class="my-auto">Удалить</div>
+        <!-- <v-icon class="mr-2">mdi-plus</v-icon> -->
+        <div class="my-auto">Создать Арену</div>
       </v-btn>
     </div>
   </v-container>
@@ -105,10 +114,14 @@ import { mapState } from "vuex";
 import AdminArenaCard from "@/components/Admin/AdminArenaCard.vue";
 
 export default {
-  name: "Home",
+  props: {
+    userId: {
+      type: String,
+      required: true,
+    },
+  },
   computed: {
     ...mapState("user", {
-      userId: "userId",
       arenas: (state) => state.arenas.map((item) => item.arena),
       selected_arenas: "selected_arenas",
     }),
@@ -130,27 +143,14 @@ export default {
     deleteSelected() {
       this.$store.dispatch("user/deleteSelected");
     },
+    deleteArena(arenaId) {
+      this.$store.dispatch("user/deleteArena", arenaId);
+    },
   },
   data() {
     return {
       selectedList: [],
-      breadcrumb_items: [
-        {
-          text: "Личный кабинет",
-          disabled: false,
-          href: "/",
-        },
-        {
-          text: "Мои спортивные комплексы",
-          disabled: false,
-          href: "/admin/sport_complex",
-        },
-        {
-          text: "Добавить арену",
-          disabled: true,
-          href: "/",
-        },
-      ],
+
       page: 1,
       perPage: 3,
       paginationLength: 10,

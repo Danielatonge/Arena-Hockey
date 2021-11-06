@@ -91,7 +91,10 @@
       </div>
       <v-row dense class="mx-n4">
         <v-col cols="12" md="6" v-for="(item, i) in teams" :key="i">
-          <router-link :to="`/teamname/${item.id}`" class="undo-link-default">
+          <router-link
+            :to="{ name: 'team-name', params: { teamId: item.id } }"
+            class="undo-link-default"
+          >
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
                 <v-avatar class="ma-3 rounded-lg" size="125" tile>
@@ -355,7 +358,7 @@ export default {
         sortBy: this.sort_model.key,
       };
       this.$store
-        .dispatch("teamplayer/getTeams", filters)
+        .dispatch("teamplayer/filterTeams", filters)
         .then(({ paginationLength, numFound }) => {
           this.paginationTeamLength = paginationLength;
           this.numFoundTeam = numFound;
@@ -370,7 +373,7 @@ export default {
         sortBy: this.sort_player.key,
       };
       this.$store
-        .dispatch("teamplayer/getPlayers", filters)
+        .dispatch("teamplayer/filterPlayers", filters)
         .then(({ paginationLength, numFound }) => {
           this.paginationPlayerLength = paginationLength;
           this.numFoundPlayer = numFound;

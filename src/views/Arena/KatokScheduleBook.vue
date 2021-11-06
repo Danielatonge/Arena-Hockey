@@ -199,7 +199,7 @@ export default {
       {
         text: "Бронирование",
         disabled: true,
-        href: "/event_schedule",
+        to: "/event_schedule",
       },
     ];
 

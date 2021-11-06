@@ -14,7 +14,15 @@
         <v-btn large class="mr-2 mb-2" color="grey lighten-2" elevation="0">
           Обратить в тех. поддержку
         </v-btn>
-        <v-btn large class="mr-2 mb-2" color="grey lighten-2" elevation="0">
+        <v-btn
+          large
+          class="mr-2 mb-2"
+          color="grey lighten-2"
+          elevation="0"
+          @click="
+            $router.push({ name: 'complex-information', params: { arenaId } })
+          "
+        >
           Вернуться к просмотру
         </v-btn>
       </div>
@@ -111,17 +119,14 @@
             </v-card-actions>
           </v-card>
         </v-menu>
-        <div
-          v-show="value === 3 && arena_events.length === 0"
-          class="text-center"
-        >
+        <div v-show="value === 3 && events.length === 0" class="text-center">
           <h3 class="grey--text lighten-3--text text-h6 mb-2">
             Нет мероприятий
           </h3>
         </div>
         <div
           v-show="value === 3"
-          v-for="(event, index) in arena_events"
+          v-for="(event, index) in events"
           :key="index"
           class="mb-10 pl-5"
         >
@@ -144,10 +149,9 @@
 </template>
 
 <script>
-import axios from "axios";
 import moment from "moment";
 import ArenaEventCard from "@/components/Arena/ArenaEventCard";
-
+import { mapState } from "vuex";
 export default {
   components: { ArenaEventCard },
   props: {
@@ -156,6 +160,10 @@ export default {
       required: true,
     },
     arenaId: {
+      type: String,
+      required: true,
+    },
+    userId: {
       type: String,
       required: true,
     },
@@ -178,12 +186,12 @@ export default {
   },
   created() {
     this.$store.dispatch("arena/getEvents", this.arenaId);
-    this.fetchArenaEvent(this.arenaId);
   },
   computed: {
+    ...mapState("arena", ["events"]),
     getEvents() {
       const events = [];
-      this.arena_events.forEach((event) => {
+      this.events.forEach((event) => {
         const nEvents = this.generateEvents(event);
         events.push(...nEvents);
       });
@@ -213,19 +221,9 @@ export default {
         "orange",
         "grey lighten-1",
       ],
-      arena_events: [],
-      events: [],
     };
   },
   methods: {
-    async fetchArenaEvent(arenaId) {
-      axios
-        .get(`/arena/${arenaId}/events`)
-        .then((response) => {
-          this.arena_events = response.data;
-        })
-        .catch((err) => console.log(err));
-    },
     goToAddEvent() {
       const arenaId = this.arena.id;
       this.$router.push({
@@ -314,13 +312,7 @@ export default {
       return arr_events;
     },
     deleteEvent(eventId) {
-      axios
-        .delete(`/event/${eventId}`)
-        .then((response) => {
-          console.log(response.data);
-          this.arena_events = this.arena_events.filter((x) => x.id !== eventId);
-        })
-        .catch((err) => console.log(err));
+      this.$store.dispatch("arena/deleteEvent", eventId);
     },
   },
 };

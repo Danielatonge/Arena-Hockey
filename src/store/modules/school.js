@@ -6,6 +6,7 @@ export const state = () => ({
   com: [],
   state: [],
   cities: [],
+  school: {},
 });
 
 export const mutations = {
@@ -18,6 +19,9 @@ export const mutations = {
   SET_CITIES(state, cities) {
     state.cities = cities;
   },
+  SET_SCHOOL(state, school) {
+    state.school = school;
+  },
 };
 
 export const actions = {
@@ -26,7 +30,7 @@ export const actions = {
       .filterSchools(filters, type)
       .then((response) => {
         const res = response.data;
-        if (type === 'STATE') commit("SET_STATE", res.content);
+        if (type === "STATE") commit("SET_STATE", res.content);
         else commit("SET_COM", res.content);
         return {
           pagination: res.totalPages,
@@ -40,6 +44,15 @@ export const actions = {
       .getCities()
       .then((response) => {
         commit("SET_CITIES", response.data);
+        return response.data;
+      })
+      .catch((err) => console.log(err));
+  },
+  getSchool({ commit }, schoolId) {
+    return api
+      .getSchool(schoolId)
+      .then((response) => {
+        commit("SET_SCHOOL", response.data);
         return response.data;
       })
       .catch((err) => console.log(err));

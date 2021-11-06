@@ -14,7 +14,13 @@
               height="250px"
               width="100%"
             >
-              <v-img :src="user.profilePicture"></v-img>
+              <v-img
+                :src="
+                  user.profilePicture
+                    ? user.profilePicture
+                    : require('@/assets/unknown.jpeg')
+                "
+              ></v-img>
             </v-avatar>
           </v-col>
           <v-col cols="8" md="9">
@@ -25,29 +31,19 @@
               <div>{{ validAge(user.age) }}</div>
             </div>
             <div>
-              <router-link
-                :to="{ name: '', params: { userId: user.id } }"
-                class="reset-link"
-              >
-                <v-btn large class="mr-2 mb-2" color="primary" elevation="0">
-                  Редактировать
-                </v-btn>
-              </router-link>
               <v-btn
                 large
                 class="mr-2 mb-2"
                 color="grey lighten-2"
                 elevation="0"
+                @click="
+                  $router.push({
+                    name: 'admin-user-view',
+                    params: { userId: user.id },
+                  })
+                "
               >
-                Изменить пароль
-              </v-btn>
-              <v-btn
-                large
-                class="mr-2 mb-2"
-                color="grey lighten-2"
-                elevation="0"
-              >
-                Обратиться в тех.поддержку
+                перейти к пользователю
               </v-btn>
             </div>
           </v-col>
@@ -61,7 +57,7 @@
             <AppVerticalSidebar :items="sidebar_items" />
           </v-col>
           <v-col cols="12" md="9">
-            <router-view :user="user" :loading="loading"></router-view>
+            <router-view :user="user"></router-view>
           </v-col>
         </v-row>
       </v-container>
@@ -73,68 +69,65 @@
 import { mapState } from "vuex";
 
 export default {
-  name: "AdminLayoutSection",
+  props: {
+    userId: {
+      type: String,
+      required: true,
+    },
+  },
   created() {
+    this.$store.dispatch("user/getUser", this.userId);
     const userId = this.userId;
-    this.fetchUser(userId);
+    this.sidebar_items = [
+      {
+        text: "Профиль",
+        link: { name: "user-profile", params: { userId } },
+      },
+      {
+        text: "Центр сообщений",
+        link: "",
+      },
+      {
+        text: "Корзина",
+        link: ``,
+      },
+      {
+        text: "Избранное",
+        link: ``,
+      },
+      {
+        text: "Мои команды",
+        link: { name: "admin-team", params: { userId } },
+      },
+      {
+        text: "Мои спортивные комплексы",
+        link: { name: "admin-add-arena-sportcomplex", params: { userId } },
+      },
+
+      {
+        text: "Моя организация",
+        link: ``,
+      },
+      {
+        text: "Мои мероприятия",
+        link: ``,
+      },
+      { text: "Календарь мероприятий", link: `` },
+    ];
   },
   computed: {
-    ...mapState("user", ["userId", "user"]),
+    ...mapState("user", ["user"]),
   },
   data() {
     return {
       breadcrumb_items: [
         {
           text: "Личный кабинет",
-          disabled: false,
-          href: "/",
-        },
-        {
-          text: "Название подраздела",
-          disabled: false,
-          href: "/admin/sport_complex",
-        },
-        {
-          text: "Название раздела",
           disabled: true,
-          href: "",
         },
       ],
-      sidebar_items: [
-        {
-          text: "Профиль",
-          link: `/admin`,
-        },
-        {
-          text: "Центр сообщений",
-          link: `/admin/sport_complex/add`,
-        },
-        {
-          text: "Корзина",
-          link: ``,
-        },
-        {
-          text: "Избранное",
-          link: ``,
-        },
-        {
-          text: "Мои команды",
-          link: `/admin/teams`,
-        },
-        { text: "Мои спортивные комплексы", link: `/admin/sport_complex` },
-
-        {
-          text: "Моя организация",
-          link: ``,
-        },
-        {
-          text: "Мои мероприятия",
-          link: ``,
-        },
-        { text: "Календарь мероприятий", link: `` },
-      ],
+      sidebar_items: [],
       sidebar_tab: 0,
-      loading: false,
     };
   },
   methods: {
@@ -142,9 +135,6 @@ export default {
       if (age) {
         return `${age} год`;
       }
-    },
-    fetchUser(userId) {
-      this.$store.dispatch("user/getUser", userId);
     },
   },
 };

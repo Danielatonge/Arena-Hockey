@@ -1,57 +1,82 @@
 <template>
   <div>
     <div class="text-h4 pb-5">Платные услуги</div>
-    <v-card color="transparent" elevation="0" class="mb-5 d-flex flex-no-wrap">
-      <div class="mr-10 ml-5">
-        <admin-image-uploader v-model="avatar">
-          <div slot="activator">
-            <v-avatar
-              size="200px"
-              v-ripple
-              tile
-              v-if="!avatar"
-              class="grey lighten-3 mb-3 rounded-lg"
-            >
-              <span><v-icon large>mdi-upload</v-icon></span>
-            </v-avatar>
-            <v-avatar size="200px" tile v-ripple v-else class="mb-3 rounded-lg">
-              <img :src="avatar.imageURL" alt="avatar" />
-            </v-avatar>
-          </div>
-        </admin-image-uploader>
-      </div>
+    <v-card color="transparent" elevation="0" class="mb-5">
       <v-row>
-        <v-col cols="6">
-          <v-text-field
-            label="Название"
-            v-model="item.title"
-            outlined
-            flat
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-text-field>
+        <v-col class="pa-2" cols="6" sm="4" md="4">
+          <admin-image-uploader v-model="avatar">
+            <div slot="activator">
+              <div v-if="!avatar" class="white rounded-xl pa-4">
+                <v-avatar
+                  width="100%"
+                  height="200"
+                  v-ripple
+                  tile
+                  class="white rounded-xl"
+                >
+                  <div class="upload-border rounded-xl pa-4">
+                    <div class="my-4">
+                      <v-icon large color="#379AD3"
+                        >mdi-cloud-upload-outline</v-icon
+                      >
+                    </div>
+                    <div class="body-1 mb-2 font-weight-bold">
+                      Загрузите логотип
+                    </div>
+                    <div class="body-2 mb-4 grey--text">
+                      Поддерживаемые форматы: PNG, JPG
+                    </div>
+                  </div>
+                </v-avatar>
+              </div>
+              <div v-else class="white rounded-xl pa-4">
+                <v-avatar width="100%" height="200" tile v-ripple>
+                  <v-img
+                    class="ma-10 rounded-xl"
+                    :src="avatar.imageURL"
+                    alt="avatar"
+                    cover
+                  ></v-img>
+                </v-avatar>
+              </div>
+            </div>
+          </admin-image-uploader>
         </v-col>
-        <v-col cols="3">
-          <v-select
-            :items="serviceTypes"
-            v-model="item.serviceType"
-            solo
-            flat
-            class="my-auto"
-            hide-details="auto"
-            item-text="translation"
-            item-value="value"
-            return-object
-          ></v-select>
-        </v-col>
-        <v-col cols="12">
-          <v-textarea
-            solo
-            v-model="item.description"
-            name=""
-            flat
-            elevation="0"
-          ></v-textarea>
+        <v-col cols="12" md="8">
+          <v-row>
+            <v-col cols="8">
+              <v-text-field
+                label="Название"
+                v-model="item.title"
+                outlined
+                flat
+                hide-details="auto"
+                class="rounded-lg"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="4">
+              <v-select
+                :items="serviceTypes"
+                v-model="item.serviceType"
+                solo
+                flat
+                class="my-auto"
+                hide-details="auto"
+                item-text="translation"
+                item-value="value"
+                return-object
+              ></v-select>
+            </v-col>
+            <v-col cols="12">
+              <v-textarea
+                solo
+                v-model="item.description"
+                name=""
+                flat
+                elevation="0"
+              ></v-textarea>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
     </v-card>
@@ -83,7 +108,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
 
 export default {
@@ -92,6 +116,10 @@ export default {
   },
   props: {
     arenaId: {
+      type: String,
+      required: true,
+    },
+    userId: {
       type: String,
       required: true,
     },
@@ -129,16 +157,12 @@ export default {
         width: width,
       };
       console.log(data);
-      axios
-        .post(`service`, data)
-        .then((response) => {
-          console.log(response.data);
-          this.$router.push({
-            name: "edit-admin-payment-portal",
-            params: { arenaId: this.arenaId },
-          });
-        })
-        .catch((err) => console.log(err));
+      this.$store.dispatch("arena/saveService", data).then(() => {
+        this.$router.push({
+          name: "edit-admin-payment-portal",
+          params: { arenaId: this.arenaId },
+        });
+      });
     },
   },
 };

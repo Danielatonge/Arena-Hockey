@@ -29,12 +29,12 @@
           class="pa-4"
           cols="12"
           md="6"
-          v-for="(item, i) in pteam.items"
+          v-for="(item, i) in _pteam"
           :key="i"
         >
           <v-card elevation="0" class="pa-5 rounded-lg">
             <div class="d-flex flex-no-wrap">
-              <v-card-text class="px-0">
+              <v-card-text class="px-0 pt-0">
                 <div class="body-1 grey--text">
                   {{ dateFormat(item.date) }}
                 </div>
@@ -59,7 +59,7 @@
       <ForumPagination
         :page="pteam.page"
         :length="pteam.paginationLength"
-        :show="!!pteam.items.length"
+        :show="!!_pteam.length"
       />
     </v-container>
     <v-container class="pt-16 pb-0" v-show="value == 1">
@@ -75,12 +75,12 @@
           class="pa-4"
           cols="12"
           md="6"
-          v-for="(item, i) in tplayer.items"
+          v-for="(item, i) in _tplayer"
           :key="i"
         >
           <v-card elevation="0" class="pa-5">
             <div class="d-flex flex-no-wrap">
-              <v-card-text class="px-0">
+              <v-card-text class="px-0 pt-0">
                 <div class="body-1 grey--text">
                   {{ dateFormat(item.date) }}
                 </div>
@@ -108,7 +108,7 @@
       <ForumPagination
         :page="tplayer.page"
         :length="tplayer.paginationLength"
-        :show="!!tplayer.items.length"
+        :show="!!_tplayer.length"
       />
     </v-container>
     <v-container class="pt-16 pb-0" v-show="value == 2">
@@ -129,7 +129,7 @@
         >
           <v-card elevation="0" class="pa-5">
             <div class="d-flex flex-no-wrap">
-              <v-card-text class="px-0">
+              <v-card-text class="px-0 pt-0">
                 <div class="body-1 grey--text">
                   {{ dateFormat(item.date) }}
                 </div>
@@ -210,9 +210,9 @@
 </template>
 
 <script>
-import axios from "axios";
 import ForumFilter from "@/components/Forum/ForumFilter";
 import ForumPagination from "../../components/Forum/ForumPagination";
+import { mapState } from "vuex";
 
 export default {
   name: "SubstituteBench",
@@ -231,8 +231,9 @@ export default {
       this.fetchtteam();
     },
   },
-  created() {
-    this.$store.dispatch("forum/getForums");
+  computed: mapState("forum", ["_pteam", "_tplayer", "_ttrainer", "_tteam"]),
+  mounted() {
+    // this.$store.dispatch("forum/getForums");
     this.fetchpteam();
     this.fetchtplayer();
     this.fetchttrainer();
@@ -248,7 +249,7 @@ export default {
         paginationLength: 10,
         numItems: { state: "Показывать по 10", value: 10 },
         sort_asc: { key: 0, value: "По именни (от А до Я)" },
-        address: "Россия",
+        address: "Москва",
         items: [],
       },
       tplayer: {
@@ -257,7 +258,7 @@ export default {
         paginationLength: 10,
         numItems: { state: "Показывать по 10", value: 10 },
         sort_asc: { key: 0, value: "По именни (от А до Я)" },
-        address: "Россия",
+        address: "Москва",
         items: [],
       },
       ttrainer: {
@@ -266,7 +267,7 @@ export default {
         paginationLength: 10,
         numItems: { state: "Показывать по 10", value: 10 },
         sort_asc: { key: 0, value: "По именни (от А до Я)" },
-        address: "Россия",
+        address: "Москва",
         items: [],
       },
       tteam: {
@@ -275,14 +276,14 @@ export default {
         paginationLength: 10,
         numItems: { state: "Показывать по 10", value: 10 },
         sort_asc: { key: 0, value: "По именни (от А до Я)" },
-        address: "Россия",
+        address: "Москва",
         items: [],
       },
       sort_in: [
         { key: 0, value: "По именни (от А до Я)" },
         { key: 1, value: "По именни (от Я до А)" },
       ],
-      location: ["Россия"],
+      location: ["Москва"],
 
       bench_nav: [
         "Игроки ищут команду",
@@ -309,80 +310,55 @@ export default {
       });
       return formatter.format(newDate);
     },
+    returnFilter({ page, search, numItems, sort_asc, address }) {
+      return { page, search, numItems, sort_asc, address };
+    },
     fetchpteam() {
-      const { page, search, numItems, sort_asc, address } = this.pteam;
-      const url =
-        `/forum/search?city=${address}&currentPage=${page}&pageSize=${numItems.value}` +
-        `&queryString=${search}&sortBy=${sort_asc.key}&type=PLAYERTEAM`;
-      console.log(url);
-      axios
-        .get(url)
-        .then((response) => {
-          console.log(response.data);
-          const res = response.data;
-          this.pteam.items = res.content;
-          this.pteam.paginationLength = res.totalPages;
-          this.pteam.numItems = res.totalElements;
+      this.$store
+        .dispatch("forum/filterForums", {
+          filter: this.pteam,
+          type: "PLAYERTEAM",
         })
-        .catch((err) => {
-          console.log(err);
+        .then(({ pagination, numFound }) => {
+          this.pteam.paginationLength = pagination;
+          this.pteam.numItems = numFound;
+          this.pteam.items = this._pteam;
         });
     },
     fetchtplayer() {
-      const { page, search, numItems, sort_asc, address } = this.tplayer;
-      const url =
-        `/forum/search?city=${address}&currentPage=${page}&pageSize=${numItems.value}` +
-        `&queryString=${search}&sortBy=${sort_asc.key}&type=TEAMPLAYER`;
-      console.log(url);
-      axios
-        .get(url)
-        .then((response) => {
-          console.log(response.data);
-          const res = response.data;
-          this.tplayer.items = res.content;
-          this.tplayer.paginationLength = res.totalPages;
-          this.tplayer.numItems = res.totalElements;
+      this.$store
+        .dispatch("forum/filterForums", {
+          filter: this.tplayer,
+          type: "TEAMPLAYER",
         })
-        .catch((err) => {
-          console.log(err);
+        .then(({ pagination, numFound }) => {
+          this.tplayer.paginationLength = pagination;
+          this.tplayer.numItems = numFound;
+          this.tplayer.items = this._tplayer;
         });
     },
     fetchttrainer() {
-      const { page, search, numItems, sort_asc, address } = this.ttrainer;
-      const url =
-        `/forum/search?city=${address}&currentPage=${page}&pageSize=${numItems.value}` +
-        `&queryString=${search}&sortBy=${sort_asc.key}&type=TEAMTRAINER`;
-      console.log(url);
-      axios
-        .get(url)
-        .then((response) => {
-          console.log(response.data);
-          const res = response.data;
-          this.ttrainer.items = res.content;
-          this.ttrainer.paginationLength = res.totalPages;
-          this.ttrainer.numItems = res.totalElements;
+      this.$store
+        .dispatch("forum/filterForums", {
+          filter: this.ttrainer,
+          type: "TEAMTRAINER",
         })
-        .catch((err) => {
-          console.log(err);
+        .then(({ pagination, numFound }) => {
+          this.ttrainer.paginationLength = pagination;
+          this.ttrainer.numItems = numFound;
+          this.ttrainer.items = this._ttrainer;
         });
     },
     fetchtteam() {
-      const { page, search, numItems, sort_asc, address } = this.tteam;
-      const url =
-        `/forum/search?city=${address}&currentPage=${page}&pageSize=${numItems.value}` +
-        `&queryString=${search}&sortBy=${sort_asc.key}&type=TRAINERTEAM`;
-      console.log(url);
-      axios
-        .get(url)
-        .then((response) => {
-          console.log(response.data);
-          const res = response.data;
-          this.tteam.items = res.content;
-          this.tteam.paginationLength = res.totalPages;
-          this.tteam.numItems = res.totalElements;
+      this.$store
+        .dispatch("forum/filterForums", {
+          filter: this.tteam,
+          type: "TRAINERTEAM",
         })
-        .catch((err) => {
-          console.log(err);
+        .then(({ pagination, numFound }) => {
+          this.tteam.paginationLength = pagination;
+          this.tteam.numItems = numFound;
+          this.tteam.items = this._tteam;
         });
     },
   },

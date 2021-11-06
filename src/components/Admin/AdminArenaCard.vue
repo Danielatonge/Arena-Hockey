@@ -25,16 +25,18 @@
             редактировать
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn
-            @click.stop="selectToggle"
-            :class="[selected ? 'primary' : '']"
-            x-small
-            class="rounded-lg white"
-            height="30px"
-            elevation="0"
-          >
-            <v-icon>{{ checkPlus }}</v-icon>
-          </v-btn>
+          <slot>
+            <v-btn
+              @click.stop="selectToggle"
+              :class="[selected ? 'primary' : '']"
+              x-small
+              class="rounded-lg white"
+              height="30px"
+              elevation="0"
+            >
+              <v-icon>{{ checkPlus }}</v-icon>
+            </v-btn>
+          </slot>
         </v-row>
       </v-container>
     </v-img>
@@ -75,7 +77,7 @@ export default {
     goToAdminArena() {
       this.$store.dispatch("arena/setArena", this.arena);
       const arenaId = this.arena.id;
-      
+
       this.$router.push({
         name: "complex-information",
         params: { arenaId },

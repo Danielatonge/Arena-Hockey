@@ -88,7 +88,10 @@
       </div>
       <v-row dense class="mx-n4">
         <v-col cols="12" md="6" v-for="(item, i) in com" :key="i">
-          <router-link :to="`/school/${item.id}`" class="undo-link-default">
+          <router-link
+            :to="{ name: 'sport-school', params: { schoolId: item.id } }"
+            class="undo-link-default"
+          >
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
                 <v-avatar class="ma-3 rounded-lg" size="180" tile>
@@ -214,7 +217,10 @@
       </div>
       <v-row dense class="mx-n4">
         <v-col cols="12" md="6" v-for="(item, i) in state" :key="i">
-          <router-link :to="`/school/${item.id}`" class="undo-link-default">
+          <router-link
+            :to="{ name: 'sport-school', params: { schoolId: item.id } }"
+            class="undo-link-default"
+          >
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
                 <v-avatar class="ma-3 rounded-lg" size="180" tile>

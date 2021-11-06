@@ -3,6 +3,7 @@
     <Header />
     <Navbar />
     <v-main class="grey lighten-4">
+      <Notifications />
       <router-view />
     </v-main>
     <Footer />
@@ -13,10 +14,11 @@
 import Navbar from "./components/Layout/Navbar.vue";
 import Header from "./components/Layout/Header.vue";
 import Footer from "./components/Layout/Footer.vue";
+import Notifications from "@/components/AppComposite/Notifications.vue";
 import "vue-image-lightbox/dist/vue-image-lightbox.min.css";
 
 export default {
-  components: { Navbar, Header, Footer },
+  components: { Navbar, Header, Footer, Notifications },
 };
 </script>
 

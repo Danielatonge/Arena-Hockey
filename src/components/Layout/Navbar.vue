@@ -22,9 +22,10 @@
 
         <v-list dense>
           <v-list-item
-            v-for="item in items"
-            :key="item.text"
+            v-for="(item, index) in items"
+            :key="index"
             router
+            exact-path
             :to="item.route"
           >
             <v-list-item-content>
@@ -73,9 +74,10 @@
       <v-tabs-slider color="white"></v-tabs-slider>
       <v-tab
         class="white--text"
-        v-for="item in items"
-        :key="item.text"
+        v-for="(item, index) in items"
+        :key="index"
         router
+        exact-path
         :to="item.route"
       >
         {{ item.text }}

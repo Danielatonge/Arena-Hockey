@@ -14,7 +14,15 @@
         <v-btn large class="mr-2 mb-2" color="grey lighten-2" elevation="0">
           Обратить в тех. поддержку
         </v-btn>
-        <v-btn large class="mr-2 mb-2" color="grey lighten-2" elevation="0">
+        <v-btn
+          large
+          class="mr-2 mb-2"
+          color="grey lighten-2"
+          elevation="0"
+          @click="
+            $router.push({ name: 'complex-information', params: { arenaId } })
+          "
+        >
           Вернуться к просмотру
         </v-btn>
       </div>
@@ -68,7 +76,7 @@
           </v-col>
           <v-col class="my-auto" cols="6" md="4">
             <div class="body-1 grey--text">
-              Найдено: {{ arena_teams.length }} результатов
+              Найдено: {{ ateams.length }} результатов
             </div>
           </v-col>
           <v-spacer></v-spacer>
@@ -87,7 +95,7 @@
         </v-row>
       </div>
       <v-row dense class="mx-n4">
-        <v-col cols="12" v-for="(teamObj, i) in arena_teams" :key="i">
+        <v-col cols="12" v-for="(teamObj, i) in ateams" :key="i">
           <AdminTeamCard :arenaTeam="teamObj" @team-remove="removeTeam">
             <template #button>
               <v-col cols="12" md="4" lg="7">
@@ -133,7 +141,7 @@
           <v-card-text>
             <v-autocomplete
               v-model="selected_team"
-              :items="teams"
+              :items="tpteams"
               :loading="is_searching"
               color="white"
               solo
@@ -214,7 +222,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import { mapState } from "vuex";
 import AdminTeamCard from "@/components/Admin/Team/AdminTeamCard";
 
@@ -223,50 +230,34 @@ export default {
   props: {
     arenaId: {
       type: String,
-      required: true 
+      required: true,
+    },
+    userId: {
+      type: String,
+      required: true,
     },
   },
   computed: {
-    ...mapState("arena", ["teams"]),
+    ...mapState("teamplayer", {
+      tpteams: "teams",
+    }),
+    ...mapState("arena", {
+      ateams: "teams",
+    }),
   },
-  watch: {},
   mounted() {
     this.$store.dispatch("teamplayer/getTeams");
-    this.$store.dispatch("arena/getTeams", this.arenaId).then((data) => {
-      this.arena_teams = data;
-    });
+    this.$store.dispatch("arena/getTeams", this.arenaId);
   },
   data() {
     return {
       page: 1,
       perPage: 5,
-      arena_teams: [],
       current_team: -1,
       paginationLength: 1,
       confirm_dialog: false,
       add_team_dialog: false,
-      breadcrumb_items: [
-        {
-          text: "Личный кабинет",
-          disabled: false,
-          href: "",
-        },
-        {
-          text: "Мои спортивные комплексы",
-          disabled: false,
-          href: "/admin/sport_complex",
-        },
-        {
-          text: "Редактирование спортивного комплекса",
-          disabled: true,
-          href: "/admin/sport_complex/edit",
-        },
-        {
-          text: "Список команд",
-          disabled: true,
-          href: "",
-        },
-      ],
+
       team_tags: [
         { value: null, text: "Город" },
         { value: "Москва", text: "Москва" },
@@ -302,50 +293,28 @@ export default {
       this.teamId = id;
     },
     deleteTeam() {
-      axios
-        .delete(`/arena/${this.arenaId}/team/${this.teamId}`)
-        .then((response) => {
-          console.log("RESPONSE_DELETE_TEAM", response);
-          this.arena_teams = this.arena_teams.filter(
-            (x) => x.team.id !== this.teamId
-          );
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
+      this.$store.dispatch("arena/deleteTeam", {
+        arenaId: this.arenaId,
+        teamId: this.teamId,
+      });
       this.confirm_dialog = false;
     },
 
     addTeam() {
       this.adding_team = true;
-      console.log("SELECTED", this.selected_team);
       const data = {
         arenaId: this.arenaId,
         teamId: this.selected_team.id,
         visibility: this.hide_team ? 0 : 1,
       };
-      console.log(data);
-      axios
-        .post(`/arena/team`, data)
-        .then((response) => {
-          console.log("RESPONSE", response.data);
-          const res = response.data;
-          const arenaTeam = {
-            id: res.id,
-            arenaId: res.arenaId,
-            visibility: res.visibility,
-            team: this.selected_team,
-          };
-          this.arena_teams.push(arenaTeam);
+      this.$store
+        .dispatch("arena/createArenaTeam", { data, team: this.selected_team })
+        .then(() => {
           this.add_team_dialog = false;
           this.selected_team = null;
           this.hide_team = false;
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => (this.adding_team = false));
+          this.adding_team = false;
+        });
     },
   },
 };

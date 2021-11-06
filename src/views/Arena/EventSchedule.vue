@@ -83,7 +83,7 @@
             </v-card-actions>
           </v-card>
         </v-menu>
-        <div v-show="value === 3 && fevents.length === 0" class="text-center">
+        <div v-show="value === 3 && events.length === 0" class="text-center">
           <h3 class="grey--text lighten-3--text text-h6 mb-2">
             Нет мероприятий
           </h3>

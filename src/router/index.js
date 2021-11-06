@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 import Main from "../views/Home/Home.vue";
 import Arena from "../views/Arena/Arena.vue";
 import Room from "../views/LockerRoom/Room.vue";
+import SportSchool from "../views/Schools/SportSchool.vue";
 import SportSchools from "../views/Schools/SportSchools.vue";
 import TeamName from "../views/LockerRoom/TeamName.vue";
 import ArenaName from "../views/Arena/ArenaName.vue";
@@ -41,13 +42,23 @@ import EditAdminTrainStaff from "../views/Admin/Arena/Edit/EditAdminTrainStaff.v
 import EditAdminPriceList from "../views/Admin/Arena/Edit/EditAdminPriceList.vue";
 
 import CreateComplexInformation from "../views/Admin/Arena/Create/CreateComplexInformation.vue";
+import CreateAdminTeam from "../views/Admin/Team/Create/CreateAdminTeam.vue";
+import EditAdminTeam from "../views/Admin/Team/Edit/EditAdminTeam.vue";
+import AdminTeamView from "../views/Admin/Team/View/AdminTeamView.vue";
 
 import KidsTournaments from "../views/KidsTournaments/Home.vue";
 import AdminLayoutSection from "../views/Admin/AdminLayoutSection";
-import UserProfile from "../views/Admin/User/View/UserProfile";
+import UserProfile from "../views/Admin/User/UserProfile";
 import CreateArenaEvent from "../views/Admin/Arena/Create/CreateArenaEvent";
 import EditAdminService from "../views/Admin/Arena/Edit/EditAdminService";
 import CreateAdminService from "../views/Admin/Arena/Create/CreateAdminService";
+
+import UserInformation from "../views/Admin/User/View/UserInformation.vue";
+import EditUserInformation from "../views/Admin/User/Edit/EditUserInformation.vue";
+
+import Login from "../views/Admin/Auth/Login.vue";
+import Registration from "../views/Admin/Auth/Registration.vue";
+import RegisterRole from "../views/Admin/Auth/RegisterRole.vue";
 
 import categoriesPage from '../views/Sushilka/categoriesPage.vue';
 import authorizationForm from '../views/Sushilka/authorizationForm.vue';
@@ -163,6 +174,12 @@ const routes = [
     component: SportSchools,
   },
   {
+    path: "/school/:schoolId",
+    name: "sport-school",
+    component: SportSchool,
+    props: true,
+  },
+  {
     path: "/teamname/:teamId",
     name: "team-name",
     component: TeamName,
@@ -179,53 +196,81 @@ const routes = [
     component: SubstituteBench,
   },
   {
-    path: "/admin",
+    path: "/admin/:userId",
     component: AdminLayoutSection,
+    props: true,
     children: [
       {
         path: "",
         name: "user-profile",
         component: UserProfile,
+        props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "sport_complex",
         name: "admin-add-arena-sportcomplex",
         component: AdminAddArenaSportComplex,
+        props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "teams",
         name: "admin-team",
         component: AdminTeam,
+        props: true,
+        meta: { requiresAuth: true },
       },
     ],
   },
   {
-    path: "/admin/sport_complex/create",
-    name: "create-complex-information",
-    component: CreateComplexInformation,
+    path: "/admin/:userId/teams/create",
+    name: "admin-team-create",
+    component: CreateAdminTeam,
+    meta: { requiresAuth: true },
+    props: true,
   },
   {
-    path: "/admin/sport_complex/:arenaId",
+    path: "/admin/:userId/sport_complex/create",
+    name: "create-complex-information",
+    component: CreateComplexInformation,
+    meta: { requiresAuth: true },
+    props: true,
+  },
+  {
+    path: "/admin/user/:userId",
+    name: "admin-user-view",
+    component: UserInformation,
+    props: true,
+    meta: { requiresAuth: true },
+  },
+
+  {
+    path: "/admin/:userId/sport_complex/:arenaId",
     component: NameComplex,
     props: true,
+    meta: { requiresAuth: true },
     children: [
       {
         path: "",
         name: "complex-information",
         component: ComplexInformation,
         props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "payment_portal",
         name: "admin-payment-portal",
         component: AdminPaymentPortal,
         props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "schedule_event",
         name: "admin-schedule-event",
         component: AdminScheduleEvent,
         props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "team_list",
@@ -238,11 +283,12 @@ const routes = [
         name: "admin-train-staff",
         component: AdminTrainStaff,
         props: true,
+        meta: { requiresAuth: true },
       },
     ],
   },
   {
-    path: "/admin/sport_complex/:arenaId/edit",
+    path: "/admin/:userId/sport_complex/:arenaId/edit",
     component: EditNameComplex,
     props: true,
     children: [
@@ -251,30 +297,35 @@ const routes = [
         name: "edit-complex-information",
         component: EditComplexInformation,
         props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "payment_portal",
         name: "edit-admin-payment-portal",
         component: EditAdminPaymentPortal,
         props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "payment_portal/create_service",
         name: "create-admin-service",
         component: CreateAdminService,
         props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "payment_portal/price_list/:serviceId",
         name: "edit-admin-pricelist",
         component: EditAdminPriceList,
         props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "payment_portal/:serviceId",
         name: "edit-admin-service",
         component: EditAdminService,
         props: true,
+        meta: { requiresAuth: true },
       },
 
       {
@@ -282,26 +333,67 @@ const routes = [
         name: "edit-admin-schedule-event",
         component: EditAdminScheduleEvent,
         props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "schedule_event/create_event",
         name: "create-arena-event",
         component: CreateArenaEvent,
         props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "team_list",
         name: "edit-admin-teamlist",
         component: EditAdminTeamList,
         props: true,
+        meta: { requiresAuth: true },
       },
       {
         path: "training_staff",
         name: "edit-admin-train-staff",
         component: EditAdminTrainStaff,
         props: true,
+        meta: { requiresAuth: true },
       },
     ],
+  },
+
+  {
+    path: "/admin/user/:userId/edit",
+    name: "admin-user-edit",
+    component: EditUserInformation,
+    props: true,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/admin/:userId/teams/:teamId",
+    name: "admin-team-view",
+    component: AdminTeamView,
+    props: true,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/admin/:userId/teams/:teamId/edit",
+    name: "admin-team-edit",
+    component: EditAdminTeam,
+    props: true,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/auth/login",
+    name: "login",
+    component: Login,
+  },
+  {
+    path: "/auth/register",
+    name: "registration",
+    component: Registration,
+  },
+  {
+    path: "/auth/roles",
+    name: "register-role",
+    component: RegisterRole,
   },
   {
     path: '/authorization',
