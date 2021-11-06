@@ -93,7 +93,7 @@
 
 <script>
 import Axios from "axios";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
 import { GET_CLIENT_CART_COUNT } from "@/api";
 export default {
   name: "Header",

@@ -926,7 +926,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .text{
     font-family: Roboto;
     font-style: normal;

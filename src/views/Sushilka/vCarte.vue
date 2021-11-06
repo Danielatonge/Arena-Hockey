@@ -4,7 +4,7 @@
       <v-breadcrumbs style="padding: 0px" :items="path"></v-breadcrumbs>
     </v-col>
     <v-row>
-      <v-col cols="11">
+      <v-col cols="10">
         <div
           style="font-family: Roboto;
           max-width:250px;
@@ -13,7 +13,7 @@
           font-size: 40px;
           line-height: 48px;">Корзина</div>
       </v-col>
-      <v-col cols="1">
+      <v-col cols="2">
         <router-link
         :to="{ name: 'categoriesPage' }"
         style="text-decoration: none; color: #202028">      
