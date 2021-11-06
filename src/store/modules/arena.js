@@ -310,6 +310,7 @@ export const actions = {
       .postArena(arena)
       .then((response) => {
         const res = response.data;
+        console.log("🚀 ~ file: arena.js ~ line 314 ~ .then ~ res", res);
         commit("ADD_ARENA", res);
         return res;
       })

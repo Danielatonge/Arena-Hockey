@@ -196,7 +196,6 @@
             </v-col>
           </v-row>
         </div>
-
         <div class="mb-4">
           <div class="text-h6">Социальные сети</div>
           <v-row class="mb-2">
@@ -882,11 +881,9 @@ export default {
         title: this.shortTitle,
         fullTitle: this.fullTitle,
         tags: this.tag_chips,
-        address: this.address,
+        address: this.address.address,
         description: this.description,
-
         metro: this.metro ? this.metro.split(",") : [],
-
         city: this.city,
         lat: Number(this.coordinate.lat),
         lan: Number(this.coordinate.lon),

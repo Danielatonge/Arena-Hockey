@@ -83,6 +83,8 @@ export const apiArena = {
     return apiClient.put(`/arena/${arenaId}`, arena);
   },
   postArena(arena) {
+  console.log("🚀 ~ file: index.js ~ line 86 ~ postArena ~ arena", arena)
+    
     return apiClient.post("/arena", arena);
   },
   postService(service) {
@@ -307,12 +309,8 @@ export const apiAuth = {
     return apiClient.post(`/registration`, user);
   },
   updateUser({ userId, user }) {
-    console.log(
-      "🚀 ~ file: index.js ~ line 310 ~ updateUser ~ user",
-      user,
-      userId
-    );
-
+  console.log("🚀 ~ file: index.js ~ line 310 ~ updateUser ~ user", user, userId)
+    
     return apiClient.patch(`/user/${userId}`, user);
   },
   login(credential) {
