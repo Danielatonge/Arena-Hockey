@@ -301,7 +301,16 @@ export default {
       },
     ];
     const user = this.currentUser;
-    this.user = user;
+    const { gender, surname, middleName, name, phone, mail } = user;
+
+    this.user = {
+      gender,
+      surname,
+      middleName,
+      name,
+      phone,
+      mail,
+    };
     this.avatar = user.profilePicture
       ? { imageURL: user.profilePicture }
       : null;
@@ -331,7 +340,6 @@ export default {
         surname: "",
         phone: "",
         mail: "",
-        password: "",
       },
       feedback_dialog: false,
       rules: {
@@ -399,9 +407,12 @@ export default {
       };
 
       this.$store
-        .dispatch("auth/updateUser", { userId: this.user.id, user: userParams })
+        .dispatch("auth/updateUser", { userId: this.userId, user: userParams })
         .then(() => {
-          this.$router.push({ name: "register-role" });
+          this.$router.push({
+            name: "user-profile",
+            params: { userId: this.userId },
+          });
         })
         .catch(() => {});
     },

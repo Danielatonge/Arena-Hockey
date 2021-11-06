@@ -40,11 +40,11 @@
               ></v-text-field>
             </v-col>
           </v-row>
-          <v-checkbox
+          <!-- <v-checkbox
             v-model="checkbox"
             label="Не выходить из системы"
-          ></v-checkbox>
-          <div>
+          ></v-checkbox> -->
+          <div class="mt-6">
             <div class="text-center">
               <v-btn
                 tile
@@ -120,7 +120,7 @@
           </v-card-text>
           <v-card-text v-else>
             <p class="body-1 mb-1">
-              На ваш почтовый ящик было отправлено письмо
+              На вашу почту был отправлен код для изменения вашего пароля
             </p>
             <div>
               <div class="mb-2">

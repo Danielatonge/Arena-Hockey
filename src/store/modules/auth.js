@@ -73,7 +73,7 @@ export const actions = {
   },
   updateUser({ dispatch }, userObj) {
     return api
-      .putUser(userObj)
+      .updateUser(userObj)
       .then((response) => {
         const data = response.data;
         console.log("🚀 ~ file: auth.js ~ line 49 ~ .then ~ data", data);
@@ -88,7 +88,9 @@ export const actions = {
         const notification = {
           type: "error",
           message:
-            "There was a problem Creating your account: " + error.message,
+            "There was a problem Modifying: " + error.response
+              ? error.response.data.message
+              : error,
         };
         dispatch("notification/add", notification, { root: true });
         throw error;
@@ -128,7 +130,7 @@ export const actions = {
     commit("DELETE_USERID");
   },
 
-  sendConfirmationCode({ dispatch }, mail) {
+  sendConfirmationCode(_t, mail) {
     return api
       .sendConfirmationCode(mail)
       .then((response) => {
@@ -136,11 +138,6 @@ export const actions = {
           "🚀 ~ file: auth.js ~ line 109 ~ .then ~ response",
           response.data
         );
-        const notification = {
-          type: "success",
-          message: response.data.message,
-        };
-        dispatch("notification/add", notification, { root: true });
       })
       .catch((err) => {
         console.log(err);
