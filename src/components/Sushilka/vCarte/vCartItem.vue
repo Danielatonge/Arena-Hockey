@@ -569,6 +569,7 @@ export default {
       this.changeProductCountInCart();
     },
 
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     async changeProductCountInCart() {
       // let number = parseInt(this.productNumberToCart, 10);
       const token = localStorage.getItem("access_token");
@@ -577,7 +578,7 @@ export default {
           Authorization: `Bearer ${token}`,
         },
       }).then((res) => {
-        this.CHANGE_CART_COUNT(this.clientCArt.product_count);
+        this.getCartCount()
         this.$emit("getClientCart");
       }).catch((error) => {
         if(error.response.status == 401){

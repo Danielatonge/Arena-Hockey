@@ -297,7 +297,7 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <div style="display: flex; justify-content: center; ">
+                    <div style="display: flex; justify-content: center; margin-bottom: 15px">
                         <div>
                         <v-btn
                         @click="cancelingAdCreationDialog = true"
@@ -378,7 +378,6 @@
                                 <v-icon>mdi-window-close</v-icon>
                             </v-btn>
                     </div>
-                    
                 </v-card-title>
                 <v-card-text>
                     <v-row>
@@ -387,7 +386,7 @@
                                 <p style="font-family: Roboto; font-style: normal; font-weight: normal; font-size: 18px; line-height: 21px;">Выберите основную фотографию товара</p>
                             </div>
                             <div v-else>
-                                <img :src="srcMainImage" :alt="altMainImage">
+                                <img :src="srcMainImage" :alt="altMainImage" style="width: 100%">
                             </div>
                         </v-col>
                         <v-col cols="8" style="padding-right: 0px">
@@ -1023,24 +1022,23 @@ export default {
         this.selectedFilesArr = event.target.files
         this.srcImage = []
         this.srcMainImage = null
-        const files = this.selectedFilesArr
+        let filess = this.selectedFilesArr
         this.imgDialog = true
-        files.forEach(file => {
-            //console.log(file)
+        for (const file of filess) {
             this.altImage.push(file.name)
             const reader = new FileReader()
             reader.onload = ev => {
                 this.srcImage.push(ev.target.result)
             }
             reader.readAsDataURL(file)
-        })
+        }
     },
 
     getLinkToPhoto(){
-        this.selectedFilesArr.forEach(file => {
+        for (let file of this.selectedFilesArr) {
             this.selectedFile = file
             this.uploadPhotoPost()
-        })
+        }
     },
 
     photoIsMain(src, num, alt){

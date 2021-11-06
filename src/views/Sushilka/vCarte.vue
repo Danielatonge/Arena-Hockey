@@ -1,49 +1,29 @@
 <template >
   <div style="padding-top: 25px;max-width:1170px;margin:0 auto;">
     <v-col style="padding: 0px; padding-bottom: 30px">
-        <v-breadcrumbs style="padding: 0px" :items="path"></v-breadcrumbs>
-      </v-col>
-      <v-row>
-        <v-col>
-          <div
-      style="font-family: Roboto;
-      max-width:250px;
-font-style: normal;
-font-weight: 500;
-font-size: 40px;
-line-height: 48px;"
-      >Корзина</div>
-        </v-col>
-        <v-col>
-          <router-link
-      :to="{ name: 'categoriesPage' }"
-      style="text-decoration: none; color: #202028"
-    >
-    
-      
-      <div
-        style="
-          margin-left: 50%;
-          margin-top:10px;
-          background: #c4c4c4;
-          padding: 6px 16px;
-          border-radius: 8px;
-          font-family: Roboto;
+      <v-breadcrumbs style="padding: 0px" :items="path"></v-breadcrumbs>
+    </v-col>
+    <v-row>
+      <v-col cols="11">
+        <div
+          style="font-family: Roboto;
+          max-width:250px;
           font-style: normal;
-          font-weight: bold;
-          font-size: 14px;
-          line-height: 20px;
-          color: rgba(0, 0, 0, 0.26);
-        "
-      >
-        ВЕРНУТЬСЯ К КАТЕГОРИЯМ
-      </div>
-    </router-link>
-        </v-col>
-      </v-row>
-      
-
-    
+          font-weight: 500;
+          font-size: 40px;
+          line-height: 48px;">Корзина</div>
+      </v-col>
+      <v-col cols="1">
+        <router-link
+        :to="{ name: 'categoriesPage' }"
+        style="text-decoration: none; color: #202028">      
+          <div
+          class="back_to_categories">
+            <p class="back_to_categories_text">ВЕРНУТЬСЯ К КАТЕГОРИЯМ</p>
+          </div>
+        </router-link>
+      </v-col>
+    </v-row>
     <div v-if="CART_COUNT > 0">
       <vCartItem 
       v-for="(item, i) in clientCart"
@@ -246,4 +226,24 @@ export default {
 };
 </script>
 <style >
+.back_to_categories{
+  margin-left: 50%;
+  margin-top:10px;
+  background: #c4c4c4;
+  height: 32px;
+  width: 219px;
+  border-radius: 8px;
+  padding: 6px 16px;
+}
+
+.back_to_categories_text{
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(0, 0, 0, 0.26);
+  margin: 0;
+  /* text-align: center; */
+}
 </style>

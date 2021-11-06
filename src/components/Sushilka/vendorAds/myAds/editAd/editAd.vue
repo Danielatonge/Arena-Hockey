@@ -358,7 +358,7 @@
                                 <p style="font-family: Roboto; font-style: normal; font-weight: normal; font-size: 18px; line-height: 21px;">Выберите основную фотографию товара</p>
                             </div>
                             <div v-else>
-                                <img :src="`https://drive.google.com/uc?export=view&id=${srcMainImage}`" alt='' >
+                                <img :src="`https://drive.google.com/uc?export=view&id=${srcMainImage}`" alt='главное фото' style="width: 100%">
                             </div>
                         </v-col>
                         <v-col cols="8" style="padding-right: 0px">

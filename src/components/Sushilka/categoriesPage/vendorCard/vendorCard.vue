@@ -39,29 +39,36 @@
                                     :key="i">
                                     
                                         <div v-if="item.name == 'Инстаграмм'" style="margin: 0 5px">
-                                            <a :href="item.linq">
+                                            <a :href="item.linq" style="text-decoration: none">
                                                 <v-icon
                                                 size="40px"
                                                 color="#000">mdi-instagram</v-icon>
                                             </a>
                                         </div>
                                         <div v-if="item.name == 'Ютуб'" style="margin: 0 5px">
-                                            <a :href="item.linq">
+                                            <a :href="item.linq" style="text-decoration: none">
                                                 <v-icon
                                                 size="40px"
                                                 color="#000">mdi-youtube</v-icon>
                                             </a>
                                         </div>
                                         <div v-if="item.name == 'Твиттер'" style="margin: 0 5px">
-                                            <a :href="item.linq">
+                                            <a :href="item.linq" style="text-decoration: none">
                                                 <v-icon
                                                 size="40px"
                                                 color="#000">mdi-twitter</v-icon>
                                             </a>
                                         </div>
                                         <div v-if="item.name == 'В контакте'" style="margin: 0 5px">
-                                            <a :href="item.linq">
+                                            <a :href="item.linq" style="text-decoration: none">
                                                 <img style="margin-right: 30px" src="@/assets/vk.svg"/>
+                                            </a>
+                                        </div>
+                                        <div v-if="item.name == 'Фейсбук'" style="margin: 0 5px">
+                                            <a :href="item.linq" style="text-decoration: none">
+                                                <v-icon
+                                                size="40px"
+                                                color="#000">mdi-facebook</v-icon>
                                             </a>
                                         </div>
                                     </div>
