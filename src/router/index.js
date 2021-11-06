@@ -54,6 +54,7 @@ import EditAdminService from "../views/Admin/Arena/Edit/EditAdminService";
 import CreateAdminService from "../views/Admin/Arena/Create/CreateAdminService";
 
 import UserInformation from "../views/Admin/User/View/UserInformation.vue";
+import AdminEditUser from "../views/Admin/User/Edit/AdminEditUser.vue";
 import EditUserInformation from "../views/Admin/User/Edit/EditUserInformation.vue";
 
 import Login from "../views/Admin/Auth/Login.vue";
@@ -226,6 +227,13 @@ const routes = [
     path: "/admin/user/:userId",
     name: "admin-user-view",
     component: UserInformation,
+    props: true,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/admin/user/:userId/edit",
+    name: "admin-edit-user",
+    component: AdminEditUser,
     props: true,
     meta: { requiresAuth: true },
   },

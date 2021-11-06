@@ -316,11 +316,10 @@ export const apiAuth = {
 
     return apiClient.post(`/sendConfirmationCode`, { mail });
   },
-  verifyCode(code) {
+  changePassword(credentials) {
     console.log("🚀 ~ file: index.js ~ line 305 ~ forgetPassword ~ mail", {
-      code,
+      credentials,
     });
-
-    return apiClient.post(`/verifyCode`, { code });
+    return apiClient.post(`/changePassword`, credentials);
   },
 };
