@@ -56,6 +56,7 @@
         </v-row>
       </div>
     </v-card>
+
     <slot name="price-list" :prices="priceList">
       <v-row v-if="item.price.length">
         <v-col
@@ -90,6 +91,7 @@
         </span>
       </div>
     </slot>
+    <slot name="modify-pricelist"> </slot>
   </div>
 </template>
 

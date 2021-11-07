@@ -50,18 +50,103 @@
                 class="mr-2 mb-2"
                 color="grey lighten-2"
                 elevation="0"
-                @click="
-                  $router.push({
-                    name: 'admin-user-view',
-                    params: { userId: user.id },
-                  })
-                "
+                @click="changePassword = true"
               >
-                перейти к пользователю
+                Изменить пароль
               </v-btn>
             </div>
           </v-col>
         </v-row>
+        <v-dialog persistent v-model="changePassword" origin="" max-width="700">
+          <v-card class="py-3">
+            <v-card-title class="justify-center">
+              <div class="text-h5 black--text font-weight-bold">
+                Восстановить доступ
+              </div>
+            </v-card-title>
+            <v-card-text v-if="enterMail">
+              <p class="body-1 mb-1">Введите адрес электронной почты</p>
+              <v-row>
+                <v-col>
+                  <div class="mb-2">
+                    <v-text-field
+                      v-model="mail"
+                      :rules="[rules.required]"
+                      label="Ссылка на социальную сеть"
+                      outlined
+                      solo
+                      dense
+                      persistent-hint
+                      flat
+                      hide-details="auto"
+                      class="rounded-lg"
+                    >
+                    </v-text-field>
+                  </div>
+                </v-col>
+                <v-col class="my-0">
+                  <v-btn
+                    elevation="0"
+                    color="primary"
+                    class="body-2"
+                    height="40px"
+                    @click="sendCode"
+                  >
+                    Отправить код
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-card-text>
+            <v-card-text v-else>
+              <p class="body-1 mb-1">
+                На вашу почту был отправлен код для изменения вашего пароля
+              </p>
+              <div>
+                <div class="mb-2">
+                  <v-text-field
+                    v-model="passCode"
+                    :rules="[rules.required]"
+                    outlined
+                    placeholder="Введите код"
+                    solo
+                    dense
+                    persistent-hint
+                    flat
+                    hide-details="auto"
+                    class="rounded-lg"
+                  >
+                  </v-text-field>
+                </div>
+
+                <div>введите ваш новый пароль</div>
+                <v-text-field
+                  outlined
+                  v-model="password"
+                  flat
+                  dense
+                  solo
+                  hide-details="auto"
+                  class="rounded-lg"
+                  :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
+                  :rules="[rules.required]"
+                  :type="showPass ? 'text' : 'password'"
+                  @click:append="showPass = !showPass"
+                ></v-text-field>
+                <div class="my-4">
+                  <v-btn
+                    elevation="0"
+                    color="primary"
+                    class="body-2"
+                    height="40px"
+                    @click="verifyCode"
+                  >
+                    изменить пароль
+                  </v-btn>
+                </div>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
       </v-container>
     </div>
     <div class="grey lighten-4">
@@ -128,6 +213,7 @@ export default {
       },
       { text: "Календарь мероприятий", link: `` },
     ];
+    this.mail = this.user.mail;
   },
   computed: {
     ...mapState("user", ["user"]),
@@ -142,6 +228,17 @@ export default {
       ],
       sidebar_items: [],
       sidebar_tab: 0,
+      enterMail: true,
+      changePassword: false,
+
+      checkbox: false,
+      showPass: false,
+      rules: {
+        required: (value) => !!value || "Обязательный поль.",
+      },
+      password: "",
+      mail: "",
+      passCode: "",
     };
   },
   methods: {
@@ -150,6 +247,35 @@ export default {
         return `${age} год`;
       }
     },
+    sendCode() {
+      this.$store
+        .dispatch("auth/sendConfirmationCode", this.mail)
+        .then(() => {
+          this.enterMail = false;
+        })
+        .catch(() => {});
+    },
+    verifyCode() {
+      const credentials = {
+        email: this.mail,
+        code: this.passCode,
+        password: this.password,
+      };
+
+      this.$store
+        .dispatch("auth/changePassword", credentials)
+        .then(() => {
+          this.changePassword = false;
+          this.$router.push({
+            name: "login",
+          });
+        })
+        .catch(() => {});
+    },
+    // restorePassword() {
+    //   this.changePassword = true;
+    //   this.enterMail = true;
+    // },
   },
 };
 </script>

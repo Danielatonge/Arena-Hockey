@@ -26,7 +26,7 @@ export const mutations = {
     localStorage.removeItem("userId");
     state.userId = "";
   },
-  SAVE_USER(state, user) {
+  SET_USER(state, user) {
     state.user = user;
   },
   MODIFY_USER(state, updatedUser) {
@@ -53,19 +53,20 @@ export const actions = {
         const userId = data.user.id;
         console.log("🚀 ~ file: auth.js ~ line 49 ~ .then ~ data", data);
         commit("SET_USERID", userId);
+        commit("SET_USER", data.user);
         const notification = {
           type: "success",
-          message: "Your account was created Successfully",
+          message: "Ваша учетная запись была успешно создана",
         };
         dispatch("notification/add", notification, { root: true });
-        return userId;
       })
       .catch((error) => {
         const notification = {
           type: "error",
           message:
-            "There was a problem Creating your account: " +
-            error.response.data.message,
+            "При создании учетной записи возникла проблема: " + error.response
+              ? error.response.data.message
+              : error,
         };
         dispatch("notification/add", notification, { root: true });
         throw error;
@@ -79,7 +80,7 @@ export const actions = {
         console.log("🚀 ~ file: auth.js ~ line 49 ~ .then ~ data", data);
         const notification = {
           type: "success",
-          message: "Your account was successfully Modified",
+          message: "Ваша учетная запись была успешно изменена",
         };
         dispatch("notification/add", notification, { root: true });
         return data.id;
@@ -87,11 +88,11 @@ export const actions = {
       .catch((error) => {
         const notification = {
           type: "error",
-          message:
-            "There was a problem Modifying: " + error.response
-              ? error.response.data.message
-              : error,
+          message: error.response.data,
         };
+        // "При изменении учетной записи возникла проблема: " + error.response
+        //   ? error.response.data.message
+        //   : error,
         dispatch("notification/add", notification, { root: true });
         throw error;
       });
@@ -118,8 +119,9 @@ export const actions = {
         const notification = {
           type: "error",
           message:
-            "При входе в учетную запись возникла проблема: " +
-            error.response.data.message,
+            "При входе в учетную запись возникла проблема: " + error.response
+              ? error.response.data.message
+              : error,
         };
         dispatch("notification/add", notification, { root: true });
         throw error;
@@ -154,22 +156,22 @@ export const actions = {
         );
         const notification = {
           type: "success",
-          message: "Password successfully changed",
+          message: "Пароль успешно изменен",
         };
         dispatch("notification/add", notification, { root: true });
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
         const notification = {
           type: "Failure",
-          message: err.message,
+          message: error.response ? error.response.data.message : error,
         };
         dispatch("notification/add", notification, { root: true });
-        throw err;
+        throw error;
       });
   },
   saveUserLocally({ commit }, user) {
-    commit("SAVE_USER", user);
+    commit("SET_USER", user);
   },
   modifyUserInfo({ commit }, updatedUser) {
     commit("MODIFY_USER", updatedUser);

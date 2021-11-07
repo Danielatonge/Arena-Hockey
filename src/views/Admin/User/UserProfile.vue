@@ -68,11 +68,11 @@
           </v-sheet>
         </v-col>
       </v-row>
-      <div>
+      <!-- <div>
         <v-btn class="mr-2 mb-2" large color="grey lighten-2" elevation="0">
           Добавить роли
         </v-btn>
-      </div>
+      </div> -->
     </v-container>
   </div>
 </template>

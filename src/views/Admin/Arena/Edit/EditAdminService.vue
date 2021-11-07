@@ -134,7 +134,7 @@ export default {
     async fetchArenaServices(serviceId) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`service/${serviceId}`)
+          .get(`https://api-hockey-io.herokuapp.com/service/${serviceId}`)
           .then((response) => {
             resolve(response.data);
           })
@@ -164,7 +164,7 @@ export default {
       };
       console.log(data, id);
       axios
-        .put(`service/${id}`, data)
+        .put(`https://api-hockey-io.herokuapp.com/service/${id}`, data)
         .then((response) => {
           console.log(response.data);
           this.$router.push({

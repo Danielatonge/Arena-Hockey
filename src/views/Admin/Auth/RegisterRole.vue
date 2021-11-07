@@ -62,6 +62,19 @@
         >
           Сохранить
         </v-btn>
+        <v-btn
+          large
+          class="ml-2 mb-2"
+          color="grey lighten-2"
+          elevation="0"
+          @click="
+            $router.push({
+              name: 'registration',
+            })
+          "
+        >
+          Назад
+        </v-btn>
       </div>
     </v-container>
     <v-dialog
@@ -242,48 +255,24 @@ export default {
         biography,
         grip,
         role,
-        weight,
-        height,
+        weight: Number(weight),
+        height: Number(height),
       };
-      //   this.$store
-      //     .dispatch("user/putUser", { userId, user: updateUser })
-      //     .then(() => {
-      //       this.$store.dispatch("user/createUserRole", {
-      //         userId: this.userId,
-      //         roleId: this.roleId,
-      //       });
-      //       this.nuser = this.initUserDialog();
-      //     })
-      //     .catch(() => {});
-
-      this.$store.dispatch("auth/modifyUserInfo", updateUser);
-      this.nuser = this.initUserDialog();
-      this.dialog = false;
-    },
-    doneCreatingUser() {
-      const myUser = this.user;
-      console.log(
-        "🚀 ~ file: RegisterRole.vue ~ line 263 ~ doneCreatingUser ~ myUser",
-        myUser
-      );
+      const userId = this.userId;
       this.$store
-        .dispatch("auth/postUser", myUser)
-        .then((userId) => {
-          console.log(
-            "🚀 ~ file: RegisterRole.vue ~ line 271 ~ .then ~ userId",
-            {
-              userId,
-              roleId: this.roleId,
-            }
-          );
+        .dispatch("auth/updateUser", { userId, user: updateUser })
+        .then(() => {
           this.$store.dispatch("user/createUserRole", {
-            userId,
+            userId: userId,
             roleId: this.roleId,
           });
-
-          this.$router.push({ name: "login" });
+          // this.nuser = this.initUserDialog();
+          this.dialog = false;
         })
         .catch(() => {});
+    },
+    doneCreatingUser() {
+      this.$router.push({ name: "login" });
     },
     initUserDialog() {
       return {

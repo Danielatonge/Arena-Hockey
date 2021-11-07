@@ -261,6 +261,21 @@
         >
           Зарегистрироваться
         </v-btn>
+        <v-btn
+          v-if="currentUser"
+          tile
+          class="ml-4"
+          large
+          color="grey lighten-2"
+          elevation="0"
+          @click="
+            $router.push({
+              name: 'register-role',
+            })
+          "
+        >
+          следующий
+        </v-btn>
         <p class="mt-4">
           Уже есть аккаунт?
           <router-link
@@ -297,18 +312,42 @@
 
 <script>
 import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
+import { mapState } from "vuex";
 
 export default {
   components: {
     AdminImageUploader,
   },
   computed: {
+    ...mapState("auth", { currentUser: "user" }),
     social_media_display() {
       return this.social_media.filter((x) => x.link);
     },
     profilePicture() {
       return this.avatar ? this.avatar.imageURL : "";
     },
+  },
+  created() {
+    const {
+      gender,
+      name,
+      middleName,
+      surname,
+      phone,
+      mail,
+      password,
+      birthDate,
+    } = this.currentUser;
+    this.user = {
+      gender,
+      name,
+      middleName,
+      surname,
+      phone,
+      mail,
+      password,
+      birthDate,
+    };
   },
   data() {
     return {
@@ -322,6 +361,7 @@ export default {
         phone: "",
         mail: "",
         password: "",
+        birthDate: "",
       },
       feedback_dialog: false,
       rules: {
@@ -392,14 +432,12 @@ export default {
         userParams
       );
 
-      // this.$store
-      //   .dispatch("auth/postUser", userParams)
-      //   .then(() => {
-      //     this.$router.push({ name: "register-role" });
-      //   })
-      //   .catch(() => {});
-      this.$store.dispatch("auth/saveUserLocally", userParams);
-      this.$router.push({ name: "register-role" });
+      this.$store
+        .dispatch("auth/postUser", userParams)
+        .then(() => {
+          this.$router.push({ name: "register-role" });
+        })
+        .catch(() => {});
     },
     removeSocialMedia(item) {
       console.log(item);

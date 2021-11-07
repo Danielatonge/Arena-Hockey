@@ -48,7 +48,7 @@
                 @click="
                   $router.push({
                     name: 'admin-user-role',
-                    params: { userId , roleId},
+                    params: { userId, roleId },
                   })
                 "
               >
@@ -129,10 +129,11 @@
           <v-col cols="12">
             <div class="body-1 mb-4">Социальные сети</div>
             <v-row class="mb-2">
-              <v-col cols="6" md="4">
+              <v-col cols="12">
                 <v-row>
                   <v-col
                     cols="12"
+                    md="3"
                     class="d-flex align-center"
                     v-for="(item, i) in displaySocialMedia"
                     :key="i"
@@ -252,8 +253,8 @@
             elevation="0"
             @click="
               $router.push({
-                name: 'admin-user-view',
-                params: { userId },
+                name: 'admin-user-role',
+                params: { userId, roleId },
               })
             "
           >
@@ -274,6 +275,10 @@ export default {
       type: String,
       required: true,
     },
+    roleId: {
+      type: String,
+      required: true,
+    },
   },
   created() {
     const userId = this.userId;
@@ -284,9 +289,8 @@ export default {
         exact: true,
         to: { name: "user-profile", params: { userId } },
       },
-
       {
-        text: "информация об игроке",
+        text: "роль пользователя",
         disabled: true,
         to: "",
       },
