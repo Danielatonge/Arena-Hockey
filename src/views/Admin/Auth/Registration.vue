@@ -410,6 +410,14 @@ export default {
   },
   methods: {
     registerUser() {
+      if (this.repeatPassword !== this.user.password) {
+        const notification = {
+          type: "error",
+          message: "Вводите все необходимые поля",
+        };
+        this.$store.dispatch("notification/add", notification);
+        return;
+      }
       let whatsapp = "";
       if (this.social_media[1].link) {
         whatsapp = `https://wa.me/${this.social_media[1].link

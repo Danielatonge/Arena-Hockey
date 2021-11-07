@@ -116,17 +116,22 @@
             <div class="body-1 mb-2">Социальные сети</div>
             <div class="">
               <template v-for="(item, i) in displaySocialMedia">
-                <v-btn
-                  elevation="0"
-                  x-small
-                  color="grey"
-                  height="40px"
-                  class="mr-2"
+                <a
+                  class="reset-link"
+                  :href="item.link"
                   :key="i"
-                  @click="goToLink(item.link)"
+                  target="_blank"
                 >
-                  <v-icon> {{ item.icon }}</v-icon>
-                </v-btn>
+                  <v-btn
+                    elevation="0"
+                    x-small
+                    color="grey"
+                    height="40px"
+                    class="mr-2"
+                  >
+                    <v-icon> {{ item.icon }}</v-icon>
+                  </v-btn>
+                </a>
               </template>
             </div>
           </v-col>
@@ -526,15 +531,13 @@ export default {
       };
     },
     saveForum() {
-      const { description, position, grip, find } = this.nforum;
+      const { description, position, city, grip, find } = this.nforum;
       const postForum = {
-        age: "",
         date: moment().format("YYYY-MM-DD"),
         description,
         grip,
-        level: "",
+        city,
         title: this.fullName,
-        picture: "",
         role: position,
         userId: this.userId,
         type: find.value,
@@ -550,11 +553,12 @@ export default {
     },
     updateForum() {
       const forumId = this.forumId;
-      const { description, position, grip, find } = this.mforum;
+      const { description, position, city, grip, find } = this.mforum;
       const putForum = {
         date: moment().format("YYYY-MM-DD"),
         description,
         grip,
+        city,
         role: position,
         type: find.value,
       };
