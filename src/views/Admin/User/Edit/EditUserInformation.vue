@@ -322,6 +322,7 @@ export default {
         position: "",
         weight: "",
         height: "",
+        city: ""
       },
       positions: ["Защитник", "Нападающий", "Вратарь"],
       grips: ["левый", "правый"],
