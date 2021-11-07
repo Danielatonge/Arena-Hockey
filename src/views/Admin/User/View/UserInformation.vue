@@ -118,43 +118,19 @@
         <div>
           <p class="text-h5">Активные объявления</p>
           <v-row dense class="mt-5">
-            <v-col cols="12" md="6" v-for="(item, i) in forums" :key="i">
-              <v-card elevation="0" class="pa-5">
-                <div class="d-flex flex-no-wrap">
-                  <v-card-text class="px-0">
-                    <div class="body-1 grey--text">
-                      {{ dateFormat(item.date) }}
-                    </div>
-                    <div class="text-h6 mb-2">{{ item.title }}</div>
-                    <!-- <div class="body-2 grey--text">Участников: 19</div> -->
-                  </v-card-text>
-                </div>
-                <div class="mb-4 text-justify">
-                  {{ item.description.slice(0, 290) }}
-                </div>
-                <p class="bold">Необходимые требования:</p>
-                <div class="d-flex mb-2">
-                  <!-- <div class="body-2 blue--text">Возраст: {{ item.age }}</div>
-                  <div class="body-2 blue--text ml-16">
-                    Амплуа: {{ item.role }}
-                  </div> -->
-                  <div class="body-2 blue--text">
-                    Амплуа: {{ isValid(item.role) }}
+            <v-col cols="12" md="6" v-for="item in forums" :key="item.id">
+              <AdminForumCard :forum="item">
+                <template #edit-delete>
+                  <div style="position: absolute; top: 30px; right: 15px">
+                    <v-icon class="mr-2" @click="goToEdit(item.id)">
+                      mdi-pencil-outline
+                    </v-icon>
+                    <v-icon class="ml-2" @click="deleteForum(item.id)">
+                      mdi-delete-outline
+                    </v-icon>
                   </div>
-                  <div
-                    class="body-2 blue--text"
-                    :class="{ 'ml-16': isValid(item.grip) ? true : false }"
-                  >
-                    Хват: {{ isValid(item.grip) }}
-                  </div>
-                </div>
-                <div class="d-flex">
-                  <!-- <div class="body-2 blue--text">Хват: {{ item.grip }}</div>
-                  <div class="body-2 blue--text ml-16">
-                    Уровень: {{ item.level }}
-                  </div> -->
-                </div>
-              </v-card>
+                </template>
+              </AdminForumCard>
             </v-col>
           </v-row>
           <div>
@@ -285,7 +261,7 @@
                   <v-col cols="12">
                     <v-select
                       :items="playerSearch"
-                      v-model="nforum.find"
+                      v-model="mforum.find"
                       placeholder="Игрок ищет команду"
                       solo
                       flat
@@ -299,7 +275,7 @@
                     <div class="mb-2">Описание объявления</div>
                     <v-textarea
                       solo
-                      v-model="nforum.description"
+                      v-model="mforum.description"
                       height="100"
                       flat
                       elevation="0"
@@ -311,7 +287,7 @@
                       label="Населеный пункт"
                       outlined
                       flat
-                      v-model="nforum.city"
+                      v-model="mforum.city"
                       dense
                       hide-details="auto"
                       class="rounded-lg"
@@ -322,7 +298,7 @@
                     <div class="mb-2">Навыки</div>
                     <v-select
                       :items="positions"
-                      v-model="nforum.position"
+                      v-model="mforum.position"
                       placeholder="Амплуа"
                       solo
                       flat
@@ -335,7 +311,7 @@
                   <v-col cols="12" class="mb-2">
                     <v-select
                       :items="grips"
-                      v-model="nforum.grip"
+                      v-model="mforum.grip"
                       placeholder="Хват"
                       solo
                       flat
@@ -378,6 +354,7 @@
 <script>
 import { mapState } from "vuex";
 import moment from "moment";
+import AdminForumCard from "@/components/Admin/Forum/AdminForumCard.vue";
 
 export default {
   props: {
@@ -389,6 +366,9 @@ export default {
       type: String,
       required: true,
     },
+  },
+  components: {
+    AdminForumCard,
   },
   created() {
     const userId = this.userId;
@@ -412,10 +392,7 @@ export default {
   },
   computed: {
     ...mapState("user", ["user", "forums"]),
-    isValid(input) {
-      if (input) return input;
-      return "";
-    },
+
     displaySocialMedia() {
       return this.social_media.filter((element) => element.link);
     },
@@ -438,12 +415,24 @@ export default {
         position: "",
         grip: "",
       },
+      mforum: {
+        find: {},
+        description: "",
+        city: "",
+        position: "",
+        grip: "",
+      },
       playerSearch: [{ value: "PLAYERTEAM", state: "Игрок ищет команду" }],
       positions: ["Защитник", "Нападающий", "Вратарь"],
       grips: ["левый", "правый"],
+      forumId: "",
     };
   },
   methods: {
+    isValid(input) {
+      if (input) return true;
+      return false;
+    },
     dateFormat(date) {
       let newDate = new Date(date);
       let formatter = new Intl.DateTimeFormat("ru", {
@@ -454,6 +443,27 @@ export default {
       });
 
       return formatter.format(newDate);
+    },
+    goToEdit(forumId) {
+      this.$store.dispatch("user/getForum", forumId).then((forum) => {
+        console.log(
+          "🚀 ~ file: UserInformation.vue ~ line 441 ~ this.$store.dispatch ~ response",
+          forum
+        );
+        const { description, city, role, grip, id } = forum;
+        this.forumId = id;
+        this.mforum = {
+          find: { value: "PLAYERTEAM", state: "Игрок ищет команду" },
+          description,
+          city,
+          position: role,
+          grip,
+        };
+      });
+      this.modifyForumDialog = true;
+    },
+    deleteForum(forumId) {
+      this.$store.dispatch("user/deleteForum", forumId);
     },
     getSocialMedia() {
       const { vk, whatsApp, instagram, website, facebook } = this.user;
@@ -523,23 +533,23 @@ export default {
       this.modifyForumDialog = true;
     },
     updateForum() {
-      const forumId = this.nforum.id;
-      const { description, position, grip, find } = this.nforum;
+      const forumId = this.forumId;
+      const { description, position, grip, find } = this.mforum;
       const putForum = {
-        age: "",
         date: moment().format("YYYY-MM-DD"),
         description,
         grip,
-        level: "",
-        name: this.fullName,
-        picture: "",
-        position,
-        userId: this.userId,
-        type: find,
+        role: position,
+        type: find.value,
       };
-      this.$store.dispatch("user/putForum", { forumId, putForum }).then(() => {
-        this.nforum = this.initForumDialog();
-      });
+      this.$store
+        .dispatch("user/putForum", { forumId, forum: putForum })
+        .then(() => {
+          this.mforum = this.initForumDialog();
+
+          this.modifyForumDialog = false;
+          this.$router.go();
+        });
     },
   },
 };

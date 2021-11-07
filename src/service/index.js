@@ -205,6 +205,9 @@ export const apiUser = {
   deleteTeam(teamId) {
     return apiClient.delete(`/team/${teamId}`);
   },
+  deleteForum(forumId) {
+    return apiClient.delete(`/forum/${forumId}`);
+  },
   getUser(userId) {
     return apiClient.get(`/user/${userId}`);
   },
@@ -217,11 +220,16 @@ export const apiUser = {
   getForums(userId) {
     return apiClient.get(`/user/${userId}/forums`);
   },
+  getForum(forumId) {
+    return apiClient.get(`/forum/${forumId}`);
+  },
   postForum(forum) {
     return apiClient.post(`/forum`, forum);
   },
   putForum({ forumId, forum }) {
-    return apiClient.put(`/forum/${forumId}`, forum);
+    console.log("🚀 ~ file: index.js ~ line 230 ~ putForum ~ forum", forum);
+
+    return apiClient.patch(`/forum/${forumId}`, forum);
   },
   putUser({ userId, user }) {
     return apiClient.patch(`/user/${userId}`, user);
@@ -245,6 +253,9 @@ export const apiForum = {
   },
   getForums() {
     return apiClient.get(`/forums`);
+  },
+  getForum(forumId) {
+    return apiClient.get(`/forum/${forumId}`);
   },
   getCities() {
     return apiClient.get(`/forums/cities`);
@@ -307,8 +318,12 @@ export const apiAuth = {
     return apiClient.post(`/registration`, user);
   },
   updateUser({ userId, user }) {
-  console.log("🚀 ~ file: index.js ~ line 310 ~ updateUser ~ user", user, userId)
-    
+    console.log(
+      "🚀 ~ file: index.js ~ line 310 ~ updateUser ~ user",
+      user,
+      userId
+    );
+
     return apiClient.patch(`/user/${userId}`, user);
   },
   login(credential) {

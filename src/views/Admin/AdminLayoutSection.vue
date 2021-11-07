@@ -57,7 +57,7 @@
             </div>
           </v-col>
         </v-row>
-        <v-dialog persistent v-model="changePassword" origin="" max-width="700">
+        <v-dialog v-model="changePassword" origin="" max-width="700">
           <v-card class="py-3">
             <v-card-title class="justify-center">
               <div class="text-h5 black--text font-weight-bold">

@@ -66,6 +66,9 @@ export const mutations = {
   DELETE_ARENA(state, arenaId) {
     state.arenas = state.arenas.filter((x) => x.arena.id !== arenaId);
   },
+  DELETE_FORUM(state, forumId) {
+    state.forums = state.forums.filter((forum) => forum.id !== forumId);
+  },
 };
 
 export const actions = {
@@ -108,6 +111,16 @@ export const actions = {
       .getUser(userId)
       .then((response) => {
         commit("SET_USER", response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  getForum(_t, forumId) {
+    return api
+      .getForum(forumId)
+      .then((response) => {
+        return response.data;
       })
       .catch((err) => {
         console.log(err);
@@ -235,6 +248,14 @@ export const actions = {
       .deleteTeam(teamId)
       .then(() => {
         commit("DELETE_TEAM", teamId);
+      })
+      .catch((err) => console.log(err));
+  },
+  deleteForum({ commit }, forumId) {
+    api
+      .deleteForum(forumId)
+      .then(() => {
+        commit("DELETE_FORUM", forumId);
       })
       .catch((err) => console.log(err));
   },
