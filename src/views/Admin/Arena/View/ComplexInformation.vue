@@ -63,7 +63,7 @@
     </div>
     <v-row>
       <v-col cols="12" md="8">
-        <section class="wrapper-map" id="map">
+        <section class="wrapper-map">
           <ArenaMap
             :coords="coords"
             :surfaces="surfaces"

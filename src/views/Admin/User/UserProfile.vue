@@ -69,9 +69,163 @@
         </v-col>
       </v-row>
       <div>
-        <v-btn class="mr-2 mb-2" large color="grey lighten-2" elevation="0">
+        <v-btn
+          class="mr-2 mb-2"
+          large
+          color="grey lighten-2"
+          elevation="0"
+          @click="dialog = true"
+        >
           Добавить роли
         </v-btn>
+        <v-dialog
+          v-model="dialog"
+          fullscreen
+          hide-overlay
+          transition="dialog-bottom-transition"
+          scrollable
+        >
+          <v-card tile>
+            <v-sheet color="primary">
+              <v-container>
+                <v-row class="my-auto">
+                  <v-btn class="mr-4 pb-1" icon dark @click="dialog = false">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                  <div class="text-h5 white--text">
+                    Заполнение роли «{{ dialogCode }}»
+                  </div>
+                </v-row>
+              </v-container>
+            </v-sheet>
+            <v-card-text class="grey lighten-4">
+              <v-container>
+                <div class="my-8 text-h6">
+                  Заполните биографию и данные о своих профессиональных навыках
+                </div>
+                <v-row v-if="dialogCode === 'PLAYER'">
+                  <v-col cols="12" class="">
+                    <v-select
+                      :items="positions"
+                      v-model="nrole.position"
+                      placeholder="Амплуа"
+                      solo
+                      flat
+                      item-text="state"
+                      item-value="value"
+                      return-object
+                      hide-details="auto"
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="12" class="mb-2">
+                    <v-select
+                      :items="grips"
+                      v-model="nrole.grip"
+                      placeholder="Хват"
+                      solo
+                      flat
+                      item-text="state"
+                      item-value="value"
+                      return-object
+                      hide-details="auto"
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      label="Рост"
+                      outlined
+                      flat
+                      v-model="nrole.height"
+                      dense
+                      hide-details="auto"
+                      class="rounded-lg"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      label="Вес"
+                      outlined
+                      flat
+                      v-model="nrole.weight"
+                      dense
+                      hide-details="auto"
+                      class="rounded-lg"
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col cols="12" class="">
+                    <div class="mb-2">Биография</div>
+                    <v-textarea
+                      solo
+                      v-model="nrole.biography"
+                      height="100"
+                      flat
+                      elevation="0"
+                      hide-details="auto"
+                    ></v-textarea>
+                  </v-col>
+                </v-row>
+                <v-row v-if="dialogCode === 'TRAINER'">
+                  <v-col cols="12" class="">
+                    <v-select
+                      :items="statuses"
+                      v-model="nrole.status"
+                      placeholder="Статус"
+                      solo
+                      flat
+                      hide-details="auto"
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="12" class="mb-2">
+                    <v-select
+                      :items="categories"
+                      v-model="nrole.category"
+                      placeholder="Возрастная категория"
+                      solo
+                      flat
+                      item-text="text"
+                      item-value="value"
+                      return-object
+                      hide-details="auto"
+                    ></v-select>
+                  </v-col>
+
+                  <v-col cols="12" class="">
+                    <div class="mb-2">Биография</div>
+                    <v-textarea
+                      solo
+                      v-model="nrole.biography"
+                      height="100"
+                      flat
+                      elevation="0"
+                      hide-details="auto"
+                    ></v-textarea>
+                  </v-col>
+                </v-row>
+                <div class="mt-6">
+                  <v-btn
+                    large
+                    class="mr-2 mb-2"
+                    color="primary"
+                    elevation="0"
+                    @click="createUserRole"
+                  >
+                    Сохранить
+                  </v-btn>
+                  <v-btn
+                    large
+                    class="ml-2 mb-2"
+                    color="grey lighten-2"
+                    elevation="0"
+                    @click="dialog = false"
+                  >
+                    Назад
+                  </v-btn>
+                </div>
+              </v-container>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
       </div>
     </v-container>
   </div>
@@ -142,7 +296,91 @@ export default {
     return {
       checkbox: null,
       sections: null,
+      dialog: false,
+      dialogCode: "",
+      nrole: {
+        name: "",
+        biography: "",
+        grip: "",
+        position: "",
+        weight: "",
+        height: "",
+        status: "",
+        category: "",
+      },
+      statuses: ["действующий", "Не действующий"],
+      positions: ["Защитник", "Нападающий", "Вратарь"],
+      grips: ["левый", "правый"],
+      categories: [
+        { value: "ADULT", text: "взрослый" },
+        { value: "CHILDREN", text: "дети" },
+      ],
     };
+  },
+  methods: {
+    openDialog(dialogCode) {
+      console.log(
+        "🚀 ~ file: RegisterRole.vue ~ line 116 ~ openDialog ~ dialogCode",
+        dialogCode
+      );
+
+      this.dialogCode = dialogCode;
+      this.dialog = true;
+    },
+    createUserRole() {
+      if (this.dialogCode === "PLAYER") {
+        this.createPlayerRole();
+      }
+      if (this.dialogCode === "TRAINER") {
+        this.createTrainerRole();
+      }
+    },
+    createPlayerRole() {
+      const userId = this.userId;
+      const { biography, position, grip, weight, height } = this.nrole;
+      const _role = {
+        name: "PLAYER",
+        biography,
+        grip,
+        position,
+        weight: Number(weight),
+        height: Number(height),
+        userId,
+      };
+
+      this.$store.dispatch("user/createRole", _role).then(() => {
+        this.dialog = false;
+        this.nrole = this.initUserDialog();
+      });
+    },
+    createTrainerRole() {
+      const userId = this.userId;
+      const { biography, status, category } = this.nrole;
+      const _role = {
+        name: "TRAINER",
+        biography,
+        status,
+        category,
+        userId,
+      };
+
+      this.$store.dispatch("user/createRole", _role).then(() => {
+        this.dialog = false;
+        this.nrole = this.initUserDialog();
+      });
+    },
+    initUserDialog() {
+      return {
+        biography: "",
+        grip: "",
+        role: "",
+        weight: "",
+        height: "",
+        status: "",
+        category: "",
+        name: "",
+      };
+    },
   },
 };
 </script>

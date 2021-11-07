@@ -157,6 +157,7 @@ export default {
       {
         text: `${arenaItem.title}`,
         disabled: true,
+        to: { name: "" },
       },
     ];
   },

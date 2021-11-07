@@ -237,8 +237,8 @@ export const apiUser = {
   getRoleID(roleName) {
     return apiClient.get(`/role?title=${roleName}`);
   },
-  createUserRole(userRoleId) {
-    return apiClient.post(`/roles`, userRoleId);
+  createUserRole(userRole) {
+    return apiClient.post(`/role`, userRole);
   },
 };
 

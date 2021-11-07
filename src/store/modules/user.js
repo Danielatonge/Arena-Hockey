@@ -202,10 +202,21 @@ export const actions = {
         console.log(err);
       });
   },
-  createUserRole(_commit, userRoleId) {
+  createRole({ dispatch }, userRole) {
+    console.log(
+      "🚀 ~ file: user.js ~ line 206 ~ createRole ~ userRole",
+      userRole
+    );
+
     return api
-      .createUserRole(userRoleId)
-      .then(() => {})
+      .createUserRole(userRole)
+      .then(() => {
+        const notification = {
+          type: "success",
+          message: "Роль пользователя успешно добавлена",
+        };
+        dispatch("notification/add", notification, { root: true });
+      })
       .catch((err) => {
         console.log(err);
       });

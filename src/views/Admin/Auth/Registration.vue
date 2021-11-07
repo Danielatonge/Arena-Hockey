@@ -262,7 +262,7 @@
           Зарегистрироваться
         </v-btn>
         <v-btn
-          v-if="currentUser"
+          v-if="!currentUser"
           tile
           class="ml-4"
           large
