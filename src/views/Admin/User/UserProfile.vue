@@ -74,7 +74,6 @@
         </v-btn>
       </div>
     </v-container>
-    {{ roles }}
   </div>
 </template>
 
