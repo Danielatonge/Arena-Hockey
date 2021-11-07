@@ -68,12 +68,13 @@
           </v-sheet>
         </v-col>
       </v-row>
-      <!-- <div>
+      <div>
         <v-btn class="mr-2 mb-2" large color="grey lighten-2" elevation="0">
           Добавить роли
         </v-btn>
-      </div> -->
+      </div>
     </v-container>
+    {{ roles }}
   </div>
 </template>
 
@@ -88,12 +89,12 @@ export default {
       return birthDate || gender || phone || address || mail;
     },
     displayRoles() {
-      const parseRoles = this.roles.map(({ role }) => role);
-      return parseRoles.map(({ id, name }) => {
-        if (name === "PLAYER") return { id, name: "Игрок" };
-        if (name === "TRAINER") return { id, name: "Тренер" };
-        if (name === "SELLER") return { id, name: "Продавец" };
-        if (name === "string") return { id, name: "недопустимая роль" };
+      return this.roles.map((role) => {
+        if (role.name === "PLAYER") return { ...role, name: "Игрок" };
+        if (role.name === "TRAINER") return { ...role, name: "Тренер" };
+        if (role.name === "SELLER") return { ...role, name: "Продавец" };
+        if (role.name === "string")
+          return { ...role, name: "недопустимая роль" };
       });
     },
   },
