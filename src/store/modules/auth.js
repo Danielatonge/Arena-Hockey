@@ -14,6 +14,8 @@ export const mutations = {
     state.token = token;
   },
   SET_USERID(state, userId) {
+    console.log("🚀 ~ file: auth.js ~ line 17 ~ SET_USERID ~ userId", userId);
+
     state.userId = userId;
   },
   DELETE_TOKEN(state) {
@@ -25,6 +27,9 @@ export const mutations = {
   DELETE_USERID(state) {
     localStorage.removeItem("userId");
     state.userId = "";
+  },
+  DELETE_USER(state) {
+    state.user = {};
   },
   SET_USER(state, user) {
     state.user = user;
@@ -130,6 +135,7 @@ export const actions = {
   logoutUser({ commit }) {
     commit("DELETE_TOKEN");
     commit("DELETE_USERID");
+    commit("DELETE_USER");
   },
 
   sendConfirmationCode(_t, mail) {

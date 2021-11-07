@@ -19,6 +19,7 @@
             <div class="text-h5">{{ user.middleName }}</div>
             <div class="text-h5">{{ user.surname }}</div>
             <div>{{ user.city }}</div>
+            
           </div>
         </v-col>
       </v-row>
@@ -254,7 +255,7 @@ export default {
       const updateUser = {
         biography,
         grip,
-        role,
+        position: role,
         weight: Number(weight),
         height: Number(height),
       };
