@@ -146,8 +146,13 @@ export const actions = {
   postForum({ commit }, forum) {
     return api
       .postForum(forum)
-      .then(() => {
-        commit("ADD_FORUM", forum);
+      .then((response) => {
+        console.log(
+          "🚀 ~ file: user.js ~ line 150 ~ .then ~ response",
+          response.data
+        );
+
+        commit("ADD_FORUM", response.data);
       })
       .catch((err) => {
         console.log(err);

@@ -125,7 +125,7 @@
                     <div class="body-1 grey--text">
                       {{ dateFormat(item.date) }}
                     </div>
-                    <div class="text-h6 mb-2">{{ item.name }}</div>
+                    <div class="text-h6 mb-2">{{ item.title }}</div>
                     <!-- <div class="body-2 grey--text">Участников: 19</div> -->
                   </v-card-text>
                 </div>
@@ -134,16 +134,25 @@
                 </div>
                 <p class="bold">Необходимые требования:</p>
                 <div class="d-flex mb-2">
-                  <div class="body-2 blue--text">Возраст: {{ item.age }}</div>
+                  <!-- <div class="body-2 blue--text">Возраст: {{ item.age }}</div>
                   <div class="body-2 blue--text ml-16">
                     Амплуа: {{ item.role }}
+                  </div> -->
+                  <div class="body-2 blue--text">
+                    Амплуа: {{ isValid(item.role) }}
+                  </div>
+                  <div
+                    class="body-2 blue--text"
+                    :class="{ 'ml-16': isValid(item.grip) ? true : false }"
+                  >
+                    Хват: {{ isValid(item.grip) }}
                   </div>
                 </div>
                 <div class="d-flex">
-                  <div class="body-2 blue--text">Хват: {{ item.grip }}</div>
+                  <!-- <div class="body-2 blue--text">Хват: {{ item.grip }}</div>
                   <div class="body-2 blue--text ml-16">
                     Уровень: {{ item.level }}
-                  </div>
+                  </div> -->
                 </div>
               </v-card>
             </v-col>
@@ -151,7 +160,7 @@
           <div>
             <v-btn
               large
-              class="mr-2 mb-2 rounded-lg"
+              class="mr-2 my-5 rounded-lg"
               color="grey lighten-2"
               elevation="0"
               @click="createForumDialog = true"
@@ -177,7 +186,7 @@
                     <v-select
                       :items="playerSearch"
                       v-model="nforum.find"
-                      placeholder="Игрок ищет команду"
+                      placeholder="Тип форума"
                       solo
                       flat
                       item-text="state"
@@ -199,10 +208,10 @@
                   </v-col>
                   <v-col cols="12">
                     <v-text-field
-                      label="Населеный пункт"
+                      label="Город"
                       outlined
                       flat
-                      v-model="nforum.location"
+                      v-model="nforum.city"
                       dense
                       hide-details="auto"
                       class="rounded-lg"
@@ -212,8 +221,8 @@
                   <v-col cols="12" class="">
                     <div class="mb-2">Навыки</div>
                     <v-select
-                      :items="roles"
-                      v-model="nforum.role"
+                      :items="positions"
+                      v-model="nforum.position"
                       placeholder="Амплуа"
                       solo
                       flat
@@ -302,7 +311,7 @@
                       label="Населеный пункт"
                       outlined
                       flat
-                      v-model="nforum.location"
+                      v-model="nforum.city"
                       dense
                       hide-details="auto"
                       class="rounded-lg"
@@ -312,8 +321,8 @@
                   <v-col cols="12" class="">
                     <div class="mb-2">Навыки</div>
                     <v-select
-                      :items="roles"
-                      v-model="nforum.role"
+                      :items="positions"
+                      v-model="nforum.position"
                       placeholder="Амплуа"
                       solo
                       flat
@@ -361,6 +370,7 @@
           </v-dialog>
         </div>
       </v-container>
+      {{ forums[0] }}
     </div>
   </div>
 </template>
@@ -402,6 +412,10 @@ export default {
   },
   computed: {
     ...mapState("user", ["user", "forums"]),
+    isValid(input) {
+      if (input) return input;
+      return "";
+    },
     displaySocialMedia() {
       return this.social_media.filter((element) => element.link);
     },
@@ -418,15 +432,15 @@ export default {
       createForumDialog: false,
       modifyForumDialog: false,
       nforum: {
-        find: "",
+        find: {},
         description: "",
-        location: "",
-        role: "",
+        city: "",
+        position: "",
         grip: "",
       },
-      roles: [],
-      grips: [],
-      playerSearch: [],
+      playerSearch: [{ value: "PLAYERTEAM", state: "Игрок ищет команду" }],
+      positions: ["Защитник", "Нападающий", "Вратарь"],
+      grips: ["левый", "правый"],
     };
   },
   methods: {
@@ -480,27 +494,28 @@ export default {
       return {
         find: "",
         description: "",
-        location: "",
-        role: "",
+        city: "",
+        position: "",
         grip: "",
       };
     },
     saveForum() {
-      const { description, role, grip, find } = this.nforum;
+      const { description, position, grip, find } = this.nforum;
       const postForum = {
         age: "",
         date: moment().format("YYYY-MM-DD"),
         description,
         grip,
         level: "",
-        name: this.fullName,
+        title: this.fullName,
         picture: "",
-        role,
+        role: position,
         userId: this.userId,
-        type: find,
+        type: find.value,
       };
       this.$store.dispatch("user/postForum", postForum).then(() => {
         this.nforum = this.initForumDialog();
+        this.createForumDialog = false;
       });
     },
     modifyForum(forum) {
@@ -509,7 +524,7 @@ export default {
     },
     updateForum() {
       const forumId = this.nforum.id;
-      const { description, role, grip, find } = this.nforum;
+      const { description, position, grip, find } = this.nforum;
       const putForum = {
         age: "",
         date: moment().format("YYYY-MM-DD"),
@@ -518,7 +533,7 @@ export default {
         level: "",
         name: this.fullName,
         picture: "",
-        role,
+        position,
         userId: this.userId,
         type: find,
       };
