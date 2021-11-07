@@ -92,18 +92,34 @@
                   <v-btn class="mr-4 pb-1" icon dark @click="dialog = false">
                     <v-icon>mdi-close</v-icon>
                   </v-btn>
-                  <div class="text-h5 white--text">
-                    Заполнение роли «{{ dialogCode }}»
-                  </div>
+                  <div class="text-h5 white--text">Заполнение роли</div>
                 </v-row>
               </v-container>
             </v-sheet>
             <v-card-text class="grey lighten-4">
               <v-container>
-                <div class="my-8 text-h6">
+                <v-row class="my-4">
+                  <v-col cols="12" class="">
+                    <div class="mb-2">Выберите роль</div>
+                    <v-select
+                      :items="rolelist"
+                      v-model="pickedRole"
+                      placeholder="Роль"
+                      solo
+                      flat
+                      item-text="text"
+                      item-value="value"
+                      return-object
+                      hide-details="auto"
+                    ></v-select>
+                  </v-col>
+                </v-row>
+                <div class="my-8 text-h6" v-if="pickedRole">
                   Заполните биографию и данные о своих профессиональных навыках
                 </div>
-                <v-row v-if="dialogCode === 'PLAYER'">
+                <v-row
+                  v-if="pickedRole ? pickedRole.value === 'PLAYER' : false"
+                >
                   <v-col cols="12" class="">
                     <v-select
                       :items="positions"
@@ -165,7 +181,9 @@
                     ></v-textarea>
                   </v-col>
                 </v-row>
-                <v-row v-if="dialogCode === 'TRAINER'">
+                <v-row
+                  v-if="pickedRole ? pickedRole.value === 'TRAINER' : false"
+                >
                   <v-col cols="12" class="">
                     <v-select
                       :items="statuses"
@@ -177,17 +195,30 @@
                     ></v-select>
                   </v-col>
                   <v-col cols="12" class="mb-2">
-                    <v-select
-                      :items="categories"
+                    <v-combobox
                       v-model="nrole.category"
+                      :items="categories"
+                      categories
+                      clearable
                       placeholder="Возрастная категория"
+                      multiple
                       solo
                       flat
-                      item-text="text"
-                      item-value="value"
-                      return-object
-                      hide-details="auto"
-                    ></v-select>
+                    >
+                      <template
+                        v-slot:selection="{ attrs, item, select, selected }"
+                      >
+                        <v-chip
+                          v-bind="attrs"
+                          :input-value="selected"
+                          @click="select"
+                          @click:close="remove(item)"
+                        >
+                          <strong>{{ item }}</strong
+                          >&nbsp;
+                        </v-chip>
+                      </template>
+                    </v-combobox>
                   </v-col>
 
                   <v-col cols="12" class="">
@@ -202,7 +233,7 @@
                     ></v-textarea>
                   </v-col>
                 </v-row>
-                <div class="mt-6">
+                <div class="mt-6" v-if="pickedRole">
                   <v-btn
                     large
                     class="mr-2 mb-2"
@@ -294,10 +325,14 @@ export default {
   },
   data() {
     return {
+      pickedRole: null,
+      rolelist: [
+        { value: "PLAYER", text: "Игрок" },
+        { value: "TRAINER", text: "Тренер" },
+      ],
       checkbox: null,
       sections: null,
       dialog: false,
-      dialogCode: "",
       nrole: {
         name: "",
         biography: "",
@@ -311,27 +346,19 @@ export default {
       statuses: ["действующий", "Не действующий"],
       positions: ["Защитник", "Нападающий", "Вратарь"],
       grips: ["левый", "правый"],
-      categories: [
-        { value: "ADULT", text: "взрослый" },
-        { value: "CHILDREN", text: "дети" },
-      ],
+      categories: ["взрослый", "дети"],
     };
   },
   methods: {
-    openDialog(dialogCode) {
-      console.log(
-        "🚀 ~ file: RegisterRole.vue ~ line 116 ~ openDialog ~ dialogCode",
-        dialogCode
-      );
-
-      this.dialogCode = dialogCode;
-      this.dialog = true;
+    remove(item) {
+      this.categories.splice(this.categories.indexOf(item), 1);
+      this.categories = [...this.categories];
     },
     createUserRole() {
-      if (this.dialogCode === "PLAYER") {
+      if (this.pickedRole.value === "PLAYER") {
         this.createPlayerRole();
       }
-      if (this.dialogCode === "TRAINER") {
+      if (this.pickedRole.value === "TRAINER") {
         this.createTrainerRole();
       }
     },
@@ -351,6 +378,7 @@ export default {
       this.$store.dispatch("user/createRole", _role).then(() => {
         this.dialog = false;
         this.nrole = this.initUserDialog();
+        this.$router.go();
       });
     },
     createTrainerRole() {
@@ -367,6 +395,7 @@ export default {
       this.$store.dispatch("user/createRole", _role).then(() => {
         this.dialog = false;
         this.nrole = this.initUserDialog();
+        this.$router.go();
       });
     },
     initUserDialog() {

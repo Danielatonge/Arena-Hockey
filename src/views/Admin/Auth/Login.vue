@@ -50,7 +50,7 @@
                 tile
                 class="mb-10"
                 large
-                color="grey lighten-0"
+                color="primary"
                 elevation="0"
                 @click="loginUser"
               >

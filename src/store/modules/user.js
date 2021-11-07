@@ -11,6 +11,7 @@ export const state = () => ({
   forums: [],
   selected_arenas: [],
   roles: [],
+  role: {},
 });
 export const getters = {
   userId: (state) => {
@@ -36,6 +37,9 @@ export const mutations = {
   },
   SET_ROLES(state, roles) {
     state.roles = roles;
+  },
+  SET_ROLE(state, role) {
+    state.role = role;
   },
   SET_FORUMS(state, forums) {
     state.forums = forums;
@@ -141,6 +145,16 @@ export const actions = {
       .getRoles(userId)
       .then((response) => {
         commit("SET_ROLES", response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  getRole({ commit }, roleId) {
+    return api
+      .getRole(roleId)
+      .then((response) => {
+        commit("SET_ROLE", response.data);
       })
       .catch((err) => {
         console.log(err);

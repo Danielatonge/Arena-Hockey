@@ -63,6 +63,11 @@
               <div class="text-h5 black--text font-weight-bold">
                 Восстановить доступ
               </div>
+              <v-icon
+                style="position: absolute; top: 28px; right: 30px"
+                @click="changePassword = false"
+                >mdi-close</v-icon
+              >
             </v-card-title>
             <v-card-text v-if="enterMail">
               <p class="body-1 mb-1">Введите адрес электронной почты</p>

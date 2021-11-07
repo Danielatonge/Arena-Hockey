@@ -67,34 +67,50 @@
     <div class="grey lighten-4">
       <v-container>
         <div class="mb-4 text-h5">Профессиональные навыки</div>
+        <template v-if="role.name === 'PLAYER'">
+          <v-row class="mb-4">
+            <v-col cols="6" md="3" class="mb-2" v-show="role.position">
+              <div class="body-1 mb-2 grey--text">Амплуа</div>
+              <div class="">
+                {{ role.position }}
+              </div>
+            </v-col>
+            <v-col cols="6" md="3" class="mb-2" v-show="role.grip">
+              <div class="body-1 mb-2 grey--text">Хват</div>
+              <div class="">{{ role.grip }}</div>
+            </v-col>
+          </v-row>
+          <v-row class="mb-4">
+            <v-col cols="6" md="3" class="mb-2" v-show="role.height">
+              <div class="body-1 mb-2 grey--text">Рост</div>
+              <div class="">
+                {{ role.height + " см" }}
+              </div>
+            </v-col>
+            <v-col cols="6" md="3" class="mb-2" v-show="role.weight">
+              <div class="body-1 mb-2 grey--text">Вес</div>
+              <div class="">{{ role.weight + " кг" }}</div>
+            </v-col>
+          </v-row>
+        </template>
+        <template v-if="role.name === 'TRAINER'">
+          <v-row class="mb-4">
+            <v-col cols="6" md="3" class="mb-2" v-show="role.status">
+              <div class="body-1 mb-2 grey--text">Статус</div>
+              <div class="">
+                {{ role.status }}
+              </div>
+            </v-col>
+            <v-col cols="6" md="3" class="mb-2" v-show="role.category">
+              <div class="body-1 mb-2 grey--text">Возрастная категория</div>
+              <div class="">{{ role.category.join(", ") }}</div>
+            </v-col>
+          </v-row>
+        </template>
         <v-row class="mb-4">
-          <v-col cols="6" md="3" class="mb-2" v-show="user.position">
-            <div class="body-1 mb-2 grey--text">Амплуа</div>
-            <div class="">
-              {{ user.position }}
-            </div>
-          </v-col>
-          <v-col cols="6" md="3" class="mb-2" v-show="user.grip">
-            <div class="body-1 mb-2 grey--text">Хват</div>
-            <div class="">{{ user.grip }}</div>
-          </v-col>
-        </v-row>
-        <v-row class="mb-4">
-          <v-col cols="6" md="3" class="mb-2" v-show="user.height">
-            <div class="body-1 mb-2 grey--text">Рост</div>
-            <div class="">
-              {{ user.height + " см" }}
-            </div>
-          </v-col>
-          <v-col cols="6" md="3" class="mb-2" v-show="user.weight">
-            <div class="body-1 mb-2 grey--text">Вес</div>
-            <div class="">{{ user.weight + " кг" }}</div>
-          </v-col>
-        </v-row>
-        <v-row class="mb-4">
-          <v-col cols="12" class="mb-4" v-show="user.biography">
+          <v-col cols="12" class="mb-4" v-show="role.biography">
             <div class="body-1 mb-2 grey--text">Биография</div>
-            <div v-html="user.biography"></div>
+            <div v-html="role.biography"></div>
           </v-col>
           <v-col cols="12" class="mb-2" v-show="displaySocialMedia.length">
             <div class="body-1 mb-2">Социальные сети</div>
@@ -346,7 +362,6 @@
           </v-dialog>
         </div>
       </v-container>
-      {{ forums[0] }}
     </div>
   </div>
 </template>
@@ -389,9 +404,10 @@ export default {
       this.getSocialMedia();
     });
     this.$store.dispatch("user/getForums", this.userId);
+    this.$store.dispatch("user/getRole", this.roleId);
   },
   computed: {
-    ...mapState("user", ["user", "forums"]),
+    ...mapState("user", ["user", "forums", "role"]),
 
     displaySocialMedia() {
       return this.social_media.filter((element) => element.link);
@@ -546,7 +562,6 @@ export default {
         .dispatch("user/putForum", { forumId, forum: putForum })
         .then(() => {
           this.mforum = this.initForumDialog();
-
           this.modifyForumDialog = false;
           this.$router.go();
         });
