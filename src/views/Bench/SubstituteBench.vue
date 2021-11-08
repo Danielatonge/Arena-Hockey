@@ -79,31 +79,7 @@
           v-for="(item, i) in _tplayer"
           :key="i"
         >
-          <v-card elevation="0" class="pa-5">
-            <div class="d-flex flex-no-wrap">
-              <v-card-text class="px-0 pt-0">
-                <div class="body-1 grey--text">
-                  {{ dateFormat(item.date) }}
-                </div>
-                <div class="text-h6 mb-2">{{ item.name }}</div>
-                <!-- <div class="body-2 grey--text">Участников: 19</div> -->
-              </v-card-text>
-            </div>
-            <div class="mb-4 text-justify">
-              {{ item.description.slice(0, 290) }}
-            </div>
-            <p class="bold">Необходимые требования:</p>
-            <div class="d-flex mb-2">
-              <div class="body-2 blue--text">Возраст: {{ item.age }}</div>
-              <div class="body-2 blue--text ml-16">Амплуа: {{ item.role }}</div>
-            </div>
-            <div class="d-flex">
-              <div class="body-2 blue--text">Хват: {{ item.grip }}</div>
-              <div class="body-2 blue--text ml-16">
-                Уровень: {{ item.level }}
-              </div>
-            </div>
-          </v-card>
+          <AdminForumCard :forum="item"> </AdminForumCard>
         </v-col>
       </v-row>
       <ForumPagination
@@ -128,31 +104,7 @@
           v-for="(item, i) in ttrainer.items"
           :key="i"
         >
-          <v-card elevation="0" class="pa-5">
-            <div class="d-flex flex-no-wrap">
-              <v-card-text class="px-0 pt-0">
-                <div class="body-1 grey--text">
-                  {{ dateFormat(item.date) }}
-                </div>
-                <div class="text-h6 mb-2">{{ item.name }}</div>
-                <!-- <div class="body-2 grey--text">Участников: 19</div> -->
-              </v-card-text>
-            </div>
-            <div class="mb-4 text-justify">
-              {{ item.description.slice(0, 290) }}
-            </div>
-            <p class="bold">Необходимые требования:</p>
-            <div class="d-flex mb-2">
-              <div class="body-2 blue--text">Возраст: {{ item.age }}</div>
-              <div class="body-2 blue--text ml-16">Амплуа: {{ item.role }}</div>
-            </div>
-            <div class="d-flex">
-              <div class="body-2 blue--text">Хват: {{ item.grip }}</div>
-              <div class="body-2 blue--text ml-16">
-                Уровень: {{ item.level }}
-              </div>
-            </div>
-          </v-card>
+          <AdminForumCard :forum="item"> </AdminForumCard>
         </v-col>
       </v-row>
       <ForumPagination
@@ -177,28 +129,7 @@
           v-for="(item, i) in ttrainer.items"
           :key="i"
         >
-          <v-card elevation="0" class="pa-5 rounded-lg">
-            <div class="d-flex flex-no-wrap">
-              <v-card-text class="px-0">
-                <div class="body-1 grey--text">
-                  {{ dateFormat(item.date) }}
-                </div>
-                <div class="text-h5 mb-2">{{ item.name }}</div>
-                <div class="body-2 grey--text">{{ item.age }} год</div>
-              </v-card-text>
-            </div>
-            <div class="mb-4">
-              {{ item.description.slice(0, 290) }}
-            </div>
-            <p class="bold">Навыки:</p>
-            <div class="d-flex mb-2">
-              <div class="body-2 blue--text">Хват: {{ item.grip }}</div>
-              <div class="body-2 blue--text ml-16">Амплуа: {{ item.role }}</div>
-            </div>
-            <div class="d-flex">
-              <div class="body-2 blue--text">Уровень: {{ item.level }}</div>
-            </div>
-          </v-card>
+          <AdminForumCard :forum="item"> </AdminForumCard>
         </v-col>
       </v-row>
       <ForumPagination
