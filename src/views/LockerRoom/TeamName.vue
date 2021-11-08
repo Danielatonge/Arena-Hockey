@@ -406,26 +406,26 @@ export default {
   },
   created() {
     const teamId = this.$route.params.teamId;
-    this.$store.dispatch("team/getTeam", teamId);
+
     this.$store.dispatch("team/getPlayers", teamId);
     this.$store.dispatch("team/getForums", teamId);
+    this.$store.dispatch("team/getTeam", teamId).then(() => {
+      const teamItem = this.team;
+      this.breadcrumb_items = [
+        {
+          text: "Список команд",
+          disabled: false,
+          exact: true,
+          to: { name: "room" },
+        },
+        {
+          text: teamItem.title,
+          disabled: true,
+          to: "",
+        },
+      ];
 
-    this.breadcrumb_items = [
-      {
-        text: "Список команд",
-        disabled: false,
-        exact: true,
-        to: { name: "room" },
-      },
-      {
-        text: this.team.title,
-        disabled: true,
-        to: "",
-      },
-    ];
-    const teamItem = this.team;
-
-     this.contact_list = [
+      this.contact_list = [
         {
           icon: "mdi-whatsapp",
           link: `${teamItem.whatsApp ? teamItem.whatsApp : ""}`,
@@ -456,6 +456,7 @@ export default {
           link: `${teamItem.facebook ? teamItem.facebook : ""}`,
         },
       ];
+    });
   },
   methods: {
     openGallery(index) {
