@@ -196,12 +196,21 @@ export default {
         mail: this.mail,
         password: this.password,
       };
-      this.$store
-        .dispatch("auth/loginUser", credential)
-        .then((userId) => {
-          this.$router.push({ name: "user-profile", params: { userId } });
-        })
-        .catch(() => {});
+      if (this.mail && this.password) {
+        this.$store
+          .dispatch("auth/loginUser", credential)
+          .then((userId) => {
+            this.$router.push({ name: "user-profile", params: { userId } });
+          })
+          .catch(() => {});
+      } else {
+        const notification = {
+          type: "error",
+          message: "Вводите все необходимые поля",
+        };
+        this.$store.dispatch("notification/add", notification);
+        return;
+      }
     },
     sendCode() {
       this.$store
