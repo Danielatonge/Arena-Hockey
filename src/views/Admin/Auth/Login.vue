@@ -93,7 +93,6 @@
                   <v-text-field
                     v-model="mail"
                     :rules="[rules.required]"
-                    label="Ссылка на социальную сеть"
                     outlined
                     solo
                     dense
