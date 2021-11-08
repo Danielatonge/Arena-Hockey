@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="0" class="pa-5">
+  <v-card elevation="0" class="pa-5 rounded-xl">
     <div class="d-flex flex-no-wrap">
       <v-card-text class="px-0">
         <div class="body-1 grey--text">
@@ -11,9 +11,9 @@
       <slot name="edit-delete"></slot>
     </div>
     <div class="mb-4 text-justify">
-      {{ forum.description.slice(0, 290) }}
+      {{ forum.description.slice(0, 200) }}
     </div>
-    <p class="bold">Необходимые требования:</p>
+    <p class="bold"><slot>Необходимые требования:</slot></p>
     <div class="d-flex mb-2">
       <!-- <div class="body-2 blue--text">Возраст: {{ forum.age }}</div>
                   <div class="body-2 blue--text ml-16">

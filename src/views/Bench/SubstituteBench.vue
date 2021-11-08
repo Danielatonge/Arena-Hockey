@@ -31,8 +31,9 @@
           md="6"
           v-for="(item, i) in _pteam"
           :key="i"
+          @click="viewForum(item)"
         >
-          <AdminForumCard :forum="item"> </AdminForumCard>
+          <AdminForumCard :forum="item"> Навыки: </AdminForumCard>
           <!-- <v-card elevation="0" class="pa-5 rounded-lg">
             <div class="d-flex flex-no-wrap">
               <v-card-text class="px-0 pt-0">
@@ -78,8 +79,9 @@
           md="6"
           v-for="(item, i) in _tplayer"
           :key="i"
+          @click="viewForum(item)"
         >
-          <AdminForumCard :forum="item"> </AdminForumCard>
+          <AdminForumCard :forum="item"> Навыки: </AdminForumCard>
         </v-col>
       </v-row>
       <ForumPagination
@@ -103,8 +105,9 @@
           md="6"
           v-for="(item, i) in ttrainer.items"
           :key="i"
+          @click="viewForum(item)"
         >
-          <AdminForumCard :forum="item"> </AdminForumCard>
+          <AdminForumCard :forum="item"> Навыки: </AdminForumCard>
         </v-col>
       </v-row>
       <ForumPagination
@@ -128,8 +131,9 @@
           md="6"
           v-for="(item, i) in ttrainer.items"
           :key="i"
+          @click="viewForum(item)"
         >
-          <AdminForumCard :forum="item"> </AdminForumCard>
+          <AdminForumCard :forum="item"> Навыки: </AdminForumCard>
         </v-col>
       </v-row>
       <ForumPagination
@@ -138,6 +142,49 @@
         :show="!!tteam.items.length"
       />
     </v-container>
+
+    <v-dialog
+      v-model="detailedForum"
+      content-class="rounded-xl"
+      max-width="600"
+    >
+      <v-card class="pa-5 rounded-xl" v-if="forum.title">
+        <div class="d-flex flex-no-wrap">
+          <v-card-text class="px-0 py-0">
+            <div class="body-1 grey--text">
+              {{ dateFormat(forum.date) }}
+            </div>
+            <div class="text-h6 mb-2">{{ forum.title }}</div>
+            <!-- <div class="body-2 grey--text">Участников: 19</div> -->
+          </v-card-text>
+          <v-icon
+            style="position: absolute; right: 30px; top: 35px"
+            @click.stop="detailedForum = false"
+            >mdi-close
+          </v-icon>
+        </div>
+        <p class="bold">Навыки:</p>
+        <div class="d-flex mb-2">
+          <!-- <div class="body-2 blue--text">Возраст: {{ forum.age }}</div>
+                  <div class="body-2 blue--text ml-16">
+                    Амплуа: {{ forum.role }}
+                  </div> -->
+          <div
+            v-if="isValid(forum.role)"
+            class="body-2 blue--text"
+            :class="{ 'mr-16': isValid(forum.role) }"
+          >
+            Амплуа: {{ forum.role }}
+          </div>
+          <div class="body-2 blue--text" v-if="isValid(forum.grip)">
+            Хват: {{ forum.grip }}
+          </div>
+        </div>
+        <div class="mt-6 mb-2 text-justify">
+          {{ forum.description }}
+        </div>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -230,9 +277,15 @@ export default {
         { state: "Показывать по 50", value: 50 },
         { state: "Показывать по 100", value: 100 },
       ],
+      detailedForum: false,
+      forum: {},
     };
   },
   methods: {
+    isValid(input) {
+      if (input) return true;
+      return false;
+    },
     dateFormat(date) {
       let newDate = new Date(date);
       let formatter = new Intl.DateTimeFormat("ru", {
@@ -241,10 +294,15 @@ export default {
         month: "long",
         day: "numeric",
       });
+
       return formatter.format(newDate);
     },
     returnFilter({ page, search, numItems, sort_asc, address }) {
       return { page, search, numItems, sort_asc, address };
+    },
+    viewForum(forum) {
+      this.forum = forum;
+      this.detailedForum = true;
     },
     fetchpteam() {
       this.$store
