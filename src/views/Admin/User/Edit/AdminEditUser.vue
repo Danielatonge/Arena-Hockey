@@ -240,7 +240,7 @@
           @click="
             $router.push({
               name: 'user-profile',
-              params: { userId: user.id },
+              params: { userId },
             })
           "
         >

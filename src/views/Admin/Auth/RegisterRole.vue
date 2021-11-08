@@ -276,8 +276,10 @@ export default {
       positions: ["Защитник", "Нападающий", "Вратарь"],
       grips: ["левый", "правый"],
       categories: [
-        { value: "ADULT", text: "взрослый" },
-        { value: "CHILDREN", text: "дети" },
+        { value: "ADULT", text: "Взрослый" },
+        { value: "KIDS", text: "Детский" },
+        { value: "YOUTH", text: "Юношеский" },
+        { value: "WOMEN", text: "Женский" },
       ],
     };
   },
@@ -348,7 +350,6 @@ export default {
     doneCreatingUser() {
       this.$router.push({ name: "login" });
     },
-    
   },
 };
 </script>

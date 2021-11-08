@@ -237,6 +237,9 @@ export const apiUser = {
   putUser({ userId, user }) {
     return apiClient.patch(`/user/${userId}`, user);
   },
+  patchRole({ roleId, role }) {
+    return apiClient.patch(`/role/${roleId}`, role);
+  },
   getRoleID(roleName) {
     return apiClient.get(`/role?title=${roleName}`);
   },

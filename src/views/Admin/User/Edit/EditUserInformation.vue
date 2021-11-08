@@ -36,7 +36,7 @@
                 class="mr-2 mb-2"
                 color="primary"
                 elevation="0"
-                @click="updateUser"
+                @click="updateRole"
               >
                 Сохранить
               </v-btn>
@@ -63,60 +63,87 @@
       <v-container>
         <div class="mb-4 text-h5">Профессиональные навыки</div>
         <v-row>
-          <v-col cols="12" class="">
-            <v-select
-              :items="positions"
-              v-model="nuser.position"
-              placeholder="Амплуа"
-              solo
-              flat
-              item-text="state"
-              item-value="value"
-              return-object
-              hide-details="auto"
-            ></v-select>
-          </v-col>
-          <v-col cols="12" class="mb-2">
-            <v-select
-              :items="grips"
-              v-model="nuser.grip"
-              placeholder="Хват"
-              solo
-              flat
-              item-text="state"
-              item-value="value"
-              return-object
-              hide-details="auto"
-            ></v-select>
-          </v-col>
-          <v-col cols="12">
-            <v-text-field
-              label="Рост"
-              outlined
-              flat
-              v-model="nuser.height"
-              dense
-              hide-details="auto"
-              class="rounded-lg"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12">
-            <v-text-field
-              label="Вес"
-              outlined
-              flat
-              v-model="nuser.weight"
-              dense
-              hide-details="auto"
-              class="rounded-lg"
-            ></v-text-field>
-          </v-col>
+          <template v-if="isRolePlayer">
+            <v-col cols="12" class="">
+              <v-select
+                :items="positions"
+                v-model="nrole.position"
+                placeholder="Амплуа"
+                solo
+                flat
+                item-text="state"
+                item-value="value"
+                return-object
+                hide-details="auto"
+              ></v-select>
+            </v-col>
+            <v-col cols="12" class="mb-2">
+              <v-select
+                :items="grips"
+                v-model="nrole.grip"
+                placeholder="Хват"
+                solo
+                flat
+                item-text="state"
+                item-value="value"
+                return-object
+                hide-details="auto"
+              ></v-select>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                label="Рост"
+                outlined
+                flat
+                v-model="nrole.height"
+                dense
+                hide-details="auto"
+                class="rounded-lg"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                label="Вес"
+                outlined
+                flat
+                v-model="nrole.weight"
+                dense
+                hide-details="auto"
+                class="rounded-lg"
+              ></v-text-field>
+            </v-col>
+          </template>
+          <template v-if="isRoleTrainer">
+            <v-col cols="12" class="">
+              <v-select
+                :items="statuses"
+                v-model="nrole.status"
+                placeholder="Статус"
+                solo
+                flat
+                hide-details="auto"
+              ></v-select>
+            </v-col>
+            <v-col cols="12" class="mb-2">
+              <v-select
+                :items="categories"
+                v-model="nrole.category"
+                placeholder="Возрастная категория"
+                solo
+                flat
+                item-text="text"
+                item-value="value"
+                return-object
+                hide-details="auto"
+              ></v-select>
+            </v-col>
+          </template>
 
           <v-col cols="12" class="">
             <div class="mb-2">Биография</div>
             <v-textarea
               solo
-              v-model="nuser.biography"
+              v-model="nrole.biography"
               height="100"
               flat
               elevation="0"
@@ -126,7 +153,7 @@
         </v-row>
 
         <v-row class="mb-4">
-          <v-col cols="12">
+          <v-col cols="12" v-show="false">
             <div class="body-1 mb-4">Социальные сети</div>
             <v-row class="mb-2">
               <v-col cols="12">
@@ -242,7 +269,7 @@
             class="mr-2 mb-2"
             color="primary"
             elevation="0"
-            @click="updateUser"
+            @click="updateRole"
           >
             Сохранить
           </v-btn>
@@ -281,6 +308,9 @@ export default {
     },
   },
   created() {
+    this.$store.dispatch("user/getRole", this.roleId).then(() => {
+      this.nrole = this.role;
+    });
     const userId = this.userId;
     this.breadcrumb_items = [
       {
@@ -295,20 +325,21 @@ export default {
         to: "",
       },
     ];
-    this.$store.dispatch("user/getUser", userId).then(() => {
-      this.getSocialMedia();
-      this.nuser = this.user;
-    });
+    // this.$store.dispatch("user/getUser", userId).then(() => {
+    //   this.getSocialMedia();
+    // });
     this.$store.dispatch("user/getForums", this.userId);
   },
   computed: {
-    ...mapState("user", ["user", "forums"]),
+    ...mapState("user", ["user", "forums", "role"]),
+    isRolePlayer() {
+      return this.nrole.name === "PLAYER";
+    },
+    isRoleTrainer() {
+      return this.nrole.name === "TRAINER";
+    },
     displaySocialMedia() {
       return this.social_media.filter((element) => element.link);
-    },
-    fullName() {
-      const { name, middleName, surname } = this.user;
-      return `${name} ${middleName} ${surname}`;
     },
   },
   data() {
@@ -316,14 +347,24 @@ export default {
       breadcrumb_items: [],
       loading: false,
       social_media: [],
-      nuser: {
+      nrole: {
         biography: "",
         grip: "",
         position: "",
         weight: "",
         height: "",
-        city: ""
+        city: "",
+        name: "",
+        category: "",
+        status: "",
       },
+      categories: [
+        { value: "ADULT", text: "Взрослый" },
+        { value: "KIDS", text: "Детский" },
+        { value: "YOUTH", text: "Юношеский" },
+        { value: "WOMEN", text: "Женский" },
+      ],
+      statuses: ["действующий", "Не действующий"],
       positions: ["Защитник", "Нападающий", "Вратарь"],
       grips: ["левый", "правый"],
       socialMediaDialog: false,
@@ -333,20 +374,53 @@ export default {
     };
   },
   methods: {
-    updateUser() {
+    updateRole() {
+      const roleName = this.nrole.name;
+      if (roleName === "PLAYER") {
+        this.updatePlayerRole();
+      } else if (roleName === "TRAINER") {
+        this.updateTrainerRole();
+      }
+    },
+    updatePlayerRole() {
       const userId = this.userId;
-      const { biography, position, grip, weight, height } = this.nuser;
+      const roleId = this.roleId;
+      const { biography, position, grip, weight, height } = this.nrole;
       const updateInfo = {
-        name: this.fullName,
         biography,
         grip,
         position,
         weight,
         height,
       };
-      this.$store.dispatch("user/putUser", { userId, updateInfo }).then(() => {
-        this.nuser = this.initUserDialog();
-      });
+      this.$store
+        .dispatch("user/patchRole", { roleId, role: updateInfo })
+        .then(() => {
+          this.nrole = this.initUserDialog();
+          this.$router.push({
+            name: "admin-user-role",
+            params: { userId, roleId },
+          });
+        });
+    },
+    updateTrainerRole() {
+      const userId = this.userId;
+      const roleId = this.roleId;
+      const { biography, status, category } = this.nrole;
+      const updateInfo = {
+        biography,
+        status,
+        category,
+      };
+      this.$store
+        .dispatch("user/patchRole", { roleId, role: updateInfo })
+        .then(() => {
+          this.nrole = this.initUserDialog();
+          this.$router.push({
+            name: "admin-user-role",
+            params: { userId, roleId },
+          });
+        });
     },
     removeSocialMedia(item) {
       console.log(item);
@@ -402,10 +476,13 @@ export default {
       return {
         biography: "",
         grip: "",
-        level: "",
         position: "",
-        qualification: "",
         weight: "",
+        height: "",
+        city: "",
+        name: "",
+        category: "",
+        status: "",
       };
     },
   },

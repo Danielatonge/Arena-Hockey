@@ -205,6 +205,18 @@ export const actions = {
         throw err;
       });
   },
+  patchRole(_commit, userObj) {
+    console.log(userObj);
+    return api
+      .patchRole(userObj)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
+  },
   getRoleID(_commit, roleName) {
     return api
       .getRoleID(roleName)

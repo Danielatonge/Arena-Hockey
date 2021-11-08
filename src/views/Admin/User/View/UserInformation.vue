@@ -204,15 +204,17 @@
                     ></v-textarea>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                      label="Город"
-                      outlined
-                      flat
+                    <v-select
+                      :items="cities"
                       v-model="nforum.city"
-                      dense
+                      placeholder="Город"
+                      solo
+                      flat
+                      item-text="state"
+                      item-value="value"
+                      return-object
                       hide-details="auto"
-                      class="rounded-lg"
-                    ></v-text-field>
+                    ></v-select>
                   </v-col>
 
                   <v-col cols="12" class="">
@@ -304,15 +306,17 @@
                     ></v-textarea>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                      label="Населеный пункт"
-                      outlined
+                    <v-select
+                      :items="cities"
+                      v-model="nforum.city"
+                      placeholder="Город"
+                      solo
                       flat
-                      v-model="mforum.city"
-                      dense
+                      item-text="state"
+                      item-value="value"
+                      return-object
                       hide-details="auto"
-                      class="rounded-lg"
-                    ></v-text-field>
+                    ></v-select>
                   </v-col>
 
                   <v-col cols="12" class="">
@@ -432,7 +436,7 @@ export default {
       nforum: {
         find: {},
         description: "",
-        city: "",
+        city: "Москва",
         position: "",
         grip: "",
       },
@@ -443,6 +447,7 @@ export default {
         position: "",
         grip: "",
       },
+      cities: ["Москва"],
       playerSearch: [{ value: "PLAYERTEAM", state: "Игрок ищет команду" }],
       positions: ["Защитник", "Нападающий", "Вратарь"],
       grips: ["левый", "правый"],
