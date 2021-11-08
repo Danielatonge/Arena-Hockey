@@ -445,7 +445,7 @@ export default {
       createForumDialog: false,
       modifyForumDialog: false,
       nforum: {
-        find: {},
+        find: { value: "PLAYERTEAM", state: "Игрок ищет команду" },
         description: "",
         city: "Москва",
         position: "",

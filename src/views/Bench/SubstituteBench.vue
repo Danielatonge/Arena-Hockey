@@ -32,7 +32,8 @@
           v-for="(item, i) in _pteam"
           :key="i"
         >
-          <v-card elevation="0" class="pa-5 rounded-lg">
+          <AdminForumCard :forum="item"> </AdminForumCard>
+          <!-- <v-card elevation="0" class="pa-5 rounded-lg">
             <div class="d-flex flex-no-wrap">
               <v-card-text class="px-0 pt-0">
                 <div class="body-1 grey--text">
@@ -53,7 +54,7 @@
             <div class="d-flex">
               <div class="body-2 blue--text">Уровень: {{ item.level }}</div>
             </div>
-          </v-card>
+          </v-card> -->
         </v-col>
       </v-row>
       <ForumPagination
@@ -211,12 +212,13 @@
 
 <script>
 import ForumFilter from "@/components/Forum/ForumFilter";
-import ForumPagination from "../../components/Forum/ForumPagination";
+import ForumPagination from "@/components/Forum/ForumPagination";
+import AdminForumCard from "@/components/Admin/Forum/AdminForumCard.vue";
 import { mapState } from "vuex";
 
 export default {
   name: "SubstituteBench",
-  components: { ForumPagination, ForumFilter },
+  components: { ForumPagination, ForumFilter, AdminForumCard },
   watch: {
     "pteam.page": () => {
       this.fetchpteam();
