@@ -103,7 +103,7 @@
             </v-col>
             <v-col cols="6" md="3" class="mb-2" v-show="role.category">
               <div class="body-1 mb-2 grey--text">Возрастная категория</div>
-              <div class="">{{ role.category.join(", ") }}</div>
+              <div class="">{{ roleCategory }}</div>
             </v-col>
           </v-row>
         </template>
@@ -417,7 +417,18 @@ export default {
   },
   computed: {
     ...mapState("user", ["user", "forums", "role"]),
-
+    roleCategory() {
+      if (this.role.name === "TRAINER") {
+        return this.role.category
+          .map((cat) => {
+            if (cat == "ADULT") return "Взрослый";
+            if (cat == "KIDS") return "Детский";
+            if (cat == "YOUTH") return "Юношеский";
+            if (cat == "WOMEN") return "Женский";
+          })
+          .join(", ");
+      } else return "";
+    },
     displaySocialMedia() {
       return this.social_media.filter((element) => element.link);
     },

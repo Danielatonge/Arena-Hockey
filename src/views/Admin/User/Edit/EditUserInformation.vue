@@ -321,6 +321,15 @@ export default {
   created() {
     this.$store.dispatch("user/getRole", this.roleId).then(() => {
       this.nrole = this.role;
+      if (this.role.name === "TRAINER") {
+        const category = this.role.category;
+        this.nrole.category = category.map((cat) => {
+          if (cat == "ADULT") return { value: "ADULT", text: "Взрослый" };
+          if (cat == "KIDS") return { value: "KIDS", text: "Детский" };
+          if (cat == "YOUTH") return { value: "YOUTH", text: "Юношеский" };
+          if (cat == "WOMEN") return { value: "WOMEN", text: "Женский" };
+        });
+      }
     });
     const userId = this.userId;
     this.breadcrumb_items = [
@@ -401,8 +410,8 @@ export default {
         biography,
         grip,
         position,
-        weight,
-        height,
+        weight: Number(weight),
+        height: Number(height),
       };
       this.$store
         .dispatch("user/patchRole", { roleId, role: updateInfo })
@@ -484,7 +493,7 @@ export default {
         },
       ];
     },
-    initForumDialog() {
+    initUserDialog() {
       return {
         biography: "",
         grip: "",
