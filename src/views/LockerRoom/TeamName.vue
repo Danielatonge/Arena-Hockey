@@ -425,16 +425,37 @@ export default {
     ];
     const teamItem = this.team;
 
-    this.contact_list = [
-      { icon: "mdi-whatsapp", link: `${teamItem.whatsApp}` },
-      { icon: "mdi-instagram", link: `${teamItem.instagram}` },
-      { icon: "mdi-alpha-k-box", link: `${teamItem.vk}` },
-      { icon: "mdi-web", link: `${teamItem.website}` },
-      { icon: "mdi-music-note-outline", link: `${teamItem.tiktok}` },
-      { icon: "mdi-twitter", link: `${teamItem.twitter}` },
-      { icon: "mdi-youtube", link: `${teamItem.youtube}` },
-      { icon: "mdi-facebook", link: `${teamItem.facebook}` },
-    ];
+     this.contact_list = [
+        {
+          icon: "mdi-whatsapp",
+          link: `${teamItem.whatsApp ? teamItem.whatsApp : ""}`,
+        },
+        {
+          icon: "mdi-instagram",
+          link: `${teamItem.instagram ? teamItem.instagram : ""}`,
+        },
+        { icon: "mdi-alpha-k-box", link: `${teamItem.vk ? teamItem.vk : ""}` },
+        {
+          icon: "mdi-web",
+          link: `${teamItem.website ? teamItem.website : ""}`,
+        },
+        {
+          icon: "mdi-music-note-outline",
+          link: `${teamItem.tiktok ? teamItem.tiktok : ""}`,
+        },
+        {
+          icon: "mdi-twitter",
+          link: `${teamItem.twitter ? teamItem.twitter : ""}`,
+        },
+        {
+          icon: "mdi-youtube",
+          link: `${teamItem.youtube ? teamItem.youtube : ""}`,
+        },
+        {
+          icon: "mdi-facebook",
+          link: `${teamItem.facebook ? teamItem.facebook : ""}`,
+        },
+      ];
   },
   methods: {
     openGallery(index) {

@@ -16,7 +16,9 @@
         <div class="body-1 blue--text mb-2" style="text-decoration: none">
           {{ arenaTeam.team.city }}
         </div>
-        <div class="text-h5 mb-2">{{ arenaTeam.team.title }}</div>
+        <div class="text-h5 mb-2" style="cursor: pointer">
+          {{ arenaTeam.team.title }}
+        </div>
         <div class="body-1 grey--text">
           {{ processType(arenaTeam.team.type) }}
         </div>

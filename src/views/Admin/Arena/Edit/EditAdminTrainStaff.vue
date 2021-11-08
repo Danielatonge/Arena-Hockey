@@ -99,7 +99,9 @@
       </div>
       <v-row dense class="mx-n4">
         <v-col cols="12" v-for="(item, i) in atrainers" :key="i">
-          <AdminTrainerCard :arenaUser="item" @trainer-remove="removeTeam" />
+          <AdminTrainerCard :arenaUser="item" @trainer-remove="removeTeam">
+            Открепить Тренер
+          </AdminTrainerCard>
         </v-col>
       </v-row>
     </div>

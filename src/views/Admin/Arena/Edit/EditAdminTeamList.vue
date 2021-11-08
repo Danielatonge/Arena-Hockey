@@ -112,7 +112,7 @@
               <v-col>
                 <v-checkbox
                   :value="checked"
-                  @click="toggle"
+                  @click.stop="toggle"
                   label="Скрыть команду"
                 />
               </v-col>

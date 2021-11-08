@@ -34,7 +34,7 @@
               class="primary"
               elevation="0"
             >
-              Открепить команду
+              <slot>Открепить команду</slot>
             </v-btn>
           </v-col>
           <v-col>

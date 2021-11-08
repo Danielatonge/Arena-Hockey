@@ -137,14 +137,35 @@ export default {
 
     const arenaItem = this.arena;
     this.contact_list = [
-      { icon: "mdi-whatsapp", link: `${arenaItem.whatsApp}` },
-      { icon: "mdi-instagram", link: `${arenaItem.instagram}` },
-      { icon: "mdi-alpha-k-box", link: `${arenaItem.vk}` },
-      { icon: "mdi-web", link: `${arenaItem.website}` },
-      { icon: "mdi-music-note-outline", link: `${arenaItem.tiktok}` },
-      { icon: "mdi-twitter", link: `${arenaItem.twitter}` },
-      { icon: "mdi-youtube", link: `${arenaItem.youtube}` },
-      { icon: "mdi-facebook", link: `${arenaItem.facebook}` },
+      {
+        icon: "mdi-whatsapp",
+        link: `${arenaItem.whatsApp ? arenaItem.whatsApp : ""}`,
+      },
+      {
+        icon: "mdi-instagram",
+        link: `${arenaItem.instagram ? arenaItem.instagram : ""}`,
+      },
+      { icon: "mdi-alpha-k-box", link: `${arenaItem.vk ? arenaItem.vk : ""}` },
+      {
+        icon: "mdi-web",
+        link: `${arenaItem.website ? arenaItem.website : ""}`,
+      },
+      {
+        icon: "mdi-music-note-outline",
+        link: `${arenaItem.tiktok ? arenaItem.tiktok : ""}`,
+      },
+      {
+        icon: "mdi-twitter",
+        link: `${arenaItem.twitter ? arenaItem.twitter : ""}`,
+      },
+      {
+        icon: "mdi-youtube",
+        link: `${arenaItem.youtube ? arenaItem.youtube : ""}`,
+      },
+      {
+        icon: "mdi-facebook",
+        link: `${arenaItem.facebook ? arenaItem.facebook : ""}`,
+      },
     ];
 
     this.breadcrumb_items = [

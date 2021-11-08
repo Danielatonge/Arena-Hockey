@@ -163,7 +163,7 @@
                 <v-img
                   contain
                   :src="
-                    item.user.profilePicture.length
+                    item.user.profilePicture
                       ? item.user.profilePicture
                       : require('@/assets/team_room_1.jpg')
                   "
@@ -414,25 +414,48 @@ export default {
         {
           text: "Список команд",
           disabled: false,
-          to: `/room`,
+          exact: true,
+          to: { name: "room" },
         },
         {
           text: this.team.title,
           disabled: true,
-          to: "breadcrumbs_link_2",
+          exact: true,
+          to: { name: "" },
         },
       ];
       const teamItem = this.team;
 
       this.contact_list = [
-        { icon: "mdi-whatsapp", link: `${teamItem.whatsApp}` },
-        { icon: "mdi-instagram", link: `${teamItem.instagram}` },
-        { icon: "mdi-alpha-k-box", link: `${teamItem.vk}` },
-        { icon: "mdi-web", link: `${teamItem.website}` },
-        { icon: "mdi-music-note-outline", link: `${teamItem.tiktok}` },
-        { icon: "mdi-twitter", link: `${teamItem.twitter}` },
-        { icon: "mdi-youtube", link: `${teamItem.youtube}` },
-        { icon: "mdi-facebook", link: `${teamItem.facebook}` },
+        {
+          icon: "mdi-whatsapp",
+          link: `${teamItem.whatsApp ? teamItem.whatsApp : ""}`,
+        },
+        {
+          icon: "mdi-instagram",
+          link: `${teamItem.instagram ? teamItem.instagram : ""}`,
+        },
+        { icon: "mdi-alpha-k-box", link: `${teamItem.vk ? teamItem.vk : ""}` },
+        {
+          icon: "mdi-web",
+          link: `${teamItem.website ? teamItem.website : ""}`,
+        },
+        {
+          icon: "mdi-music-note-outline",
+          link: `${teamItem.tiktok ? teamItem.tiktok : ""}`,
+        },
+        {
+          icon: "mdi-twitter",
+          link: `${teamItem.twitter ? teamItem.twitter : ""}`,
+        },
+        {
+          icon: "mdi-youtube",
+          link: `${teamItem.youtube ? teamItem.youtube : ""}`,
+        },
+        {
+          icon: "mdi-facebook",
+          link: `${teamItem.facebook ? teamItem.facebook : ""}`,
+        },
       ];
     });
     this.$store.dispatch("team/getUsers", teamId);
@@ -441,6 +464,10 @@ export default {
   methods: {
     openGallery(index) {
       this.$refs.lightbox.showImage(index);
+    },
+    isvalid(input) {
+      if (input) return input;
+      return "";
     },
     dateFormat(date) {
       let newDate = new Date(date);
@@ -460,9 +487,9 @@ export default {
       premises_tab: null,
       arenaId: null,
       advert_nav: ["Команда ищет игроков", "Команда ищет тренера"],
-      contact_list: null,
+      contact_list: [],
       readMoreInfo: false,
-      breadcrumb_items: null,
+      breadcrumb_items: [],
     };
   },
 };

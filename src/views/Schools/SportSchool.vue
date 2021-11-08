@@ -428,14 +428,38 @@ export default {
     const schoolItem = this.school;
 
     this.contact_list = [
-      { icon: "mdi-whatsapp", link: `${schoolItem.whatsApp}` },
-      { icon: "mdi-instagram", link: `${schoolItem.instagram}` },
-      { icon: "mdi-alpha-k-box", link: `${schoolItem.vk}` },
-      { icon: "mdi-web", link: `${schoolItem.website}` },
-      { icon: "mdi-music-note-outline", link: `${schoolItem.tiktok}` },
-      { icon: "mdi-twitter", link: `${schoolItem.twitter}` },
-      { icon: "mdi-youtube", link: `${schoolItem.youtube}` },
-      { icon: "mdi-facebook", link: `${schoolItem.facebook}` },
+      {
+        icon: "mdi-whatsapp",
+        link: `${schoolItem.whatsApp ? schoolItem.whatsApp : ""}`,
+      },
+      {
+        icon: "mdi-instagram",
+        link: `${schoolItem.instagram ? schoolItem.instagram : ""}`,
+      },
+      {
+        icon: "mdi-alpha-k-box",
+        link: `${schoolItem.vk ? schoolItem.vk : ""}`,
+      },
+      {
+        icon: "mdi-web",
+        link: `${schoolItem.website ? schoolItem.website : ""}`,
+      },
+      {
+        icon: "mdi-music-note-outline",
+        link: `${schoolItem.tiktok ? schoolItem.tiktok : ""}`,
+      },
+      {
+        icon: "mdi-twitter",
+        link: `${schoolItem.twitter ? schoolItem.twitter : ""}`,
+      },
+      {
+        icon: "mdi-youtube",
+        link: `${schoolItem.youtube ? schoolItem.youtube : ""}`,
+      },
+      {
+        icon: "mdi-facebook",
+        link: `${schoolItem.facebook ? schoolItem.facebook : ""}`,
+      },
     ];
   },
   methods: {
