@@ -214,7 +214,7 @@
                           @click="select"
                           @click:close="remove(item)"
                         >
-                          <strong>{{ item }}</strong
+                          <strong>{{ item.text }}</strong
                           >&nbsp;
                         </v-chip>
                       </template>
@@ -341,12 +341,17 @@ export default {
         weight: "",
         height: "",
         status: "",
-        category: "",
+        category: [],
       },
       statuses: ["действующий", "Не действующий"],
       positions: ["Защитник", "Нападающий", "Вратарь"],
       grips: ["левый", "правый"],
-      categories: ["взрослый", "дети", "Юношеский", "Женский"],
+      categories: [
+        { value: "ADULT", text: "Взрослый" },
+        { value: "KIDS", text: "Детский" },
+        { value: "YOUTH", text: "Юношеский" },
+        { value: "WOMEN", text: "Женский" },
+      ],
     };
   },
   methods: {
@@ -384,11 +389,12 @@ export default {
     createTrainerRole() {
       const userId = this.userId;
       const { biography, status, category } = this.nrole;
+      const roleCategory = category.map(({ value }) => value);
       const _role = {
         name: "TRAINER",
         biography,
         status,
-        category,
+        category: roleCategory,
         userId,
       };
 

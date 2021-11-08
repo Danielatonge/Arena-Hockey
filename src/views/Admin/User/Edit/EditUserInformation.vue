@@ -125,17 +125,28 @@
               ></v-select>
             </v-col>
             <v-col cols="12" class="mb-2">
-              <v-select
-                :items="categories"
+              <v-combobox
                 v-model="nrole.category"
+                :items="categories"
+                categories
+                clearable
                 placeholder="Возрастная категория"
+                multiple
                 solo
                 flat
-                item-text="text"
-                item-value="value"
-                return-object
-                hide-details="auto"
-              ></v-select>
+              >
+                <template v-slot:selection="{ attrs, item, select, selected }">
+                  <v-chip
+                    v-bind="attrs"
+                    :input-value="selected"
+                    @click="select"
+                    @click:close="remove(item)"
+                  >
+                    <strong>{{ item.text }}</strong
+                    >&nbsp;
+                  </v-chip>
+                </template>
+              </v-combobox>
             </v-col>
           </template>
 
@@ -355,7 +366,7 @@ export default {
         height: "",
         city: "",
         name: "",
-        category: "",
+        category: [],
         status: "",
       },
       categories: [
@@ -407,10 +418,11 @@ export default {
       const userId = this.userId;
       const roleId = this.roleId;
       const { biography, status, category } = this.nrole;
+      const roleCategory = category.map(({ value }) => value);
       const updateInfo = {
         biography,
         status,
-        category,
+        category: roleCategory,
       };
       this.$store
         .dispatch("user/patchRole", { roleId, role: updateInfo })

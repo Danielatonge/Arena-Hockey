@@ -176,17 +176,30 @@
                 ></v-select>
               </v-col>
               <v-col cols="12" class="mb-2">
-                <v-select
-                  :items="categories"
+                <v-combobox
                   v-model="nrole.category"
+                  :items="categories"
+                  categories
+                  clearable
                   placeholder="Возрастная категория"
+                  multiple
                   solo
                   flat
-                  item-text="text"
-                  item-value="value"
-                  return-object
-                  hide-details="auto"
-                ></v-select>
+                >
+                  <template
+                    v-slot:selection="{ attrs, item, select, selected }"
+                  >
+                    <v-chip
+                      v-bind="attrs"
+                      :input-value="selected"
+                      @click="select"
+                      @click:close="remove(item)"
+                    >
+                      <strong>{{ item.text }}</strong
+                      >&nbsp;
+                    </v-chip>
+                  </template>
+                </v-combobox>
               </v-col>
 
               <v-col cols="12" class="">
@@ -270,7 +283,7 @@ export default {
         weight: "",
         height: "",
         status: "",
-        category: "",
+        category: [],
       },
       statuses: ["действующий", "Не действующий"],
       positions: ["Защитник", "Нападающий", "Вратарь"],
@@ -284,6 +297,10 @@ export default {
     };
   },
   methods: {
+    remove(item) {
+      this.categories.splice(this.categories.indexOf(item), 1);
+      this.categories = [...this.categories];
+    },
     openDialog(dialogCode) {
       console.log(
         "🚀 ~ file: RegisterRole.vue ~ line 116 ~ openDialog ~ dialogCode",
@@ -322,11 +339,12 @@ export default {
     createTrainerRole() {
       const userId = this.userId;
       const { biography, status, category } = this.nrole;
+      const roleCategory = category.map(({ value }) => value);
       const _role = {
         name: "TRAINER",
         biography,
         status,
-        category,
+        category: roleCategory,
         userId,
       };
 
