@@ -108,79 +108,86 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("arena/getArena", this.arenaId);
-    this.sidebar_items = [
-      {
-        text: "Информация",
-        link: { name: "arena-information", params: { arenaId: this.arenaId } },
-      },
-      {
-        text: "Платные услуги",
-        link: { name: "payment-portal", params: { arenaId: this.arenaId } },
-      },
-      {
-        text: "Расписание мероприятий",
-        link: { name: "event-schedule", params: { arenaId: this.arenaId } },
-      },
-      {
-        text: "Список команд",
-        link: { name: "arena-team-list", params: { arenaId: this.arenaId } },
-      },
-      {
-        text: "Тренерский состав",
-        link: {
-          name: "arena-training-staff",
-          params: { arenaId: this.arenaId },
+    this.$store.dispatch("arena/getArena", this.arenaId).then(() => {
+      this.sidebar_items = [
+        {
+          text: "Информация",
+          link: {
+            name: "arena-information",
+            params: { arenaId: this.arenaId },
+          },
         },
-      },
-    ];
+        {
+          text: "Платные услуги",
+          link: { name: "payment-portal", params: { arenaId: this.arenaId } },
+        },
+        {
+          text: "Расписание мероприятий",
+          link: { name: "event-schedule", params: { arenaId: this.arenaId } },
+        },
+        {
+          text: "Список команд",
+          link: { name: "arena-team-list", params: { arenaId: this.arenaId } },
+        },
+        {
+          text: "Тренерский состав",
+          link: {
+            name: "arena-training-staff",
+            params: { arenaId: this.arenaId },
+          },
+        },
+      ];
 
-    const arenaItem = this.arena;
-    this.contact_list = [
-      {
-        icon: "mdi-whatsapp",
-        link: `${arenaItem.whatsApp ? arenaItem.whatsApp : ""}`,
-      },
-      {
-        icon: "mdi-instagram",
-        link: `${arenaItem.instagram ? arenaItem.instagram : ""}`,
-      },
-      { icon: "mdi-alpha-k-box", link: `${arenaItem.vk ? arenaItem.vk : ""}` },
-      {
-        icon: "mdi-web",
-        link: `${arenaItem.website ? arenaItem.website : ""}`,
-      },
-      {
-        icon: "mdi-music-note-outline",
-        link: `${arenaItem.tiktok ? arenaItem.tiktok : ""}`,
-      },
-      {
-        icon: "mdi-twitter",
-        link: `${arenaItem.twitter ? arenaItem.twitter : ""}`,
-      },
-      {
-        icon: "mdi-youtube",
-        link: `${arenaItem.youtube ? arenaItem.youtube : ""}`,
-      },
-      {
-        icon: "mdi-facebook",
-        link: `${arenaItem.facebook ? arenaItem.facebook : ""}`,
-      },
-    ];
+      const arenaItem = this.arena;
+      this.contact_list = [
+        {
+          icon: "mdi-whatsapp",
+          link: `${arenaItem.whatsApp ? arenaItem.whatsApp : ""}`,
+        },
+        {
+          icon: "mdi-instagram",
+          link: `${arenaItem.instagram ? arenaItem.instagram : ""}`,
+        },
+        {
+          icon: "mdi-alpha-k-box",
+          link: `${arenaItem.vk ? arenaItem.vk : ""}`,
+        },
+        {
+          icon: "mdi-web",
+          link: `${arenaItem.website ? arenaItem.website : ""}`,
+        },
+        {
+          icon: "mdi-music-note-outline",
+          link: `${arenaItem.tiktok ? arenaItem.tiktok : ""}`,
+        },
+        {
+          icon: "mdi-twitter",
+          link: `${arenaItem.twitter ? arenaItem.twitter : ""}`,
+        },
+        {
+          icon: "mdi-youtube",
+          link: `${arenaItem.youtube ? arenaItem.youtube : ""}`,
+        },
+        {
+          icon: "mdi-facebook",
+          link: `${arenaItem.facebook ? arenaItem.facebook : ""}`,
+        },
+      ];
 
-    this.breadcrumb_items = [
-      {
-        text: "Ледовые дворцы и арены",
-        disabled: false,
-        exact: true,
-        to: { name: "arena" },
-      },
-      {
-        text: `${arenaItem.title}`,
-        disabled: true,
-        to: { name: "" },
-      },
-    ];
+      this.breadcrumb_items = [
+        {
+          text: "Ледовые дворцы и арены",
+          disabled: false,
+          exact: true,
+          to: { name: "arena" },
+        },
+        {
+          text: `${arenaItem.title}`,
+          disabled: true,
+          to: { name: "" },
+        },
+      ];
+    });
   },
   methods: {
     openContactInTab(link) {
@@ -194,7 +201,7 @@ export default {
       name: "ArenaName",
       contact_list: null,
       sideTab: 0,
-      breadcrumb_items: null,
+      breadcrumb_items: [],
       selectedItem: 0,
       sidebar_items: null,
     };

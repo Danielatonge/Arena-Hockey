@@ -198,7 +198,7 @@ export const actions = {
     });
   },
   getArena({ commit }, arenaId) {
-    api
+    return api
       .getArena(arenaId)
       .then((response) => {
         commit("SET_ARENA", response.data);
