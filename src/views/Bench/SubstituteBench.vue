@@ -228,6 +228,7 @@ export default {
         search: "",
         paginationLength: 10,
         numItems: { state: "Показывать по 10", value: 10 },
+        numFound: 0,
         sort_asc: { key: 0, value: "По именни (от А до Я)" },
         address: "Москва",
         items: [],
@@ -237,6 +238,7 @@ export default {
         search: "",
         paginationLength: 10,
         numItems: { state: "Показывать по 10", value: 10 },
+        numFound: 0,
         sort_asc: { key: 0, value: "По именни (от А до Я)" },
         address: "Москва",
         items: [],
@@ -246,6 +248,7 @@ export default {
         search: "",
         paginationLength: 10,
         numItems: { state: "Показывать по 10", value: 10 },
+        numFound: 0,
         sort_asc: { key: 0, value: "По именни (от А до Я)" },
         address: "Москва",
         items: [],
@@ -255,6 +258,7 @@ export default {
         search: "",
         paginationLength: 10,
         numItems: { state: "Показывать по 10", value: 10 },
+        numFound: 0,
         sort_asc: { key: 0, value: "По именни (от А до Я)" },
         address: "Москва",
         items: [],
@@ -297,9 +301,6 @@ export default {
 
       return formatter.format(newDate);
     },
-    returnFilter({ page, search, numItems, sort_asc, address }) {
-      return { page, search, numItems, sort_asc, address };
-    },
     viewForum(forum) {
       this.forum = forum;
       this.detailedForum = true;
@@ -312,7 +313,7 @@ export default {
         })
         .then(({ pagination, numFound }) => {
           this.pteam.paginationLength = pagination;
-          this.pteam.numItems = numFound;
+          this.pteam.numFound = numFound;
           this.pteam.items = this._pteam;
         });
     },
@@ -324,7 +325,7 @@ export default {
         })
         .then(({ pagination, numFound }) => {
           this.tplayer.paginationLength = pagination;
-          this.tplayer.numItems = numFound;
+          this.tplayer.numFound = numFound;
           this.tplayer.items = this._tplayer;
         });
     },
@@ -336,7 +337,7 @@ export default {
         })
         .then(({ pagination, numFound }) => {
           this.ttrainer.paginationLength = pagination;
-          this.ttrainer.numItems = numFound;
+          this.ttrainer.numFound = numFound;
           this.ttrainer.items = this._ttrainer;
         });
     },
@@ -348,7 +349,7 @@ export default {
         })
         .then(({ pagination, numFound }) => {
           this.tteam.paginationLength = pagination;
-          this.tteam.numItems = numFound;
+          this.tteam.numFound = numFound;
           this.tteam.items = this._tteam;
         });
     },

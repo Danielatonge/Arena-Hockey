@@ -152,105 +152,8 @@
         </v-col>
         <v-col>
           <v-row class="mb-2">
-            <v-col cols="12" class="text-h6">Социальные сети</v-col>
-            <v-col
-              cols="4"
-              class="d-flex align-center"
-              v-for="(item, i) in social_media_display"
-              :key="i"
-            >
-              <v-btn
-                elevation="0"
-                x-small
-                color="grey"
-                height="40px"
-                class="mr-2"
-              >
-                <v-icon>{{ item.icon }}</v-icon>
-              </v-btn>
-              <div>{{ item.link }}</div>
-              <v-icon class="ml-4" @click="removeSocialMedia(item)">
-                mdi-close
-              </v-icon>
-            </v-col>
+            <AdminSocialMedia :items="social_media"></AdminSocialMedia>
           </v-row>
-
-          <v-dialog v-model="social_media_dialog" max-width="600">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                class="mr-2 mb-2"
-                color="primary"
-                large
-                elevation="0"
-                v-bind="attrs"
-                v-on="on"
-              >
-                Добавить профиль соцсети
-              </v-btn>
-            </template>
-
-            <v-card class="py-3">
-              <v-card-title class="justify-space-between">
-                <div class="text-h5 black--text">Добавить социальную сеть</div>
-                <div class="mb-4">
-                  <v-icon @click.stop="social_media_dialog = false"
-                    >mdi-close
-                  </v-icon>
-                </div>
-              </v-card-title>
-              <v-card-text>
-                <div class="mb-6">
-                  <v-btn-toggle v-model="toggle_social_media" mandatory>
-                    <v-btn
-                      elevation="0"
-                      x-small
-                      color="grey"
-                      height="40px"
-                      class="mr-2"
-                      v-for="(item, i) in social_media"
-                      :key="i"
-                    >
-                      <v-icon> {{ item.icon }}</v-icon>
-                    </v-btn>
-                  </v-btn-toggle>
-                </div>
-                <div class="mb-2">
-                  <v-text-field
-                    v-model="social_media_text"
-                    label="Ссылка на социальную сеть"
-                    outlined
-                    :hint="errMessage"
-                    persistent-hint
-                    flat
-                    hide-details="auto"
-                    class="rounded-lg"
-                  >
-                    <template v-slot:message="{ message }">
-                      <span class="error--text" v-html="message"></span>
-                    </template>
-                  </v-text-field>
-                </div>
-              </v-card-text>
-              <v-card-actions class="mt-n3">
-                <v-btn
-                  class="body-2"
-                  @click="social_media_dialog = false"
-                  elevation="0"
-                >
-                  Назад
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn
-                  elevation="0"
-                  color="primary"
-                  class="body-2"
-                  @click="addSocialMedia"
-                >
-                  Добавить
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
         </v-col>
       </v-row>
       <div>
@@ -332,9 +235,6 @@ export default {
   },
   computed: {
     ...mapState("auth", { currentUser: "user" }),
-    social_media_display() {
-      return this.social_media.filter((x) => x.link);
-    },
     profilePicture() {
       return this.avatar ? this.avatar.imageURL : "";
     },
@@ -387,10 +287,6 @@ export default {
           value === this.user.password || "Пароли не соответствуют",
       },
       avatar: null,
-      social_media_dialog: false,
-      toggle_social_media: null,
-      social_media_text: "",
-      errMessage: "",
       social_media: [
         {
           id: 1,
@@ -464,22 +360,6 @@ export default {
           this.$router.push({ name: "register-role" });
         })
         .catch(() => {});
-    },
-    removeSocialMedia(item) {
-      console.log(item);
-      item.link = "";
-    },
-    addSocialMedia() {
-      console.log(this.toggle_social_media);
-      const link = this.social_media[this.toggle_social_media].link;
-      if (link === "") {
-        this.social_media[this.toggle_social_media].link =
-          this.social_media_text;
-        this.social_media_dialog = false;
-      } else {
-        this.errMessage = "Ссылка уже существует";
-      }
-      this.social_media_text = "";
     },
     enforcePhoneFormat() {
       let x = this.user.phone

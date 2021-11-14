@@ -7,17 +7,20 @@
       src="@/assets/home_slide_1.png"
     >
       <v-container>
-        <div class="mt-5">
-          <v-text-field
-            label="Поиск по названию арены, метро, адресу"
-            single-line
-            prepend-inner-icon="mdi-magnify"
-            solo
-            flat
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-text-field>
-        </div>
+        <v-row class="justify-center">
+          <v-col cols="12" md="6" class="mt-5">
+            <v-text-field
+              label="Поиск по названию арены, метро, адресу"
+              single-line
+              prepend-inner-icon="mdi-magnify"
+              solo
+              flat
+              hide-details="auto"
+              class="rounded-lg"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <div class="mt-5"></div>
       </v-container>
     </v-img>
     <v-container dense class="mt-5 mb-10">
@@ -51,7 +54,7 @@
     </v-container>
     <v-row class="mb-10">
       <v-img color="grey" class="about-us" src="@/assets/banner-arena.jpg">
-        <v-container class="pt-3 px-5 my-10">
+        <v-container class="px-5 my-7">
           <v-row class="white--text justify-center">
             <v-col cols="12" md="3" lg="2" class="text-left mr-lg-10">
               <div class="text-h5">О проекте</div>
@@ -63,7 +66,7 @@
                   <v-icon color="white"> mdi-instagram </v-icon>
                 </v-col>
                 <v-col>
-                  <v-icon color="white"> mdi-vk </v-icon>
+                  <v-icon color="white"> mdi-alpha-k-box-outline </v-icon>
                 </v-col>
                 <v-col>
                   <v-icon color="white"> mdi-web </v-icon>
