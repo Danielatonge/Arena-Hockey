@@ -77,14 +77,15 @@
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="6" class="mb-2">
-          <v-text-field
+          <AppSelectDatePicker :dense="false" :date.sync="user.birthDate" />
+          <!-- <v-text-field
             label="Дата рождения"
             outlined
             v-model="user.birthDate"
             flat
             hide-details="auto"
             class="rounded-lg"
-          ></v-text-field>
+          ></v-text-field> -->
         </v-col>
         <v-col cols="12" md="6" class="mb-2">
           <v-text-field
@@ -97,6 +98,16 @@
             hide-details="auto"
             class="rounded-lg"
           ></v-text-field>
+        </v-col>
+        <v-col cols="12" md="6" class="mb-2">
+          <v-select
+            :items="cities"
+            v-model="user.city"
+            placeholder="Город"
+            solo
+            flat
+            hide-details="auto"
+          ></v-select>
         </v-col>
       </v-row>
       <v-row>
@@ -312,6 +323,7 @@
 
 <script>
 import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
+import moment from "moment";
 import { mapState } from "vuex";
 
 export default {
@@ -328,26 +340,30 @@ export default {
     },
   },
   created() {
-    const {
-      gender,
-      name,
-      middleName,
-      surname,
-      phone,
-      mail,
-      password,
-      birthDate,
-    } = this.currentUser;
-    this.user = {
-      gender,
-      name,
-      middleName,
-      surname,
-      phone,
-      mail,
-      password,
-      birthDate,
-    };
+    if (!this.currentUser) {
+      const {
+        gender,
+        name,
+        middleName,
+        surname,
+        phone,
+        mail,
+        password,
+        birthDate,
+        city,
+      } = this.currentUser;
+      this.user = {
+        gender,
+        name,
+        middleName,
+        surname,
+        phone,
+        mail,
+        password,
+        birthDate,
+        city,
+      };
+    }
   },
   data() {
     return {
@@ -361,7 +377,8 @@ export default {
         phone: "",
         mail: "",
         password: "",
-        birthDate: "",
+        birthDate: moment().format("YYYY-MM-DD"),
+        city: "Москва",
       },
       feedback_dialog: false,
       rules: {
@@ -406,6 +423,7 @@ export default {
           icon: "mdi-facebook",
         },
       ],
+      cities: ["Москва"],
     };
   },
   methods: {

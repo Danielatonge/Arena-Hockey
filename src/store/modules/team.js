@@ -55,11 +55,6 @@ export const actions = {
     return api
       .getTeam(teamId)
       .then((response) => {
-        console.log(
-          "🚀 ~ file: team.js ~ line 57 ~ .then ~ response",
-          response.data
-        );
-
         commit("SET_TEAM", response.data);
       })
       .catch((err) => console.log(err));

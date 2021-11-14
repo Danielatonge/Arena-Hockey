@@ -155,7 +155,7 @@
               flat
               hide-details="auto"
               class="rounded-lg"
-              @change="fetchPlayers"
+              @keyup.enter="fetchPlayers"
             ></v-text-field>
           </v-col>
           <v-col cols="3" md="2" lg="1">
@@ -166,6 +166,7 @@
               height="48px"
               width="100%"
               color="primary"
+              @click="fetchPlayers"
             >
               Найти
             </v-btn>
@@ -225,7 +226,8 @@
                   {{ item.name + " " + item.middleName + " " + item.surname }}
                 </div>
                 <div class="body-1 blue--text mb-2">
-                  {{ item.age }}{{ isValidCityOutput(item.city) }}
+                  {{ item.age }}{{ item.city && item.age ? ", " : "" }}
+                  {{ isValidOutput(item.city) }}
                 </div>
                 <div class="d-flex">
                   <div
@@ -234,12 +236,17 @@
                   >
                     Хват: {{ item.grip }}
                   </div>
-                  <div class="body-2 grey--text">
+                  <div
+                    class="body-2 grey--text"
+                    v-if="isValidOutput(item.position)"
+                  >
                     Амплуа: {{ item.position }}
                   </div>
                 </div>
 
-                <div class="body-2 grey--text">Уровень: {{ item.level }}</div>
+                <div class="body-2 grey--text" v-if="isValidOutput(item.level)">
+                  Уровень: {{ item.level }}
+                </div>
               </v-card-text>
             </div>
           </v-card>
@@ -306,7 +313,7 @@ export default {
       room_tab: null,
       room_nav: ["Команды", "Игроки"],
       team_tags: ["Москва", "Казань"],
-      team_city: "г. Москва",
+      team_city: "Москва",
       player_city: "Москва",
       numItemsTeam: { state: "Показывать по 10", value: 10 },
       numItemsPlayer: { state: "Показывать по 10", value: 10 },
@@ -338,9 +345,6 @@ export default {
     },
     isValidOutput(input) {
       return input && input !== "string" ? input : null;
-    },
-    isValidCityOutput(input) {
-      return input && input !== "string" ? ", " + input : null;
     },
     showPlayer() {
       this.team_room = false;

@@ -76,8 +76,7 @@
         class="white--text"
         v-for="(item, index) in items"
         :key="index"
-        router
-        exact-path
+        exact
         :to="item.route"
       >
         {{ item.text }}
@@ -96,12 +95,12 @@ export default {
       tab: null,
       items: [
         { text: "Ледовые дворцы и арены", route: { name: "arena" } },
-        { text: "Лиги и турниры", route: { name: "" } },
+        { text: "Лиги и турниры", route: { name: "league-tournaments" } },
         { text: "Детские турниры", route: { name: "kidsTournaments" } },
         { text: "Раздевалка", route: { name: "room" } },
         { text: "Скамейка запасных", route: { name: "substitute-bench" } },
         { text: "Школы", route: { name: "sport-schools" } },
-        { text: "Лагеря и сборы", route: { name: "" } },
+        { text: "Лагеря и сборы", route: { name: "camps-fees" } },
         { text: "Сушилка", route: { name: "categoriesPage" } },
       ],
     };

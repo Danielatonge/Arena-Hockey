@@ -4,6 +4,10 @@ import VueRouter from "vue-router";
 import Main from "../views/Home/Home.vue";
 import Arena from "../views/Arena/Arena.vue";
 import Room from "../views/LockerRoom/Room.vue";
+
+import CampsFees from "../views/Camps/CampsFees.vue";
+import LeagueTournaments from "../views/League/LeagueTournaments.vue";
+
 import SportSchool from "../views/Schools/SportSchool.vue";
 import SportSchools from "../views/Schools/SportSchools.vue";
 import TeamName from "../views/LockerRoom/TeamName.vue";
@@ -76,6 +80,7 @@ import myArchiveAds from "../components/Sushilka/vendorAds/myArchiveAds/myArchiv
 import createNewAds from "../components/Sushilka/vendorAds/myAds/createNewAds/createNewAds.vue";
 import editAd from "../components/Sushilka/vendorAds/myAds/editAd/editAd.vue";
 import createNewProduct from "../components/Sushilka/vendorAds/myAds/createNewAds/createNewProduct.vue";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -392,6 +397,16 @@ const routes = [
     path: "/auth/login",
     name: "login",
     component: Login,
+  },
+  {
+    path: "/league",
+    name: "league-tournaments",
+    component: LeagueTournaments,
+  },
+  {
+    path: "/camps-fees",
+    name: "camps-fees",
+    component: CampsFees,
   },
   {
     path: "/auth/register",

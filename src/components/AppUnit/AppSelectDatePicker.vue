@@ -14,7 +14,7 @@
         readonly
         single-line
         outlined
-        dense
+        :dense="dense"
         class="rounded-lg"
         hide-details
         v-bind="attrs"
@@ -37,6 +37,11 @@ export default {
       type: String,
       required: true,
     },
+    dense: {
+      type: Boolean,
+      required: false,
+      default: true
+    }
   },
   created() {
     this.dateCopied = this.date;
