@@ -12,11 +12,11 @@
         v-model="dateCopied"
         prepend-inner-icon="mdi-calendar"
         readonly
-        single-line
+        :label="label"
         outlined
         :dense="dense"
         class="rounded-lg"
-        hide-details
+        hide-details="auto"
         v-bind="attrs"
         v-on="on"
       ></v-text-field>
@@ -46,6 +46,11 @@ export default {
       type: Number,
       required: false,
       default: 120,
+    },
+    label: {
+      type: String,
+      required: false,
+      default: "",
     },
   },
   created() {

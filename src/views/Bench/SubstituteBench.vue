@@ -10,9 +10,9 @@
             </v-tab>
           </v-tabs>
           <v-spacer></v-spacer>
-          <v-btn class="rounded-lg" large dark outlined depressed height="48px">
+          <!-- <v-btn class="rounded-lg" large dark outlined depressed height="48px">
             Добавить объявление
-          </v-btn>
+          </v-btn> -->
         </div>
       </v-container>
     </div>

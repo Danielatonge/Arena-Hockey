@@ -4,6 +4,26 @@
       <v-container class="pb-0">
         <v-row class="">
           <AppBreadcrumb :items="breadcrumb_items" />
+          <v-spacer></v-spacer>
+          <div class="pr-3 my-auto">
+            <a
+              v-for="(item, index) in valid_contact_list"
+              class="reset-link"
+              :key="index"
+              :href="item.link"
+              target="_blank"
+            >
+              <v-btn
+                elevation="0"
+                x-small
+                color="transparent"
+                height="40px"
+                class="mx-1"
+              >
+                <v-icon color="black"> {{ item.icon }}</v-icon>
+              </v-btn>
+            </a>
+          </div>
         </v-row>
         <v-row class="mb-4">
           <v-col cols="4" md="3" class="text-center">
@@ -219,9 +239,52 @@ export default {
       { text: "Календарь мероприятий", link: `` },
     ];
     this.mail = this.user.mail;
+
+    const user = this.user;
+    this.contact_list = [
+      {
+        icon: "mdi-whatsapp",
+        link: `${user.whatsApp ? user.whatsApp : ""}`,
+      },
+      {
+        icon: "mdi-instagram",
+        link: `${user.instagram ? user.instagram : ""}`,
+      },
+      {
+        icon: "mdi-alpha-k-box",
+        link: `${user.vk ? user.vk : ""}`,
+      },
+      {
+        icon: "mdi-web",
+        link: `${user.website ? user.website : ""}`,
+      },
+      {
+        icon: "mdi-music-note-outline",
+        link: `${user.tiktok ? user.tiktok : ""}`,
+      },
+      {
+        icon: "mdi-twitter",
+        link: `${user.twitter ? user.twitter : ""}`,
+      },
+      {
+        icon: "mdi-youtube",
+        link: `${user.youtube ? user.youtube : ""}`,
+      },
+      {
+        icon: "mdi-facebook",
+        link: `${user.facebook ? user.facebook : ""}`,
+      },
+    ];
   },
   computed: {
     ...mapState("user", ["user"]),
+    valid_contact_list() {
+      return this.contact_list.filter((x) => {
+        if (x.link !== "null") {
+          if (x.link) return x.link;
+        }
+      });
+    },
   },
   data() {
     return {
@@ -235,7 +298,7 @@ export default {
       sidebar_tab: 0,
       enterMail: true,
       changePassword: false,
-
+      contact_list: [],
       checkbox: false,
       showPass: false,
       rules: {
