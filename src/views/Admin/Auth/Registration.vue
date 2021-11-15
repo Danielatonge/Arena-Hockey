@@ -77,7 +77,11 @@
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="6" class="mb-2">
-          <AppSelectDatePicker :dense="false" :date.sync="user.birthDate" />
+          <AppSelectDatePicker
+            :nudgeLeft="0"
+            :dense="false"
+            :date.sync="user.birthDate"
+          />
           <!-- <v-text-field
             label="Дата рождения"
             outlined

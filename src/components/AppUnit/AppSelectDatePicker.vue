@@ -2,7 +2,7 @@
   <v-menu
     v-model="date_picker"
     :close-on-content-click="false"
-    :nudge-left="120"
+    :nudge-left="nudgeLeft"
     transition="scale-transition"
     offset-y
     min-width="auto"
@@ -40,8 +40,13 @@ export default {
     dense: {
       type: Boolean,
       required: false,
-      default: true
-    }
+      default: true,
+    },
+    nudgeLeft: {
+      type: Number,
+      required: false,
+      default: 120,
+    },
   },
   created() {
     this.dateCopied = this.date;
