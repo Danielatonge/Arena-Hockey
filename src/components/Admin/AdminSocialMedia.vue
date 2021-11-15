@@ -6,8 +6,6 @@
         <v-row>
           <v-col
             cols="12"
-            sm="5"
-            md="3"
             class="d-flex align-center"
             v-for="(item, i) in social_media_display"
             :key="i"
