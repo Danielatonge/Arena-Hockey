@@ -210,7 +210,7 @@ export default {
     deleteTimeframe(position) {
       const price = this.prices[position];
       axios
-        .delete(`https://api-hockey-io.herokuapp.com/price/${price.id}`, price)
+        .delete(`http://193.187.173.125:8090/price/${price.id}`, price)
         .then(() => {
           console.log("DELETED");
           this.prices.splice(position, 1);
@@ -229,7 +229,7 @@ export default {
       };
       console.log(price);
       axios
-        .post(`https://api-hockey-io.herokuapp.com/price`, price)
+        .post(`http://193.187.173.125:8090/price`, price)
         .then((response) => {
           console.log("SET_PRICE", response.data);
           this.prices.push(response.data);
@@ -245,9 +245,7 @@ export default {
     },
     fetchPriceList() {
       axios
-        .get(
-          `https://api-hockey-io.herokuapp.com/service/${this.serviceId}/prices`
-        ) //TODO refactore
+        .get(`http://193.187.173.125:8090/service/${this.serviceId}/prices`) //TODO refactore
         .then((response) => {
           console.log("SET_PRICE", response.data);
           this.prices = response.data;

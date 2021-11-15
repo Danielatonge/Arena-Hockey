@@ -54,20 +54,8 @@
             <div class="body-1 mb-4 font-weight-bold">Основная информация</div>
             <div class="mb-4">
               <v-text-field
-                label="Полное название команды"
-                v-model="fullTitle"
-                outlined
-                flat
-                dense
-                hide-details="auto"
-                class="rounded-lg"
-              ></v-text-field>
-            </div>
-
-            <div class="mb-4">
-              <v-text-field
-                label="Сокращенное название команды"
-                v-model="shortTitle"
+                label="Название команды"
+                v-model="title"
                 outlined
                 flat
                 dense
@@ -219,8 +207,7 @@ export default {
     return {
       files: {},
       galleryPics: [],
-      fullTitle: "",
-      shortTitle: "",
+      title: "",
       description: "",
       location: "",
       locations: ["Москва"],
@@ -325,8 +312,7 @@ export default {
       }
 
       const data = {
-        title: this.shortTitle,
-        fullTitle: this.fullTitle,
+        title: this.title,
         miniDescription: "",
         city: this.location,
         type: this.category,

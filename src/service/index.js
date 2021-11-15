@@ -1,10 +1,11 @@
 import axios from "axios";
 // http://193.187.173.125:8090/
 // https://api-hockey-io.herokuapp.com
+//http://193.187.173.125:8090/
 const token = JSON.parse(localStorage.getItem("user", ["token"]));
 
 const apiClient = axios.create({
-  baseURL: "https://api-hockey-io.herokuapp.com",
+  baseURL: "http://193.187.173.125:8090",
   withCredentials: false,
   headers: {
     Accept: "application/json",

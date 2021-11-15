@@ -134,7 +134,7 @@ export default {
     async fetchArenaServices(serviceId) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`https://api-hockey-io.herokuapp.com/service/${serviceId}`)
+          .get(`http://193.187.173.125:8090/service/${serviceId}`)
           .then((response) => {
             resolve(response.data);
           })
@@ -164,7 +164,7 @@ export default {
       };
       console.log(data, id);
       axios
-        .put(`https://api-hockey-io.herokuapp.com/service/${id}`, data)
+        .put(`http://193.187.173.125:8090/service/${id}`, data)
         .then((response) => {
           console.log(response.data);
           this.$router.push({

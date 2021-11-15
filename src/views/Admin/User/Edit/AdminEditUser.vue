@@ -76,17 +76,20 @@
             outlined
             v-model="user.phone"
             flat
+            type="tel"
             placeholder="+9 (999) 999-9999"
             hide-details="auto"
             class="rounded-lg"
-            :rules="[$v.user.phone.required, $v.user.phone.phoneNumber]"
+            maxlength="17"
+            :rules="[$v.user.phone.required, $v.user.phone.exactLength]"
             @blur="$v.user.phone.$touch()"
+            @input="enforcePhoneFormat"
           ></v-text-field>
           <template v-if="$v.user.phone.$error">
             <p v-if="!$v.user.phone.required" class="error--text mb-0">
               Номер телефона - обязательное поле
             </p>
-            <p v-if="!$v.user.phone.phoneNumber" class="error--text mb-0">
+            <p v-if="!$v.user.phone.exactLength" class="error--text mb-0">
               Пример: +9 (999) 999-9999
             </p>
           </template>
@@ -246,11 +249,8 @@
 <script>
 import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
 import AdminSocialMedia from "@/components/Admin/AdminSocialMedia.vue";
-import { required, email, helpers } from "vuelidate/lib/validators";
-const phoneNumber = helpers.regex(
-  "phoneNumber",
-  /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/gm
-);
+import { required, email } from "vuelidate/lib/validators";
+
 
 import { mapState } from "vuex";
 export default {
@@ -281,7 +281,8 @@ export default {
       },
     ];
     const user = this.currentUser;
-    const { gender, surname, middleName, name, phone, mail, birthDate, city } = user;
+    const { gender, surname, middleName, name, phone, mail, birthDate, city } =
+      user;
 
     this.user = {
       gender,
@@ -291,7 +292,7 @@ export default {
       phone,
       mail,
       birthDate,
-      city
+      city,
     };
     this.avatar = user.profilePicture
       ? { imageURL: user.profilePicture }
@@ -323,7 +324,7 @@ export default {
         phone: "",
         mail: "",
         birthDate: "",
-        city: ""
+        city: "",
       },
       cities: ["Москва"],
       feedback_dialog: false,
@@ -376,7 +377,10 @@ export default {
       surname: { required },
       phone: {
         required,
-        phoneNumber,
+        exactLength: (value) => {
+          if (value.length === 17) return true;
+          return false;
+        },
       },
       mail: { required, email },
       city: { required },

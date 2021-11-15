@@ -36,17 +36,20 @@
               outlined
               v-model="user.phone"
               flat
+              type="tel"
               placeholder="+9 (999) 999-9999"
               hide-details="auto"
               class="rounded-lg"
-              :rules="[$v.user.phone.required, $v.user.phone.phoneNumber]"
+              maxlength="17"
+              :rules="[$v.user.phone.required, $v.user.phone.exactLength]"
               @blur="$v.user.phone.$touch()"
+              @input="enforcePhoneFormat"
             ></v-text-field>
             <template v-if="$v.user.phone.$error">
               <p v-if="!$v.user.phone.required" class="error--text mb-0">
                 Номер телефона - обязательное поле
               </p>
-              <p v-if="!$v.user.phone.phoneNumber" class="error--text mb-0">
+              <p v-if="!$v.user.phone.exactLength" class="error--text mb-0">
                 Пример: +9 (999) 999-9999
               </p>
             </template>
@@ -343,10 +346,6 @@ import AdminSocialMedia from "@/components/Admin/AdminSocialMedia.vue";
 import moment from "moment";
 import { mapState } from "vuex";
 import { required, email, helpers, minLength } from "vuelidate/lib/validators";
-const phoneNumber = helpers.regex(
-  "phoneNumber",
-  /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/gm
-);
 const containSymbol = helpers.regex("containSymbol", /[!@#$%^&]/);
 export default {
   components: {
@@ -420,7 +419,10 @@ export default {
       surname: { required },
       phone: {
         required,
-        phoneNumber,
+        exactLength: (value) => {
+          if (value.length === 17) return true;
+          return false;
+        },
       },
       mail: { required, email },
       password: { required, minLength: minLength(5), containSymbol },
@@ -466,6 +468,17 @@ export default {
           this.$router.push({ name: "register-role" });
         })
         .catch(() => {});
+    },
+    enforcePhoneFormat() {
+      let x = this.user.phone
+        .replace(/\D/g, "")
+        .match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,4})/);
+      console.log(x);
+
+      let value = !x[2]
+        ? x[1]
+        : x[1] + " " + "(" + x[2] + ") " + x[3] + (x[4] ? "-" + x[4] : "");
+      this.user.phone = "+" + value;
     },
   },
 };
