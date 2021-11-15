@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="body-2 font-weight-bold mb-4 grey--text">Галерея</div>
+    <div class="text-h6 mb-4">Галерея</div>
     <v-row class="pb-6">
       <v-col
         class="pa-2"

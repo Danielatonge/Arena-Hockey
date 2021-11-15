@@ -149,6 +149,15 @@ export const actions = {
       })
       .catch((err) => console.log(err));
   },
+  getTeamsVisible({ commit }, arenaId) {
+    return api
+      .getTeamsVisible(arenaId)
+      .then((response) => {
+        commit("SET_TEAMS", response.data);
+        return response.data;
+      })
+      .catch((err) => console.log(err));
+  },
   getTeams({ commit }, arenaId) {
     return api
       .getTeams(arenaId)

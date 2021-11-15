@@ -65,10 +65,14 @@ export default {
     },
     toggleVisibility() {
       console.log(this.arenaTeam);
-      this.$store.dispatch("arena/updateArenaTeam", {
-        arenaTeam: this.arenaTeam,
-        checked: this.checked,
-      });
+      this.$store
+        .dispatch("arena/updateArenaTeam", {
+          arenaTeam: this.arenaTeam,
+          checked: !this.checked,
+        })
+        .then(() => {
+          this.checked = !this.checked;
+        });
     },
     deleteTeam() {
       console.log(this.arenaTeam);

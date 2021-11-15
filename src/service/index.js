@@ -30,11 +30,11 @@ export const apiArena = {
   getService(serviceId) {
     return apiClient.get(`/service/${serviceId}`);
   },
-  getTeams(arenaId, visible) {
-    if (visible) {
-      return apiClient.get(`/arena/${arenaId}/teams/visible`);
-    }
+  getTeams(arenaId) {
     return apiClient.get(`/arena/${arenaId}/teams`);
+  },
+  getTeamsVisible(arenaId) {
+    return apiClient.get(`/arena/${arenaId}/teams/visible`);
   },
   getTrainers(arenaId, visible) {
     if (visible) {
@@ -74,6 +74,10 @@ export const apiArena = {
       visibility: checked ? 0 : 1,
     };
     const id = arenaUser.id;
+    console.log("🚀 ~ file: index.js ~ line 68 ~ putArenaTeam ~ id", {
+      id,
+      payload,
+    });
     return apiClient.put(`/arena/user?id=${id}`, payload);
   },
   putService({ serviceId, service }) {

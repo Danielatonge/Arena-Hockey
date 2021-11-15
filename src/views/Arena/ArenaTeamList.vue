@@ -216,7 +216,7 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("arena/getTeams", this.arenaId);
+    this.$store.dispatch("arena/getTeamsVisible", this.arenaId);
   },
   data() {
     return {

@@ -1,26 +1,18 @@
 <template>
   <div>
-    <div class="text-h6">Контакты</div>
-    <v-row v-show="contact.tel.length">
-      <v-col cols="12" class="">Телефоны:</v-col>
-      <v-col
-        cols="12"
-        class="mt-n4 my-auto"
-        v-for="(item, i) in contact.tel"
-        :key="i"
-      >
-        <span class="mr-4 grey--text">{{ item }}</span>
+    <div class="text-h6 mb-4">Контакты</div>
+    <v-row>
+      <v-col cols="6" class="" v-show="contact.tel.length">
+        <div>Телефоны:</div>
+        <div class="mt-4 my-auto" v-for="(item, i) in contact.tel" :key="i">
+          <span class="mr-4 grey--text">{{ item }}</span>
+        </div>
       </v-col>
-    </v-row>
-    <v-row v-show="contact.mail.length">
-      <v-col cols="12" class="">Почты:</v-col>
-      <v-col
-        cols="12"
-        class="mt-n4 my-auto"
-        v-for="(item, i) in contact.mail"
-        :key="i"
-      >
-        <span class="mr-4 grey--text">{{ item }}</span>
+      <v-col cols="6" v-show="contact.mail.length">
+        <div>Почты:</div>
+        <div class="mt-4 my-auto" v-for="(item, i) in contact.mail" :key="i">
+          <span class="mr-4 grey--text">{{ item }}</span>
+        </div>
       </v-col>
     </v-row>
     <v-dialog v-model="contact_dialog" max-width="600">
@@ -112,7 +104,7 @@
             </v-col>
           </v-row>
         </v-card-text>
-        <v-card-actions class="mt-n6 mx-2">
+        <!-- <v-card-actions class="mt-n6 mx-2">
           <v-btn
             class="body-2 px-4"
             @click="contact_dialog = false"
@@ -129,7 +121,7 @@
           >
             Добавить
           </v-btn>
-        </v-card-actions>
+        </v-card-actions> -->
       </v-card>
     </v-dialog>
   </div>
@@ -151,7 +143,7 @@ export default {
     };
   },
   methods: {
-      saveContacts() {
+    saveContacts() {
       this.contact_dialog = false;
     },
     addContactTelephone() {

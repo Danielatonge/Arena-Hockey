@@ -34,14 +34,14 @@
               class="primary"
               elevation="0"
             >
-              <slot>Открепить команду</slot>
+              Открепить Тренер
             </v-btn>
           </v-col>
           <v-col>
             <v-checkbox
               v-model="checked"
               @click="toggleVisibility"
-              label="Скрыть команду"
+              label="Скрыть Тренер"
             />
           </v-col>
         </v-row>
@@ -70,10 +70,14 @@ export default {
   methods: {
     toggleVisibility() {
       console.log(this.arenaUser);
-      this.$store.dispatch("arena/updateArenaUser", {
-        arenaUser: this.arenaUser,
-        checked: this.checked,
-      });
+      this.$store
+        .dispatch("arena/updateArenaUser", {
+          arenaUser: this.arenaUser,
+          checked: !this.checked,
+        })
+        .then(() => {
+          this.checked = !this.checked;
+        });
     },
     isValidCityOutput(input) {
       return input && input !== "string" ? ", " + input : null;

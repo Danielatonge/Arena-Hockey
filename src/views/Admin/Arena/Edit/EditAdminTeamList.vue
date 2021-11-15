@@ -11,9 +11,7 @@
         >
           Добавить команду
         </v-btn>
-        <v-btn large class="mr-2 mb-2" color="grey lighten-2" elevation="0">
-          Обратить в тех. поддержку
-        </v-btn>
+       
         <v-btn
           large
           class="mr-2 mb-2"
@@ -100,7 +98,7 @@
             <template #button>
               <v-col cols="12" md="4" lg="7">
                 <v-btn
-                  @click="removeTeam(teamObj.team.id)"
+                  @click.stop="removeTeam(teamObj.team.id)"
                   class="primary"
                   elevation="0"
                 >
