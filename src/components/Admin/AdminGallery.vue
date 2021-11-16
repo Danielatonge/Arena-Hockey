@@ -110,8 +110,6 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   props: {
     items: {
@@ -136,12 +134,11 @@ export default {
         const picture = files[i];
         let formData = new FormData();
         formData.append("file", picture);
-        axios
-          .post("https://file-hockey.herokuapp.com/file/upload", formData)
-          .then((response) => {
-            console.log(response.data);
-            this.items.push(response.data.url);
-          });
+
+        this.$store.dispatch("file/uploadFile", formData).then((response) => {
+          console.log(response.data);
+          this.items.push(response.data.url);
+        });
       }
     },
     triggerMultiFileSelector() {

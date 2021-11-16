@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import axios from "axios";
 
 export default {
   name: "AdminImageUploader",
@@ -64,14 +63,12 @@ export default {
           let imageURL = URL.createObjectURL(imageFile);
 
           formData.append("file", imageFile);
-          axios
-            .post("https://file-hockey.herokuapp.com/file/upload", formData)
-            .then((response) => {
-              this.$emit("input", {
-                imageURL: response.data.url,
-                name: imageFile.name,
-              });
+          this.$store.dispatch("file/uploadFile", formData).then((response) => {
+            this.$emit("input", {
+              imageURL: response.data.url,
+              name: imageFile.name,
             });
+          });
           console.log(formData, imageURL, imageFile.name);
         }
       }

@@ -244,7 +244,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import { yandexMap, ymapMarker } from "vue-yandex-maps";
 import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
 import AdminGallery from "@/components/Admin/AdminGallery.vue";
@@ -432,9 +431,6 @@ export default {
     };
   },
   methods: {
-    deleteGalleryItem(index) {
-      this.galleryPics.splice(index, 1);
-    },
     assignCoordinates() {
       const coords = this.address.coords;
       this.coordinate.lat = coords[0];
@@ -473,71 +469,6 @@ export default {
         });
     },
 
-    selectGalleryItems(fieldName, files) {
-      console.log(fieldName, files);
-      this.files = files;
-      for (let i = 0; i < files.length; i++) {
-        const picture = files[i];
-        let formData = new FormData();
-        formData.append("file", picture);
-        axios
-          .post("https://file-hockey.herokuapp.com/file/upload", formData)
-          .then((response) => {
-            console.log(response.data);
-            this.galleryPics.push(response.data.url);
-          });
-      }
-    },
-    triggerMultiFileSelector() {
-      console.log(this.$refs.multifile);
-      this.$refs.multifile.click();
-    },
-    saveContacts() {
-      this.contact_dialog = false;
-    },
-    addContactTelephone() {
-      if (this.telephone) {
-        this.contact.tel.push(this.telephone);
-        this.telephone = "";
-      }
-    },
-    removeTelephoneItem(idx) {
-      this.contact.tel.splice(idx, 1);
-    },
-    addContactMail() {
-      if (this.email) {
-        this.contact.mail.push(this.email);
-        this.email = "";
-      }
-    },
-    removeMailItem(idx) {
-      this.contact.mail.splice(idx, 1);
-    },
-    uploadImage() {
-      this.saving = true;
-      setTimeout(() => this.savedAvatar(), 1000);
-    },
-    savedAvatar() {
-      this.saving = false;
-      this.saved = true;
-    },
-
-    removeSocialMedia(item) {
-      console.log(item);
-      item.link = "";
-    },
-    addSocialMedia() {
-      console.log(this.toggle_social_media);
-      const link = this.social_media[this.toggle_social_media].link;
-      if (link === "") {
-        this.social_media[this.toggle_social_media].link =
-          this.social_media_text;
-        this.social_media_dialog = false;
-      } else {
-        this.errMessage = "Ссылка уже существует";
-      }
-      this.social_media_text = "";
-    },
     updateArena() {
       let whatsapp = "";
       if (this.social_media[1].link) {
