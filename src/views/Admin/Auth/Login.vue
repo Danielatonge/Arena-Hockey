@@ -1,18 +1,18 @@
 <template>
-  <div class="grey lighten-4">
+  <v-img height="100%" width="100%" src="@/assets/background-login.jpg">
     <v-container class="my-16">
-      <v-row class="my-16">
-        <v-col cols="5" md="7" class="my-auto">
-          <div class="text-center">
-            <div class="text-h2 font-weight-bold">
-              Портал <br />
-              любителей <br />
-              хоккея
-            </div>
+      <v-row class="justify-center my-16">
+        <v-col
+          cols="10"
+          sm="8"
+          md="7"
+          lg="5"
+          xl="3"
+          class="white pa-8 rounded-lg my-opacity"
+        >
+          <div class="font-weight-bold text-h5 mb-7 text-center">
+            Войти в аккаунт
           </div>
-        </v-col>
-        <v-col cols="7" md="5" class="grey lighten-2 pa-8 rounded-lg">
-          <div class="font-weight-bold text-h5 mb-3">Войти в аккаунт</div>
           <form @submit.prevent="loginUser">
             <v-row>
               <v-col cols="12">
@@ -68,7 +68,7 @@
               <div class="text-center">
                 <v-btn
                   tile
-                  class="mb-10"
+                  class="mb-10 rounded-lg"
                   large
                   color="primary"
                   elevation="0"
@@ -76,7 +76,7 @@
                 >
                   Продолжить
                 </v-btn>
-                <p class="mt-0">
+                <p class="mt-0 mb-1">
                   Нет аккаунта?
                   <router-link
                     style="text-decoration: unset"
@@ -99,8 +99,13 @@
           </form>
         </v-col>
       </v-row>
-      <v-dialog v-model="changePassword" origin="" max-width="700">
-        <v-card class="py-3">
+      <v-dialog
+        v-model="changePassword"
+        origin=""
+        max-width="700"
+        content-class="my-opacity"
+      >
+        <v-card class="py-3 my-opacity">
           <v-card-title class="justify-center">
             <div class="text-h5 black--text font-weight-bold">
               Восстановить доступ
@@ -190,7 +195,7 @@
         </v-card>
       </v-dialog>
     </v-container>
-  </div>
+  </v-img>
 </template>
 
 <script>
@@ -263,4 +268,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style>
+.my-opacity {
+  opacity: 0.9 !important;
+}
+</style>
