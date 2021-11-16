@@ -141,6 +141,14 @@ export const actions = {
       })
       .catch((err) => console.log(err));
   },
+  getServicePrices(_commit, serviceId) {
+    api
+      .getServicePrices(serviceId)
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => console.log(err));
+  },
   getTrainers({ commit }, arenaId) {
     api
       .getTrainers(arenaId)
@@ -338,12 +346,32 @@ export const actions = {
         console.log(err);
       });
   },
+  updateService(_commit, serviceObj) {
+    return api
+      .putService(serviceObj)
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   saveEvent({ commit }, event) {
     return api
       .postEvent(event)
       .then((response) => {
         const res = response.data;
         commit("ADD_EVENT", res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  savePrice(_commit, price) {
+    return api
+      .postPrice(price)
+      .then((response) => {
+        return response;
       })
       .catch((err) => {
         console.log(err);
@@ -366,6 +394,14 @@ export const actions = {
       .deleteService(serviceId)
       .then(() => {
         commit("DELETE_SERVICE", serviceId);
+      })
+      .catch((err) => console.log(err));
+  },
+  deletePrice(_commit, priceId) {
+    return api
+      .deletePrice(priceId)
+      .then(() => {
+        // commit("DELETE_PRICE", priceId);
       })
       .catch((err) => console.log(err));
   },

@@ -155,7 +155,6 @@
 
 <script>
 import AdminArenaPrice from "@/components/Admin/AdminArenaPrice.vue";
-import axios from "axios";
 import moment from "moment";
 
 export default {
@@ -209,13 +208,10 @@ export default {
   methods: {
     deleteTimeframe(position) {
       const price = this.prices[position];
-      axios
-        .delete(`http://193.187.173.125:8090/price/${price.id}`, price)
-        .then(() => {
-          console.log("DELETED");
-          this.prices.splice(position, 1);
-        })
-        .catch((err) => console.log(err));
+      this.$store.dispatch("arena/deletePrice", price.id).then(() => {
+        console.log("DELETED");
+        this.prices.splice(position, 1);
+      });
     },
     addTimeInterval() {
       const data = this.timeframe;
@@ -228,14 +224,11 @@ export default {
         showDate: this.showDate,
       };
       console.log(price);
-      axios
-        .post(`http://193.187.173.125:8090/price`, price)
-        .then((response) => {
-          console.log("SET_PRICE", response.data);
-          this.prices.push(response.data);
-          this.dialog = false;
-        })
-        .catch((err) => console.log(err));
+      this.$store.dispatch("arena/savePrice", price).then((response) => {
+        console.log("SET_PRICE", response.data);
+        this.prices.push(response.data);
+        this.dialog = false;
+      });
       this.timeframe = {
         begin: "",
         end: "",
@@ -244,13 +237,12 @@ export default {
       };
     },
     fetchPriceList() {
-      axios
-        .get(`http://193.187.173.125:8090/service/${this.serviceId}/prices`) //TODO refactore
+      this.$store
+        .dispatch("arena/getServicePrices", this.serviceId)
         .then((response) => {
           console.log("SET_PRICE", response.data);
           this.prices = response.data;
-        })
-        .catch((err) => console.log(err));
+        });
     },
   },
 };

@@ -95,7 +95,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
 import { mapState } from "vuex";
 export default {
@@ -131,16 +130,6 @@ export default {
     };
   },
   methods: {
-    async fetchArenaServices(serviceId) {
-      return new Promise((resolve, reject) => {
-        axios
-          .get(`http://193.187.173.125:8090/service/${serviceId}`)
-          .then((response) => {
-            resolve(response.data);
-          })
-          .catch((err) => reject(err));
-      });
-    },
     saveService() {
       const {
         id,
@@ -163,16 +152,19 @@ export default {
         width: width,
       };
       console.log(data, id);
-      axios
-        .put(`http://193.187.173.125:8090/service/${id}`, data)
+      const serviceObject = {
+        serviceId: id,
+        service: data,
+      };
+      this.$store
+        .dispatch("arena/updateService", serviceObject)
         .then((response) => {
           console.log(response.data);
           this.$router.push({
             name: "edit-admin-payment-portal",
             params: { arenaId },
           });
-        })
-        .catch((err) => console.log(err));
+        });
     },
   },
 };
