@@ -11,7 +11,7 @@
         >
           Добавить команду
         </v-btn>
-       
+
         <v-btn
           large
           class="mr-2 mb-2"
@@ -24,52 +24,61 @@
           Вернуться к просмотру
         </v-btn>
       </div>
-      <div class="pb-16">
+      <div class="pb-8">
         <v-row dense>
           <v-col class="d-flex" cols="12" md="2">
             <v-select
-              :items="team_tags"
+              :items="cities"
               item-text="text"
               item-value="value"
               v-model="filter_city"
               solo
               flat
               hide-details="auto"
+              @change="fetchTeam"
             ></v-select>
           </v-col>
           <v-col cols="9" md="8" lg="8">
             <v-text-field
               label="Поиск по названию команды"
+              v-model="search"
               single-line
               prepend-inner-icon="mdi-magnify"
               solo
               flat
               hide-details="auto"
               class="rounded-lg"
+              @keyup.enter="fetchTeam"
             ></v-text-field>
           </v-col>
           <v-col cols="3" md="2" lg="2">
             <v-select
               :items="type_teams"
-              value="Тип команды"
+              placeholder="Тип команды"
               v-model="filter_type"
               item-text="text"
               item-value="value"
               solo
               flat
+              return-object
               hide-details="auto"
+              @change="fetchTeam"
             ></v-select>
           </v-col>
         </v-row>
         <v-row>
-          <v-col class="d-flex" cols="6" md="4" lg="3" xl="2">
+          <v-col class="d-flex" cols="6" md="4" lg="3">
             <v-select
-              :items="sort_by_team"
-              value="По популярности"
+              :items="sort_order"
+              v-model="sort_model"
+              item-text="value"
+              item-value="key"
+              return-object
               solo
               flat
               prepend-icon="mdi-sort"
               hide-details="auto"
+              @change="fetchTeam"
             ></v-select>
           </v-col>
           <v-col class="my-auto" cols="6" md="4">
@@ -88,6 +97,7 @@
               solo
               flat
               hide-details="auto"
+              @change="fetchTeam"
             ></v-select>
           </v-col>
         </v-row>
@@ -118,6 +128,14 @@
           </AdminTeamCard>
         </v-col>
       </v-row>
+      <!-- <div class="text-center py-10" v-if="ateams.length">
+        <v-pagination
+          color="grey"
+          v-model="page"
+          :length="paginationLength"
+          :total-visible="7"
+        ></v-pagination>
+      </div> -->
     </div>
     <div class="mb-4">
       <v-dialog v-model="add_team_dialog" max-width="600">
@@ -243,35 +261,40 @@ export default {
       ateams: "teams",
     }),
   },
+  watch: {
+    page() {
+      this.fetchTeam();
+    },
+  },
   mounted() {
     this.$store.dispatch("teamplayer/getTeams");
-    this.$store.dispatch("arena/getTeams", this.arenaId);
+    this.fetchTeam();
   },
   data() {
     return {
       page: 1,
       perPage: 5,
       current_team: -1,
+      numFound: 0,
       paginationLength: 1,
       confirm_dialog: false,
       add_team_dialog: false,
-
-      team_tags: [
-        { value: null, text: "Город" },
-        { value: "Москва", text: "Москва" },
-        { value: "Казань", text: "Казань" },
-      ],
-      sort_by_team: ["По популярности", "По именни"],
-      type_teams: [
-        { value: null, text: "Тип команды" },
-        { value: "Детскaя", text: "Детскaя" },
-        { value: "Взрослая", text: "Взрослая" },
-        { value: "Юношеская", text: "Юношеская" },
-        { value: "Женская", text: "Женская" },
-      ],
-      filter_type: null,
-      filter_city: null,
+      search: "",
+      filter_type: { value: "ADULT", text: "Взрослая" },
+      filter_city: "Москва",
       display_item: { state: "Показывать по 5", value: 5 },
+      cities: ["Москва", "Казань"],
+      sort_model: { key: 1, value: "По именни (от А до Я)" },
+      sort_order: [
+        { key: 1, value: "По именни (от А до Я)" },
+        { key: 0, value: "По именни (от Я до А)" },
+      ],
+      type_teams: [
+        { value: "CHILDREN", text: "Детскaя" },
+        { value: "ADULT", text: "Взрослая" },
+        { value: "YOUTH", text: "Юношеская" },
+        { value: "FEMALE", text: "Женская" },
+      ],
       display_items: [
         { state: "Показывать по 5", value: 5 },
         { state: "Показывать по 9", value: 9 },
@@ -313,6 +336,21 @@ export default {
           this.hide_team = false;
           this.adding_team = false;
         });
+    },
+    fetchTeam() {
+      const filters = {
+        arenaId: this.arenaId,
+        city: this.filter_city,
+        type: this.filter_type.value,
+        currentPage: this.page,
+        pageSize: this.display_item.value,
+        queryString: this.search,
+        sortBy: this.sort_model.key,
+      };
+      this.$store.dispatch("arena/filterTeams", filters).then(() => {
+        // this.paginationLength = paginationLength;
+        // this.numFound = numFound;
+      });
     },
   },
 };

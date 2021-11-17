@@ -30,6 +30,18 @@ export const apiArena = {
   getService(serviceId) {
     return apiClient.get(`/service/${serviceId}`);
   },
+  filterTeams({ arenaId, city, type, currentPage, pageSize, queryString }) {
+    const url =
+      `/arena/${arenaId}/teams/LK?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
+      `&queryString=${queryString}&type=${type}`;
+    return apiClient.get(url);
+  },
+  filterTrainers({ arenaId, city, currentPage, pageSize, queryString }) {
+    const url =
+      `/arena/${arenaId}/users/LK?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
+      `&queryString=${queryString}`;
+    return apiClient.get(url);
+  },
   getTeams(arenaId) {
     return apiClient.get(`/arena/${arenaId}/teams`);
   },
