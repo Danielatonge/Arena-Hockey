@@ -245,6 +245,7 @@ export const actions = {
       })
       .catch((err) => {
         console.log(err);
+        throw err;
       });
   },
   addToSelectedArenas({ commit }, arena) {

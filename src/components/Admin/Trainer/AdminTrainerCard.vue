@@ -21,8 +21,14 @@
           }}
         </div>
         <div class="body-1 blue--text mb-1">
-          {{ isValidOutput(arenaUser.user.age) }}
-          {{ isValidCityOutput(arenaUser.user.city) }}
+          {{ isValidOutput(arenaUser.user.age)
+          }}{{
+            isValidOutput(arenaUser.user.age) &&
+            isValidOutput(arenaUser.user.city)
+              ? ", "
+              : ""
+          }}
+          {{ isValidOutput(arenaUser.user.city) }}
         </div>
         <div class="body-2 grey--text" v-show="arenaUser.user.qualification">
           Уровень: {{ arenaUser.user.qualification }}
@@ -78,9 +84,6 @@ export default {
         .then(() => {
           this.checked = !this.checked;
         });
-    },
-    isValidCityOutput(input) {
-      return input && input !== "string" ? ", " + input : null;
     },
     isValidOutput(input) {
       return input && input !== "string" ? input : null;

@@ -128,6 +128,23 @@ export const actions = {
         console.log(err);
       });
   },
+  filterAdminArenas({ commit }, filters) {
+    return api
+      .filterAdminArenas(filters)
+      .then((response) => {
+        const res = response.data;
+
+        commit("SET_ARENAS", res);
+        // return {
+        //   paginationLength: res.totalPages,
+        //   numFound: res.totalElements,
+        // };
+      })
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
+  },
   getServices({ dispatch }, arenaId) {
     dispatch("fetchServices", arenaId).then((services) => {
       dispatch("fetchServicePriceList", services);

@@ -21,6 +21,7 @@
           flat
           hide-details="auto"
           class="rounded-lg"
+          @keyup.enter="fetchTeam"
           @change="fetchTeam"
         ></v-text-field>
       </v-col>
@@ -31,8 +32,8 @@
           placeholder="Тип команды"
           solo
           flat
-          item-text="value"
-          item-value="key"
+          item-text="text"
+          item-value="value"
           return-object
           hide-details="auto"
           @change="fetchTeam"
