@@ -154,6 +154,7 @@ export default {
   components: { AdminArenaCard },
   created() {
     this.fetchArenaByUserId(this.userId);
+    this.fetchArena();
   },
   methods: {
     removeFromSelected(arena) {

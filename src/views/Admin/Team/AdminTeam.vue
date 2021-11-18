@@ -78,6 +78,7 @@ export default {
   mounted() {
     const userId = this.userId;
     this.fetchUserTeams(userId);
+    this.filterTeam();
   },
   methods: {
     fetchUserTeams(userId) {

@@ -42,6 +42,12 @@ export const apiArena = {
       `&queryString=${queryString}`;
     return apiClient.get(url);
   },
+  filterAdminArenas({ userId, city, currentPage, pageSize, queryString }) {
+    const url =
+      `/user/${userId}/arenas?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
+      `&queryString=${queryString}`;
+    return apiClient.get(url);
+  },
   getTeams(arenaId) {
     return apiClient.get(`/arena/${arenaId}/teams`);
   },

@@ -133,7 +133,7 @@ export const actions = {
       .filterAdminArenas(filters)
       .then((response) => {
         const res = response.data;
-
+        console.log("🚀 ~ file: arena.js ~ line 136 ~ .then ~ res", res);
         commit("SET_ARENAS", res);
         // return {
         //   paginationLength: res.totalPages,
