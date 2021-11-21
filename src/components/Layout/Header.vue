@@ -52,11 +52,11 @@
         :value="CART_COUNT"
         overlap>
           <v-btn
+          elevation="0"
           style="background:#0681C8;
           min-width: 1px;
           width: 50px;
           height: 40px;
-          border: 1px solid #83c0e4;
           box-sizing: border-box;
           border-radius: 8px;">
             <img src="@/assets/big_cart.svg" />              
