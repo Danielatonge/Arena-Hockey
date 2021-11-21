@@ -69,7 +69,6 @@ export const mutations = {
     state.selected_events = events;
   },
   ADD_ARENA(state, arena) {
-    console.log("ARENAS ", state.arenas);
     state.arenas.push(arena);
   },
   ADD_TEAM(state, team) {
@@ -158,6 +157,23 @@ export const actions = {
         commit("SET_TRAINERS", response.data);
       })
       .catch((err) => console.log(err));
+  },
+  filterTeams({ commit }, filters) {
+    return api
+      .filterTeams(filters)
+      .then((response) => {
+        const res = response.data;
+        console.log("🚀 ~ file: arena.js ~ line 183 ~ .then ~ res", res);
+
+        commit("SET_TEAMS", res.content);
+        return {
+          paginationLength: res.totalPages,
+          numFound: res.totalElements,
+        };
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
   filterTrainers({ commit }, filters) {
     return api

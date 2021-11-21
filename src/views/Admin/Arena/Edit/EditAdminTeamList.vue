@@ -29,8 +29,6 @@
           <v-col class="d-flex" cols="12" md="2">
             <v-select
               :items="cities"
-              item-text="text"
-              item-value="value"
               v-model="filter_city"
               solo
               flat
@@ -94,6 +92,7 @@
               v-model="display_item"
               item-text="state"
               item-value="value"
+              return-object
               solo
               flat
               hide-details="auto"

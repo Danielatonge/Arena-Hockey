@@ -69,6 +69,7 @@
             item-value="value"
             solo
             flat
+            return-object
             hide-details="auto"
             @change="fetchArena"
           ></v-select>
@@ -130,7 +131,6 @@
         :total-visible="7"
       ></v-pagination>
     </div> -->
-    
   </v-container>
 </template>
 

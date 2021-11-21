@@ -31,16 +31,31 @@ export const apiArena = {
   getService(serviceId) {
     return apiClient.get(`/service/${serviceId}`);
   },
-  filterTeams({ arenaId, city, type, currentPage, pageSize, queryString }) {
+  filterTeams({
+    arenaId,
+    city,
+    type,
+    currentPage,
+    pageSize,
+    queryString,
+    sortBy,
+  }) {
     const url =
       `/arena/${arenaId}/teams/LK?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
-      `&queryString=${queryString}&type=${type}`;
+      `&queryString=${queryString}&type=${type}&sortDir=${sortBy}`;
     return apiClient.get(url);
   },
-  filterTrainers({ arenaId, city, currentPage, pageSize, queryString }) {
+  filterTrainers({
+    arenaId,
+    city,
+    currentPage,
+    pageSize,
+    queryString,
+    sortBy,
+  }) {
     const url =
       `/arena/${arenaId}/users/LK?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
-      `&queryString=${queryString}`;
+      `&queryString=${queryString}&sortDir=${sortBy}`;
     return apiClient.get(url);
   },
 

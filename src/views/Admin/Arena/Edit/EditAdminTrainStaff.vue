@@ -95,6 +95,7 @@
               v-model="display_item"
               item-text="state"
               item-value="value"
+              return-object
               solo
               flat
               hide-details="auto"
