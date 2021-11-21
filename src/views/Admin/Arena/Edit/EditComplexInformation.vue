@@ -204,14 +204,12 @@
                   outlined
                   v-model="coordinate.lat"
                   flat
-                  disabled
                   hide-details="auto"
                   class="rounded-lg mr-3"
                 ></v-text-field>
                 <v-text-field
                   label="Долгота"
                   outlined
-                  disabled
                   v-model="coordinate.lon"
                   flat
                   hide-details="auto"
