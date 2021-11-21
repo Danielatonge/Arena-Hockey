@@ -115,7 +115,14 @@
       </div>
       <div class="mb-6">
         <div class="text-h6 mb-2">Адрес</div>
-        <v-autocomplete
+        <v-text-field
+            v-model="address"
+            outlined
+            flat
+            hide-details="auto"
+            class="rounded-lg"
+          ></v-text-field>
+        <!-- <v-autocomplete
           v-model="address"
           :items="addressOptions"
           :loading="isLoading"
@@ -132,7 +139,7 @@
           flat
           hide-details="auto"
           class="rounded-lg"
-        ></v-autocomplete>
+        ></v-autocomplete> -->
       </div>
       <div class="mb-4">
         <v-row>
@@ -168,20 +175,32 @@
                 ></v-select>
               </v-col>
               <v-col class="d-flex" cols="12" md="6">
-                <v-text-field
+                <v-select
+                    label="Метро"
+                    :items="mettro"
+                    v-model="metro"
+                    solo
+                    flat
+                    multiple
+                    chips
+                    attach
+                    class="my-auto"
+                    hide-details="auto"
+                  ></v-select>
+                <!-- <v-text-field
                   label="Метро"
                   outlined
                   v-model="metro"
                   flat
                   hide-details="auto"
                   class="rounded-lg mr-3"
-                ></v-text-field>
+                ></v-text-field> -->
               </v-col>
             </v-row>
             <v-row>
               <v-col class="d-flex">
                 <v-text-field
-                  label="широта"
+                  label="Широта"
                   outlined
                   v-model="coordinate.lat"
                   flat
@@ -342,7 +361,8 @@ export default {
       fullTitle: "",
       shortTitle: "",
       description: "",
-      metro: null,
+      metro: [],
+      mettro: ['Юго-западная', 'Охотный ряд', 'Библиотека им. Ленина', 'Кропоткинская', 'Парк культуры', 'Фрунзенская'],
       address: "",
       route: "",
       city: "Москва",
@@ -484,11 +504,9 @@ export default {
         title: this.shortTitle,
         fullTitle: this.fullTitle,
         tags: this.tag_chips,
-        address: this.address.address,
+        address: this.address,
         description: this.description,
-
-        metro: this.metro ? this.metro.split(",") : [],
-
+        metro: this.metro,
         city: this.city,
         lat: Number(this.coordinate.lat),
         lan: Number(this.coordinate.lon),
