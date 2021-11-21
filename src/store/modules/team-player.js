@@ -39,7 +39,7 @@ export const actions = {
       .then((response) => {
         const res = response.data;
         commit("SET_PLAYERS", res.content);
-        console.log(res.content);
+        console.log(res);
         const config = {
           paginationLength: res.totalPages,
           numFound: res.totalElements,

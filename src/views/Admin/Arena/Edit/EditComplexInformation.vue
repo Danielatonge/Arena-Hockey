@@ -336,12 +336,9 @@ export default {
     this.tag_chips = arena.tags;
     this.coordinate.lat = arena.lat;
     this.coordinate.lon = arena.lan;
-    this.address = {
-      address: arena.address,
-      coords: [arena.lat, arena.lan],
-    };
+    this.address = arena.address;
     this.city = arena.city;
-    this.metro = arena.metro.toString();
+    this.metro = arena.metro;
     this.contact.tel = arena.phones;
     this.contact.mail = arena.mails;
     this.social_media[0].link = arena.vk;
@@ -503,8 +500,6 @@ export default {
           .replace(" ", "")}`;
       }
 
-      console.log(this.address);
-      console.log(this.avatar.imageURL);
       const data = {
         title: this.shortTitle,
         fullTitle: this.fullTitle,

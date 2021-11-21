@@ -360,7 +360,7 @@ export const apiTeamPlayer = {
   filterPlayers({ city, currentPage, pageSize, queryString, sortBy }) {
     const url =
       `/user/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
-      `&queryString=${queryString}&sortBy=${sortBy}&role=PLAYER`;
+      `&queryString=${queryString}&role=PLAYER&sortBy=${sortBy}`;
     console.log(url);
     return apiClient.get(url);
   },

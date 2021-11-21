@@ -277,7 +277,7 @@ import { mapState } from "vuex";
 export default {
   name: "Room",
   computed: {
-    ...mapState("teamplayer", ["teamCities", "teams", "players"]), 
+    ...mapState("teamplayer", ["teamCities", "teams", "players"]),
   },
   filters: {
     descriptionLength(value) {
