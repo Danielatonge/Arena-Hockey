@@ -325,9 +325,9 @@ export default {
         const category = this.role.category;
         this.nrole.category = category.map((cat) => {
           if (cat == "ADULT") return { value: "ADULT", text: "Взрослый" };
-          if (cat == "KIDS") return { value: "KIDS", text: "Детский" };
+          if (cat == "KID") return { value: "KID", text: "Детский" };
           if (cat == "YOUTH") return { value: "YOUTH", text: "Юношеский" };
-          if (cat == "WOMEN") return { value: "WOMEN", text: "Женский" };
+          if (cat == "FEMALE") return { value: "FEMALE", text: "Женский" };
         });
       }
     });
@@ -380,9 +380,9 @@ export default {
       },
       categories: [
         { value: "ADULT", text: "Взрослый" },
-        { value: "KIDS", text: "Детский" },
+        { value: "KID", text: "Детский" },
         { value: "YOUTH", text: "Юношеский" },
-        { value: "WOMEN", text: "Женский" },
+        { value: "FEMALE", text: "Женский" },
       ],
       statuses: ["действующий", "Не действующий"],
       positions: ["Защитник", "Нападающий", "Вратарь"],

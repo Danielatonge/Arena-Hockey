@@ -476,7 +476,7 @@ export default {
         city: this.city,
         lat: Number(this.coordinate.lat),
         lan: Number(this.coordinate.lon),
-        profilePicture: this.avatar ? this.avatar.imageURL : "",
+        profilePicture: !this.avatar ? "" : this.avatar.imageURL,
         gallery: this.galleryPics,
         phones: this.contact.tel,
         mails: this.contact.mail,

@@ -127,6 +127,26 @@ export const actions = {
         console.log(err);
       });
   },
+  filterAdminArenas({ commit }, filters) {
+    return api
+      .filterAdminArenas(filters)
+      .then((response) => {
+        const res = response.data;
+        console.log(
+          "🚀 ~ file: arena.js ~ line 136 ~ .then ~ res",
+          res.content
+        );
+        commit("SET_ARENAS", res.content);
+        return {
+          paginationLength: res.totalPages,
+          numFound: res.totalElements,
+        };
+      })
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
+  },
   getUser({ commit }, userId) {
     return api
       .getUser(userId)
@@ -300,7 +320,7 @@ export const actions = {
       .catch((err) => console.log(err));
   },
   deleteTeam({ commit }, { teamId }) {
-    api
+    return api
       .deleteTeam(teamId)
       .then(() => {
         commit("DELETE_TEAM", teamId);

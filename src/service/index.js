@@ -43,19 +43,7 @@ export const apiArena = {
       `&queryString=${queryString}`;
     return apiClient.get(url);
   },
-  filterAdminArenas({
-    userId,
-    city,
-    currentPage,
-    pageSize,
-    queryString,
-    sortBy,
-  }) {
-    const url =
-      `/user/${userId}/arenas/LK?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
-      `&queryString=${queryString}&sortBy=${sortBy}`;
-    return apiClient.get(url);
-  },
+
   getTeams(arenaId) {
     return apiClient.get(`/arena/${arenaId}/teams`);
   },
@@ -224,6 +212,20 @@ export const apiUser = {
       `&queryString=${search}&sortBy=${sort_asc.key}&type=${type.key}`;
     return apiClient.get(url);
   },
+
+  filterAdminArenas({
+    userId,
+    city,
+    currentPage,
+    pageSize,
+    queryString,
+    sortBy,
+  }) {
+    const url =
+      `/user/${userId}/arenas/LK?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
+      `&queryString=${queryString}&sortBy=${sortBy}`;
+    return apiClient.get(url);
+  },
   filterArenas({ userId, userArenaFilter }) {
     //TODO: will finally change to this in future
     const { page, search, numItems, sort_asc, address, type } = userArenaFilter;
@@ -232,6 +234,7 @@ export const apiUser = {
       `&queryString=${search}&sortBy=${sort_asc.key}&type=${type.key}`;
     return apiClient.get(url);
   },
+
   getTeams(userId) {
     // TODO: Temporal
     return apiClient.get(`/user/${userId}/teams`);
@@ -391,5 +394,11 @@ export const apiAuth = {
       credentials,
     });
     return apiClient.post(`/changePassword`, credentials);
+  },
+};
+
+export const apiFile = {
+  postFile(formData) {
+    return apiClient.post(`/file`, formData);
   },
 };

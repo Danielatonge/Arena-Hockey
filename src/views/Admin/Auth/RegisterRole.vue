@@ -290,9 +290,9 @@ export default {
       grips: ["левый", "правый"],
       categories: [
         { value: "ADULT", text: "Взрослый" },
-        { value: "KIDS", text: "Детский" },
+        { value: "KID", text: "Детский" },
         { value: "YOUTH", text: "Юношеский" },
-        { value: "WOMEN", text: "Женский" },
+        { value: "FEMALE", text: "Женский" },
       ],
     };
   },

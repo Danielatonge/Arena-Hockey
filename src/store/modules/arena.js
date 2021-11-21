@@ -69,6 +69,7 @@ export const mutations = {
     state.selected_events = events;
   },
   ADD_ARENA(state, arena) {
+    console.log("ARENAS ", state.arenas);
     state.arenas.push(arena);
   },
   ADD_TEAM(state, team) {
@@ -128,23 +129,7 @@ export const actions = {
         console.log(err);
       });
   },
-  filterAdminArenas({ commit }, filters) {
-    return api
-      .filterAdminArenas(filters)
-      .then((response) => {
-        const res = response.data;
-        console.log("🚀 ~ file: arena.js ~ line 136 ~ .then ~ res", res);
-        commit("SET_ARENAS", res);
-        return {
-          paginationLength: res.totalPages,
-          numFound: res.totalElements,
-        };
-      })
-      .catch((err) => {
-        console.log(err);
-        throw err;
-      });
-  },
+  
   getServices({ dispatch }, arenaId) {
     dispatch("fetchServices", arenaId).then((services) => {
       dispatch("fetchServicePriceList", services);
@@ -181,11 +166,11 @@ export const actions = {
         const res = response.data;
         console.log("🚀 ~ file: arena.js ~ line 183 ~ .then ~ res", res);
 
-        commit("SET_TRAINERS", res);
-        // return {
-        //   paginationLength: res.totalPages,
-        //   numFound: res.totalElements,
-        // };
+        commit("SET_TRAINERS", res.content);
+        return {
+          paginationLength: res.totalPages,
+          numFound: res.totalElements,
+        };
       })
       .catch((err) => {
         console.log(err);
@@ -210,7 +195,7 @@ export const actions = {
       })
       .catch((err) => console.log(err));
   },
-  
+
   getEvents({ commit }, arenaId) {
     return api
       .getEvents(arenaId)

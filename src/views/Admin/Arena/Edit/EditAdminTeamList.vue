@@ -290,7 +290,7 @@ export default {
         { key: 0, value: "По именни (от Я до А)" },
       ],
       type_teams: [
-        { value: "CHILDREN", text: "Детскaя" },
+        { value: "KID", text: "Детскaя" },
         { value: "ADULT", text: "Взрослая" },
         { value: "YOUTH", text: "Юношеская" },
         { value: "FEMALE", text: "Женская" },

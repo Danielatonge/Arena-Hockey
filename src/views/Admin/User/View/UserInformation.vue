@@ -422,9 +422,9 @@ export default {
         return this.role.category
           .map((cat) => {
             if (cat == "ADULT") return "Взрослый";
-            if (cat == "KIDS") return "Детский";
+            if (cat == "KID") return "Детский";
             if (cat == "YOUTH") return "Юношеский";
-            if (cat == "WOMEN") return "Женский";
+            if (cat == "FEMALE") return "Женский";
           })
           .join(", ");
       } else return "";

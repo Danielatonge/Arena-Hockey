@@ -79,9 +79,6 @@ export default {
     this.filterTeam();
   },
   methods: {
-    fetchUserTeams(userId) {
-      this.$store.dispatch("user/getTeams", userId);
-    },
     filterTeam() {
       const { address, type, sort_asc, numItems, search, page } = this.userTeam;
       const filters = {
@@ -96,8 +93,8 @@ export default {
       this.$store
         .dispatch("user/filterAdminTeams", filters)
         .then(({ paginationLength, numFound }) => {
-          this.paginationLength = paginationLength;
-          this.numFound = numFound;
+          this.userTeam.paginationLength = paginationLength;
+          this.userTeam.numFound = numFound;
         });
     },
   },
@@ -108,15 +105,15 @@ export default {
         page: 1,
         search: "",
         paginationLength: 10,
+        numFound: 0,
         numItems: { state: "Показывать по 5", value: 5 },
         sort_asc: { key: 1, value: "По именни (от А до Я)" },
         address: "Москва",
-        items: [],
         type: { value: "ADULT", text: "Взрослая" },
       },
       cities: ["Москва", "Казань"],
       types: [
-        { value: "CHILDREN", text: "Детскaя" },
+        { value: "KID", text: "Детскaя" },
         { value: "ADULT", text: "Взрослая" },
         { value: "YOUTH", text: "Юношеская" },
         { value: "FEMALE", text: "Женская" },

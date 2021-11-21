@@ -267,13 +267,13 @@ import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState("user", ["user", "roles"]),
+    ...mapState("user", ["user"]),
     showPersonalData() {
       const { birthDate, gender, phone, address, mail } = this.user;
       return birthDate || gender || phone || address || mail;
     },
     displayRoles() {
-      return this.roles.map((role) => {
+      return this.user.roles.map((role) => {
         if (role.name === "PLAYER") return { ...role, name: "Игрок" };
         if (role.name === "TRAINER") return { ...role, name: "Тренер" };
         if (role.name === "SELLER") return { ...role, name: "Продавец" };
@@ -290,7 +290,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("user/getUser", this.userId);
-    this.$store.dispatch("user/getUserRoles", this.userId);
+    // this.$store.dispatch("user/getUserRoles", this.userId);
     const id = this.userId;
     this.sections = [
       {
@@ -348,9 +348,9 @@ export default {
       grips: ["левый", "правый"],
       categories: [
         { value: "ADULT", text: "Взрослый" },
-        { value: "KIDS", text: "Детский" },
+        { value: "KID", text: "Детский" },
         { value: "YOUTH", text: "Юношеский" },
-        { value: "WOMEN", text: "Женский" },
+        { value: "FEMALE", text: "Женский" },
       ],
     };
   },

@@ -82,10 +82,10 @@
               <v-select
                 :items="categories"
                 v-model="category"
-                placeholder="Возрастная категория"
+                placeholder="Тип команды"
                 solo
                 flat
-                item-text="state"
+                item-text="text"
                 item-value="value"
                 return-object
                 hide-details="auto"
@@ -236,7 +236,12 @@ export default {
       location: "",
       locations: ["Москва"],
       category: "",
-      categories: ["Детские", "Юношеские", "Взрослые", "Женские"],
+      categories: [
+        { value: "KID", text: "Детскaя" },
+        { value: "ADULT", text: "Взрослая" },
+        { value: "YOUTH", text: "Юношеская" },
+        { value: "FEMALE", text: "Женская" },
+      ],
       avatar: null,
       contact: {
         tel: [],
@@ -300,7 +305,7 @@ export default {
         title: this.title,
         miniDescription: "",
         city: this.location,
-        type: this.category,
+        type: this.category.value,
         level: "",
         description: this.description,
         profilePicture: this.profilePicture,

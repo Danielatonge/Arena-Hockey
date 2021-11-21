@@ -5,8 +5,6 @@
         <v-col class="d-flex" cols="12" md="2">
           <v-select
             :items="cities"
-            item-text="text"
-            item-value="value"
             v-model="filter_city"
             solo
             flat
@@ -124,14 +122,15 @@
         <div class="my-auto">Создать Арену</div>
       </v-btn>
     </div>
-    <div class="text-center py-10">
+    <!-- <div class="text-center py-10">
       <v-pagination
         color="grey"
         v-model="page"
         :length="paginationLength"
         :total-visible="7"
       ></v-pagination>
-    </div>
+    </div> -->
+    
   </v-container>
 </template>
 
@@ -153,7 +152,6 @@ export default {
   },
   components: { AdminArenaCard },
   created() {
-    // this.fetchArenaByUserId(this.userId);
     this.fetchArena();
   },
   methods: {
@@ -162,9 +160,6 @@ export default {
     },
     addToSelected(arena) {
       this.$store.dispatch("user/addToSelectedArenas", arena);
-    },
-    fetchArenaByUserId(userId) {
-      this.$store.dispatch("user/getArenas", userId);
     },
     fetchArena() {
       const filters = {
@@ -176,10 +171,9 @@ export default {
         sortBy: this.sort_model.key,
       };
       this.$store
-        .dispatch("arena/filterAdminArenas", filters)
-        .then(({ paginationLength, numFound }) => {
+        .dispatch("user/filterAdminArenas", filters)
+        .then(({ paginationLength }) => {
           this.paginationLength = paginationLength;
-          this.numFound = numFound;
         });
     },
     deleteSelected() {

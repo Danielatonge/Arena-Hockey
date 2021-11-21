@@ -70,7 +70,7 @@
       </v-col>
       <v-col class="my-auto" cols="6" md="4">
         <div class="body-1 grey--text">
-          Найдено: {{ team.items.length }} результатов
+          Найдено: {{ team.numFound }} результатов
         </div>
       </v-col>
       <v-spacer></v-spacer>

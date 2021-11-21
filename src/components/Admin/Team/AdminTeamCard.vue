@@ -59,7 +59,7 @@ export default {
   methods: {
     processType(type) {
       if (type === "ADULT") return "Взрослая";
-      if (type === "CHILDREN") return "Детская";
+      if (type === "KID") return "Детская";
       if (type === "YOUTH") return "Юношеская";
       if (type === "FEMALE") return "Женская";
     },
@@ -80,7 +80,9 @@ export default {
         userId: this.arenaTeam.userId,
         teamId: this.arenaTeam.team.id,
       };
-      this.$store.dispatch("user/deleteTeam", payload);
+      this.$store.dispatch("user/deleteTeam", payload).then(() => {
+        this.$router.go();
+      });
     },
     editTeam() {
       this.$router.push({

@@ -136,8 +136,8 @@ export default {
         formData.append("file", picture);
 
         this.$store.dispatch("file/uploadFile", formData).then((response) => {
-          console.log(response.data);
-          this.items.push(response.data.url);
+
+          this.items.push(response);
         });
       }
     },

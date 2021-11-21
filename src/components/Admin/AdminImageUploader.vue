@@ -59,16 +59,19 @@ export default {
         } else {
           // Append file into FormData and turn file into image URL
           let formData = new FormData();
-          let imageURL = URL.createObjectURL(imageFile);
 
           formData.append("file", imageFile);
           this.$store.dispatch("file/uploadFile", formData).then((response) => {
+            console.log(
+              "🚀 ~ file: AdminImageUploader.vue ~ line 65 ~ this.$store.dispatch ~ response",
+              response
+            );
             this.$emit("input", {
-              imageURL: response.data.url,
+              imageURL: response,
               name: imageFile.name,
             });
           });
-          console.log(formData, imageURL, imageFile.name);
+          console.log(formData, imageFile.name);
         }
       }
     },
