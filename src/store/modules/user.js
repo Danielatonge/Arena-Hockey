@@ -110,6 +110,23 @@ export const actions = {
         console.log(err);
       });
   },
+  filterAdminTeams({ commit }, filters) {
+    return api
+      .filterAdminTeams(filters)
+      .then((response) => {
+        const res = response.data;
+        console.log("🚀 ~ file: arena.js ~ line 183 ~ .then ~ res", res);
+
+        commit("SET_TEAMS", res);
+        // return {
+        //   paginationLength: res.totalPages,
+        //   numFound: res.totalElements,
+        // };
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   getUser({ commit }, userId) {
     return api
       .getUser(userId)

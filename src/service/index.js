@@ -1,10 +1,11 @@
 import axios from "axios";
 // http://193.187.173.125:8090/
 // https://api-hockey-io.herokuapp.com
+// http://77.73.69.230:8090/
 const token = JSON.parse(localStorage.getItem("user", ["token"]));
 
 const apiClient = axios.create({
-  baseURL: "https://api-hockey-io.herokuapp.com",
+  baseURL: "http://77.73.69.230:8090",
   withCredentials: false,
   headers: {
     Accept: "application/json",
@@ -194,6 +195,20 @@ export const apiTeam = {
 };
 
 export const apiUser = {
+  filterAdminTeams({
+    userId,
+    city,
+    type,
+    currentPage,
+    pageSize,
+    queryString,
+    sortBy,
+  }) {
+    const url =
+      `/user/${userId}/teams/LK?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
+      `&queryString=${queryString}&type=${type}&sortBy=${sortBy}`;
+    return apiClient.get(url);
+  },
   filterTeams({ userId, userTeamFilter }) {
     //TODO: will finally change to this in future
     const { page, search, numItems, sort_asc, address, type } = userTeamFilter;

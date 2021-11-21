@@ -210,23 +210,7 @@ export const actions = {
       })
       .catch((err) => console.log(err));
   },
-  filterTeams({ commit }, filters) {
-    return api
-      .filterTeams(filters)
-      .then((response) => {
-        const res = response.data;
-        console.log("🚀 ~ file: arena.js ~ line 183 ~ .then ~ res", res);
-
-        commit("SET_TEAMS", res);
-        // return {
-        //   paginationLength: res.totalPages,
-        //   numFound: res.totalElements,
-        // };
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  },
+  
   getEvents({ commit }, arenaId) {
     return api
       .getEvents(arenaId)

@@ -6,7 +6,7 @@
       :types="types"
       :sort="sort_in"
       :display-amount="display_items"
-      :fetchTeam="fetchUserTeams"
+      :fetchTeam="filterTeam"
     />
     <v-row dense class="mx-n4 mb-4">
       <v-col class="pa-4" cols="12" v-for="team in teams" :key="team.id">
@@ -76,8 +76,6 @@ export default {
   },
   components: { AdminTeamCard, AdminTeamFilter },
   mounted() {
-    const userId = this.userId;
-    this.fetchUserTeams(userId);
     this.filterTeam();
   },
   methods: {
@@ -95,7 +93,7 @@ export default {
         queryString: search,
         sortBy: sort_asc.key,
       };
-      this.$store.dispatch("arena/filterTeams", filters).then(() => {
+      this.$store.dispatch("user/filterAdminTeams", filters).then(() => {
         // this.paginationLength = paginationLength;
         // this.numFound = numFound;
       });

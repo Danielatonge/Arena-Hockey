@@ -7,7 +7,7 @@ export const mutations = {};
 
 export const actions = {
   uploadFile(_commit, formData) {
-    api.postFile(formData).then((response) => {
+    return api.postFile(formData).then((response) => {
       return response;
     });
   },

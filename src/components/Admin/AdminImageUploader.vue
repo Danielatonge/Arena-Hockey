@@ -15,10 +15,10 @@
     <!-- error dialog displays any potential error messages -->
     <v-dialog v-model="errorDialog" max-width="300">
       <v-card>
-        <div class="text-center pt-4">{{ errorText }}</div>
+        <div class="text-center px-4 pt-6">{{ errorText }}</div>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn elevation="0" @click="errorDialog = false" flat>OK</v-btn>
+          <v-btn elevation="0" @click="errorDialog = false" text>OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -26,7 +26,6 @@
 </template>
 
 <script>
-
 export default {
   name: "AdminImageUploader",
   data: () => ({
