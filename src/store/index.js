@@ -7,6 +7,7 @@ import * as teamplayer from "@/store/modules/team-player";
 import * as team from "@/store/modules/team";
 import * as tournament from "@/store/modules/tournament";
 import * as user from "@/store/modules/user";
+import * as file from "@/store/modules/file";
 import * as auth from "@/store/modules/auth";
 import * as notification from "@/store/modules/notification";
 import VuexPersistence from "vuex-persist";
@@ -29,6 +30,7 @@ export default new Vuex.Store({
     user,
     auth,
     notification,
+    file,
     sushilka,
   },
   plugins: [vuexLocal.plugin],

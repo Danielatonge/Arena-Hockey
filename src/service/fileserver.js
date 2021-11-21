@@ -11,9 +11,6 @@ const fileApi = axios.create({
 });
 
 export default {
-  getFile() {
-    return fileApi.get(`/files`);
-  },
   postFile(formData) {
     return fileApi.post(`/file/upload`, formData);
   },
