@@ -116,12 +116,12 @@
       <div class="mb-6">
         <div class="text-h6 mb-2">Адрес</div>
         <v-text-field
-            v-model="address"
-            outlined
-            flat
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-text-field>
+          v-model="address"
+          outlined
+          flat
+          hide-details="auto"
+          class="rounded-lg"
+        ></v-text-field>
         <!-- <v-autocomplete
           v-model="address"
           :items="addressOptions"
@@ -176,17 +176,17 @@
               </v-col>
               <v-col class="d-flex" cols="12" md="6">
                 <v-select
-                    label="Метро"
-                    :items="mettro"
-                    v-model="metro"
-                    solo
-                    flat
-                    multiple
-                    chips
-                    attach
-                    class="my-auto"
-                    hide-details="auto"
-                  ></v-select>
+                  label="Метро"
+                  :items="mettro"
+                  v-model="metro"
+                  solo
+                  flat
+                  multiple
+                  chips
+                  attach
+                  class="my-auto"
+                  hide-details="auto"
+                ></v-select>
                 <!-- <v-text-field
                   label="Метро"
                   outlined
@@ -360,7 +360,14 @@ export default {
       shortTitle: "",
       description: "",
       metro: [],
-      mettro: ['Юго-западная', 'Охотный ряд', 'Библиотека им. Ленина', 'Кропоткинская', 'Парк культуры', 'Фрунзенская'],
+      mettro: [
+        "Юго-западная",
+        "Охотный ряд",
+        "Библиотека им. Ленина",
+        "Кропоткинская",
+        "Парк культуры",
+        "Фрунзенская",
+      ],
       address: "",
       route: "",
       city: "Москва",

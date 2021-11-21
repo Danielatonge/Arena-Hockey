@@ -105,6 +105,7 @@ export const actions = {
       })
       .catch((err) => {
         console.log(err);
+        throw err;
       });
   },
   putTeam(_context, teamObj) {

@@ -1,5 +1,5 @@
 <template>
-  <v-card color="transparent" elevation="0">
+  <v-card color="transparent" elevation="0" v-if="arenaTeam.team">
     <div class="d-flex flex-no-wrap">
       <v-avatar class="ma-3" size="150" tile>
         <v-img

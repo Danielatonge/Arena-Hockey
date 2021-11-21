@@ -117,11 +117,11 @@ export const actions = {
         const res = response.data;
         console.log("🚀 ~ file: arena.js ~ line 183 ~ .then ~ res", res);
 
-        commit("SET_TEAMS", res);
-        // return {
-        //   paginationLength: res.totalPages,
-        //   numFound: res.totalElements,
-        // };
+        commit("SET_TEAMS", res.content);
+        return {
+          paginationLength: res.totalPages,
+          numFound: res.totalElements,
+        };
       })
       .catch((err) => {
         console.log(err);
@@ -185,6 +185,7 @@ export const actions = {
       })
       .catch((err) => {
         console.log(err);
+        throw err;
       });
   },
   postForum({ commit }, forum) {

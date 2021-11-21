@@ -93,10 +93,12 @@ export default {
         queryString: search,
         sortBy: sort_asc.key,
       };
-      this.$store.dispatch("user/filterAdminTeams", filters).then(() => {
-        // this.paginationLength = paginationLength;
-        // this.numFound = numFound;
-      });
+      this.$store
+        .dispatch("user/filterAdminTeams", filters)
+        .then(({ paginationLength, numFound }) => {
+          this.paginationLength = paginationLength;
+          this.numFound = numFound;
+        });
     },
   },
   data() {

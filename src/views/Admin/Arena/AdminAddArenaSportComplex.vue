@@ -124,15 +124,15 @@
         <div class="my-auto">Создать Арену</div>
       </v-btn>
     </div>
+    <div class="text-center py-10">
+      <v-pagination
+        color="grey"
+        v-model="page"
+        :length="paginationLength"
+        :total-visible="7"
+      ></v-pagination>
+    </div>
   </v-container>
-  <!-- <div class="text-center py-10">
-    <v-pagination
-      color="grey"
-      v-model="page"
-      :length="paginationLength"
-      :total-visible="7"
-    ></v-pagination>
-  </div> -->
 </template>
 
 <script>
@@ -153,7 +153,7 @@ export default {
   },
   components: { AdminArenaCard },
   created() {
-    this.fetchArenaByUserId(this.userId);
+    // this.fetchArenaByUserId(this.userId);
     this.fetchArena();
   },
   methods: {
@@ -175,10 +175,12 @@ export default {
         queryString: this.search,
         sortBy: this.sort_model.key,
       };
-      this.$store.dispatch("arena/filterAdminArenas", filters).then(() => {
-        // this.paginationLength = paginationLength;
-        // this.numFound = numFound;
-      });
+      this.$store
+        .dispatch("arena/filterAdminArenas", filters)
+        .then(({ paginationLength, numFound }) => {
+          this.paginationLength = paginationLength;
+          this.numFound = numFound;
+        });
     },
     deleteSelected() {
       this.$store.dispatch("user/deleteSelected");

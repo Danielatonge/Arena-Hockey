@@ -153,7 +153,7 @@ export default {
     AdminImageUploader,
     AdminGallery,
     AdminContact,
-    AdminSocialMedia
+    AdminSocialMedia,
   },
   props: {
     userId: {
@@ -177,7 +177,7 @@ export default {
       return this.social_media.filter((x) => x.link);
     },
     profilePicture() {
-      return this.avatar ? this.avatar.imageURL : "";
+      return !this.avatar ? "" : this.avatar.imageURL;
     },
   },
   created() {
@@ -331,23 +331,28 @@ export default {
         tiktok: "",
         youtube: "",
       };
-      console.log(data);
-      // const userId = this.userId;
-      this.$store.dispatch("team/postTeam", data).then((response) => {
-        const { id } = response;
-        const userTeamId = { userId: this.userId, teamId: id };
-        this.$store
-          .dispatch("user/createUserTeam", {
-            userTeamId,
-            team: response,
-          })
-          .then(() => {
-            this.$router.push({
-              name: "admin-team",
-              params: { userId: this.userId },
+
+      this.$store
+        .dispatch("team/postTeam", data)
+        .then((response) => {
+          console.log(response);
+          const { id } = response;
+          const userTeamId = { userId: this.userId, teamId: id };
+          this.$store
+            .dispatch("user/createUserTeam", {
+              userTeamId,
+              team: response,
+            })
+            .then(() => {
+              this.$router.push({
+                name: "admin-team",
+                params: { userId: this.userId },
+              });
             });
-          });
-      });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };

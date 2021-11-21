@@ -135,10 +135,10 @@ export const actions = {
         const res = response.data;
         console.log("🚀 ~ file: arena.js ~ line 136 ~ .then ~ res", res);
         commit("SET_ARENAS", res);
-        // return {
-        //   paginationLength: res.totalPages,
-        //   numFound: res.totalElements,
-        // };
+        return {
+          paginationLength: res.totalPages,
+          numFound: res.totalElements,
+        };
       })
       .catch((err) => {
         console.log(err);
