@@ -19,7 +19,7 @@
         <v-row dense>
           <v-col class="d-flex" cols="12" md="2">
             <v-select
-              :items="teamCities"
+              :items="team_tags"
               v-model="team_city"
               solo
               flat
