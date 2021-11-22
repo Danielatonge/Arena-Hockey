@@ -120,23 +120,6 @@
                 hide-details="auto"
                 class="rounded-lg"
               ></v-text-field>
-              <!-- <v-autocomplete
-            v-model="address"
-            :items="addressOptions"
-            :loading="isLoading"
-            :search-input.sync="search"
-            @change="assignCoordinates"
-            hide-no-data
-            hide-selected
-            item-text="address"
-            item-value="coords"
-            return-object
-            outlined
-            cache-items
-            flat
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-autocomplete> -->
             </div>
             <div class="mb-8">
               <v-row>
