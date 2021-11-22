@@ -252,6 +252,12 @@
           class="mr-2 mb-2"
           color="grey px-6 lighten-2"
           elevation="0"
+          @click="
+            $router.push({
+              name: 'complex-information',
+              params: { arenaId, userId },
+            })
+          "
         >
           Вернуться к просмотру
         </v-btn>

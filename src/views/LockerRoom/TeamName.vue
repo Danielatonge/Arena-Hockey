@@ -63,9 +63,11 @@
         ></p>
         <p class="text-justify" v-else v-html="team.description"></p>
       </div>
+     
       <v-btn
         class="px-6"
         color="grey lighten-2"
+        v-if="team.description.length > 580"
         x-large
         elevation="0"
         @click.stop="readMoreInfo = !readMoreInfo"

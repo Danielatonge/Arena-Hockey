@@ -68,6 +68,7 @@
         color="grey lighten-2"
         x-large
         elevation="0"
+        v-if="team.description.length > 580"
         @click.stop="readMoreInfo = !readMoreInfo"
       >
         {{ readMoreInfo ? "Скрыть" : "Развернуть" }}
