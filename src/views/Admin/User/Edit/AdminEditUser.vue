@@ -251,7 +251,6 @@ import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
 import AdminSocialMedia from "@/components/Admin/AdminSocialMedia.vue";
 import { required, email } from "vuelidate/lib/validators";
 
-
 import { mapState } from "vuex";
 export default {
   components: {
@@ -309,7 +308,7 @@ export default {
       return this.social_media.filter((x) => x.link);
     },
     profilePicture() {
-      return this.avatar ? this.avatar.imageURL : "";
+      return !this.avatar ? "" : this.avatar.imageURL;
     },
   },
   data() {

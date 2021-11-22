@@ -312,7 +312,7 @@ export default {
       value: 0,
       room_tab: null,
       room_nav: ["Команды", "Игроки"],
-      team_tags: ["Москва", "Казань"],
+      team_tags: ["Москва"],
       team_city: "Москва",
       player_city: "Москва",
       numItemsTeam: { state: "Показывать по 10", value: 10 },
