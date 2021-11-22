@@ -126,7 +126,7 @@ export default {
       const filters = {
         city: this.city,
         currentPage: 1,
-        pageSize: 20,
+        pageSize: 60,
         queryString: this.search,
         sortBy: 1,
       };
