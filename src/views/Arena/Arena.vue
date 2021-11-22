@@ -87,9 +87,7 @@
             ></v-select>
           </v-col>
           <v-col class="my-auto" cols="6" md="4">
-            <div class="body-1 grey--text">
-              Найдено: {{ numFound }} результатов
-            </div>
+            <div class="body-1 grey--text">Найдено: {{ numFound }}</div>
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="6" md="4" lg="3" xl="2">
