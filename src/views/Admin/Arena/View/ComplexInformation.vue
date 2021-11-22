@@ -63,7 +63,7 @@
     </div>
     <v-row>
       <v-col cols="12" md="8">
-        <section class="wrapper-map" id="map">
+        <section class="wrapper-map">
           <ArenaMap
             :coords="coords"
             :surfaces="surfaces"
@@ -107,17 +107,13 @@
 <script>
 import ArenaMap from "@/components/Arena/ArenaMap";
 import LightBox from "vue-image-lightbox";
-
+import { mapState } from "vuex";
 export default {
   components: {
     ArenaMap,
     LightBox,
   },
   props: {
-    arena: {
-      type: Object,
-      required: true,
-    },
     arenaId: {
       type: String,
       required: true,
@@ -137,6 +133,7 @@ export default {
     },
   },
   computed: {
+    ...mapState("arena", ["arena"]),
     media() {
       let _media = [];
       if (this.arena.gallery) {
@@ -153,6 +150,8 @@ export default {
     },
   },
   created() {
+    const arenaId = this.arenaId;
+    this.$store.dispatch("arena/getArena", arenaId);
     this.surfaces = [
       {
         id: this.arena.id,

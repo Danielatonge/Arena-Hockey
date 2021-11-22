@@ -1,5 +1,5 @@
 <template>
-  <v-card color="transparent" elevation="0">
+  <v-card color="transparent" elevation="0" v-if="arenaTeam.team">
     <div class="d-flex flex-no-wrap">
       <v-avatar class="ma-3" size="150" tile>
         <v-img
@@ -16,7 +16,9 @@
         <div class="body-1 blue--text mb-2" style="text-decoration: none">
           {{ arenaTeam.team.city }}
         </div>
-        <div class="text-h5 mb-2">{{ arenaTeam.team.title }}</div>
+        <div class="text-h5 mb-2" style="cursor: pointer">
+          {{ arenaTeam.team.title }}
+        </div>
         <div class="body-1 grey--text">
           {{ processType(arenaTeam.team.type) }}
         </div>
@@ -57,16 +59,20 @@ export default {
   methods: {
     processType(type) {
       if (type === "ADULT") return "Взрослая";
-      if (type === "CHILDREN") return "Детская";
+      if (type === "KID") return "Детская";
       if (type === "YOUTH") return "Юношеская";
       if (type === "FEMALE") return "Женская";
     },
     toggleVisibility() {
       console.log(this.arenaTeam);
-      this.$store.dispatch("arena/updateArenaTeam", {
-        arenaTeam: this.arenaTeam,
-        checked: this.checked,
-      });
+      this.$store
+        .dispatch("arena/updateArenaTeam", {
+          arenaTeam: this.arenaTeam,
+          checked: !this.checked,
+        })
+        .then(() => {
+          this.checked = !this.checked;
+        });
     },
     deleteTeam() {
       console.log(this.arenaTeam);
@@ -74,7 +80,9 @@ export default {
         userId: this.arenaTeam.userId,
         teamId: this.arenaTeam.team.id,
       };
-      this.$store.dispatch("user/deleteTeam", payload);
+      this.$store.dispatch("user/deleteTeam", payload).then(() => {
+        this.$router.go();
+      });
     },
     editTeam() {
       this.$router.push({

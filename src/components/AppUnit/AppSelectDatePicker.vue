@@ -2,7 +2,7 @@
   <v-menu
     v-model="date_picker"
     :close-on-content-click="false"
-    :nudge-left="120"
+    :nudge-left="nudgeLeft"
     transition="scale-transition"
     offset-y
     min-width="auto"
@@ -12,11 +12,11 @@
         v-model="dateCopied"
         prepend-inner-icon="mdi-calendar"
         readonly
-        single-line
+        :label="label"
         outlined
-        dense
+        :dense="dense"
         class="rounded-lg"
-        hide-details
+        hide-details="auto"
         v-bind="attrs"
         v-on="on"
       ></v-text-field>
@@ -36,6 +36,21 @@ export default {
     date: {
       type: String,
       required: true,
+    },
+    dense: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    nudgeLeft: {
+      type: Number,
+      required: false,
+      default: 120,
+    },
+    label: {
+      type: String,
+      required: false,
+      default: "",
     },
   },
   created() {

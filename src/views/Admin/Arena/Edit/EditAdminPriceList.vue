@@ -45,6 +45,7 @@
                     <v-select
                       v-model="timeframe.begin"
                       :items="beginTime"
+                      placeholder="00:00"
                       solo
                       dense
                       class="mr-3"
@@ -55,6 +56,7 @@
                     <v-select
                       v-model="timeframe.end"
                       :items="endTime"
+                      placeholder="00:00"
                       class="ml-3"
                       solo
                       dense
@@ -153,8 +155,6 @@
 
 <script>
 import AdminArenaPrice from "@/components/Admin/AdminArenaPrice.vue";
-import { mapState } from "vuex";
-import axios from "axios";
 import moment from "moment";
 
 export default {
@@ -169,18 +169,30 @@ export default {
       required: true,
     },
   },
-  computed: {
-    ...mapState(["currentPL"]), // Figure out what is happening here
+  watch: {
+    "timeframe.begin": function (value) {
+      const start = Number(value.split(":")[0]);
+      const endTime = [];
+      for (let i = start + 1; i < 24; i++) {
+        endTime.push(`${i}:00`);
+      }
+      this.endTime = endTime;
+      console.log(start);
+    },
   },
   created() {
     this.fetchPriceList();
   },
   data() {
+    const beginTime = [];
+    for (let i = 0; i < 24; i++) {
+      beginTime.push(`${i}:00`);
+    }
     return {
       value_tab: 0,
       dialog: false,
-      beginTime: ["9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00"],
-      endTime: ["11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"],
+      beginTime,
+      endTime: beginTime,
       timeframe: {
         begin: "",
         end: "",
@@ -196,13 +208,10 @@ export default {
   methods: {
     deleteTimeframe(position) {
       const price = this.prices[position];
-      axios
-        .delete(`/price/${price.id}`, price)
-        .then(() => {
-          console.log("DELETED");
-          this.prices.splice(position, 1);
-        })
-        .catch((err) => console.log(err));
+      this.$store.dispatch("arena/deletePrice", price.id).then(() => {
+        console.log("DELETED");
+        this.prices.splice(position, 1);
+      });
     },
     addTimeInterval() {
       const data = this.timeframe;
@@ -215,14 +224,11 @@ export default {
         showDate: this.showDate,
       };
       console.log(price);
-      axios
-        .post(`/price`, price)
-        .then((response) => {
-          console.log("SET_PRICE", response.data);
-          this.prices.push(response.data);
-          this.dialog = false;
-        })
-        .catch((err) => console.log(err));
+      this.$store.dispatch("arena/savePrice", price).then((response) => {
+        console.log("SET_PRICE", response.data);
+        this.prices.push(response.data);
+        this.dialog = false;
+      });
       this.timeframe = {
         begin: "",
         end: "",
@@ -231,13 +237,12 @@ export default {
       };
     },
     fetchPriceList() {
-      axios
-        .get(`/service/${this.serviceId}/prices`) //TODO refactore
+      this.$store
+        .dispatch("arena/getServicePrices", this.serviceId)
         .then((response) => {
           console.log("SET_PRICE", response.data);
           this.prices = response.data;
-        })
-        .catch((err) => console.log(err));
+        });
     },
   },
 };

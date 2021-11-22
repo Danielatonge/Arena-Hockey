@@ -62,6 +62,19 @@
         >
           Сохранить
         </v-btn>
+        <v-btn
+          large
+          class="ml-2 mb-2"
+          color="grey lighten-2"
+          elevation="0"
+          @click="
+            $router.push({
+              name: 'registration',
+            })
+          "
+        >
+          Назад
+        </v-btn>
       </div>
     </v-container>
     <v-dialog
@@ -79,7 +92,7 @@
                 <v-icon>mdi-close</v-icon>
               </v-btn>
               <div class="text-h5 white--text">
-                Заполнение роли «{{ section }}»
+                Заполнение роли «{{ dialogCode }}»
               </div>
             </v-row>
           </v-container>
@@ -89,11 +102,11 @@
             <div class="my-8 text-h6">
               Заполните биографию и данные о своих профессиональных навыках
             </div>
-            <v-row>
+            <v-row v-if="dialogCode === 'PLAYER'">
               <v-col cols="12" class="">
                 <v-select
                   :items="positions"
-                  v-model="nuser.role"
+                  v-model="nrole.position"
                   placeholder="Амплуа"
                   solo
                   flat
@@ -106,7 +119,7 @@
               <v-col cols="12" class="mb-2">
                 <v-select
                   :items="grips"
-                  v-model="nuser.grip"
+                  v-model="nrole.grip"
                   placeholder="Хват"
                   solo
                   flat
@@ -121,7 +134,7 @@
                   label="Рост"
                   outlined
                   flat
-                  v-model="nuser.height"
+                  v-model="nrole.height"
                   dense
                   hide-details="auto"
                   class="rounded-lg"
@@ -132,7 +145,7 @@
                   label="Вес"
                   outlined
                   flat
-                  v-model="nuser.weight"
+                  v-model="nrole.weight"
                   dense
                   hide-details="auto"
                   class="rounded-lg"
@@ -143,7 +156,57 @@
                 <div class="mb-2">Биография</div>
                 <v-textarea
                   solo
-                  v-model="nuser.biography"
+                  v-model="nrole.biography"
+                  height="100"
+                  flat
+                  elevation="0"
+                  hide-details="auto"
+                ></v-textarea>
+              </v-col>
+            </v-row>
+            <v-row v-if="dialogCode === 'TRAINER'">
+              <v-col cols="12" class="">
+                <v-select
+                  :items="statuses"
+                  v-model="nrole.status"
+                  placeholder="Статус"
+                  solo
+                  flat
+                  hide-details="auto"
+                ></v-select>
+              </v-col>
+              <v-col cols="12" class="mb-2">
+                <v-combobox
+                  v-model="nrole.category"
+                  :items="categories"
+                  categories
+                  clearable
+                  placeholder="Возрастная категория"
+                  multiple
+                  solo
+                  flat
+                >
+                  <template
+                    v-slot:selection="{ attrs, item, select, selected }"
+                  >
+                    <v-chip
+                      v-bind="attrs"
+                      :input-value="selected"
+                      @click="select"
+                      @click:close="remove(item)"
+                    >
+                      <strong>{{ item.text }}</strong
+                      >&nbsp;
+                    </v-chip>
+                  </template>
+                </v-combobox>
+              </v-col>
+
+              <v-col cols="12" class="">
+                <div class="mb-2">Биография</div>
+                <v-textarea
+                  solo
+                  v-model="nrole.biography"
                   height="100"
                   flat
                   elevation="0"
@@ -157,7 +220,7 @@
                 class="mr-2 mb-2"
                 color="primary"
                 elevation="0"
-                @click="updateUserRole"
+                @click="createUserRole"
               >
                 Сохранить
               </v-btn>
@@ -193,11 +256,11 @@ export default {
         edited: false,
         code: "PLAYER",
       },
-      {
-        text: "Представитель команды",
-        edited: false,
-        code: "TEAM",
-      },
+      // {
+      //   text: "Представитель команды",
+      //   edited: false,
+      //   code: "TEAM",
+      // },
       {
         text: "Тренер",
         edited: false,
@@ -211,79 +274,84 @@ export default {
       checkbox: null,
       sections: null,
       dialog: false,
-      section: "",
-      nuser: {
+      dialogCode: "",
+      nrole: {
+        name: "",
         biography: "",
         grip: "",
-        role: "",
+        position: "",
         weight: "",
         height: "",
+        status: "",
+        category: [],
       },
+      statuses: ["действующий", "Не действующий"],
       positions: ["Защитник", "Нападающий", "Вратарь"],
       grips: ["левый", "правый"],
-      roleId: "",
+      categories: [
+        { value: "ADULT", text: "Взрослый" },
+        { value: "KID", text: "Детский" },
+        { value: "YOUTH", text: "Юношеский" },
+        { value: "FEMALE", text: "Женский" },
+      ],
     };
   },
   methods: {
+    remove(item) {
+      this.categories.splice(this.categories.indexOf(item), 1);
+      this.categories = [...this.categories];
+    },
     openDialog(dialogCode) {
       console.log(
         "🚀 ~ file: RegisterRole.vue ~ line 116 ~ openDialog ~ dialogCode",
         dialogCode
       );
-      this.$store.dispatch("user/getRoleID", dialogCode).then((roleId) => {
-        this.roleId = roleId;
-      });
-      this.section = dialogCode;
+
+      this.dialogCode = dialogCode;
       this.dialog = true;
     },
-    updateUserRole() {
-      const { biography, role, grip, weight, height } = this.nuser;
-      const updateUser = {
+    createUserRole() {
+      if (this.dialogCode === "PLAYER") {
+        this.createPlayerRole();
+      }
+      if (this.dialogCode === "TRAINER") {
+        this.createTrainerRole();
+      }
+    },
+    createPlayerRole() {
+      const userId = this.userId;
+      const { biography, position, grip, weight, height } = this.nrole;
+      const _role = {
+        name: "PLAYER",
         biography,
         grip,
-        role,
-        weight,
-        height,
+        position,
+        weight: Number(weight),
+        height: Number(height),
+        userId,
       };
-      //   this.$store
-      //     .dispatch("user/putUser", { userId, user: updateUser })
-      //     .then(() => {
-      //       this.$store.dispatch("user/createUserRole", {
-      //         userId: this.userId,
-      //         roleId: this.roleId,
-      //       });
-      //       this.nuser = this.initUserDialog();
-      //     })
-      //     .catch(() => {});
 
-      this.$store.dispatch("auth/modifyUserInfo", updateUser);
-      this.nuser = this.initUserDialog();
-      this.dialog = false;
+      this.$store.dispatch("user/createRole", _role).then(() => {
+        this.dialog = false;
+        this.nrole = this.initUserDialog();
+      });
     },
-    doneCreatingUser() {
-      const myUser = this.user;
-      console.log(
-        "🚀 ~ file: RegisterRole.vue ~ line 263 ~ doneCreatingUser ~ myUser",
-        myUser
-      );
-      this.$store
-        .dispatch("auth/postUser", myUser)
-        .then((userId) => {
-          console.log(
-            "🚀 ~ file: RegisterRole.vue ~ line 271 ~ .then ~ userId",
-            {
-              userId,
-              roleId: this.roleId,
-            }
-          );
-          this.$store.dispatch("user/createUserRole", {
-            userId,
-            roleId: this.roleId,
-          });
+    createTrainerRole() {
+      const userId = this.userId;
+      const { biography, status, category } = this.nrole;
+      const roleCategory = category.map(({ value }) => value);
+      const _role = {
+        name: "TRAINER",
+        biography,
+        status,
+        category: roleCategory,
+        userId,
+      };
 
-          this.$router.push({ name: "login" });
-        })
-        .catch(() => {});
+      this.$store.dispatch("user/createRole", _role).then(() => {
+        this.dialog = false;
+        this.nrole = this.initUserDialog();
+      });
     },
     initUserDialog() {
       return {
@@ -292,7 +360,13 @@ export default {
         role: "",
         weight: "",
         height: "",
+        status: "",
+        category: "",
+        name: "",
       };
+    },
+    doneCreatingUser() {
+      this.$router.push({ name: "login" });
     },
   },
 };

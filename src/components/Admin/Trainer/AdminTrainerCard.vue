@@ -21,8 +21,14 @@
           }}
         </div>
         <div class="body-1 blue--text mb-1">
-          {{ isValidOutput(arenaUser.user.age) }}
-          {{ isValidCityOutput(arenaUser.user.city) }}
+          {{ isValidOutput(arenaUser.user.age)
+          }}{{
+            isValidOutput(arenaUser.user.age) &&
+            isValidOutput(arenaUser.user.city)
+              ? ", "
+              : ""
+          }}
+          {{ isValidOutput(arenaUser.user.city) }}
         </div>
         <div class="body-2 grey--text" v-show="arenaUser.user.qualification">
           Уровень: {{ arenaUser.user.qualification }}
@@ -34,14 +40,14 @@
               class="primary"
               elevation="0"
             >
-              Открепить команду
+              Открепить Тренер
             </v-btn>
           </v-col>
           <v-col>
             <v-checkbox
               v-model="checked"
               @click="toggleVisibility"
-              label="Скрыть команду"
+              label="Скрыть Тренер"
             />
           </v-col>
         </v-row>
@@ -70,13 +76,14 @@ export default {
   methods: {
     toggleVisibility() {
       console.log(this.arenaUser);
-      this.$store.dispatch("arena/updateArenaUser", {
-        arenaUser: this.arenaUser,
-        checked: this.checked,
-      });
-    },
-    isValidCityOutput(input) {
-      return input && input !== "string" ? ", " + input : null;
+      this.$store
+        .dispatch("arena/updateArenaUser", {
+          arenaUser: this.arenaUser,
+          checked: !this.checked,
+        })
+        .then(() => {
+          this.checked = !this.checked;
+        });
     },
     isValidOutput(input) {
       return input && input !== "string" ? input : null;

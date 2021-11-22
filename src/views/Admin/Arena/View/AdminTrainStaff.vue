@@ -16,9 +16,9 @@
                 <v-avatar class="ma-3 rounded-lg" size="125" tile>
                   <v-img
                     :src="
-                      item.profilePicture != null
+                      item.profilePicture
                         ? item.profilePicture
-                        : require('@/assets/player_2.jpg')
+                        : require('@/assets/team_room_1.jpg')
                     "
                   ></v-img>
                 </v-avatar>
@@ -27,8 +27,13 @@
                     {{ full_name(item) }}
                   </div>
                   <div class="body-1 blue--text mb-2">
-                    {{ isValidOutput(item.age) }}
-                    {{ isValidCityOutput(item.city) }}
+                    {{ isValidOutput(item.age)
+                    }}{{
+                      isValidOutput(item.age) && isValidOutput(item.city)
+                        ? ", "
+                        : ""
+                    }}
+                    {{ isValidOutput(item.city) }}
                   </div>
                   <div class="body-2 grey--text">
                     {{ isValidOutput(item.position) }}
@@ -45,7 +50,7 @@
                 <v-avatar class="ma-3 rounded-lg" size="125" tile>
                   <v-img
                     :src="
-                      item.profilePicture != null
+                      item.profilePicture
                         ? item.profilePicture
                         : require('@/assets/player_2.jpg')
                     "
@@ -74,7 +79,7 @@
                 <v-avatar class="ma-3 rounded-lg" size="125" tile>
                   <v-img
                     :src="
-                      item.profilePicture != null
+                      item.profilePicture
                         ? item.profilePicture
                         : require('@/assets/player_2.jpg')
                     "
@@ -103,7 +108,7 @@
                 <v-avatar class="ma-3 rounded-lg" size="125" tile>
                   <v-img
                     :src="
-                      item.profilePicture != null
+                      item.profilePicture
                         ? item.profilePicture
                         : require('@/assets/player_2.jpg')
                     "

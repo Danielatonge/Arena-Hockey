@@ -150,7 +150,7 @@ export default {
         title: title,
         description: description ? description : "",
         arenaId: this.arenaId,
-        profilePicture: this.avatar.imageURL,
+        profilePicture: this.avatar ? this.avatar.imageURL : "",
         type: type,
         serviceType: serviceType.value,
         length: length,

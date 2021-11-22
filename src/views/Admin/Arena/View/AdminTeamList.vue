@@ -210,7 +210,7 @@ export default {
   computed: {
     ...mapState("arena", ["teams"]),
     children_team() {
-      return this.teams.filter((x) => x.team.type === "CHILDREN");
+      return this.teams.filter((x) => x.team.type === "KID");
     },
     youth_team() {
       return this.teams.filter((x) => x.team.type === "YOUTH");

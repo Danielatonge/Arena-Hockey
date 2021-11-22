@@ -85,7 +85,7 @@ export default {
     mapBalloon(billboard) {
       return `
       <div>
-        <h1><a href="/arena/${billboard.id}/information" target="_blank" class="reset-link primary--text">${billboard.title}</a></h1>
+        <h1><a href="/arena/${billboard.id}" target="_blank" class="reset-link primary--text">${billboard.title}</a></h1>
         <div><strong>Город</strong>: ${billboard.city}</div>
         <div><strong>Адрес</strong>: ${billboard.address}</div>
       </div>

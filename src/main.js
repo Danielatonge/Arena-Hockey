@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
+import Vuelidate from "vuelidate";
 import VueLazyLoad from "vue-lazyload";
 import { Plugin } from "vue-fragment";
 import upperFirst from "lodash/upperFirst";
@@ -11,6 +12,7 @@ import camelCase from "lodash/camelCase";
 Vue.config.productionTip = false;
 Vue.use(VueLazyLoad);
 Vue.use(Plugin);
+Vue.use(Vuelidate);
 
 const requireComponent = require.context(
   // The relative path of the components folder

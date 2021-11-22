@@ -38,8 +38,8 @@
                 elevation="0"
                 @click="
                   $router.push({
-                    name: 'admin-user-edit',
-                    params: { userId: user.id },
+                    name: 'admin-user-role-edit',
+                    params: { userId, roleId },
                   })
                 "
               >
@@ -67,50 +67,71 @@
     <div class="grey lighten-4">
       <v-container>
         <div class="mb-4 text-h5">Профессиональные навыки</div>
+        <template v-if="role.name === 'PLAYER'">
+          <v-row class="mb-4">
+            <v-col cols="6" md="3" class="mb-2" v-show="role.position">
+              <div class="body-1 mb-2 grey--text">Амплуа</div>
+              <div class="">
+                {{ role.position }}
+              </div>
+            </v-col>
+            <v-col cols="6" md="3" class="mb-2" v-show="role.grip">
+              <div class="body-1 mb-2 grey--text">Хват</div>
+              <div class="">{{ role.grip }}</div>
+            </v-col>
+          </v-row>
+          <v-row class="mb-4">
+            <v-col cols="6" md="3" class="mb-2" v-show="role.height">
+              <div class="body-1 mb-2 grey--text">Рост</div>
+              <div class="">
+                {{ role.height + " см" }}
+              </div>
+            </v-col>
+            <v-col cols="6" md="3" class="mb-2" v-show="role.weight">
+              <div class="body-1 mb-2 grey--text">Вес</div>
+              <div class="">{{ role.weight + " кг" }}</div>
+            </v-col>
+          </v-row>
+        </template>
+        <template v-if="role.name === 'TRAINER'">
+          <v-row class="mb-4">
+            <v-col cols="6" md="3" class="mb-2" v-show="role.status">
+              <div class="body-1 mb-2 grey--text">Статус</div>
+              <div class="">
+                {{ role.status }}
+              </div>
+            </v-col>
+            <v-col cols="6" md="3" class="mb-2" v-show="role.category">
+              <div class="body-1 mb-2 grey--text">Возрастная категория</div>
+              <div class="">{{ roleCategory }}</div>
+            </v-col>
+          </v-row>
+        </template>
         <v-row class="mb-4">
-          <v-col cols="6" md="3" class="mb-2" v-show="user.position">
-            <div class="body-1 mb-2 grey--text">Амплуа</div>
-            <div class="">
-              {{ user.position }}
-            </div>
-          </v-col>
-          <v-col cols="6" md="3" class="mb-2" v-show="user.grip">
-            <div class="body-1 mb-2 grey--text">Хват</div>
-            <div class="">{{ user.grip }}</div>
-          </v-col>
-        </v-row>
-        <v-row class="mb-4">
-          <v-col cols="6" md="3" class="mb-2" v-show="user.height">
-            <div class="body-1 mb-2 grey--text">Рост</div>
-            <div class="">
-              {{ user.height + " см" }}
-            </div>
-          </v-col>
-          <v-col cols="6" md="3" class="mb-2" v-show="user.weight">
-            <div class="body-1 mb-2 grey--text">Вес</div>
-            <div class="">{{ user.weight + " кг" }}</div>
-          </v-col>
-        </v-row>
-        <v-row class="mb-4">
-          <v-col cols="12" class="mb-4" v-show="user.biography">
+          <v-col cols="12" class="mb-4" v-show="role.biography">
             <div class="body-1 mb-2 grey--text">Биография</div>
-            <div v-html="user.biography"></div>
+            <div v-html="role.biography"></div>
           </v-col>
           <v-col cols="12" class="mb-2" v-show="displaySocialMedia.length">
             <div class="body-1 mb-2">Социальные сети</div>
             <div class="">
               <template v-for="(item, i) in displaySocialMedia">
-                <v-btn
-                  elevation="0"
-                  x-small
-                  color="grey"
-                  height="40px"
-                  class="mr-2"
+                <a
+                  class="reset-link"
+                  :href="item.link"
                   :key="i"
-                  @click="goToLink(item.link)"
+                  target="_blank"
                 >
-                  <v-icon> {{ item.icon }}</v-icon>
-                </v-btn>
+                  <v-btn
+                    elevation="0"
+                    x-small
+                    color="grey"
+                    height="40px"
+                    class="mr-2"
+                  >
+                    <v-icon> {{ item.icon }}</v-icon>
+                  </v-btn>
+                </a>
               </template>
             </div>
           </v-col>
@@ -118,40 +139,25 @@
         <div>
           <p class="text-h5">Активные объявления</p>
           <v-row dense class="mt-5">
-            <v-col cols="12" md="6" v-for="(item, i) in forums" :key="i">
-              <v-card elevation="0" class="pa-5">
-                <div class="d-flex flex-no-wrap">
-                  <v-card-text class="px-0">
-                    <div class="body-1 grey--text">
-                      {{ dateFormat(item.date) }}
-                    </div>
-                    <div class="text-h6 mb-2">{{ item.name }}</div>
-                    <!-- <div class="body-2 grey--text">Участников: 19</div> -->
-                  </v-card-text>
-                </div>
-                <div class="mb-4 text-justify">
-                  {{ item.description.slice(0, 290) }}
-                </div>
-                <p class="bold">Необходимые требования:</p>
-                <div class="d-flex mb-2">
-                  <div class="body-2 blue--text">Возраст: {{ item.age }}</div>
-                  <div class="body-2 blue--text ml-16">
-                    Амплуа: {{ item.role }}
+            <v-col cols="12" md="6" v-for="item in forums" :key="item.id">
+              <AdminForumCard :forum="item">
+                <template #edit-delete>
+                  <div style="position: absolute; top: 30px; right: 15px">
+                    <v-icon class="mr-2" @click="goToEdit(item.id)">
+                      mdi-pencil-outline
+                    </v-icon>
+                    <v-icon class="ml-2" @click="deleteForum(item.id)">
+                      mdi-delete-outline
+                    </v-icon>
                   </div>
-                </div>
-                <div class="d-flex">
-                  <div class="body-2 blue--text">Хват: {{ item.grip }}</div>
-                  <div class="body-2 blue--text ml-16">
-                    Уровень: {{ item.level }}
-                  </div>
-                </div>
-              </v-card>
+                </template>
+              </AdminForumCard>
             </v-col>
           </v-row>
           <div>
             <v-btn
               large
-              class="mr-2 mb-2 rounded-lg"
+              class="mr-2 my-5 rounded-lg"
               color="grey lighten-2"
               elevation="0"
               @click="createForumDialog = true"
@@ -177,7 +183,7 @@
                     <v-select
                       :items="playerSearch"
                       v-model="nforum.find"
-                      placeholder="Игрок ищет команду"
+                      placeholder="Тип форума"
                       solo
                       flat
                       item-text="state"
@@ -198,22 +204,24 @@
                     ></v-textarea>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                      label="Населеный пункт"
-                      outlined
+                    <v-select
+                      :items="cities"
+                      v-model="nforum.city"
+                      placeholder="Город"
+                      solo
                       flat
-                      v-model="nforum.location"
-                      dense
+                      item-text="state"
+                      item-value="value"
+                      return-object
                       hide-details="auto"
-                      class="rounded-lg"
-                    ></v-text-field>
+                    ></v-select>
                   </v-col>
 
                   <v-col cols="12" class="">
                     <div class="mb-2">Навыки</div>
                     <v-select
-                      :items="roles"
-                      v-model="nforum.role"
+                      :items="positions"
+                      v-model="nforum.position"
                       placeholder="Амплуа"
                       solo
                       flat
@@ -276,7 +284,7 @@
                   <v-col cols="12">
                     <v-select
                       :items="playerSearch"
-                      v-model="nforum.find"
+                      v-model="mforum.find"
                       placeholder="Игрок ищет команду"
                       solo
                       flat
@@ -290,7 +298,7 @@
                     <div class="mb-2">Описание объявления</div>
                     <v-textarea
                       solo
-                      v-model="nforum.description"
+                      v-model="mforum.description"
                       height="100"
                       flat
                       elevation="0"
@@ -298,22 +306,24 @@
                     ></v-textarea>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                      label="Населеный пункт"
-                      outlined
+                    <v-select
+                      :items="cities"
+                      v-model="nforum.city"
+                      placeholder="Город"
+                      solo
                       flat
-                      v-model="nforum.location"
-                      dense
+                      item-text="state"
+                      item-value="value"
+                      return-object
                       hide-details="auto"
-                      class="rounded-lg"
-                    ></v-text-field>
+                    ></v-select>
                   </v-col>
 
                   <v-col cols="12" class="">
                     <div class="mb-2">Навыки</div>
                     <v-select
-                      :items="roles"
-                      v-model="nforum.role"
+                      :items="positions"
+                      v-model="mforum.position"
                       placeholder="Амплуа"
                       solo
                       flat
@@ -326,7 +336,7 @@
                   <v-col cols="12" class="mb-2">
                     <v-select
                       :items="grips"
-                      v-model="nforum.grip"
+                      v-model="mforum.grip"
                       placeholder="Хват"
                       solo
                       flat
@@ -368,6 +378,7 @@
 <script>
 import { mapState } from "vuex";
 import moment from "moment";
+import AdminForumCard from "@/components/Admin/Forum/AdminForumCard.vue";
 
 export default {
   props: {
@@ -375,6 +386,13 @@ export default {
       type: String,
       required: true,
     },
+    roleId: {
+      type: String,
+      required: true,
+    },
+  },
+  components: {
+    AdminForumCard,
   },
   created() {
     const userId = this.userId;
@@ -386,7 +404,7 @@ export default {
         to: { name: "user-profile", params: { userId } },
       },
       {
-        text: "информация об игроке",
+        text: "роль пользователя",
         disabled: true,
         to: "",
       },
@@ -395,9 +413,22 @@ export default {
       this.getSocialMedia();
     });
     this.$store.dispatch("user/getForums", this.userId);
+    this.$store.dispatch("user/getRole", this.roleId);
   },
   computed: {
-    ...mapState("user", ["user", "forums"]),
+    ...mapState("user", ["user", "forums", "role"]),
+    roleCategory() {
+      if (this.role.name === "TRAINER") {
+        return this.role.category
+          .map((cat) => {
+            if (cat == "ADULT") return "Взрослый";
+            if (cat == "KID") return "Детский";
+            if (cat == "YOUTH") return "Юношеский";
+            if (cat == "FEMALE") return "Женский";
+          })
+          .join(", ");
+      } else return "";
+    },
     displaySocialMedia() {
       return this.social_media.filter((element) => element.link);
     },
@@ -414,18 +445,31 @@ export default {
       createForumDialog: false,
       modifyForumDialog: false,
       nforum: {
-        find: "",
+        find: { value: "PLAYERTEAM", state: "Игрок ищет команду" },
         description: "",
-        location: "",
-        role: "",
+        city: "Москва",
+        position: "",
         grip: "",
       },
-      roles: [],
-      grips: [],
-      playerSearch: [],
+      mforum: {
+        find: {},
+        description: "",
+        city: "",
+        position: "",
+        grip: "",
+      },
+      cities: ["Москва"],
+      playerSearch: [{ value: "PLAYERTEAM", state: "Игрок ищет команду" }],
+      positions: ["Защитник", "Нападающий", "Вратарь"],
+      grips: ["левый", "правый"],
+      forumId: "",
     };
   },
   methods: {
+    isValid(input) {
+      if (input) return true;
+      return false;
+    },
     dateFormat(date) {
       let newDate = new Date(date);
       let formatter = new Intl.DateTimeFormat("ru", {
@@ -436,6 +480,27 @@ export default {
       });
 
       return formatter.format(newDate);
+    },
+    goToEdit(forumId) {
+      this.$store.dispatch("user/getForum", forumId).then((forum) => {
+        console.log(
+          "🚀 ~ file: UserInformation.vue ~ line 441 ~ this.$store.dispatch ~ response",
+          forum
+        );
+        const { description, city, role, grip, id } = forum;
+        this.forumId = id;
+        this.mforum = {
+          find: { value: "PLAYERTEAM", state: "Игрок ищет команду" },
+          description,
+          city,
+          position: role,
+          grip,
+        };
+      });
+      this.modifyForumDialog = true;
+    },
+    deleteForum(forumId) {
+      this.$store.dispatch("user/deleteForum", forumId);
     },
     getSocialMedia() {
       const { vk, whatsApp, instagram, website, facebook } = this.user;
@@ -476,27 +541,26 @@ export default {
       return {
         find: "",
         description: "",
-        location: "",
-        role: "",
+        city: "",
+        position: "",
         grip: "",
       };
     },
     saveForum() {
-      const { description, role, grip, find } = this.nforum;
+      const { description, position, city, grip, find } = this.nforum;
       const postForum = {
-        age: "",
         date: moment().format("YYYY-MM-DD"),
         description,
         grip,
-        level: "",
-        name: this.fullName,
-        picture: "",
-        role,
+        city,
+        title: this.fullName,
+        role: position,
         userId: this.userId,
-        type: find,
+        type: find.value,
       };
       this.$store.dispatch("user/postForum", postForum).then(() => {
         this.nforum = this.initForumDialog();
+        this.createForumDialog = false;
       });
     },
     modifyForum(forum) {
@@ -504,23 +568,23 @@ export default {
       this.modifyForumDialog = true;
     },
     updateForum() {
-      const forumId = this.nforum.id;
-      const { description, role, grip, find } = this.nforum;
+      const forumId = this.forumId;
+      const { description, position, city, grip, find } = this.mforum;
       const putForum = {
-        age: "",
         date: moment().format("YYYY-MM-DD"),
         description,
         grip,
-        level: "",
-        name: this.fullName,
-        picture: "",
-        role,
-        userId: this.userId,
-        type: find,
+        city,
+        role: position,
+        type: find.value,
       };
-      this.$store.dispatch("user/putForum", { forumId, putForum }).then(() => {
-        this.nforum = this.initForumDialog();
-      });
+      this.$store
+        .dispatch("user/putForum", { forumId, forum: putForum })
+        .then(() => {
+          this.mforum = this.initForumDialog();
+          this.modifyForumDialog = false;
+          this.$router.go();
+        });
     },
   },
 };

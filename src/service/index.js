@@ -1,10 +1,11 @@
 import axios from "axios";
 // http://193.187.173.125:8090/
 // https://api-hockey-io.herokuapp.com
+// http://77.73.69.230:8090/
 const token = JSON.parse(localStorage.getItem("user", ["token"]));
 
 const apiClient = axios.create({
-  baseURL: "https://api-hockey-io.herokuapp.com",
+  baseURL: "http://77.73.69.230:8090",
   withCredentials: false,
   headers: {
     Accept: "application/json",
@@ -30,11 +31,39 @@ export const apiArena = {
   getService(serviceId) {
     return apiClient.get(`/service/${serviceId}`);
   },
-  getTeams(arenaId, visible) {
-    if (visible) {
-      return apiClient.get(`/arena/${arenaId}/teams/visible`);
-    }
+  filterTeams({
+    arenaId,
+    city,
+    type,
+    currentPage,
+    pageSize,
+    queryString,
+    sortBy,
+  }) {
+    const url =
+      `/arena/${arenaId}/teams/LK?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
+      `&queryString=${queryString}&type=${type}&sortDir=${sortBy}`;
+    return apiClient.get(url);
+  },
+  filterTrainers({
+    arenaId,
+    city,
+    currentPage,
+    pageSize,
+    queryString,
+    sortBy,
+  }) {
+    const url =
+      `/arena/${arenaId}/users/LK?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
+      `&queryString=${queryString}&sortDir=${sortBy}`;
+    return apiClient.get(url);
+  },
+
+  getTeams(arenaId) {
     return apiClient.get(`/arena/${arenaId}/teams`);
+  },
+  getTeamsVisible(arenaId) {
+    return apiClient.get(`/arena/${arenaId}/teams/visible`);
   },
   getTrainers(arenaId, visible) {
     if (visible) {
@@ -74,6 +103,10 @@ export const apiArena = {
       visibility: checked ? 0 : 1,
     };
     const id = arenaUser.id;
+    console.log("🚀 ~ file: index.js ~ line 68 ~ putArenaTeam ~ id", {
+      id,
+      payload,
+    });
     return apiClient.put(`/arena/user?id=${id}`, payload);
   },
   putService({ serviceId, service }) {
@@ -172,12 +205,40 @@ export const apiTeam = {
 };
 
 export const apiUser = {
+  filterAdminTeams({
+    userId,
+    city,
+    type,
+    currentPage,
+    pageSize,
+    queryString,
+    sortBy,
+  }) {
+    const url =
+      `/user/${userId}/teams/LK?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
+      `&queryString=${queryString}&type=${type}&sortBy=${sortBy}`;
+    return apiClient.get(url);
+  },
   filterTeams({ userId, userTeamFilter }) {
     //TODO: will finally change to this in future
     const { page, search, numItems, sort_asc, address, type } = userTeamFilter;
     const url =
       `/user/${userId}/teams/search?city=${address}&currentPage=${page}&pageSize=${numItems.value}` +
       `&queryString=${search}&sortBy=${sort_asc.key}&type=${type.key}`;
+    return apiClient.get(url);
+  },
+
+  filterAdminArenas({
+    userId,
+    city,
+    currentPage,
+    pageSize,
+    queryString,
+    sortBy,
+  }) {
+    const url =
+      `/user/${userId}/arenas/LK?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
+      `&queryString=${queryString}&sortBy=${sortBy}`;
     return apiClient.get(url);
   },
   filterArenas({ userId, userArenaFilter }) {
@@ -188,6 +249,7 @@ export const apiUser = {
       `&queryString=${search}&sortBy=${sort_asc.key}&type=${type.key}`;
     return apiClient.get(url);
   },
+
   getTeams(userId) {
     // TODO: Temporal
     return apiClient.get(`/user/${userId}/teams`);
@@ -205,11 +267,17 @@ export const apiUser = {
   deleteTeam(teamId) {
     return apiClient.delete(`/team/${teamId}`);
   },
+  deleteForum(forumId) {
+    return apiClient.delete(`/forum/${forumId}`);
+  },
   getUser(userId) {
     return apiClient.get(`/user/${userId}`);
   },
   getRoles(userId) {
     return apiClient.get(`/user/${userId}/roles`);
+  },
+  getRole(roleId) {
+    return apiClient.get(`/role/${roleId}`);
   },
   createUserTeam(userTeamId) {
     return apiClient.post(`/team/user`, userTeamId);
@@ -217,20 +285,28 @@ export const apiUser = {
   getForums(userId) {
     return apiClient.get(`/user/${userId}/forums`);
   },
+  getForum(forumId) {
+    return apiClient.get(`/forum/${forumId}`);
+  },
   postForum(forum) {
     return apiClient.post(`/forum`, forum);
   },
   putForum({ forumId, forum }) {
-    return apiClient.put(`/forum/${forumId}`, forum);
+    console.log("🚀 ~ file: index.js ~ line 230 ~ putForum ~ forum", forum);
+
+    return apiClient.patch(`/forum/${forumId}`, forum);
   },
   putUser({ userId, user }) {
     return apiClient.patch(`/user/${userId}`, user);
   },
+  patchRole({ roleId, role }) {
+    return apiClient.patch(`/role/${roleId}`, role);
+  },
   getRoleID(roleName) {
     return apiClient.get(`/role?title=${roleName}`);
   },
-  createUserRole(userRoleId) {
-    return apiClient.post(`/roles`, userRoleId);
+  createUserRole(userRole) {
+    return apiClient.post(`/role`, userRole);
   },
 };
 
@@ -245,6 +321,9 @@ export const apiForum = {
   },
   getForums() {
     return apiClient.get(`/forums`);
+  },
+  getForum(forumId) {
+    return apiClient.get(`/forum/${forumId}`);
   },
   getCities() {
     return apiClient.get(`/forums/cities`);
@@ -281,7 +360,7 @@ export const apiTeamPlayer = {
   filterPlayers({ city, currentPage, pageSize, queryString, sortBy }) {
     const url =
       `/user/search?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
-      `&queryString=${queryString}&sortBy=${sortBy}&role=PLAYER`;
+      `&queryString=${queryString}&role=PLAYER&sortBy=${sortBy}`;
     console.log(url);
     return apiClient.get(url);
   },
@@ -306,6 +385,15 @@ export const apiAuth = {
   postUser(user) {
     return apiClient.post(`/registration`, user);
   },
+  updateUser({ userId, user }) {
+    console.log(
+      "🚀 ~ file: index.js ~ line 310 ~ updateUser ~ user",
+      user,
+      userId
+    );
+
+    return apiClient.patch(`/user/${userId}`, user);
+  },
   login(credential) {
     return apiClient.post(`/login`, credential);
   },
@@ -321,5 +409,11 @@ export const apiAuth = {
       credentials,
     });
     return apiClient.post(`/changePassword`, credentials);
+  },
+};
+
+export const apiFile = {
+  postFile(formData) {
+    return apiClient.post(`/file`, formData);
   },
 };

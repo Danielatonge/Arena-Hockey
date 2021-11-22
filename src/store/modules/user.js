@@ -11,6 +11,7 @@ export const state = () => ({
   forums: [],
   selected_arenas: [],
   roles: [],
+  role: {},
 });
 export const getters = {
   userId: (state) => {
@@ -36,6 +37,9 @@ export const mutations = {
   },
   SET_ROLES(state, roles) {
     state.roles = roles;
+  },
+  SET_ROLE(state, role) {
+    state.role = role;
   },
   SET_FORUMS(state, forums) {
     state.forums = forums;
@@ -65,6 +69,9 @@ export const mutations = {
   },
   DELETE_ARENA(state, arenaId) {
     state.arenas = state.arenas.filter((x) => x.arena.id !== arenaId);
+  },
+  DELETE_FORUM(state, forumId) {
+    state.forums = state.forums.filter((forum) => forum.id !== forumId);
   },
 };
 
@@ -103,11 +110,58 @@ export const actions = {
         console.log(err);
       });
   },
+  filterAdminTeams({ commit }, filters) {
+    return api
+      .filterAdminTeams(filters)
+      .then((response) => {
+        const res = response.data;
+        console.log("🚀 ~ file: arena.js ~ line 183 ~ .then ~ res", res);
+
+        commit("SET_TEAMS", res.content);
+        return {
+          paginationLength: res.totalPages,
+          numFound: res.totalElements,
+        };
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  filterAdminArenas({ commit }, filters) {
+    return api
+      .filterAdminArenas(filters)
+      .then((response) => {
+        const res = response.data;
+        console.log(
+          "🚀 ~ file: arena.js ~ line 136 ~ .then ~ res",
+          res.content
+        );
+        commit("SET_ARENAS", res.content);
+        return {
+          paginationLength: res.totalPages,
+          numFound: res.totalElements,
+        };
+      })
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
+  },
   getUser({ commit }, userId) {
     return api
       .getUser(userId)
       .then((response) => {
         commit("SET_USER", response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  getForum(_t, forumId) {
+    return api
+      .getForum(forumId)
+      .then((response) => {
+        return response.data;
       })
       .catch((err) => {
         console.log(err);
@@ -133,6 +187,16 @@ export const actions = {
         console.log(err);
       });
   },
+  getRole({ commit }, roleId) {
+    return api
+      .getRole(roleId)
+      .then((response) => {
+        commit("SET_ROLE", response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   createUserTeam({ commit }, { userTeamId, team }) {
     return api
       .createUserTeam(userTeamId)
@@ -141,13 +205,19 @@ export const actions = {
       })
       .catch((err) => {
         console.log(err);
+        throw err;
       });
   },
   postForum({ commit }, forum) {
     return api
       .postForum(forum)
-      .then(() => {
-        commit("ADD_FORUM", forum);
+      .then((response) => {
+        console.log(
+          "🚀 ~ file: user.js ~ line 150 ~ .then ~ response",
+          response.data
+        );
+
+        commit("ADD_FORUM", response.data);
       })
       .catch((err) => {
         console.log(err);
@@ -173,6 +243,18 @@ export const actions = {
         throw err;
       });
   },
+  patchRole(_commit, userObj) {
+    console.log(userObj);
+    return api
+      .patchRole(userObj)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
+  },
   getRoleID(_commit, roleName) {
     return api
       .getRoleID(roleName)
@@ -184,12 +266,24 @@ export const actions = {
         console.log(err);
       });
   },
-  createUserRole(_commit, userRoleId) {
+  createRole({ dispatch }, userRole) {
+    console.log(
+      "🚀 ~ file: user.js ~ line 206 ~ createRole ~ userRole",
+      userRole
+    );
+
     return api
-      .createUserRole(userRoleId)
-      .then(() => {})
+      .createUserRole(userRole)
+      .then(() => {
+        const notification = {
+          type: "success",
+          message: "Роль пользователя успешно добавлена",
+        };
+        dispatch("notification/add", notification, { root: true });
+      })
       .catch((err) => {
         console.log(err);
+        throw err;
       });
   },
   addToSelectedArenas({ commit }, arena) {
@@ -226,10 +320,18 @@ export const actions = {
       .catch((err) => console.log(err));
   },
   deleteTeam({ commit }, { teamId }) {
-    api
+    return api
       .deleteTeam(teamId)
       .then(() => {
         commit("DELETE_TEAM", teamId);
+      })
+      .catch((err) => console.log(err));
+  },
+  deleteForum({ commit }, forumId) {
+    api
+      .deleteForum(forumId)
+      .then(() => {
+        commit("DELETE_FORUM", forumId);
       })
       .catch((err) => console.log(err));
   },

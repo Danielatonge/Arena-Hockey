@@ -21,6 +21,7 @@
           flat
           hide-details="auto"
           class="rounded-lg"
+          @keyup.enter="fetchTeam"
           @change="fetchTeam"
         ></v-text-field>
       </v-col>
@@ -31,8 +32,8 @@
           placeholder="Тип команды"
           solo
           flat
-          item-text="value"
-          item-value="key"
+          item-text="text"
+          item-value="value"
           return-object
           hide-details="auto"
           @change="fetchTeam"
@@ -69,7 +70,7 @@
       </v-col>
       <v-col class="my-auto" cols="6" md="4">
         <div class="body-1 grey--text">
-          Найдено: {{ team.items.length }} результатов
+          Найдено: {{ team.numFound }} результатов
         </div>
       </v-col>
       <v-spacer></v-spacer>

@@ -62,7 +62,7 @@
                     </v-icon>
                   </div>
                 </template>
-                <template #pricelist>
+                <template #modify-pricelist>
                   <v-btn
                     color="primary"
                     elevation="0"
@@ -131,7 +131,7 @@ export default {
   },
   methods: {
     goToModifyList(service) {
-      this.$store.dispatch("arena/setCurrentPL", service.price); //TODO: understand whats going on
+      // this.$store.dispatch("arena/setCurrentPL", service.price); //TODO: understand whats going on
       this.$router.push({
         name: "edit-admin-pricelist",
         params: { arenaId: this.arenaId, serviceId: service.id },

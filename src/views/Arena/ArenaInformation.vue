@@ -64,7 +64,7 @@
     </div>
     <v-row>
       <v-col cols="12" md="8">
-        <section class="wrapper-map" id="map">
+        <section class="wrapper-map">
           <ArenaMap
             :coords="coords"
             :surfaces="surfaces"
@@ -101,7 +101,7 @@
           </a>
         </div>
       </v-col>
-  </v-row>
+    </v-row>
   </div>
 </template>
 
@@ -190,7 +190,6 @@ export default {
 .border:last-child .right-border {
   border-right: unset;
 }
-
 
 .wrapper-map {
   background-color: #ccc;

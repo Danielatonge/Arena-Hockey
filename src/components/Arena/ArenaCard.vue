@@ -88,10 +88,8 @@ export default {
     selectArena(arena) {
       this.selected = !this.selected;
       if (this.selected) {
-        // TODO add arena to list of selected arenas
         this.$store.dispatch("arena/addToSelectedArenas", arena);
       } else {
-        // TODO remove arena from list of selected arenas
         this.$store.dispatch("arena/removeFromSelectedArenas", arena);
       }
     },

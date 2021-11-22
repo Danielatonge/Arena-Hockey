@@ -62,14 +62,19 @@
       <v-col cols="6" md="4" lg="3" xl="2">
         <v-select
           :items="displayAmount"
-          v-model="forum.numItems"
+          :value="forum.numItems"
+          @input="
+            (value) => {
+              forum.numItems = value;
+            }
+          "
+          @change="fetchForum"
           solo
           flat
           item-text="state"
           item-value="value"
           return-object
           hide-details="auto"
-          @change="fetchForum"
         ></v-select>
       </v-col>
     </v-row>
@@ -101,6 +106,7 @@ export default {
       required: true,
     },
   },
+  methods: {},
 };
 </script>
 

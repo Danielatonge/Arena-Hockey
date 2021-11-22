@@ -3,6 +3,7 @@
     color="white"
     class="notificaiton-bar pa-8 rounded-xl my-auto"
     :class="notificationTypeClass"
+    elevation="10"
   >
     <div class="text-h6 font-weight-bold">{{ notification.message }}</div>
   </v-sheet>
@@ -23,7 +24,7 @@ export default {
     },
   },
   mounted() {
-    this.timeout = setTimeout(() => this.remove(this.notification), 10000);
+    this.timeout = setTimeout(() => this.remove(this.notification), 2000);
   },
   beforeDestroy() {
     clearTimeout(this.timeout);
@@ -40,5 +41,6 @@ export default {
 <style scoped>
 .notification-bar {
   margin: 1em 0 1em;
+  z-index: 100;
 }
 </style>

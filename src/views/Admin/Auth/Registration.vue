@@ -1,278 +1,346 @@
 <template>
   <div class="grey lighten-4">
-    <v-container class="pb-10">
-      <div class="d-flex justify-space-between my-10">
-        <div class="text-h3 d-flex pb-3 pt-5 my-auto">Регистрация</div>
-        <div class="d-flex my-auto">
-          <!-- <v-btn tile class="" large color="grey lighten-2" elevation="0">
-            Назад
-          </v-btn> -->
+    <v-container class="pb-2">
+      <form @submit.prevent="registerUser">
+        <div class="d-flex justify-center my-5">
+          <div class="text-center">
+            <div class="text-h3 pb-3 my-auto">Регистрация</div>
+            <div class="my-auto">Введите свои личные данные</div>
+          </div>
         </div>
-      </div>
-      <v-row class="">
-        <v-col cols="12" md="6" class="mb-2">
-          <v-text-field
-            label="Фамилия"
-            v-model="user.surname"
-            outlined
-            flat
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="6" class="mb-2">
-          <v-text-field
-            label="Номер телефона"
-            outlined
-            v-model="user.phone"
-            flat
-            placeholder="+9 (999) 999-9999"
-            hide-details="auto"
-            class="rounded-lg"
-            @input="enforcePhoneFormat"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="6" class="mb-2">
-          <v-text-field
-            label="Имя"
-            v-model="user.name"
-            outlined
-            flat
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="6" class="mb-2">
-          <v-text-field
-            label="Электронная почта"
-            outlined
-            v-model="user.mail"
-            flat
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="6" class="mb-2">
-          <v-text-field
-            label="Отчество"
-            outlined
-            v-model="user.middleName"
-            flat
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="6" class="mb-2">
-          <v-text-field
-            label="Пароль"
-            outlined
-            v-model="user.password"
-            flat
-            hide-details="auto"
-            class="rounded-lg"
-            :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
-            :rules="[rules.required]"
-            :type="showPass ? 'text' : 'password'"
-            @click:append="showPass = !showPass"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="6" class="mb-2">
-          <v-text-field
+        <v-row class="justify-center">
+          <v-col cols="6" md="4" lg="3">
+            <admin-image-uploader v-model="avatar">
+              <div slot="activator">
+                <div v-if="!avatar" class="white rounded-xl pa-4">
+                  <v-avatar
+                    width="100%"
+                    height="200"
+                    v-ripple
+                    tile
+                    class="white rounded-xl"
+                  >
+                    <div class="upload-border rounded-xl pa-4">
+                      <div class="my-4">
+                        <v-icon large color="#379AD3"
+                          >mdi-cloud-upload-outline</v-icon
+                        >
+                      </div>
+                      <div class="body-1 mb-2 font-weight-bold">
+                        Загрузите ваш аватар
+                      </div>
+                      <div class="body-2 mb-4 grey--text">
+                        Поддерживаемые форматы: PNG, JPG
+                      </div>
+                    </div>
+                  </v-avatar>
+                </div>
+                <div v-else class="white rounded-xl pa-4">
+                  <v-avatar width="100%" height="200" tile v-ripple>
+                    <v-img
+                      class="ma-10 rounded-xl"
+                      :src="avatar.imageURL"
+                      alt="avatar"
+                      cover
+                    ></v-img>
+                  </v-avatar>
+                </div>
+              </div>
+            </admin-image-uploader>
+          </v-col>
+        </v-row>
+        <v-row class="justify-center">
+          <v-col cols="12" md="6">
+            <v-text-field
+              label="Фамилия"
+              autocomplete="new-password"
+              outlined
+              flat
+              hide-details="auto"
+              v-model.trim="user.surname"
+              class="rounded-lg"
+              :rules="[$v.user.surname.required]"
+              @blur="$v.user.surname.$touch()"
+            ></v-text-field>
+            <template v-if="$v.user.surname.$error">
+              <p v-if="!$v.user.surname.required" class="error--text mb-0">
+                Фамилия - обязательное поле
+              </p>
+            </template>
+          </v-col>
+        </v-row>
+        <v-row class="justify-center">
+          <v-col cols="12" md="6">
+            <v-text-field
+              label="Имя"
+              autocomplete="new-password"
+              v-model.trim="user.name"
+              outlined
+              flat
+              hide-details="auto"
+              class="rounded-lg"
+              :rules="[$v.user.name.required]"
+              @blur="$v.user.name.$touch()"
+            ></v-text-field>
+            <template v-if="$v.user.name.$error">
+              <p v-if="!$v.user.name.required" class="error--text mb-0">
+                Имя - обязательное поле
+              </p>
+            </template>
+          </v-col>
+        </v-row>
+        <v-row class="justify-center">
+          <v-col cols="12" md="6">
+            <v-text-field
+              label="Отчество"
+              outlined
+              aria-autocomplete="off"
+              v-model="user.middleName"
+              autocomplete="new-password"
+              flat
+              hide-details="auto"
+              class="rounded-lg"
+              :rules="[$v.user.middleName.required]"
+              @blur="$v.user.middleName.$touch()"
+            ></v-text-field>
+            <template v-if="$v.user.middleName.$error">
+              <p v-if="!$v.user.middleName.required" class="error--text mb-0">
+                Отчество - обязательное поле
+              </p>
+            </template>
+          </v-col>
+        </v-row>
+        <v-row class="justify-center">
+          <v-col cols="12" md="6">
+            <v-text-field
+              label="Номер телефона"
+              autocomplete="new-password"
+              outlined
+              v-model="user.phone"
+              flat
+              type="tel"
+              placeholder="+9 (999) 999-9999"
+              hide-details="auto"
+              class="rounded-lg"
+              maxlength="17"
+              :rules="[$v.user.phone.required, $v.user.phone.exactLength]"
+              @blur="$v.user.phone.$touch()"
+              @input="enforcePhoneFormat"
+            ></v-text-field>
+            <template v-if="$v.user.phone.$error">
+              <p v-if="!$v.user.phone.required" class="error--text mb-0">
+                Номер телефона - обязательное поле
+              </p>
+              <p v-if="!$v.user.phone.exactLength" class="error--text mb-0">
+                Пример: +9 (999) 999-9999
+              </p>
+            </template>
+          </v-col>
+        </v-row>
+
+        <v-row class="justify-center">
+          <v-col cols="12" md="6">
+            <v-text-field
+              autocomplete="new-password"
+              label="Электронная почта"
+              outlined
+              v-model="user.mail"
+              flat
+              hide-details="auto"
+              class="rounded-lg"
+              :rules="[$v.user.mail.required, $v.user.mail.email]"
+              @blur="$v.user.mail.$touch()"
+            ></v-text-field>
+            <template v-if="$v.user.mail.$error">
+              <p v-if="!$v.user.mail.required" class="error--text mb-0">
+                Электронная почта - обязательное поле
+              </p>
+              <p v-if="!$v.user.mail.email" class="error--text mb-0">
+                Пример: abc@yourcompany.com
+              </p>
+            </template>
+          </v-col>
+        </v-row>
+
+        <v-row class="justify-center">
+          <v-col cols="12" md="6">
+            <AppSelectDatePicker
+              :nudgeLeft="0"
+              :dense="false"
+              :date.sync="user.birthDate"
+              label="Дата рождения"
+            />
+            <!-- <v-text-field
             label="Дата рождения"
             outlined
             v-model="user.birthDate"
             flat
             hide-details="auto"
             class="rounded-lg"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="6" class="mb-2">
-          <v-text-field
-            label="Повторите пароль"
-            outlined
-            v-model="repeatPassword"
-            flat
-            :rules="[rules.required, rules.match]"
-            type="password"
-            hide-details="auto"
-            class="rounded-lg"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4" md="3">
-          <admin-image-uploader v-model="avatar">
-            <div slot="activator">
-              <div v-if="!avatar" class="white rounded-xl pa-4">
-                <v-avatar
-                  width="100%"
-                  height="200"
-                  v-ripple
-                  tile
-                  class="white rounded-xl"
+          ></v-text-field> -->
+          </v-col>
+        </v-row>
+        <v-row class="justify-center">
+          <v-col cols="12" md="6">
+            <v-select
+              :items="cities"
+              v-model="user.city"
+              placeholder="Город"
+              solo
+              flat
+              hide-details="auto"
+            ></v-select>
+          </v-col>
+        </v-row>
+        <v-row class="justify-center">
+          <v-col cols="12" md="6">
+            <v-text-field
+              label="Пароль"
+              outlined
+              v-model="user.password"
+              autocomplete="new-password"
+              flat
+              hide-details="auto"
+              class="rounded-lg"
+              :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="showPass ? 'text' : 'password'"
+              @click:append="showPass = !showPass"
+              :rules="[
+                $v.user.password.required,
+                $v.user.password.minLength,
+                $v.user.password.containSymbol,
+              ]"
+              @blur="$v.user.password.$touch()"
+            ></v-text-field>
+            <template v-if="$v.user.password.$error">
+              <div>
+                <span
+                  v-if="!$v.user.password.required"
+                  class="error--text mb-0"
                 >
-                  <div class="upload-border rounded-xl pa-4">
-                    <div class="my-4">
-                      <v-icon large color="#379AD3"
-                        >mdi-cloud-upload-outline</v-icon
-                      >
-                    </div>
-                    <div class="body-1 mb-2 font-weight-bold">
-                      Загрузите логотип
-                    </div>
-                    <div class="body-2 mb-4 grey--text">
-                      Поддерживаемые форматы: PNG, JPG
-                    </div>
-                  </div>
-                </v-avatar>
+                  Пароль - обязательное поле
+                </span>
+                <span
+                  v-if="!$v.user.password.minLength"
+                  class="error--text mb-0"
+                >
+                  Пароль должен быть длиннее 5 символов.
+                </span>
+                <span
+                  v-if="!$v.user.password.containSymbol"
+                  class="error--text mb-0"
+                >
+                  Пароль должен содержать любой из этих символов !@#$%^&.
+                </span>
               </div>
-              <div v-else class="white rounded-xl pa-4">
-                <v-avatar width="100%" height="200" tile v-ripple>
-                  <v-img
-                    class="ma-10 rounded-xl"
-                    :src="avatar.imageURL"
-                    alt="avatar"
-                    cover
-                  ></v-img>
-                </v-avatar>
-              </div>
-            </div>
-          </admin-image-uploader>
-        </v-col>
-        <v-col>
-          <v-row class="mb-2">
-            <v-col cols="12" class="text-h6">Социальные сети</v-col>
-            <v-col
-              cols="4"
-              class="d-flex align-center"
-              v-for="(item, i) in social_media_display"
-              :key="i"
-            >
-              <v-btn
-                elevation="0"
-                x-small
-                color="grey"
-                height="40px"
-                class="mr-2"
-              >
-                <v-icon>{{ item.icon }}</v-icon>
-              </v-btn>
-              <div>{{ item.link }}</div>
-              <v-icon class="ml-4" @click="removeSocialMedia(item)">
-                mdi-close
-              </v-icon>
-            </v-col>
-          </v-row>
-
-          <v-dialog v-model="social_media_dialog" max-width="600">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                class="mr-2 mb-2"
-                color="primary"
-                large
-                elevation="0"
-                v-bind="attrs"
-                v-on="on"
-              >
-                Добавить профиль соцсети
-              </v-btn>
             </template>
+          </v-col>
+        </v-row>
+        <v-row class="justify-center">
+          <v-col cols="12" md="6">
+            <v-text-field
+              label="Повторите пароль"
+              outlined
+              v-model="repeatPassword"
+              flat
+              :append-icon="showRepeatPass ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="showRepeatPass ? 'text' : 'password'"
+              @click:append="showRepeatPass = !showRepeatPass"
+              hide-details="auto"
+              class="rounded-lg"
+              :rules="[
+                $v.repeatPassword.required,
+                $v.repeatPassword.sameAsPassword,
+              ]"
+              @blur="$v.repeatPassword.$touch()"
+            ></v-text-field>
+            <template v-if="$v.repeatPassword.$error">
+              <div>
+                <span
+                  v-if="!$v.repeatPassword.required"
+                  class="error--text mb-0"
+                >
+                  Повторите пароль - обязательное поле.
+                </span>
+                <span
+                  v-if="!$v.repeatPassword.sameAsPassword"
+                  class="error--text mb-0"
+                >
+                  Повторите пароль не совпадает с паролем.
+                </span>
+              </div>
+            </template>
+          </v-col>
+        </v-row>
 
-            <v-card class="py-3">
-              <v-card-title class="justify-space-between">
-                <div class="text-h5 black--text">Добавить социальную сеть</div>
-                <div class="mb-4">
-                  <v-icon @click.stop="social_media_dialog = false"
-                    >mdi-close
-                  </v-icon>
-                </div>
-              </v-card-title>
-              <v-card-text>
-                <div class="mb-6">
-                  <v-btn-toggle v-model="toggle_social_media" mandatory>
-                    <v-btn
-                      elevation="0"
-                      x-small
-                      color="grey"
-                      height="40px"
-                      class="mr-2"
-                      v-for="(item, i) in social_media"
-                      :key="i"
-                    >
-                      <v-icon> {{ item.icon }}</v-icon>
-                    </v-btn>
-                  </v-btn-toggle>
-                </div>
-                <div class="mb-2">
-                  <v-text-field
-                    v-model="social_media_text"
-                    label="Ссылка на социальную сеть"
-                    outlined
-                    :hint="errMessage"
-                    persistent-hint
-                    flat
-                    hide-details="auto"
-                    class="rounded-lg"
-                  >
-                    <template v-slot:message="{ message }">
-                      <span class="error--text" v-html="message"></span>
-                    </template>
-                  </v-text-field>
-                </div>
-              </v-card-text>
-              <v-card-actions class="mt-n3">
-                <v-btn
-                  class="body-2"
-                  @click="social_media_dialog = false"
-                  elevation="0"
-                >
-                  Назад
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn
-                  elevation="0"
-                  color="primary"
-                  class="body-2"
-                  @click="addSocialMedia"
-                >
-                  Добавить
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-col>
-      </v-row>
-      <div>
-        <v-radio-group v-model="user.gender" row>
-          <v-radio label="Мужской" value="Мужской"></v-radio>
-          <v-radio label="Женский" value="Женский"></v-radio>
-        </v-radio-group>
-      </div>
+        <v-row class="justify-center">
+          <v-col cols="12" md="6">
+            <AdminSocialMedia :items="social_media"></AdminSocialMedia>
+          </v-col>
+        </v-row>
+        <v-row class="justify-center my-0">
+          <v-col cols="12" md="6">
+            <v-radio-group
+              v-model="user.gender"
+              :rules="[$v.user.gender.required]"
+              row
+              hide-details="auto"
+              class="my-0"
+            >
+              <v-radio label="Мужской" value="Мужской"></v-radio>
+              <v-radio label="Женский" value="Женский"></v-radio>
+            </v-radio-group>
+            <template v-if="$v.user.gender.$error">
+              <p v-if="!$v.user.gender.required" class="error--text mb-0">
+                Пол нужен
+              </p>
+            </template>
+          </v-col>
+        </v-row>
+
+        <div>
+          <div class="text-center align-center">
+            <v-btn
+              tile
+              class=""
+              large
+              color="grey lighten-2"
+              elevation="0"
+              type="submit"
+              :disabled="$v.$anyError"
+            >
+              Зарегистрироваться
+            </v-btn>
+            <v-btn
+              v-if="!currentUser"
+              tile
+              class="ml-4"
+              large
+              color="grey lighten-2"
+              elevation="0"
+              @click="
+                $router.push({
+                  name: 'register-role',
+                })
+              "
+            >
+              следующий
+            </v-btn>
+            <p class="mt-4">
+              Уже есть аккаунт?
+              <router-link
+                style="text-decoration: unset"
+                :to="{
+                  name: 'login',
+                }"
+                >Войти</router-link
+              >
+            </p>
+          </div>
+        </div>
+      </form>
     </v-container>
-    <div>
-      <div class="text-center align-center">
-        <v-btn
-          tile
-          class=""
-          large
-          color="grey lighten-2"
-          elevation="0"
-          @click="registerUser"
-        >
-          Зарегистрироваться
-        </v-btn>
-        <p class="mt-4">
-          Уже есть аккаунт?
-          <router-link
-            style="text-decoration: unset"
-            :to="{
-              name: 'login',
-            }"
-            >Войти</router-link
-          >
-        </p>
-      </div>
-    </div>
+
     <v-dialog v-model="feedback_dialog" max-width="600">
       <v-card class="py-3">
         <v-card-title class="justify-space-between mb-5">
@@ -297,15 +365,18 @@
 
 <script>
 import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
-
+import AdminSocialMedia from "@/components/Admin/AdminSocialMedia.vue";
+import moment from "moment";
+import { mapState } from "vuex";
+import { required, email, helpers, minLength } from "vuelidate/lib/validators";
+const containSymbol = helpers.regex("containSymbol", /[!@#$%^&]/);
 export default {
   components: {
+    AdminSocialMedia,
     AdminImageUploader,
   },
   computed: {
-    social_media_display() {
-      return this.social_media.filter((x) => x.link);
-    },
+    ...mapState("auth", { currentUser: "user" }),
     profilePicture() {
       return this.avatar ? this.avatar.imageURL : "";
     },
@@ -313,6 +384,7 @@ export default {
   data() {
     return {
       showPass: false,
+      showRepeatPass: false,
       repeatPassword: "",
       user: {
         gender: "",
@@ -322,18 +394,11 @@ export default {
         phone: "",
         mail: "",
         password: "",
+        birthDate: moment().format("YYYY-MM-DD"),
+        city: "Москва",
       },
       feedback_dialog: false,
-      rules: {
-        required: (value) => !!value || "Обязательный поль.",
-        match: (value) =>
-          value === this.user.password || "Пароли не соответствуют",
-      },
       avatar: null,
-      social_media_dialog: false,
-      toggle_social_media: null,
-      social_media_text: "",
-      errMessage: "",
       social_media: [
         {
           id: 1,
@@ -366,10 +431,38 @@ export default {
           icon: "mdi-facebook",
         },
       ],
+      cities: ["Москва"],
     };
+  },
+  validations: {
+    user: {
+      gender: { required },
+      name: { required },
+      middleName: { required },
+      surname: { required },
+      phone: {
+        required,
+        exactLength: (value) => {
+          if (value.length === 17) return true;
+          return false;
+        },
+      },
+      mail: { required, email },
+      password: { required, minLength: minLength(5), containSymbol },
+      city: { required },
+    },
+    repeatPassword: {
+      required,
+      sameAsPassword: function (value) {
+        return this.user.password === value;
+      },
+    },
   },
   methods: {
     registerUser() {
+      this.$v.$touch();
+      if (this.$v.$invalid) return;
+
       let whatsapp = "";
       if (this.social_media[1].link) {
         whatsapp = `https://wa.me/${this.social_media[1].link
@@ -392,35 +485,18 @@ export default {
         userParams
       );
 
-      // this.$store
-      //   .dispatch("auth/postUser", userParams)
-      //   .then(() => {
-      //     this.$router.push({ name: "register-role" });
-      //   })
-      //   .catch(() => {});
-      this.$store.dispatch("auth/saveUserLocally", userParams);
-      this.$router.push({ name: "register-role" });
-    },
-    removeSocialMedia(item) {
-      console.log(item);
-      item.link = "";
-    },
-    addSocialMedia() {
-      console.log(this.toggle_social_media);
-      const link = this.social_media[this.toggle_social_media].link;
-      if (link === "") {
-        this.social_media[this.toggle_social_media].link =
-          this.social_media_text;
-        this.social_media_dialog = false;
-      } else {
-        this.errMessage = "Ссылка уже существует";
-      }
-      this.social_media_text = "";
+      this.$store
+        .dispatch("auth/postUser", userParams)
+        .then(() => {
+          this.$router.push({ name: "register-role" });
+        })
+        .catch(() => {});
     },
     enforcePhoneFormat() {
       let x = this.user.phone
         .replace(/\D/g, "")
         .match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,4})/);
+      console.log(x);
 
       let value = !x[2]
         ? x[1]

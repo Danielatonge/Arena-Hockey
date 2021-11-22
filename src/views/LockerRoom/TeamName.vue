@@ -30,9 +30,9 @@
         <v-col cols="8" sm="6" md="7" lg="5">
           <p class="text-h5 blue--text">{{ team.city }}</p>
           <p class="text-h4">{{ team.title }}</p>
-          <v-btn class="mt-8" color="primary" elevation="0"
+          <!-- <v-btn class="mt-8" color="primary" elevation="0"
             >Вступить в команду
-          </v-btn>
+          </v-btn> -->
         </v-col>
         <v-spacer></v-spacer>
         <v-avatar class="rounded-lg" size="200" tile>
@@ -63,9 +63,11 @@
         ></p>
         <p class="text-justify" v-else v-html="team.description"></p>
       </div>
+     
       <v-btn
         class="px-6"
         color="grey lighten-2"
+        v-if="team.description.length > 580"
         x-large
         elevation="0"
         @click.stop="readMoreInfo = !readMoreInfo"
@@ -406,35 +408,57 @@ export default {
   },
   created() {
     const teamId = this.$route.params.teamId;
-    this.$store.dispatch("team/getTeam", teamId);
+
     this.$store.dispatch("team/getPlayers", teamId);
     this.$store.dispatch("team/getForums", teamId);
+    this.$store.dispatch("team/getTeam", teamId).then(() => {
+      const teamItem = this.team;
+      this.breadcrumb_items = [
+        {
+          text: "Список команд",
+          disabled: false,
+          exact: true,
+          to: { name: "room" },
+        },
+        {
+          text: teamItem.title,
+          disabled: true,
+          to: "",
+        },
+      ];
 
-    this.breadcrumb_items = [
-      {
-        text: "Список команд",
-        disabled: false,
-        exact: true,
-        to: { name: "room" },
-      },
-      {
-        text: this.team.title,
-        disabled: true,
-        to: "",
-      },
-    ];
-    const teamItem = this.team;
-
-    this.contact_list = [
-      { icon: "mdi-whatsapp", link: `${teamItem.whatsApp}` },
-      { icon: "mdi-instagram", link: `${teamItem.instagram}` },
-      { icon: "mdi-alpha-k-box", link: `${teamItem.vk}` },
-      { icon: "mdi-web", link: `${teamItem.website}` },
-      { icon: "mdi-music-note-outline", link: `${teamItem.tiktok}` },
-      { icon: "mdi-twitter", link: `${teamItem.twitter}` },
-      { icon: "mdi-youtube", link: `${teamItem.youtube}` },
-      { icon: "mdi-facebook", link: `${teamItem.facebook}` },
-    ];
+      this.contact_list = [
+        {
+          icon: "mdi-whatsapp",
+          link: `${teamItem.whatsApp ? teamItem.whatsApp : ""}`,
+        },
+        {
+          icon: "mdi-instagram",
+          link: `${teamItem.instagram ? teamItem.instagram : ""}`,
+        },
+        { icon: "mdi-alpha-k-box", link: `${teamItem.vk ? teamItem.vk : ""}` },
+        {
+          icon: "mdi-web",
+          link: `${teamItem.website ? teamItem.website : ""}`,
+        },
+        {
+          icon: "mdi-music-note-outline",
+          link: `${teamItem.tiktok ? teamItem.tiktok : ""}`,
+        },
+        {
+          icon: "mdi-twitter",
+          link: `${teamItem.twitter ? teamItem.twitter : ""}`,
+        },
+        {
+          icon: "mdi-youtube",
+          link: `${teamItem.youtube ? teamItem.youtube : ""}`,
+        },
+        {
+          icon: "mdi-facebook",
+          link: `${teamItem.facebook ? teamItem.facebook : ""}`,
+        },
+      ];
+    });
   },
   methods: {
     openGallery(index) {

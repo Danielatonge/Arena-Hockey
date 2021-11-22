@@ -2,11 +2,11 @@
   <v-container class="pb-10">
     <AdminTeamFilter
       :team="userTeam"
-      :location="location"
+      :location="cities"
       :types="types"
       :sort="sort_in"
       :display-amount="display_items"
-      :fetchTeam="fetchUserTeams"
+      :fetchTeam="filterTeam"
     />
     <v-row dense class="mx-n4 mb-4">
       <v-col class="pa-4" cols="12" v-for="team in teams" :key="team.id">
@@ -76,12 +76,26 @@ export default {
   },
   components: { AdminTeamCard, AdminTeamFilter },
   mounted() {
-    const userId = this.userId;
-    this.fetchUserTeams(userId);
+    this.filterTeam();
   },
   methods: {
-    fetchUserTeams(userId) {
-      this.$store.dispatch("user/getTeams", userId);
+    filterTeam() {
+      const { address, type, sort_asc, numItems, search, page } = this.userTeam;
+      const filters = {
+        userId: this.userId,
+        city: address,
+        type: type.value,
+        currentPage: page,
+        pageSize: numItems.value,
+        queryString: search,
+        sortBy: sort_asc.key,
+      };
+      this.$store
+        .dispatch("user/filterAdminTeams", filters)
+        .then(({ paginationLength, numFound }) => {
+          this.userTeam.paginationLength = paginationLength;
+          this.userTeam.numFound = numFound;
+        });
     },
   },
   data() {
@@ -91,31 +105,29 @@ export default {
         page: 1,
         search: "",
         paginationLength: 10,
-        numItems: { state: "Показывать по 10", value: 10 },
-        sort_asc: { key: 0, value: "По именни (от А до Я)" },
+        numFound: 0,
+        numItems: { state: "Показывать по 5", value: 5 },
+        sort_asc: { key: 1, value: "По именни (от А до Я)" },
         address: "Москва",
-        items: [],
-        type: {},
+        type: { value: "ADULT", text: "Взрослая" },
       },
+      cities: ["Москва", "Казань"],
       types: [
-        { key: 0, value: "Детские" },
-        { key: 1, value: "Юношеские" },
-        { key: 2, value: "Взрослые" },
-        {
-          key: 3,
-          value: "Женские",
-        },
+        { value: "KID", text: "Детскaя" },
+        { value: "ADULT", text: "Взрослая" },
+        { value: "YOUTH", text: "Юношеская" },
+        { value: "FEMALE", text: "Женская" },
       ],
+
       sort_in: [
-        { key: 0, value: "По именни (от А до Я)" },
-        { key: 1, value: "По именни (от Я до А)" },
+        { key: 1, value: "По именни (от А до Я)" },
+        { key: 0, value: "По именни (от Я до А)" },
       ],
-      location: ["Москва"],
       display_items: [
-        { state: "Показывать по 10", value: 10 },
-        { state: "Показывать по 30", value: 30 },
-        { state: "Показывать по 50", value: 50 },
-        { state: "Показывать по 100", value: 100 },
+        { state: "Показывать по 5", value: 5 },
+        { state: "Показывать по 9", value: 9 },
+        { state: "Показывать по 12", value: 12 },
+        { state: "Показывать по 24", value: 24 },
       ],
     };
   },

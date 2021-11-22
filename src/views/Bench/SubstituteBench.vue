@@ -10,9 +10,9 @@
             </v-tab>
           </v-tabs>
           <v-spacer></v-spacer>
-          <v-btn class="rounded-lg" large dark outlined depressed height="48px">
+          <!-- <v-btn class="rounded-lg" large dark outlined depressed height="48px">
             Добавить объявление
-          </v-btn>
+          </v-btn> -->
         </div>
       </v-container>
     </div>
@@ -31,8 +31,10 @@
           md="6"
           v-for="(item, i) in _pteam"
           :key="i"
+          @click="viewForum(item)"
         >
-          <v-card elevation="0" class="pa-5 rounded-lg">
+          <AdminForumCard :forum="item"> Навыки: </AdminForumCard>
+          <!-- <v-card elevation="0" class="pa-5 rounded-lg">
             <div class="d-flex flex-no-wrap">
               <v-card-text class="px-0 pt-0">
                 <div class="body-1 grey--text">
@@ -53,7 +55,7 @@
             <div class="d-flex">
               <div class="body-2 blue--text">Уровень: {{ item.level }}</div>
             </div>
-          </v-card>
+          </v-card> -->
         </v-col>
       </v-row>
       <ForumPagination
@@ -77,32 +79,9 @@
           md="6"
           v-for="(item, i) in _tplayer"
           :key="i"
+          @click="viewForum(item)"
         >
-          <v-card elevation="0" class="pa-5">
-            <div class="d-flex flex-no-wrap">
-              <v-card-text class="px-0 pt-0">
-                <div class="body-1 grey--text">
-                  {{ dateFormat(item.date) }}
-                </div>
-                <div class="text-h6 mb-2">{{ item.name }}</div>
-                <!-- <div class="body-2 grey--text">Участников: 19</div> -->
-              </v-card-text>
-            </div>
-            <div class="mb-4 text-justify">
-              {{ item.description.slice(0, 290) }}
-            </div>
-            <p class="bold">Необходимые требования:</p>
-            <div class="d-flex mb-2">
-              <div class="body-2 blue--text">Возраст: {{ item.age }}</div>
-              <div class="body-2 blue--text ml-16">Амплуа: {{ item.role }}</div>
-            </div>
-            <div class="d-flex">
-              <div class="body-2 blue--text">Хват: {{ item.grip }}</div>
-              <div class="body-2 blue--text ml-16">
-                Уровень: {{ item.level }}
-              </div>
-            </div>
-          </v-card>
+          <AdminForumCard :forum="item"> Навыки: </AdminForumCard>
         </v-col>
       </v-row>
       <ForumPagination
@@ -126,32 +105,9 @@
           md="6"
           v-for="(item, i) in ttrainer.items"
           :key="i"
+          @click="viewForum(item)"
         >
-          <v-card elevation="0" class="pa-5">
-            <div class="d-flex flex-no-wrap">
-              <v-card-text class="px-0 pt-0">
-                <div class="body-1 grey--text">
-                  {{ dateFormat(item.date) }}
-                </div>
-                <div class="text-h6 mb-2">{{ item.name }}</div>
-                <!-- <div class="body-2 grey--text">Участников: 19</div> -->
-              </v-card-text>
-            </div>
-            <div class="mb-4 text-justify">
-              {{ item.description.slice(0, 290) }}
-            </div>
-            <p class="bold">Необходимые требования:</p>
-            <div class="d-flex mb-2">
-              <div class="body-2 blue--text">Возраст: {{ item.age }}</div>
-              <div class="body-2 blue--text ml-16">Амплуа: {{ item.role }}</div>
-            </div>
-            <div class="d-flex">
-              <div class="body-2 blue--text">Хват: {{ item.grip }}</div>
-              <div class="body-2 blue--text ml-16">
-                Уровень: {{ item.level }}
-              </div>
-            </div>
-          </v-card>
+          <AdminForumCard :forum="item"> Навыки: </AdminForumCard>
         </v-col>
       </v-row>
       <ForumPagination
@@ -175,29 +131,9 @@
           md="6"
           v-for="(item, i) in ttrainer.items"
           :key="i"
+          @click="viewForum(item)"
         >
-          <v-card elevation="0" class="pa-5 rounded-lg">
-            <div class="d-flex flex-no-wrap">
-              <v-card-text class="px-0">
-                <div class="body-1 grey--text">
-                  {{ dateFormat(item.date) }}
-                </div>
-                <div class="text-h5 mb-2">{{ item.name }}</div>
-                <div class="body-2 grey--text">{{ item.age }} год</div>
-              </v-card-text>
-            </div>
-            <div class="mb-4">
-              {{ item.description.slice(0, 290) }}
-            </div>
-            <p class="bold">Навыки:</p>
-            <div class="d-flex mb-2">
-              <div class="body-2 blue--text">Хват: {{ item.grip }}</div>
-              <div class="body-2 blue--text ml-16">Амплуа: {{ item.role }}</div>
-            </div>
-            <div class="d-flex">
-              <div class="body-2 blue--text">Уровень: {{ item.level }}</div>
-            </div>
-          </v-card>
+          <AdminForumCard :forum="item"> Навыки: </AdminForumCard>
         </v-col>
       </v-row>
       <ForumPagination
@@ -206,17 +142,61 @@
         :show="!!tteam.items.length"
       />
     </v-container>
+
+    <v-dialog
+      v-model="detailedForum"
+      content-class="rounded-xl"
+      max-width="600"
+    >
+      <v-card class="pa-5 rounded-xl" v-if="forum.title">
+        <div class="d-flex flex-no-wrap">
+          <v-card-text class="px-0 py-0">
+            <div class="body-1 grey--text">
+              {{ dateFormat(forum.date) }}
+            </div>
+            <div class="text-h6 mb-2">{{ forum.title }}</div>
+            <!-- <div class="body-2 grey--text">Участников: 19</div> -->
+          </v-card-text>
+          <v-icon
+            style="position: absolute; right: 30px; top: 35px"
+            @click.stop="detailedForum = false"
+            >mdi-close
+          </v-icon>
+        </div>
+        <p class="bold">Навыки:</p>
+        <div class="d-flex mb-2">
+          <!-- <div class="body-2 blue--text">Возраст: {{ forum.age }}</div>
+                  <div class="body-2 blue--text ml-16">
+                    Амплуа: {{ forum.role }}
+                  </div> -->
+          <div
+            v-if="isValid(forum.role)"
+            class="body-2 blue--text"
+            :class="{ 'mr-16': isValid(forum.role) }"
+          >
+            Амплуа: {{ forum.role }}
+          </div>
+          <div class="body-2 blue--text" v-if="isValid(forum.grip)">
+            Хват: {{ forum.grip }}
+          </div>
+        </div>
+        <div class="mt-6 mb-2 text-justify">
+          {{ forum.description }}
+        </div>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import ForumFilter from "@/components/Forum/ForumFilter";
-import ForumPagination from "../../components/Forum/ForumPagination";
+import ForumPagination from "@/components/Forum/ForumPagination";
+import AdminForumCard from "@/components/Admin/Forum/AdminForumCard.vue";
 import { mapState } from "vuex";
 
 export default {
   name: "SubstituteBench",
-  components: { ForumPagination, ForumFilter },
+  components: { ForumPagination, ForumFilter, AdminForumCard },
   watch: {
     "pteam.page": () => {
       this.fetchpteam();
@@ -248,6 +228,7 @@ export default {
         search: "",
         paginationLength: 10,
         numItems: { state: "Показывать по 10", value: 10 },
+        numFound: 0,
         sort_asc: { key: 0, value: "По именни (от А до Я)" },
         address: "Москва",
         items: [],
@@ -257,6 +238,7 @@ export default {
         search: "",
         paginationLength: 10,
         numItems: { state: "Показывать по 10", value: 10 },
+        numFound: 0,
         sort_asc: { key: 0, value: "По именни (от А до Я)" },
         address: "Москва",
         items: [],
@@ -266,6 +248,7 @@ export default {
         search: "",
         paginationLength: 10,
         numItems: { state: "Показывать по 10", value: 10 },
+        numFound: 0,
         sort_asc: { key: 0, value: "По именни (от А до Я)" },
         address: "Москва",
         items: [],
@@ -275,6 +258,7 @@ export default {
         search: "",
         paginationLength: 10,
         numItems: { state: "Показывать по 10", value: 10 },
+        numFound: 0,
         sort_asc: { key: 0, value: "По именни (от А до Я)" },
         address: "Москва",
         items: [],
@@ -297,9 +281,15 @@ export default {
         { state: "Показывать по 50", value: 50 },
         { state: "Показывать по 100", value: 100 },
       ],
+      detailedForum: false,
+      forum: {},
     };
   },
   methods: {
+    isValid(input) {
+      if (input) return true;
+      return false;
+    },
     dateFormat(date) {
       let newDate = new Date(date);
       let formatter = new Intl.DateTimeFormat("ru", {
@@ -308,10 +298,12 @@ export default {
         month: "long",
         day: "numeric",
       });
+
       return formatter.format(newDate);
     },
-    returnFilter({ page, search, numItems, sort_asc, address }) {
-      return { page, search, numItems, sort_asc, address };
+    viewForum(forum) {
+      this.forum = forum;
+      this.detailedForum = true;
     },
     fetchpteam() {
       this.$store
@@ -321,7 +313,7 @@ export default {
         })
         .then(({ pagination, numFound }) => {
           this.pteam.paginationLength = pagination;
-          this.pteam.numItems = numFound;
+          this.pteam.numFound = numFound;
           this.pteam.items = this._pteam;
         });
     },
@@ -333,7 +325,7 @@ export default {
         })
         .then(({ pagination, numFound }) => {
           this.tplayer.paginationLength = pagination;
-          this.tplayer.numItems = numFound;
+          this.tplayer.numFound = numFound;
           this.tplayer.items = this._tplayer;
         });
     },
@@ -345,7 +337,7 @@ export default {
         })
         .then(({ pagination, numFound }) => {
           this.ttrainer.paginationLength = pagination;
-          this.ttrainer.numItems = numFound;
+          this.ttrainer.numFound = numFound;
           this.ttrainer.items = this._ttrainer;
         });
     },
@@ -357,7 +349,7 @@ export default {
         })
         .then(({ pagination, numFound }) => {
           this.tteam.paginationLength = pagination;
-          this.tteam.numItems = numFound;
+          this.tteam.numFound = numFound;
           this.tteam.items = this._tteam;
         });
     },

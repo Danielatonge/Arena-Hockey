@@ -15,10 +15,10 @@
     <!-- error dialog displays any potential error messages -->
     <v-dialog v-model="errorDialog" max-width="300">
       <v-card>
-        <div class="text-center pt-4">{{ errorText }}</div>
+        <div class="text-center px-4 pt-6">{{ errorText }}</div>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn elevation="0" @click="errorDialog = false" flat>OK</v-btn>
+          <v-btn elevation="0" @click="errorDialog = false" text>OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -26,8 +26,6 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   name: "AdminImageUploader",
   data: () => ({
@@ -61,18 +59,19 @@ export default {
         } else {
           // Append file into FormData and turn file into image URL
           let formData = new FormData();
-          let imageURL = URL.createObjectURL(imageFile);
 
           formData.append("file", imageFile);
-          axios
-            .post("https://file-hockey.herokuapp.com/file/upload", formData)
-            .then((response) => {
-              this.$emit("input", {
-                imageURL: response.data.url,
-                name: imageFile.name,
-              });
+          this.$store.dispatch("file/uploadFile", formData).then((response) => {
+            console.log(
+              "🚀 ~ file: AdminImageUploader.vue ~ line 65 ~ this.$store.dispatch ~ response",
+              response
+            );
+            this.$emit("input", {
+              imageURL: response,
+              name: imageFile.name,
             });
-          console.log(formData, imageURL, imageFile.name);
+          });
+          console.log(formData, imageFile.name);
         }
       }
     },

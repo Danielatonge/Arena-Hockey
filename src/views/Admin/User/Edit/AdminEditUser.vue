@@ -1,6 +1,11 @@
 <template>
   <div class="grey lighten-4">
-    <v-container class="pb-10 mt-10">
+    <v-container class="pb-10">
+      <v-row class="">
+        <div>
+          <v-breadcrumbs :items="breadcrumb_items" class="px-3"></v-breadcrumbs>
+        </div>
+      </v-row>
       <v-row>
         <v-col cols="4" md="3">
           <admin-image-uploader v-model="avatar">
@@ -42,178 +47,153 @@
           </admin-image-uploader>
         </v-col>
         <v-col>
-          <v-row class="mb-2">
-            <v-col cols="12" class="text-h6">Социальные сети</v-col>
-            <v-col
-              cols="4"
-              class="d-flex align-center"
-              v-for="(item, i) in social_media_display"
-              :key="i"
-            >
-              <v-btn
-                elevation="0"
-                x-small
-                color="grey"
-                height="40px"
-                class="mr-2"
-              >
-                <v-icon>{{ item.icon }}</v-icon>
-              </v-btn>
-              <div>{{ item.link }}</div>
-              <v-icon class="ml-4" @click="removeSocialMedia(item)">
-                mdi-close
-              </v-icon>
-            </v-col>
-          </v-row>
-
-          <v-dialog v-model="social_media_dialog" max-width="600">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                class="mr-2 mb-2"
-                color="primary"
-                large
-                elevation="0"
-                v-bind="attrs"
-                v-on="on"
-              >
-                Добавить профиль соцсети
-              </v-btn>
-            </template>
-
-            <v-card class="py-3">
-              <v-card-title class="justify-space-between">
-                <div class="text-h5 black--text">Добавить социальную сеть</div>
-                <div class="mb-4">
-                  <v-icon @click.stop="social_media_dialog = false"
-                    >mdi-close
-                  </v-icon>
-                </div>
-              </v-card-title>
-              <v-card-text>
-                <div class="mb-6">
-                  <v-btn-toggle v-model="toggle_social_media" mandatory>
-                    <v-btn
-                      elevation="0"
-                      x-small
-                      color="grey"
-                      height="40px"
-                      class="mr-2"
-                      v-for="(item, i) in social_media"
-                      :key="i"
-                    >
-                      <v-icon> {{ item.icon }}</v-icon>
-                    </v-btn>
-                  </v-btn-toggle>
-                </div>
-                <div class="mb-2">
-                  <v-text-field
-                    v-model="social_media_text"
-                    label="Ссылка на социальную сеть"
-                    outlined
-                    :hint="errMessage"
-                    persistent-hint
-                    flat
-                    hide-details="auto"
-                    class="rounded-lg"
-                  >
-                    <template v-slot:message="{ message }">
-                      <span class="error--text" v-html="message"></span>
-                    </template>
-                  </v-text-field>
-                </div>
-              </v-card-text>
-              <v-card-actions class="mt-n3">
-                <v-btn
-                  class="body-2"
-                  @click="social_media_dialog = false"
-                  elevation="0"
-                >
-                  Назад
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn
-                  elevation="0"
-                  color="primary"
-                  class="body-2"
-                  @click="addSocialMedia"
-                >
-                  Добавить
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+          <AdminSocialMedia :items="social_media"></AdminSocialMedia>
         </v-col>
       </v-row>
       <v-row class="">
         <v-col cols="12" md="6" class="mb-2">
           <v-text-field
             label="Фамилия"
-            v-model="user.surname"
+            autocomplete="new-password"
             outlined
             flat
             hide-details="auto"
+            v-model.trim="user.surname"
             class="rounded-lg"
+            :rules="[$v.user.surname.required]"
+            @blur="$v.user.surname.$touch()"
           ></v-text-field>
+          <template v-if="$v.user.surname.$error">
+            <p v-if="!$v.user.surname.required" class="error--text mb-0">
+              Фамилия - обязательное поле
+            </p>
+          </template>
         </v-col>
         <v-col cols="12" md="6" class="mb-2">
           <v-text-field
             label="Номер телефона"
+            autocomplete="new-password"
             outlined
             v-model="user.phone"
             flat
+            type="tel"
             placeholder="+9 (999) 999-9999"
             hide-details="auto"
             class="rounded-lg"
+            maxlength="17"
+            :rules="[$v.user.phone.required, $v.user.phone.exactLength]"
+            @blur="$v.user.phone.$touch()"
             @input="enforcePhoneFormat"
           ></v-text-field>
+          <template v-if="$v.user.phone.$error">
+            <p v-if="!$v.user.phone.required" class="error--text mb-0">
+              Номер телефона - обязательное поле
+            </p>
+            <p v-if="!$v.user.phone.exactLength" class="error--text mb-0">
+              Пример: +9 (999) 999-9999
+            </p>
+          </template>
         </v-col>
         <v-col cols="12" md="6" class="mb-2">
           <v-text-field
             label="Имя"
-            v-model="user.name"
+            autocomplete="new-password"
+            v-model.trim="user.name"
             outlined
             flat
             hide-details="auto"
             class="rounded-lg"
+            :rules="[$v.user.name.required]"
+            @blur="$v.user.name.$touch()"
           ></v-text-field>
+          <template v-if="$v.user.name.$error">
+            <p v-if="!$v.user.name.required" class="error--text mb-0">
+              Имя - обязательное поле
+            </p>
+          </template>
         </v-col>
         <v-col cols="12" md="6" class="mb-2">
           <v-text-field
+            autocomplete="new-password"
             label="Электронная почта"
             outlined
             v-model="user.mail"
             flat
             hide-details="auto"
             class="rounded-lg"
+            :rules="[$v.user.mail.required, $v.user.mail.email]"
+            @blur="$v.user.mail.$touch()"
           ></v-text-field>
+          <template v-if="$v.user.mail.$error">
+            <p v-if="!$v.user.mail.required" class="error--text mb-0">
+              Электронная почта - обязательное поле
+            </p>
+            <p v-if="!$v.user.mail.email" class="error--text mb-0">
+              Пример: abc@yourcompany.com
+            </p>
+          </template>
         </v-col>
         <v-col cols="12" md="6" class="mb-2">
           <v-text-field
             label="Отчество"
             outlined
+            aria-autocomplete="off"
             v-model="user.middleName"
+            autocomplete="new-password"
             flat
             hide-details="auto"
             class="rounded-lg"
+            :rules="[$v.user.middleName.required]"
+            @blur="$v.user.middleName.$touch()"
           ></v-text-field>
+          <template v-if="$v.user.middleName.$error">
+            <p v-if="!$v.user.middleName.required" class="error--text mb-0">
+              Отчество - обязательное поле
+            </p>
+          </template>
         </v-col>
-
         <v-col cols="12" md="6" class="mb-2">
-          <v-text-field
+          <AppSelectDatePicker
+            :nudgeLeft="0"
+            :dense="false"
+            :date.sync="user.birthDate"
+            label="Дата рождения"
+          />
+          <!-- <v-text-field
             label="Дата рождения"
             outlined
             v-model="user.birthDate"
             flat
             hide-details="auto"
             class="rounded-lg"
-          ></v-text-field>
+          ></v-text-field> -->
+        </v-col>
+        <v-col cols="12" md="6" class="mb-2">
+          <v-select
+            :items="cities"
+            v-model="user.city"
+            placeholder="Город"
+            solo
+            flat
+            hide-details="auto"
+          ></v-select>
         </v-col>
       </v-row>
       <div>
-        <v-radio-group v-model="user.gender" row>
+        <v-radio-group
+          v-model="user.gender"
+          :rules="[$v.user.gender.required]"
+          row
+          hide-details="auto"
+        >
           <v-radio label="Мужской" value="Мужской"></v-radio>
           <v-radio label="Женский" value="Женский"></v-radio>
         </v-radio-group>
+        <template v-if="$v.user.gender.$error">
+          <p v-if="!$v.user.gender.required" class="error--text mb-0">
+            Пол нужен
+          </p>
+        </template>
       </div>
       <div class="mt-5">
         <v-btn
@@ -225,6 +205,21 @@
           @click="modifyUser"
         >
           изменить пользователя
+        </v-btn>
+        <v-btn
+          tile
+          class="ml-3"
+          large
+          color="grey lighten-2"
+          elevation="0"
+          @click="
+            $router.push({
+              name: 'user-profile',
+              params: { userId },
+            })
+          "
+        >
+          назад
         </v-btn>
       </div>
     </v-container>
@@ -253,13 +248,59 @@
 
 <script>
 import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
+import AdminSocialMedia from "@/components/Admin/AdminSocialMedia.vue";
+import { required, email } from "vuelidate/lib/validators";
+
 import { mapState } from "vuex";
 export default {
   components: {
     AdminImageUploader,
+    AdminSocialMedia,
+  },
+  props: {
+    userId: {
+      type: String,
+      required: true,
+    },
   },
   created() {
-    this.user = this.currentUser;
+    const userId = this.userId;
+    this.breadcrumb_items = [
+      {
+        text: "Личный кабинет",
+        disabled: false,
+        exact: true,
+        to: { name: "user-profile", params: { userId } },
+      },
+      {
+        text: "изменить пользователя",
+        disabled: true,
+        exact: true,
+        to: "",
+      },
+    ];
+    const user = this.currentUser;
+    const { gender, surname, middleName, name, phone, mail, birthDate, city } =
+      user;
+
+    this.user = {
+      gender,
+      surname,
+      middleName,
+      name,
+      phone,
+      mail,
+      birthDate,
+      city,
+    };
+    this.avatar = user.profilePicture
+      ? { imageURL: user.profilePicture }
+      : null;
+    this.social_media[0].link = user.vk;
+    this.social_media[1].link = user.whatsApp;
+    this.social_media[2].link = user.website;
+    this.social_media[3].link = user.instagram;
+    this.social_media[4].link = user.facebook;
   },
   computed: {
     ...mapState("user", { currentUser: "user" }),
@@ -267,7 +308,7 @@ export default {
       return this.social_media.filter((x) => x.link);
     },
     profilePicture() {
-      return this.avatar ? this.avatar.imageURL : "";
+      return !this.avatar ? "" : this.avatar.imageURL;
     },
   },
   data() {
@@ -281,14 +322,12 @@ export default {
         surname: "",
         phone: "",
         mail: "",
-        password: "",
+        birthDate: "",
+        city: "",
       },
+      cities: ["Москва"],
       feedback_dialog: false,
-      rules: {
-        required: (value) => !!value || "Обязательный поль.",
-        match: (value) =>
-          value === this.user.password || "Пароли не соответствуют",
-      },
+
       avatar: null,
       social_media_dialog: false,
       toggle_social_media: null,
@@ -326,7 +365,31 @@ export default {
           icon: "mdi-facebook",
         },
       ],
+      breadcrumb_items: [],
     };
+  },
+  validations: {
+    user: {
+      gender: { required },
+      name: { required },
+      middleName: { required },
+      surname: { required },
+      phone: {
+        required,
+        exactLength: (value) => {
+          if (value.length === 17) return true;
+          return false;
+        },
+      },
+      mail: { required, email },
+      city: { required },
+    },
+    repeatPassword: {
+      required,
+      sameAsPassword: function (value) {
+        return this.user.password === value;
+      },
+    },
   },
   methods: {
     modifyUser() {
@@ -337,7 +400,6 @@ export default {
           .replace(")", "")
           .replace(" ", "")}`;
       }
-
       const userParams = {
         ...this.user,
         profilePicture: this.profilePicture,
@@ -347,19 +409,16 @@ export default {
         whatsApp: whatsapp,
         facebook: this.social_media[4].link,
       };
-      console.log(
-        "🚀 ~ file: Registration.vue ~ line 383 ~ modifyUser ~ userParams",
-        userParams
-      );
 
-      // this.$store
-      //   .dispatch("auth/postUser", userParams)
-      //   .then(() => {
-      //     this.$router.push({ name: "register-role" });
-      //   })
-      //   .catch(() => {});
-      this.$store.dispatch("auth/saveUserLocally", userParams);
-      this.$router.push({ name: "register-role" });
+      this.$store
+        .dispatch("auth/updateUser", { userId: this.userId, user: userParams })
+        .then(() => {
+          this.$router.push({
+            name: "user-profile",
+            params: { userId: this.userId },
+          });
+        })
+        .catch(() => {});
     },
     removeSocialMedia(item) {
       console.log(item);

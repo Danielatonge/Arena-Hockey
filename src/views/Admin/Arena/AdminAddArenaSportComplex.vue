@@ -4,14 +4,15 @@
       <v-row dense>
         <v-col class="d-flex" cols="12" md="2">
           <v-select
-            :items="team_tags"
-            value="Москва"
+            :items="cities"
+            v-model="filter_city"
             solo
             flat
             hide-details="auto"
+            @change="fetchArena"
           ></v-select>
         </v-col>
-        <v-col cols="9" md="8" lg="10" xl="10">
+        <v-col cols="9" md="8" lg="8">
           <v-text-field
             label="Поиск"
             single-line
@@ -20,18 +21,37 @@
             flat
             hide-details="auto"
             class="rounded-lg"
+            v-model="search"
+            @keyup.enter="fetchArena"
           ></v-text-field>
+        </v-col>
+        <v-col cols="6" md="4" lg="2">
+          <v-btn
+            class="rounded-lg"
+            large
+            depressed
+            height="48px"
+            width="100%"
+            color="primary"
+            @click="fetchArena"
+          >
+            Найти
+          </v-btn>
         </v-col>
       </v-row>
       <v-row>
         <v-col class="d-flex" cols="6" md="4" lg="3" xl="2">
           <v-select
-            :items="sort_by_team"
-            value="По популярности"
+            :items="sort_order"
+            v-model="sort_model"
+            item-text="value"
+            item-value="key"
+            return-object
             solo
             flat
             prepend-icon="mdi-sort"
             hide-details="auto"
+            @change="fetchArena"
           ></v-select>
         </v-col>
         <v-col class="my-auto" cols="6" md="4">
@@ -43,10 +63,15 @@
         <v-col cols="6" md="4" lg="3" xl="2">
           <v-select
             :items="display_items"
-            value="Показывать по 12"
+            value="Показывать по 5"
+            v-model="display_item"
+            item-text="state"
+            item-value="value"
             solo
             flat
+            return-object
             hide-details="auto"
+            @change="fetchArena"
           ></v-select>
         </v-col>
       </v-row>
@@ -98,15 +123,15 @@
         <div class="my-auto">Создать Арену</div>
       </v-btn>
     </div>
+    <!-- <div class="text-center py-10">
+      <v-pagination
+        color="grey"
+        v-model="page"
+        :length="paginationLength"
+        :total-visible="7"
+      ></v-pagination>
+    </div> -->
   </v-container>
-  <!-- <div class="text-center py-10">
-    <v-pagination
-      color="grey"
-      v-model="page"
-      :length="paginationLength"
-      :total-visible="7"
-    ></v-pagination>
-  </div> -->
 </template>
 
 <script>
@@ -123,12 +148,11 @@ export default {
   computed: {
     ...mapState("user", {
       arenas: (state) => state.arenas.map((item) => item.arena),
-      selected_arenas: "selected_arenas",
     }),
   },
   components: { AdminArenaCard },
   created() {
-    this.fetchArenaByUserId(this.userId);
+    this.fetchArena();
   },
   methods: {
     removeFromSelected(arena) {
@@ -137,8 +161,20 @@ export default {
     addToSelected(arena) {
       this.$store.dispatch("user/addToSelectedArenas", arena);
     },
-    fetchArenaByUserId(userId) {
-      this.$store.dispatch("user/getArenas", userId);
+    fetchArena() {
+      const filters = {
+        userId: this.userId,
+        city: this.filter_city,
+        currentPage: this.page,
+        pageSize: this.display_item.value,
+        queryString: this.search,
+        sortBy: this.sort_model.key,
+      };
+      this.$store
+        .dispatch("user/filterAdminArenas", filters)
+        .then(({ paginationLength }) => {
+          this.paginationLength = paginationLength;
+        });
     },
     deleteSelected() {
       this.$store.dispatch("user/deleteSelected");
@@ -149,14 +185,24 @@ export default {
   },
   data() {
     return {
-      selectedList: [],
-
       page: 1,
       perPage: 3,
       paginationLength: 10,
-      team_tags: ["Москва", "Казань"],
-      sort_by_team: ["По популярности", "По именни"],
-      display_items: ["Показывать по 12", "Показывать по 25"],
+      filter_city: "Москва",
+      search: "",
+      display_item: { state: "Показывать по 5", value: 5 },
+      cities: ["Москва", "Казань"],
+      sort_model: { key: 1, value: "По именни (от А до Я)" },
+      sort_order: [
+        { key: 1, value: "По именни (от А до Я)" },
+        { key: 0, value: "По именни (от Я до А)" },
+      ],
+      display_items: [
+        { state: "Показывать по 5", value: 5 },
+        { state: "Показывать по 9", value: 9 },
+        { state: "Показывать по 12", value: 12 },
+        { state: "Показывать по 24", value: 24 },
+      ],
     };
   },
 };
