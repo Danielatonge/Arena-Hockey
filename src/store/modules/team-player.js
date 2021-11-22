@@ -44,7 +44,6 @@ export const actions = {
           paginationLength: res.totalPages,
           numFound: res.totalElements,
         };
-        commit("SET_PLAYER_CONFIG", config);
         return config;
       })
       .catch((err) => console.log(err));
@@ -54,6 +53,7 @@ export const actions = {
       .filterTeams(filters)
       .then((response) => {
         const res = response.data;
+        console.log("🚀 ~ file: team-player.js ~ line 56 ~ .then ~ res", res);
         commit("SET_TEAMS", res.content);
         const config = {
           paginationLength: res.totalPages,
