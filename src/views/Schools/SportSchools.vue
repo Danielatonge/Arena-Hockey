@@ -365,7 +365,7 @@ export default {
     fetchCom() {
       const filters = {
         city: this.sort_by_city,
-        currentPage: this.searchCom ? 1 : this.pageCom,
+        currentPage: this.pageCom,
         pageSize: this.numItemsCom.value,
         queryString: this.searchCom,
         sortBy: this.sort_com.key,
@@ -381,7 +381,7 @@ export default {
     fetchState() {
       const filters = {
         city: this.sort_by_city,
-        currentPage: this.searchState ? 1 : this.pageState,
+        currentPage: this.pageState,
         pageSize: this.numItemsState.value,
         queryString: this.searchState,
         sortBy: this.sort_state.key,

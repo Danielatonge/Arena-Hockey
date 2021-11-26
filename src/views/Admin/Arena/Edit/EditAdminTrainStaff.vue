@@ -313,7 +313,7 @@ export default {
       const filters = {
         arenaId: this.arenaId,
         city: this.filter_city,
-        currentPage: this.search ? 1 : this.page,
+        currentPage: this.page,
         pageSize: this.display_item.value,
         queryString: this.search,
         sortBy: this.sort_model.key,
