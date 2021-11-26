@@ -356,7 +356,7 @@ export default {
     fetchTeams() {
       const filters = {
         city: this.team_city,
-        currentPage: this.pageTeam,
+        currentPage: this.searchTeam ? 1 : this.pageTeam,
         pageSize: this.numItemsTeam.value,
         queryString: this.searchTeam,
         sortBy: this.sort_model.key,
@@ -371,7 +371,7 @@ export default {
     fetchPlayers() {
       const filters = {
         city: this.player_city,
-        currentPage: this.pagePlayer,
+        currentPage: this.searchPlayer ? 1 : this.pagePlayer,
         pageSize: this.numItemsPlayer.value,
         queryString: this.searchPlayer,
         sortBy: this.sort_player.key,

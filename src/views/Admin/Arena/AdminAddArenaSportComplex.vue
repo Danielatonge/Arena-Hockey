@@ -165,7 +165,7 @@ export default {
       const filters = {
         userId: this.userId,
         city: this.filter_city,
-        currentPage: this.page,
+        currentPage: this.search ? 1 : this.page,
         pageSize: this.display_item.value,
         queryString: this.search,
         sortBy: this.sort_model.key,

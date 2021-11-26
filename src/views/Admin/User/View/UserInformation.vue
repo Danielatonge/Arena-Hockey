@@ -459,7 +459,12 @@ export default {
         grip: "",
       },
       cities: ["Москва"],
-      playerSearch: [{ value: "PLAYERTEAM", state: "Игрок ищет команду" }],
+      playerSearch: [
+        { value: "PLAYERTEAM", state: "Игрок ищет команду" },
+        { value: "TEAMPLAYER", state: "Команда ищет игроков" },
+        { value: "TEAMTRAINER", state: "Команда ищет тренера" },
+        { value: "TRAINERTEAM", state: "Тренер ищет команду" },
+      ],
       positions: ["Защитник", "Нападающий", "Вратарь"],
       grips: ["левый", "правый"],
       forumId: "",

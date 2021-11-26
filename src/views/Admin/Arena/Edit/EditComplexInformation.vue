@@ -239,14 +239,14 @@
         >
           Сохранить
         </v-btn>
-        <v-btn
+        <!-- <v-btn
           large
           class="mr-2 mb-2"
           color="grey px-6 lighten-2"
           elevation="0"
         >
           Обратить в тех. поддержку
-        </v-btn>
+        </v-btn> -->
         <v-btn
           large
           class="mr-2 mb-2"

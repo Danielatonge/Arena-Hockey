@@ -21,6 +21,7 @@
               prepend-inner-icon="mdi-magnify"
               solo
               @change="fetchArena"
+              @keyup.enter="fetchArena"
               flat
               hide-details="auto"
               class="rounded-lg"
@@ -87,7 +88,9 @@
             ></v-select>
           </v-col>
           <v-col class="my-auto" cols="6" md="4">
-            <div class="body-1 grey--text">Найдено: {{ numFound }}</div>
+            <div class="body-1 grey--text">
+              Найдено: {{ numFound }} результатов
+            </div>
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="6" md="4" lg="3" xl="2">
@@ -186,11 +189,16 @@ export default {
     fetchArena() {
       const filters = {
         city: this.sort_by_city,
-        currentPage: this.page,
+        currentPage: this.search ? 1 : this.page,
         pageSize: this.display_item.value,
         queryString: this.search,
         sortBy: this.sort_model.key,
       };
+      console.log(
+        "🚀 ~ file: Arena.vue ~ line 197 ~ fetchArena ~ filters",
+        filters
+      );
+
       this.$store
         .dispatch("arena/getArenas", filters)
         .then(({ paginationLength, numFound }) => {

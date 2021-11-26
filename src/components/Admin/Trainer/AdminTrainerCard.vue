@@ -44,11 +44,16 @@
             </v-btn>
           </v-col>
           <v-col>
-            <v-checkbox
+            <slot
+              name="hide"
+              :checked="checked"
+              :toggle="toggleVisibility"
+            ></slot>
+            <!-- <v-checkbox
               v-model="checked"
               @click="toggleVisibility"
               label="Скрыть Тренер"
-            />
+            /> -->
           </v-col>
         </v-row>
       </v-card-text>
@@ -75,7 +80,10 @@ export default {
   },
   methods: {
     toggleVisibility() {
-      console.log(this.arenaUser);
+      console.log({
+        arenaUser: this.arenaUser,
+        checked: !this.checked,
+      });
       this.$store
         .dispatch("arena/updateArenaUser", {
           arenaUser: this.arenaUser,
