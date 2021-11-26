@@ -189,7 +189,7 @@ export default {
     fetchArena() {
       const filters = {
         city: this.sort_by_city,
-        currentPage: this.search ? 1 : this.page,
+        currentPage: this.page,
         pageSize: this.display_item.value,
         queryString: this.search,
         sortBy: this.sort_model.key,
