@@ -193,7 +193,7 @@ export default {
         text: "Мои команды",
         disabled: false,
         exact: true,
-        to: { name: "admin-add-arena-sportcomplex", params: { userId } },
+        to: { name: "admin-team", params: { userId } },
       },
       {
         text: "Создать арену",
