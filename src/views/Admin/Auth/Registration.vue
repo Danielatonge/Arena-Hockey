@@ -354,9 +354,9 @@
         <v-card-actions class="mt-n6">
           <v-btn class="body-2 px-4" elevation="0"> Восстановить доступ</v-btn>
           <v-spacer></v-spacer>
-          <v-btn elevation="0" color="primary" class="body-2 px-4">
+          <!-- <v-btn elevation="0" color="primary" class="body-2 px-4">
             Обратиться в тех.поддержку
-          </v-btn>
+          </v-btn> -->
         </v-card-actions>
       </v-card>
     </v-dialog>

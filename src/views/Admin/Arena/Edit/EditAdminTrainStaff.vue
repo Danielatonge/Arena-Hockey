@@ -11,9 +11,9 @@
         >
           ДОБАВИТЬ ТРЕНЕРА
         </v-btn>
-        <v-btn large class="mr-2 mb-2" color="grey lighten-2" elevation="0">
+        <!-- <v-btn large class="mr-2 mb-2" color="grey lighten-2" elevation="0">
           Обратить в тех. поддержку
-        </v-btn>
+        </v-btn> -->
         <v-btn
           large
           class="mr-2 mb-2"
@@ -107,6 +107,13 @@
       <v-row dense class="mx-n4">
         <v-col cols="12" v-for="(item, i) in atrainers" :key="i">
           <AdminTrainerCard :arenaUser="item" @trainer-remove="removeTeam">
+            <template #hide="{ checked, toggle }">
+              <v-checkbox
+                :value="checked"
+                @click.stop="toggle"
+                label="Скрыть Тренер"
+              />
+            </template>
           </AdminTrainerCard>
         </v-col>
       </v-row>

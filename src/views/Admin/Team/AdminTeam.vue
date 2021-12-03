@@ -85,7 +85,7 @@ export default {
         userId: this.userId,
         city: address,
         type: type.value,
-        currentPage: page,
+        currentPage:page,
         pageSize: numItems.value,
         queryString: search,
         sortBy: sort_asc.key,

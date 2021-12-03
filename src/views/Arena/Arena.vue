@@ -21,6 +21,7 @@
               prepend-inner-icon="mdi-magnify"
               solo
               @change="fetchArena"
+              @keyup.enter="fetchArena"
               flat
               hide-details="auto"
               class="rounded-lg"
@@ -193,6 +194,11 @@ export default {
         queryString: this.search,
         sortBy: this.sort_model.key,
       };
+      console.log(
+        "🚀 ~ file: Arena.vue ~ line 197 ~ fetchArena ~ filters",
+        filters
+      );
+
       this.$store
         .dispatch("arena/getArenas", filters)
         .then(({ paginationLength, numFound }) => {
