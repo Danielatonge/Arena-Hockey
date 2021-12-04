@@ -209,6 +209,8 @@
                 $v.user.password.required,
                 $v.user.password.minLength,
                 $v.user.password.containSymbol,
+                $v.user.password.containNumber,
+                $v.user.password.containBigLetter,
               ]"
               @blur="$v.user.password.$touch()"
             ></v-text-field>
@@ -231,6 +233,18 @@
                   class="error--text mb-0"
                 >
                   Пароль должен содержать любой из этих символов !@#$%^&.
+                </span>
+                <span
+                  v-if="!$v.user.password.containNumber"
+                  class="error--text mb-0"
+                >
+                  Пароль должен содержать хотябы одну цифру.
+                </span>
+                <span
+                  v-if="!$v.user.password.containBigLetter"
+                  class="error--text mb-0"
+                >
+                  Пароль должен содержать хотябы одну букву верхнего регистра.
                 </span>
               </div>
             </template>
@@ -370,6 +384,8 @@ import moment from "moment";
 import { mapState } from "vuex";
 import { required, email, helpers, minLength } from "vuelidate/lib/validators";
 const containSymbol = helpers.regex("containSymbol", /[!@#$%^&]/);
+const containNumber = helpers.regex("containNumber", /[1-9]/);
+const containBigLetter = helpers.regex("containBigLetter", /[A-Z]/);
 export default {
   components: {
     AdminSocialMedia,
@@ -448,7 +464,7 @@ export default {
         },
       },
       mail: { required, email },
-      password: { required, minLength: minLength(5), containSymbol },
+      password: { required, minLength: minLength(5), containSymbol, containNumber, containBigLetter },
       city: { required },
     },
     repeatPassword: {
