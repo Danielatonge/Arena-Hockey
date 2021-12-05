@@ -204,7 +204,7 @@
           elevation="0"
           @click="modifyUser"
         >
-          изменить пользователя
+          Сохранить
         </v-btn>
         <v-btn
           tile
