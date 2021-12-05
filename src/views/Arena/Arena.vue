@@ -116,6 +116,7 @@
           xl="3"
           v-for="(arena, i) in arenas"
           :key="i"
+          @click="savePageNumber"
         >
           <ArenaCard :arena="arena" />
         </v-col>
@@ -179,6 +180,7 @@ export default {
   watch: {
     page() {
       this.fetchArena();
+      this.savePageNumber();
     },
   },
   methods: {
@@ -187,6 +189,7 @@ export default {
       this.fetchArena();
     },
     fetchArena() {
+      console.log(this.page)
       const filters = {
         city: this.sort_by_city,
         currentPage: this.page,
@@ -208,6 +211,15 @@ export default {
     },
     goToMapAll() {
       this.$router.push({ name: "arena-map-all" });
+    },
+
+    savePageNumber(){
+      localStorage.setItem('page', this.page)
+    },
+
+    setPage(){
+      let pageNumber = localStorage.getItem('page')
+      this.page = Number(pageNumber)
     },
   },
   data() {
@@ -238,6 +250,7 @@ export default {
   created() {
     this.$store.dispatch("arena/getCities");
     this.fetchArena();
+    this.setPage();
   },
 };
 </script>

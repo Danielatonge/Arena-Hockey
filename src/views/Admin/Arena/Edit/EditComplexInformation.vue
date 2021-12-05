@@ -95,7 +95,7 @@
           :items="tag_items"
           chips
           clearable
-          label="Теги"
+          label="Услуги"
           multiple
           solo
           flat

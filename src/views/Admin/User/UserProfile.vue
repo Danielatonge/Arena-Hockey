@@ -55,6 +55,7 @@
               justify-center
               align-center
               rounded-lg
+              user_role
             "
             @click="
               $router.push({
@@ -421,4 +422,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+.user_role:hover{
+  background-color: #0681c8;
+  color: #fff;
+  cursor: pointer;
+}
+</style>
