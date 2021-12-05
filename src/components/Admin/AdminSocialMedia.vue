@@ -52,7 +52,30 @@
         </v-card-title>
         <v-card-text>
           <div class="mb-6">
-            <v-btn-toggle v-model="toggle_social_media" mandatory>
+            <v-col
+            v-for="(item, i) in items"
+            :key="i">
+              <v-text-field
+              v-model="item.link"
+              @keyup.enter="addSocialMedia"
+              label="Ссылка на социальную сеть"
+              outlined
+              clearable
+              autofocus
+              :hint="errMessage"
+              persistent-hint
+              flat
+              :prepend-icon='item.icon'
+              hide-details="auto"
+              class="rounded-lg"
+              ref="socialMediaText"
+              >
+                <template v-slot:message="{ message }">
+                  <span class="error--text" v-html="message"></span>
+                </template>
+              </v-text-field>
+            </v-col>
+            <!-- <v-btn-toggle v-model="toggle_social_media" mandatory>
               <v-btn
                 elevation="0"
                 x-small
@@ -64,9 +87,10 @@
               >
                 <v-icon> {{ item.icon }}</v-icon>
               </v-btn>
-            </v-btn-toggle>
+            </v-btn-toggle> -->
           </div>
-          <div class="mb-2">
+          <!-- <div class="mb-2">
+            prepend-icon="mdi-map-marker"
             <v-text-field
               v-model="social_media_text"
               @keyup.enter="addSocialMedia"
@@ -84,7 +108,7 @@
                 <span class="error--text" v-html="message"></span>
               </template>
             </v-text-field>
-          </div>
+          </div> -->
         </v-card-text>
         <v-card-actions class="mt-n3">
           <v-btn
@@ -132,7 +156,6 @@ export default {
     return {
       social_media_dialog: false,
       toggle_social_media: null,
-      social_media_text: "",
       errMessage: "",
     };
   },
@@ -142,15 +165,15 @@ export default {
       item.link = "";
     },
     addSocialMedia() {
-      console.log(this.toggle_social_media);
-      const link = this.items[this.toggle_social_media].link;
-      if (link === "") {
-        this.items[this.toggle_social_media].link = this.social_media_text;
+      // console.log(this.items[id-1].link);
+      // const link = this.items[this.toggle_social_media].link;
+      // if (link === "") {
+      //   this.items[this.toggle_social_media].link = this.social_media_text;
         this.social_media_dialog = false;
-      } else {
-        this.errMessage = "Ссылка уже существует";
-      }
-      this.social_media_text = "";
+      // } else {
+      //   this.errMessage = "Ссылка уже существует";
+      // }
+      // this.social_media_text = "";
     },
   },
 };
