@@ -36,7 +36,7 @@
                 {{ item.description }}
               </div>
             </v-card-text>
-            <v-card-actions class="pl-4 bottom">
+            <!-- <v-card-actions class="pl-4 bottom">
               <v-btn
                 class="px-6"
                 color="grey"
@@ -51,7 +51,7 @@
               >
                 Забронировать
               </v-btn>
-            </v-card-actions>
+            </v-card-actions> -->
           </v-col>
         </v-row>
       </div>

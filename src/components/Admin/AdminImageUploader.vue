@@ -43,6 +43,7 @@ export default {
       this.$refs.file.click();
     },
     onFileChange(fieldName, file) {
+      console.log(file[0].name)
       const { maxSize } = this;
       let imageFile = file[0];
       if (file.length > 0) {

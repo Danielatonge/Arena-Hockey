@@ -108,7 +108,7 @@ export default {
   data() {
     return {
       premises_tab: null,
-      premises_nav: ["аренда", "прочее"],
+      premises_nav: ["Основные", "Сопутствующие"],
     };
   },
   methods: {},
