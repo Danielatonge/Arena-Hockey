@@ -126,7 +126,7 @@ export default {
   data() {
     return {
       value_tab: 0,
-      service_nav: ["аренда", "прочее"],
+      service_nav: ["Основные", "Сопутствующие"],
     };
   },
   methods: {

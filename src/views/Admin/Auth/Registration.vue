@@ -123,14 +123,11 @@
               hide-details="auto"
               class="rounded-lg"
               maxlength="17"
-              :rules="[$v.user.phone.required, $v.user.phone.exactLength]"
+              :rules="[$v.user.phone.exactLength]"
               @blur="$v.user.phone.$touch()"
               @input="enforcePhoneFormat"
             ></v-text-field>
             <template v-if="$v.user.phone.$error">
-              <p v-if="!$v.user.phone.required" class="error--text mb-0">
-                Номер телефона - обязательное поле
-              </p>
               <p v-if="!$v.user.phone.exactLength" class="error--text mb-0">
                 Пример: +9 (999) 999-9999
               </p>
@@ -306,7 +303,7 @@
             </v-radio-group>
             <template v-if="$v.user.gender.$error">
               <p v-if="!$v.user.gender.required" class="error--text mb-0">
-                Пол нужен
+                Укажите пол
               </p>
             </template>
           </v-col>
@@ -457,9 +454,8 @@ export default {
       middleName: { required },
       surname: { required },
       phone: {
-        required,
         exactLength: (value) => {
-          if (value.length === 17) return true;
+          if (value.length === 17 || value.length === 0) return true;
           return false;
         },
       },
