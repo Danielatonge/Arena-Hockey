@@ -236,7 +236,14 @@ export default {
         text: "Мои мероприятия",
         link: ``,
       },
-      { text: "Календарь мероприятий", link: `` },
+      { 
+        text: "Календарь мероприятий", 
+        link: `` 
+      },
+      {
+        text: "Мои объявления",
+        link: { name: "admin-advertisements", params: { userId } },
+      },
     ];
     this.mail = this.user.mail;
 

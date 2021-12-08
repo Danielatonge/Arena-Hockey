@@ -166,7 +166,7 @@
                 Скрыть
               </v-btn> -->
             </div>
-        <div>
+        <!-- <div>
           <p class="text-h5">Активные объявления</p>
           <v-row dense class="mt-5">
             <v-col cols="12" md="6" v-for="item in forums" :key="item.id">
@@ -399,7 +399,7 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-        </div>
+        </div> -->
       </v-container>
     </div>
   </div>
@@ -408,7 +408,7 @@
 <script>
 import { mapState } from "vuex";
 import moment from "moment";
-import AdminForumCard from "@/components/Admin/Forum/AdminForumCard.vue";
+//import AdminForumCard from "@/components/Admin/Forum/AdminForumCard.vue";
 
 export default {
   props: {
@@ -422,7 +422,7 @@ export default {
     },
   },
   components: {
-    AdminForumCard,
+    //AdminForumCard,
   },
   created() {
     const userId = this.userId;

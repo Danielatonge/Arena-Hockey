@@ -30,6 +30,8 @@ import SubstituteBench from "../views/Bench/SubstituteBench.vue";
 import AdminAddArenaSportComplex from "../views/Admin/Arena/AdminAddArenaSportComplex.vue";
 import AdminTeam from "../views/Admin/Team/AdminTeam";
 
+import AdminAdvertisements from "../views/Admin/Advertisements/AdminAdvertisements.vue";
+
 import NameComplex from "../views/Admin/Arena/View/NameComplex.vue";
 import ComplexInformation from "../views/Admin/Arena/View/ComplexInformation.vue";
 import AdminScheduleEvent from "../views/Admin/Arena/View/AdminScheduleEvent.vue";
@@ -224,6 +226,13 @@ const routes = [
         path: "teams",
         name: "admin-team",
         component: AdminTeam,
+        props: true,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "advertisement",
+        name: "admin-advertisements",
+        component: AdminAdvertisements,
         props: true,
         meta: { requiresAuth: true },
       },

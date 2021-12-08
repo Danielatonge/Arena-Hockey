@@ -10,9 +10,17 @@
             </v-tab>
           </v-tabs>
           <v-spacer></v-spacer>
-          <!-- <v-btn class="rounded-lg" large dark outlined depressed height="48px">
+          <v-btn
+          @click="$router.push({ name: 'admin-advertisements', params: { userId } })"
+          v-show="loggedIn"
+          class="rounded-lg"
+          large
+          dark
+          outlined
+          depressed
+          height="48px">
             Добавить объявление
-          </v-btn> -->
+          </v-btn>
         </div>
       </v-container>
     </div>
@@ -192,7 +200,7 @@
 import ForumFilter from "@/components/Forum/ForumFilter";
 import ForumPagination from "@/components/Forum/ForumPagination";
 import AdminForumCard from "@/components/Admin/Forum/AdminForumCard.vue";
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "SubstituteBench",
@@ -211,7 +219,11 @@ export default {
       this.fetchtteam();
     },
   },
-  computed: mapState("forum", ["_pteam", "_tplayer", "_ttrainer", "_tteam"]),
+  computed:{
+    ...mapState("forum", ["_pteam", "_tplayer", "_ttrainer", "_tteam"]),
+    ...mapState("auth", ["userId"]),
+    ...mapGetters("auth", ["loggedIn"]),
+  },
   mounted() {
     // this.$store.dispatch("forum/getForums");
     this.fetchpteam();
