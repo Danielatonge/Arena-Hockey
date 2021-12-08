@@ -114,6 +114,7 @@
                       item-value="value"
                       return-object
                       hide-details="auto"
+                      @change="checkUserRoles(pickedRole)"
                     ></v-select>
                   </v-col>
                 </v-row>
@@ -265,6 +266,17 @@
         <user-information :userId="userId" :roleId="selectedRole"  />
       </div>
     </v-container>
+    <v-snackbar
+      :timeout="1500"
+      v-model="errorRoleSnackbar"
+      absolute
+      centered
+      color="primary"
+      elevation="24"
+      height="80px"
+    >
+      <p style="margin-bottom: 0;" class="snackbarText">Такая роль у вас уже есть</p> 
+    </v-snackbar>
   </div>
 </template>
 
@@ -364,6 +376,7 @@ export default {
       ],
       userRoles: false,
       selectedRole: "",
+      errorRoleSnackbar: false,
     };
   },
   methods: {
@@ -429,13 +442,26 @@ export default {
       };
     },
     openRoleInformation(role){
+      console.log(role)
+      console.log(this.selectedRole)
+      if(role === this.selectedRole && this.userRoles == true){
+        this.userRoles = false
+        this.selectedRole = role
+        return
+      }
       this.userRoles = true
       this.selectedRole = role
     },
-    // closeRoleInformation(){
-    //   this.userRoles = false
-    //   this.selectedRole = ""
-    // },
+
+    checkUserRoles(data){
+      this.displayRoles.forEach(element => {
+        if(data.text == element.name){
+          this.dialog = false
+          this.errorRoleSnackbar = true
+          this.pickedRole = null
+        }
+      });
+    }
   },
 };
 </script>
@@ -445,5 +471,14 @@ export default {
   background-color: #0681c8;
   color: #fff;
   cursor: pointer;
+}
+
+.snackbarText{
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 26px;
+  line-height: 26px;
+  text-align: center;
 }
 </style>
