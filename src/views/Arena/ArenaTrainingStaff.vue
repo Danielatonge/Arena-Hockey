@@ -126,7 +126,6 @@
         </v-row>
       </v-tab-item>
     </v-tabs-items>
-    
   </div>
 </template>
 
@@ -164,7 +163,7 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("arena/getTrainers", this.arenaId);
+    this.$store.dispatch("arena/getTrainersVisible", this.arenaId);
   },
   data() {
     return {

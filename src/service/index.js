@@ -55,7 +55,7 @@ export const apiArena = {
   }) {
     const url =
       `/arena/${arenaId}/users/LK?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
-      `&queryString=${queryString}&sortDir=${sortBy}`;
+      `&queryString=${queryString}&sortBy=${sortBy}&role=TRAINER`;
     return apiClient.get(url);
   },
 
@@ -71,6 +71,9 @@ export const apiArena = {
     }
     return apiClient.get(`/arena/${arenaId}/users`);
   },
+  getTrainersVisible(arenaId) {
+    return apiClient.get(`/arena/${arenaId}/users/visible`);
+  },
   getEvents(arenaId) {
     return apiClient.get(`/arena/${arenaId}/events`);
   },
@@ -84,6 +87,7 @@ export const apiArena = {
     return apiClient.get(`/user/${userId}/arenas`);
   },
   getServicePrices(serviceId) {
+    console.log(`/service/${serviceId}/prices`);
     return apiClient.get(`/service/${serviceId}/prices`);
   },
 
@@ -313,9 +317,12 @@ export const apiUser = {
 export const apiForum = {
   filterForum({ filter, type }) {
     const { page, search, numItems, sort_asc, address } = filter;
-    const url =
+    let url =
       `/forum/search?city=${address}&currentPage=${page}&pageSize=${numItems.value}` +
       `&queryString=${search}&sortBy=${sort_asc.key}&type=${type}`;
+    if (type == "TEAMPLAYER") {
+      url += `&role=${filter.role}&grip=${filter.grip}`;
+    }
     console.log(url);
     return apiClient.get(url);
   },

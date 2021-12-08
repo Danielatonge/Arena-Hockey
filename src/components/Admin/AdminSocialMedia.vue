@@ -52,23 +52,21 @@
         </v-card-title>
         <v-card-text>
           <div class="mb-6">
-            <v-col
-            v-for="(item, i) in items"
-            :key="i">
+            <v-col v-for="(item, i) in items" :key="i">
               <v-text-field
-              v-model="item.link"
-              @keyup.enter="addSocialMedia"
-              label="Ссылка на социальную сеть"
-              outlined
-              clearable
-              autofocus
-              :hint="errMessage"
-              persistent-hint
-              flat
-              :prepend-icon='item.icon'
-              hide-details="auto"
-              class="rounded-lg"
-              ref="socialMediaText"
+                v-model="item.link"
+                @keyup.enter="addSocialMedia"
+                label="Ссылка на социальную сеть"
+                outlined
+                clearable
+                autofocus
+                :hint="errMessage"
+                persistent-hint
+                flat
+                :prepend-icon="item.icon"
+                hide-details="auto"
+                class="rounded-lg"
+                ref="socialMediaText"
               >
                 <template v-slot:message="{ message }">
                   <span class="error--text" v-html="message"></span>
@@ -110,7 +108,7 @@
             </v-text-field>
           </div> -->
         </v-card-text>
-        <v-card-actions class="mt-n3">
+        <!-- <v-card-actions class="mt-n3">
           <v-btn
             class="body-2"
             @click="social_media_dialog = false"
@@ -127,7 +125,7 @@
           >
             Добавить
           </v-btn>
-        </v-card-actions>
+        </v-card-actions> -->
       </v-card>
     </v-dialog>
   </div>
@@ -169,7 +167,7 @@ export default {
       // const link = this.items[this.toggle_social_media].link;
       // if (link === "") {
       //   this.items[this.toggle_social_media].link = this.social_media_text;
-        this.social_media_dialog = false;
+      this.social_media_dialog = false;
       // } else {
       //   this.errMessage = "Ссылка уже существует";
       // }

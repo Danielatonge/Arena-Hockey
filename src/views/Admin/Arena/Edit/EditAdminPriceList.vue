@@ -199,7 +199,6 @@ export default {
         weekday: "",
         weekend: "",
       },
-      service_nav: ["Катки", "Другие помещения"],
 
       prices: [],
       showDate: moment().format("YYYY-MM-DD"),
@@ -240,7 +239,7 @@ export default {
       this.$store
         .dispatch("arena/getServicePrices", this.serviceId)
         .then((response) => {
-          console.log("SET_PRICE", response.data);
+          console.log("SET_PRICE", this.serviceId, response);
           this.prices = response.data;
         });
     },

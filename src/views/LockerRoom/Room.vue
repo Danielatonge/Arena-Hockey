@@ -319,20 +319,20 @@ export default {
       numItemsPlayer: { state: "Показывать по 10", value: 10 },
 
       sort_by_player: [
-        { key: 0, value: "По именни (от А до Я)" },
-        { key: 1, value: "По именни (от Я до А)" },
+        { key: 1, value: "По именни (от А до Я)" },
+        { key: 0, value: "По именни (от Я до А)" },
       ],
-      sort_player: { key: 0, value: "По именни (от А до Я)" },
+      sort_player: { key: 1, value: "По именни (от А до Я)" },
       display_items: [
         { state: "Показывать по 10", value: 10 },
         { state: "Показывать по 30", value: 30 },
         { state: "Показывать по 50", value: 50 },
         { state: "Показывать по 100", value: 100 },
       ],
-      sort_model: { key: 0, value: "По именни (от А до Я)" },
+      sort_model: { key: 1, value: "По именни (от А до Я)" },
       sort_by_team: [
-        { key: 0, value: "По именни (от А до Я)" },
-        { key: 1, value: "По именни (от Я до А)" },
+        { key: 1, value: "По именни (от А до Я)" },
+        { key: 0, value: "По именни (от Я до А)" },
       ],
       numFoundTeam: 0,
       numFoundPlayer: 0,

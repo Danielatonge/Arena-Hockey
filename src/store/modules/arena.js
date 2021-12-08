@@ -128,14 +128,14 @@ export const actions = {
         console.log(err);
       });
   },
-  
+
   getServices({ dispatch }, arenaId) {
     dispatch("fetchServices", arenaId).then((services) => {
       dispatch("fetchServicePriceList", services);
     });
   },
   getService({ commit }, serviceId) {
-    api
+    return api
       .getService(serviceId)
       .then((response) => {
         commit("SET_SERVICE", response.data);
@@ -143,15 +143,25 @@ export const actions = {
       .catch((err) => console.log(err));
   },
   getServicePrices(_commit, serviceId) {
-    api
+    return api
       .getServicePrices(serviceId)
       .then((response) => {
+        console.log(response);
         return response;
       })
       .catch((err) => console.log(err));
   },
+  getTrainersVisible({ commit }, arenaId) {
+    return api
+      .getTrainersVisible(arenaId)
+      .then((response) => {
+        console.log(response);
+        commit("SET_TRAINERS", response.data);
+      })
+      .catch((err) => console.log(err));
+  },
   getTrainers({ commit }, arenaId) {
-    api
+    return api
       .getTrainers(arenaId)
       .then((response) => {
         commit("SET_TRAINERS", response.data);
@@ -222,7 +232,7 @@ export const actions = {
       .catch((err) => console.log(err));
   },
   getCities({ commit }) {
-    api
+    return api
       .getCities()
       .then((response) => {
         commit("SET_CITIES", response.data);
@@ -298,7 +308,7 @@ export const actions = {
     commit("SET_ARENA", arena);
   },
   createArenaTeam({ commit }, { data, team }) {
-    api
+    return api
       .createArenaTeam(data)
       .then((response) => {
         const res = response.data;

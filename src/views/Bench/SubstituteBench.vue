@@ -11,14 +11,17 @@
           </v-tabs>
           <v-spacer></v-spacer>
           <v-btn
-          @click="$router.push({ name: 'admin-advertisements', params: { userId } })"
-          v-show="loggedIn"
-          class="rounded-lg"
-          large
-          dark
-          outlined
-          depressed
-          height="48px">
+            @click="
+              $router.push({ name: 'admin-advertisements', params: { userId } })
+            "
+            v-show="loggedIn"
+            class="rounded-lg"
+            large
+            dark
+            outlined
+            depressed
+            height="48px"
+          >
             Добавить объявление
           </v-btn>
         </div>
@@ -73,13 +76,101 @@
       />
     </v-container>
     <v-container class="pt-16 pb-0" v-show="value == 1">
-      <ForumFilter
-        :forum="tplayer"
-        :location="location"
-        :sort="sort_in"
-        :display-amount="display_items"
-        :fetch-forum="fetchtplayer"
-      />
+      <div class="pb-10">
+        <v-row dense>
+          <v-col class="d-flex" cols="12" md="2">
+            <v-select
+              :items="location"
+              v-model="tplayer.address"
+              solo
+              flat
+              hide-details="auto"
+              @change="fetchtplayer"
+            ></v-select>
+          </v-col>
+          <v-col cols="9" md="4" lg="5">
+            <v-text-field
+              label="Поиск"
+              single-line
+              prepend-inner-icon="mdi-magnify"
+              v-model="tplayer.search"
+              solo
+              flat
+              hide-details="auto"
+              class="rounded-lg"
+              @change="fetchtplayer"
+            ></v-text-field>
+          </v-col>
+          <v-col class="d-flex" cols="3" md="2" lg="2">
+            <v-select
+              :items="roles"
+              v-model="tplayer.role"
+              solo
+              flat
+              hide-details="auto"
+              @change="fetchtplayer"
+            ></v-select>
+          </v-col>
+          <v-col class="d-flex" cols="3" md="2" lg="2">
+            <v-select
+              :items="grips"
+              v-model="tplayer.grip"
+              solo
+              flat
+              hide-details="auto"
+              @change="fetchtplayer"
+            ></v-select>
+          </v-col>
+          <v-col cols="3" md="2" lg="1">
+            <v-btn
+              class="rounded-lg"
+              large
+              depressed
+              height="48px"
+              width="100%"
+              color="primary"
+              @click="fetchtplayer"
+            >
+              Найти
+            </v-btn>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="d-flex" cols="6" md="4" lg="3" xl="2">
+            <v-select
+              :items="sort_in"
+              v-model="tplayer.sort_asc"
+              solo
+              flat
+              item-text="value"
+              item-value="key"
+              return-object
+              prepend-icon="mdi-sort"
+              hide-details="auto"
+              @change="fetchtplayer"
+            ></v-select>
+          </v-col>
+          <v-col class="my-auto" cols="6" md="4">
+            <div class="body-1 grey--text">
+              Найдено: {{ tplayer.items.length }} результатов
+            </div>
+          </v-col>
+          <v-spacer></v-spacer>
+          <v-col cols="6" md="4" lg="3" xl="2">
+            <v-select
+              :items="display_items"
+              v-model="tplayer.numItems"
+              @change="fetchtplayer"
+              solo
+              flat
+              item-text="state"
+              item-value="value"
+              return-object
+              hide-details="auto"
+            ></v-select>
+          </v-col>
+        </v-row>
+      </div>
       <v-row dense class="mx-n4">
         <v-col
           class="pa-4"
@@ -219,7 +310,7 @@ export default {
       this.fetchtteam();
     },
   },
-  computed:{
+  computed: {
     ...mapState("forum", ["_pteam", "_tplayer", "_ttrainer", "_tteam"]),
     ...mapState("auth", ["userId"]),
     ...mapGetters("auth", ["loggedIn"]),
@@ -254,6 +345,8 @@ export default {
         sort_asc: { key: 0, value: "По именни (от А до Я)" },
         address: "Москва",
         items: [],
+        role: "Защитник",
+        grip: "правый",
       },
       ttrainer: {
         page: 1,
@@ -275,6 +368,8 @@ export default {
         address: "Москва",
         items: [],
       },
+      roles: ["Защитник", "Нападающий", "Вратарь"],
+      grips: ["левый", "правый"],
       sort_in: [
         { key: 0, value: "По именни (от А до Я)" },
         { key: 1, value: "По именни (от Я до А)" },

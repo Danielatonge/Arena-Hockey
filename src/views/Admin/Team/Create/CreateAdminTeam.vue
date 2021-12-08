@@ -320,7 +320,7 @@ export default {
         title: this.title,
         miniDescription: "",
         city: this.location,
-        type: this.category.value,
+        type: this.category.value ? this.category.value : "ADULT",
         level: "",
         description: this.description,
         profilePicture: this.profilePicture,

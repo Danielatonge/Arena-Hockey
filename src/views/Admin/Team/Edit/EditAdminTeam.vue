@@ -213,7 +213,8 @@ export default {
       this.galleryPics = team.gallery;
       this.title = team.title;
       this.location = team.city;
-      this.category = team.type;
+      this.category = this.covertToCategory(team.type);
+
       this.avatar = team.profilePicture
         ? { imageURL: team.profilePicture }
         : null;
@@ -293,6 +294,15 @@ export default {
     };
   },
   methods: {
+    covertToCategory(categoryString) {
+      if (categoryString === "KID") return { value: "KID", text: "Детскaя" };
+      if (categoryString === "ADULT")
+        return { value: "ADULT", text: "Взрослая" };
+      if (categoryString === "YOUTH")
+        return { value: "YOUTH", text: "Юношеская" };
+      if (categoryString === "FEMALE")
+        return { value: "FEMALE", text: "Женская" };
+    },
     updateTeam() {
       let whatsapp = "";
       if (this.social_media[1].link) {
