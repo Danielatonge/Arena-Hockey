@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="white">
+    <!-- <div class="white">
       <v-container class="pb-0">
         <v-row class="">
           <AppBreadcrumb :items="breadcrumb_items" />
@@ -63,7 +63,7 @@
           </v-col>
         </v-row>
       </v-container>
-    </div>
+    </div> -->
     <div class="grey lighten-4">
       <v-container>
         <div class="mb-4 text-h5">Профессиональные навыки</div>
@@ -136,6 +136,36 @@
             </div>
           </v-col>
         </v-row>
+        <div>
+              <v-btn
+                large
+                class="mr-2 mb-2"
+                color="primary"
+                elevation="0"
+                @click="
+                  $router.push({
+                    name: 'admin-user-role-edit',
+                    params: { userId, roleId },
+                  })
+                "
+              >
+                редактировать
+              </v-btn>
+              <!-- <v-btn
+                large
+                class="mr-2 mb-2"
+                color="grey lighten-2"
+                elevation="0"
+                @click="
+                  $router.push({
+                    name: 'user-profile',
+                    params: { userId: user.id },
+                  })
+                "
+              >
+                Скрыть
+              </v-btn> -->
+            </div>
         <div>
           <p class="text-h5">Активные объявления</p>
           <v-row dense class="mt-5">

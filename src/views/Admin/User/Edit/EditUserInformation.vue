@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="white">
+    <!-- <div class="white">
       <v-container class="pb-0">
         <v-row class="">
           <AppBreadcrumb :items="breadcrumb_items" />
@@ -58,7 +58,7 @@
           </v-col>
         </v-row>
       </v-container>
-    </div>
+    </div> -->
     <div class="grey lighten-4">
       <v-container>
         <div class="mb-4 text-h5">Профессиональные навыки</div>
@@ -291,7 +291,7 @@
             elevation="0"
             @click="
               $router.push({
-                name: 'admin-user-role',
+                name: 'user-profile',
                 params: { userId, roleId },
               })
             "
@@ -418,7 +418,7 @@ export default {
         .then(() => {
           this.nrole = this.initUserDialog();
           this.$router.push({
-            name: "admin-user-role",
+            name: "user-profile",
             params: { userId, roleId },
           });
         });
@@ -438,7 +438,7 @@ export default {
         .then(() => {
           this.nrole = this.initUserDialog();
           this.$router.push({
-            name: "admin-user-role",
+            name: "user-profile",
             params: { userId, roleId },
           });
         });

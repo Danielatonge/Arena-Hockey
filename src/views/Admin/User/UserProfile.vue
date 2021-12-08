@@ -36,7 +36,7 @@
       </v-row>
       <div class="mb-4 text-h5">Ведение ролей</div>
 
-      <v-row class="mx-n4 pb-10">
+      <v-row class="mx-n4 pb-10" align="center">
         <v-col
           class="pa-2"
           cols="4"
@@ -57,29 +57,30 @@
               rounded-lg
               user_role
             "
-            @click="
-              $router.push({
-                name: 'admin-user-role',
-                params: { userId: userId, roleId: role.id },
-              })
-            "
+            @click="openRoleInformation(role.id)"
           >
             <div class="pa-2">
               {{ role.name }}
             </div>
           </v-sheet>
         </v-col>
+        <v-col>
+            <v-btn
+            large
+            style="margin: 0"
+            color="primary"
+            elevation="0"
+            icon
+            outlined
+            @click="dialog = true"
+            >
+              <v-icon>
+                mdi-plus
+              </v-icon>
+            </v-btn>
+        </v-col>
       </v-row>
       <div>
-        <v-btn
-          class="mr-2 mb-2"
-          large
-          color="grey lighten-2"
-          elevation="0"
-          @click="dialog = true"
-        >
-          Добавить роли
-        </v-btn>
         <v-dialog
           v-model="dialog"
           fullscreen
@@ -260,14 +261,21 @@
           </v-card>
         </v-dialog>
       </div>
+      <div v-if="userRoles">
+        <user-information :userId="userId" :roleId="selectedRole"  />
+      </div>
     </v-container>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import UserInformation from './View/UserInformation.vue';
 
 export default {
+  components: {
+    UserInformation,
+  },
   computed: {
     ...mapState("user", ["user"]),
     showPersonalData() {
@@ -354,6 +362,8 @@ export default {
         { value: "YOUTH", text: "Юношеский" },
         { value: "FEMALE", text: "Женский" },
       ],
+      userRoles: false,
+      selectedRole: "",
     };
   },
   methods: {
@@ -418,6 +428,14 @@ export default {
         name: "",
       };
     },
+    openRoleInformation(role){
+      this.userRoles = true
+      this.selectedRole = role
+    },
+    // closeRoleInformation(){
+    //   this.userRoles = false
+    //   this.selectedRole = ""
+    // },
   },
 };
 </script>
