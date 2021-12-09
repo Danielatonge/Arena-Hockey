@@ -64,16 +64,16 @@
       </v-container>
     </div> -->
   <template>
-  <v-container class="cont-wrap" py-3 px-6>
+  <v-container  >
     <v-row>
       <v-col cols="12">
         <v-tabs
           v-model="tab"
-          background-color="#E3F2FD"
+          background-color="#0681c8"
           corol="primary"
+          color = "white"
           centered
           icons-and-text
-          show-arrows
         >
           <v-tabs-slider></v-tabs-slider>
           <v-tab
@@ -87,27 +87,28 @@
     </v-row>
     <v-tabs-items v-model="tab">
       <v-tab-item value="tab-1">
-        <v-row justify="center" >
-           <v-row class="mb-4">
-            <v-col cols="6" md="3" class="mb-2" v-show="role.position">
+        <v-row justify="center">
+          
+          <v-row>
+            <v-col cols="6" md="3" class="mb-2 pl-12 pt-10" v-show="role.position">
               <div class="body-1 mb-2 grey--text">Амплуа</div>
               <div class="">
                 {{ role.position }}
               </div>
             </v-col>
-            <v-col cols="6" md="3" class="mb-2" v-show="role.grip">
+            <v-col cols="6" md="3" class="mb-2 pl-12 pt-10" v-show="role.grip">
               <div class="body-1 mb-2 grey--text">Хват</div>
               <div class="">{{ role.grip }}</div>
             </v-col>
-          </v-row>
+            </v-row>
           <v-row class="mb-4">
-            <v-col cols="6" md="3" class="mb-2" v-show="role.height">
+            <v-col cols="6" md="3" class="mb-2 pt-4" v-show="role.height">
               <div class="body-1 mb-2 grey--text">Рост</div>
               <div class="">
                 {{ role.height + " см" }}
               </div>
             </v-col>
-            <v-col cols="6" md="3" class="mb-2" v-show="role.weight">
+            <v-col cols="6" md="3" class="mb-2 pt-4" v-show="role.weight">
               <div class="body-1 mb-2 grey--text">Вес</div>
               <div class="">{{ role.weight + " кг" }}</div>
             </v-col>
@@ -116,24 +117,24 @@
       </v-tab-item>
       <v-tab-item value="tab-2">
         <v-row justify="center">
-          <v-row class="mb-4">
-            <v-col cols="6" md="3" class="mb-2" v-show="role.status">
+          <v-row>
+            <v-col cols="6" md="3" class="mb-2 pl-12 pt-10" v-show="role.status">
               <div class="body-1 mb-2 grey--text">Статус</div>
               <div class="">
                 {{ role.status }}
               </div>
             </v-col>
-            <v-col cols="6" md="3" class="mb-2" v-show="role.category">
+            <v-col cols="6" md="3" class="mb-2 pl-12 pt-10" v-show="role.category">
               <div class="body-1 mb-2 grey--text">Возрастная категория</div>
               <div class="">{{ roleCategory }}</div>
             </v-col>
           </v-row>
         <v-row class="mb-4">
-          <v-col cols="12" class="mb-4" v-show="role.biography">
+          <v-col cols="12" class="mb-2 pt-4" v-show="role.biography">
             <div class="body-1 mb-2 grey--text">Биография</div>
             <div v-html="role.biography"></div>
           </v-col>
-          <v-col cols="12" class="mb-2" v-show="displaySocialMedia.length">
+          <v-col cols="12" class="mb-2 pt-4" v-show="displaySocialMedia.length">
             <div class="body-1 mb-2">Социальные сети</div>
               <div v-for="(item, i) in displaySocialMedia" :key = i>
                 <a

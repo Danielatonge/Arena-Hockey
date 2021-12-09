@@ -37,7 +37,8 @@
       <div class="mb-4 text-h5">Ведение ролей</div>
 
       <v-row class="mx-n4 pb-10" align="center">
-        <v-col
+        <UserInformation> </UserInformation >
+        <!-- <v-col
           class="pa-2"
           cols="4"
           md="4"
@@ -63,7 +64,7 @@
               {{ role.name }}
             </div>
           </v-sheet>
-        </v-col>
+        </v-col> -->
         <v-col>
             <v-btn
             large

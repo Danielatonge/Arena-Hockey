@@ -91,8 +91,8 @@ export default {
                         firstGeoObject.getThoroughfare() || firstGeoObject.getPremise()
                     ].filter(Boolean).join(', '),
                     // В качестве контента балуна задаем строку с адресом объекта.
-                      balloonContent: firstGeoObject.getAddressLine(), //тут метка получает адресс
-                      // adress: firstGeoObject.getAddressLine()
+                      balloonContent: firstGeoObject.getAddressLine(), //тут метка получает адресс, переменная выводится, но не присваивается.Разобраться 
+                      // adress = firstGeoObject.getAddressLine()
                 
                 });
                 // console.log(adress)
