@@ -1,127 +1,41 @@
 <template>
-  <div>
+    <div>
+      <div class="text-h4 mb-6">Расписание мероприятий</div>
+        <v-row>
+          <v-col>
+            <v-select
+            :items="allArenas"
+            v-model="arenaId"
+            placeholder="Арена"
+            solo
+            flat
+            item-text="arenaTitle"
+            item-value="arenaId"
+            return-object
+            hide-details="auto"
+            ></v-select>
+          </v-col>
+        </v-row>
+      <div  class="rounded-lg white">
 
-    <div class="rounded-lg white">
-      <v-row class="mt-2 ml-0 mb-0">
-        <v-tabs v-model="value" class="d-flex flex-no-wrap rounded-lg">
-          <v-tab class="px-10" v-for="item in schedule_nav" :key="item">
-            {{ item }}
-          </v-tab>
-        </v-tabs>
-      </v-row>
-      <v-sheet tile height="74" class="d-flex align-center" color="#EBF5FB">
-        <v-spacer></v-spacer>
-        <div style="width: 200px" class="mx-3">
-          <v-menu
-            v-model="date_picker"
-            :close-on-content-click="false"
-            :nudge-right="40"
-            transition="scale-transition"
-            offset-y
-            min-width="auto"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="date"
-                prepend-inner-icon="mdi-calendar"
-                readonly
-                single-line
-                outlined
-                dense
-                hide-details
-                v-bind="attrs"
-                v-on="on"
-              ></v-text-field>
-            </template>
-            <v-date-picker
-              v-model="date"
-              @input="date_picker = false"
-              locale="ru-RU"
-            ></v-date-picker>
-          </v-menu>
-        </div>
+      <admin-schedule-event :arenaId="arenaId" :userId="userId" />
 
-        <!-- <v-btn class="ma-2" color="primary" elevation="0">
-              Загрузить расписание
-            </v-btn> -->
-      </v-sheet>
-      <v-sheet tile height="54" class="d-flex">
-        <div></div>
-        <v-spacer></v-spacer>
-
-        <!--        <v-btn icon class="ma-2" @click="$refs.calendar.prev()">-->
-        <!--          <v-icon>mdi-chevron-left</v-icon>-->
-        <!--        </v-btn>-->
-        <!--        <v-btn icon class="ma-2" @click="$refs.calendar.next()">-->
-        <!--          <v-icon>mdi-chevron-right</v-icon>-->
-        <!--        </v-btn>-->
-      </v-sheet>
-      <v-sheet height="600" class="px-4 pb-4 overflow-auto">
-        <v-calendar
-          v-show="value !== 3"
-          ref="calendar"
-          v-model="date"
-          :weekdays="weekday"
-          :type="type"
-          :events="ievents"
-          :event-overlap-mode="mode"
-          :event-overlap-threshold="30"
-          :event-color="getEventColor"
-          locale="ru-RU"
-          @click:event="showEvent"
-          @click:more="viewDay"
-          @click:date="viewDay"
-        ></v-calendar>
-        <v-menu
-          v-model="selectedOpen"
-          :close-on-content-click="false"
-          :activator="selectedElement"
-          offset-x
-        >
-          <v-card color="grey lighten-4" min-width="350px" flat>
-            <v-toolbar :color="selectedEvent.color" dark>
-              <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-              <v-spacer></v-spacer>
-            </v-toolbar>
-            <v-card-text>
-              <span v-html="selectedEvent.description"></span>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn text color="secondary" @click="selectedOpen = false">
-                Закрыть
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-menu>
-        <div v-show="value === 3 && events.length === 0" class="text-center">
-          <h3 class="grey--text lighten-3--text text-h6 mb-2">
-            Нет мероприятий
-          </h3>
-        </div>
-        <div
-          v-show="value === 3"
-          v-for="(event, index) in events"
-          :key="index"
-          class="mb-10 pl-5"
-        >
-          <ArenaEventCard :event="event"></ArenaEventCard>
-        </div>
-      </v-sheet>
     </div>
   </div>
 </template>
+
 <script>
 import { mapState } from "vuex";
 import moment from "moment";
-import ArenaEventCard from "@/components/Arena/ArenaEventCard";
+import Axios from "axios";
+import { GET_ARENAS } from "@/api";
+import AdminScheduleEvent from '../Arena/View/AdminScheduleEvent.vue';
 
 export default {
-  components: { ArenaEventCard },
+  components: {
+    AdminScheduleEvent 
+  },
   props: {
-    arenaId: {
-      type: String,
-      required: true,
-    },
     userId: {
       type: String,
       required: true,
@@ -156,9 +70,11 @@ export default {
   },
   created() {
     this.$store.dispatch("arena/getEvents", this.arenaId);
+    this.getArenas()
   },
   data() {
     return {
+      arenaId: '',
       type: "week",
       focus: "",
       schedule_nav: ["Дневное", "Недельное", "Месячное", "Список мероприятий"],
@@ -182,6 +98,7 @@ export default {
         "orange",
         "grey lighten-1",
       ],
+      allArenas: [],
     };
   },
   methods: {
@@ -263,6 +180,25 @@ export default {
         startMoment.add(1, "days");
       }
       return arr_events;
+    },
+
+    async getArenas() {
+        console.log(this.userId)
+        let id = this.userId
+      await Axios.get(`${GET_ARENAS}${id}/arenas/titles`).then( (res) => {
+          res.data.forEach(elem => {
+            let newObject = {
+                arenaId: elem.arenaId,
+                arenaTitle: elem.arenaTitle,
+            }
+            this.allArenas.push(newObject)
+            console.log(this.allArenas)
+          })
+        console.log(res.data)
+      })
+      .catch((error) => {
+        console.error(error);
+      })
     },
   },
 };

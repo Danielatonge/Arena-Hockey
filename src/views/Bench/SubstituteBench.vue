@@ -24,6 +24,17 @@
           >
             Добавить объявление
           </v-btn>
+          <v-btn
+          @click="$router.push({ name: 'login'})"
+          v-show="!loggedIn"
+          class="rounded-lg"
+          large
+          dark
+          outlined
+          depressed
+          height="48px">
+            Добавить объявление
+          </v-btn>
         </div>
       </v-container>
     </div>

@@ -234,7 +234,7 @@ export default {
       },
       {
         text: "Мои мероприятия",
-        link: ``,
+        link: { name: "admin-events", params: { userId } },
       },
       { 
         text: "Календарь мероприятий", 

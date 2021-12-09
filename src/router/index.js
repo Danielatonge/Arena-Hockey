@@ -32,6 +32,8 @@ import AdminTeam from "../views/Admin/Team/AdminTeam";
 
 import AdminAdvertisements from "../views/Admin/Advertisements/AdminAdvertisements.vue";
 
+import AdminEvents from "../views/Admin/Events/AdminEvents.vue";
+
 import NameComplex from "../views/Admin/Arena/View/NameComplex.vue";
 import ComplexInformation from "../views/Admin/Arena/View/ComplexInformation.vue";
 import AdminScheduleEvent from "../views/Admin/Arena/View/AdminScheduleEvent.vue";
@@ -233,6 +235,13 @@ const routes = [
         path: "advertisement",
         name: "admin-advertisements",
         component: AdminAdvertisements,
+        props: true,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "events",
+        name: "admin-events",
+        component: AdminEvents,
         props: true,
         meta: { requiresAuth: true },
       },

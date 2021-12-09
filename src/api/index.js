@@ -1,10 +1,14 @@
 const serverIP = "http://77.73.69.230:90";
 const serverGOOGLEIP = "http://77.73.69.230:93";
+const serverPortal = "http://77.73.69.230:8090";
 function addIP(url) {
   return `${serverIP}${url}`;
 }
 function addGoogleIP(url) {
   return `${serverGOOGLEIP}${url}`;
+}
+function addPortalIP(url) {
+  return `${serverPortal}${url}`;
 }
 
 export const AUTHORIZE = addIP("/api/Auth/authorize");
@@ -39,3 +43,6 @@ export const DELETE_PRODUCT = addIP("/api/Product/delete-product");
 export const CHANGE_MY_PRODUCT_COUNT = addIP("/api/Product/change-my-product-count");
 export const ARCHIVE_PRODUCT = addIP("/api/Product/archive-product");
 export const CHANGE_MY_PRODUCT_DELIVERY = addIP("/api/Product/change-my-product-delivery");
+
+//Portal
+export const GET_ARENAS = addPortalIP("/user/");
