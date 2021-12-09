@@ -1,6 +1,17 @@
 <template>
   <div>
-
+    <v-row class="mt-1">
+      <v-col>
+        <v-btn
+          large
+          @click="goToAddEvent"
+          class="mr-2 mb-2 primary"
+          elevation="0"
+        >
+          Создать мероприятие
+        </v-btn>
+      </v-col>
+    </v-row>
     <div class="rounded-lg white">
       <v-row class="mt-2 ml-0 mb-0">
         <v-tabs v-model="value" class="d-flex flex-no-wrap rounded-lg">
@@ -185,6 +196,14 @@ export default {
     };
   },
   methods: {
+    goToAddEvent() {
+      console.log(this.arenaId)
+      const arenaId = this.arenaId;
+      this.$router.push({
+        name: "create-arena-event",
+        params: { arenaId },
+      });
+    },
     intervalFormat(interval) {
       return interval.time;
     },

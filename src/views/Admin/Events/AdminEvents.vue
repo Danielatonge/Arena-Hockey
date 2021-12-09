@@ -83,8 +83,7 @@ export default {
   },
   methods: {
     async getArenas() {
-        console.log(this.userId)
-        let id = this.userId
+      let id = this.userId
       await Axios.get(`${GET_ARENAS}${id}/arenas/titles`).then( (res) => {
           res.data.forEach(elem => {
             let newObject = {
@@ -94,6 +93,7 @@ export default {
             this.allArenas.push(newObject)
             
           })
+          this.componentKey = this.allArenas[0].arenaId
           console.log(this.allArenas)
       })
       .catch((error) => {
