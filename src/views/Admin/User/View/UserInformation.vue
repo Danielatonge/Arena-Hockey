@@ -1,5 +1,4 @@
-<template>
-  <div>
+
     <!-- <div class="white">
       <v-container class="pb-0">
         <v-row class="">
@@ -64,11 +63,32 @@
         </v-row>
       </v-container>
     </div> -->
-    <div class="grey lighten-4">
-      <v-container>
-        <div class="mb-4 text-h5">Профессиональные навыки</div>
-        <template v-if="role.name === 'PLAYER'">
-          <v-row class="mb-4">
+  <template>
+  <v-container class="cont-wrap" py-3 px-6>
+    <v-row>
+      <v-col cols="12">
+        <v-tabs
+          v-model="tab"
+          background-color="#E3F2FD"
+          corol="primary"
+          centered
+          icons-and-text
+          show-arrows
+        >
+          <v-tabs-slider></v-tabs-slider>
+          <v-tab
+            v-for="tb in tabItems"
+            :key="tb.link"
+            :href="tb.link"
+            >{{ tb.name }}</v-tab
+          >
+        </v-tabs>
+      </v-col>
+    </v-row>
+    <v-tabs-items v-model="tab">
+      <v-tab-item value="tab-1">
+        <v-row justify="center" >
+           <v-row class="mb-4">
             <v-col cols="6" md="3" class="mb-2" v-show="role.position">
               <div class="body-1 mb-2 grey--text">Амплуа</div>
               <div class="">
@@ -92,8 +112,10 @@
               <div class="">{{ role.weight + " кг" }}</div>
             </v-col>
           </v-row>
-        </template>
-        <template v-if="role.name === 'TRAINER'">
+        </v-row>
+      </v-tab-item>
+      <v-tab-item value="tab-2">
+        <v-row justify="center">
           <v-row class="mb-4">
             <v-col cols="6" md="3" class="mb-2" v-show="role.status">
               <div class="body-1 mb-2 grey--text">Статус</div>
@@ -106,7 +128,6 @@
               <div class="">{{ roleCategory }}</div>
             </v-col>
           </v-row>
-        </template>
         <v-row class="mb-4">
           <v-col cols="12" class="mb-4" v-show="role.biography">
             <div class="body-1 mb-2 grey--text">Биография</div>
@@ -114,8 +135,7 @@
           </v-col>
           <v-col cols="12" class="mb-2" v-show="displaySocialMedia.length">
             <div class="body-1 mb-2">Социальные сети</div>
-            <div class="">
-              <template v-for="(item, i) in displaySocialMedia">
+              <div v-for="(item, i) in displaySocialMedia" :key = i>
                 <a
                   class="reset-link"
                   :href="item.link"
@@ -132,40 +152,15 @@
                     <v-icon> {{ item.icon }}</v-icon>
                   </v-btn>
                 </a>
-              </template>
-            </div>
+              </div>
           </v-col>
         </v-row>
-        <div>
-              <v-btn
-                large
-                class="mr-2 mb-2"
-                color="primary"
-                elevation="0"
-                @click="
-                  $router.push({
-                    name: 'admin-user-role-edit',
-                    params: { userId, roleId },
-                  })
-                "
-              >
-                редактировать
-              </v-btn>
-              <!-- <v-btn
-                large
-                class="mr-2 mb-2"
-                color="grey lighten-2"
-                elevation="0"
-                @click="
-                  $router.push({
-                    name: 'user-profile',
-                    params: { userId: user.id },
-                  })
-                "
-              >
-                Скрыть
-              </v-btn> -->
-            </div>
+        </v-row>
+      </v-tab-item>
+    </v-tabs-items>
+  </v-container>
+</template>
+
         <!-- <div>
           <p class="text-h5">Активные объявления</p>
           <v-row dense class="mt-5">
@@ -400,10 +395,7 @@
             </v-card>
           </v-dialog>
         </div> -->
-      </v-container>
-    </div>
-  </div>
-</template>
+      
 
 <script>
 import { mapState } from "vuex";
@@ -469,6 +461,11 @@ export default {
   },
   data() {
     return {
+       tab: null,
+      tabItems: [
+    { name: 'Игрок', link: '#tab-1' },
+    { name: 'Тренер', link: '#tab-2' },
+  ],
       breadcrumb_items: [],
       loading: false,
       social_media: [],
