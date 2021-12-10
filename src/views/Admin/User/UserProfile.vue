@@ -34,10 +34,52 @@
           </div>
         </v-col>
       </v-row>
-      <div class="mb-4 text-h5">Ведение ролей</div>
+      <v-row>
+        <v-col cols="3">
+          <div class="mb-4 text-h5">Ведение ролей</div>
+        </v-col>
+        <v-spacer></v-spacer>
+        <v-col cols="3">
+          <v-btn
+          width="100%"
+          large
+          class="mr-2 mb-2"
+          color="grey lighten-2"
+          elevation="0"
+          @click="dialog = true"
+          >
+            Добавить роль
+          </v-btn>
+        </v-col>
+      </v-row>
+      
 
-      <v-row class="mx-n4 pb-10" align="center">
-        <UserInformation> </UserInformation >
+      <div>
+        <v-tabs
+        v-model="tab"
+        background-color="#E0E0E0"
+        color = "primary"
+        centered
+        >
+          <v-tab
+          v-for="(role, i) in rolelist"
+          :key="i"
+          @change="changeRoleId(role.id)"
+          >
+            {{ role.name }}
+          </v-tab>
+        </v-tabs>
+        
+        <v-tabs-items v-model="tab">
+          <v-tab-item 
+          v-for="(role, i) in rolelist"
+          :key="i">
+          
+            <user-information :userId="userId" :roleId="componentKey" :key="componentKey"  />
+            
+          </v-tab-item>
+        </v-tabs-items>
+        
         <!-- <v-col
           class="pa-2"
           cols="4"
@@ -65,22 +107,8 @@
             </div>
           </v-sheet>
         </v-col> -->
-        <v-col>
-            <v-btn
-            large
-            style="margin: 0"
-            color="primary"
-            elevation="0"
-            icon
-            outlined
-            @click="dialog = true"
-            >
-              <v-icon>
-                mdi-plus
-              </v-icon>
-            </v-btn>
-        </v-col>
-      </v-row>
+        
+      </div>
       <div>
         <v-dialog
           v-model="dialog"
@@ -106,7 +134,7 @@
                   <v-col cols="12" class="">
                     <div class="mb-2">Выберите роль</div>
                     <v-select
-                      :items="rolelist"
+                      :items="allroles"
                       v-model="pickedRole"
                       placeholder="Роль"
                       solo
@@ -349,8 +377,9 @@ export default {
   data() {
     return {
       pickedRole: null,
-      rolelist: [
-        { value: "PLAYER", text: "Игрок" },
+      rolelist: [],
+      allroles: [
+        { name: "PLAYER", text: "Игрок" },
         { value: "TRAINER", text: "Тренер" },
       ],
       checkbox: null,
@@ -378,6 +407,8 @@ export default {
       userRoles: false,
       selectedRole: "",
       errorRoleSnackbar: false,
+      tab: null,
+      componentKey: "",
     };
   },
   methods: {
@@ -454,6 +485,21 @@ export default {
       this.selectedRole = role
     },
 
+    changeRoleId(id){
+      this.componentKey = id
+    },
+
+    defineRole(){
+      this.displayRoles.forEach(elem => {
+        let newObject = {
+          name: elem.name,
+          id: elem.id,
+        }
+        this.rolelist.push(newObject)
+      })
+      this.componentKey = this.rolelist[0].id
+    },
+
     checkUserRoles(data){
       this.displayRoles.forEach(element => {
         if(data.text == element.name){
@@ -464,6 +510,9 @@ export default {
       });
     }
   },
+  created(){
+    this.defineRole();
+  }
 };
 </script>
 
