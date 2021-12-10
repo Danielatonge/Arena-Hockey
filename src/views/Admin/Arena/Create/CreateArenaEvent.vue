@@ -194,7 +194,7 @@
         elevation="0"
         @click="
           $router.push({
-            name: 'edit-admin-schedule-event',
+            name: 'admin-events',
             params: { arenaId },
           })
         "
@@ -291,7 +291,7 @@ export default {
       };
       this.$store.dispatch("arena/saveEvent", event).then(() => {
         this.$router.push({
-          name: "edit-admin-schedule-event",
+          name: "admin-events",
           params: { arenaId },
         });
       });
