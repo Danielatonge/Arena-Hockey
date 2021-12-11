@@ -119,15 +119,20 @@
         </div>
       </v-sheet>
     </div>
+    <!-- <create-event :arenaId="arenaId" :userId="userId" /> -->
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
 import moment from "moment";
 import ArenaEventCard from "@/components/Arena/ArenaEventCard";
+// import CreateEvent from '../../Events/CreateEvent/CreateEvent.vue';
 
 export default {
-  components: { ArenaEventCard },
+  components: { 
+    ArenaEventCard, 
+    // CreateEvent 
+  },
   props: {
     arenaId: {
       type: String,
@@ -200,7 +205,7 @@ export default {
       console.log(this.arenaId)
       const arenaId = this.arenaId;
       this.$router.push({
-        name: "create-arena-event",
+        name: "create-event",
         params: { arenaId },
       });
     },
