@@ -33,6 +33,7 @@ import AdminTeam from "../views/Admin/Team/AdminTeam";
 import AdminAdvertisements from "../views/Admin/Advertisements/AdminAdvertisements.vue";
 
 import AdminEvents from "../views/Admin/Events/AdminEvents.vue";
+import CreateEvent from "../views/Admin/Events/CreateEvent/CreateEvent.vue";
 
 import NameComplex from "../views/Admin/Arena/View/NameComplex.vue";
 import ComplexInformation from "../views/Admin/Arena/View/ComplexInformation.vue";
@@ -245,6 +246,13 @@ const routes = [
         props: true,
         meta: { requiresAuth: true },
       },
+      {
+        path: "events/:arenaId/edit/create_event",
+        name: "create-event",
+        component: CreateEvent,
+        props: true,
+        meta: { requiresAuth: true },
+      },
     ],
   },
   {
@@ -365,7 +373,6 @@ const routes = [
         props: true,
         meta: { requiresAuth: true },
       },
-
       {
         path: "schedule_event",
         name: "edit-admin-schedule-event",
