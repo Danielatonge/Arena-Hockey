@@ -210,7 +210,7 @@
       </div>
       <v-row dense class="mx-n4">
         <v-col cols="12" md="6" v-for="(item, i) in players" :key="i">
-          <v-card color="transparent" elevation="0">
+          <v-card color="transparent" elevation="0" @click="toPlayerCard(item.id)">
             <div class="d-flex flex-no-wrap">
               <v-avatar class="ma-3 rounded-lg" size="125" tile>
                 <v-img
@@ -339,6 +339,9 @@ export default {
     };
   },
   methods: {
+    toPlayerCard(id){
+      this.$router.push({ path: `room/${id}` })
+    },
     showRoom() {
       this.team_room = true;
       this.player_room = false;

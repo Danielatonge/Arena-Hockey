@@ -5,6 +5,8 @@ import Main from "../views/Home/Home.vue";
 import Arena from "../views/Arena/Arena.vue";
 import Room from "../views/LockerRoom/Room.vue";
 
+import RoomPlayerCard from "../views/LockerRoom/Player/RoomPlayerCard.vue";
+
 import CampsFees from "../views/Camps/CampsFees.vue";
 import LeagueTournaments from "../views/League/LeagueTournaments.vue";
 
@@ -113,6 +115,11 @@ const routes = [
     path: "/event_schedule_all",
     name: "event-schedule-all",
     component: EventScheduleAll,
+  },
+  {
+    path: "/room/:playerId",
+    name: "room-player-card",
+    component: RoomPlayerCard,
   },
   {
     path: "/arena/:arenaId",
