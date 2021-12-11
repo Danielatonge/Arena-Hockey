@@ -244,12 +244,12 @@ export default {
   },
   created() {
     // this.$store.dispatch("arena/getTrainers", this.arenaId);
-    this.$store.dispatch("teamplayer/getPlayers");
+    this.$store.dispatch("teamplayer/getTrainers");
     this.fetchTrainer();
   },
   computed: {
     ...mapState("teamplayer", {
-      tptrainers: "players",
+      tptrainers: "trainers",
     }),
     ...mapState("arena", {
       atrainers: "trainers",

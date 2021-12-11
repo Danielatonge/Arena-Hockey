@@ -384,7 +384,7 @@ export const apiTeamPlayer = {
     return apiClient.get(`/user/cities`);
   },
   getTrainers() {
-    return apiClient.get(`/user?role=TRAINER`);
+    return apiClient.get(`/user/role?role=TRAINER`);
   },
 };
 

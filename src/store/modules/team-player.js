@@ -3,6 +3,7 @@ import { apiTeamPlayer as api } from "@/service";
 export const namespaced = true;
 
 export const state = () => ({
+  trainers: [],
   players: [],
   playerCities: [],
   playerConfig: {},
@@ -14,6 +15,9 @@ export const state = () => ({
 export const mutations = {
   SET_PLAYERS(state, players) {
     state.players = players;
+  },
+  SET_TRAINERS(state, trainers) {
+    state.trainers = trainers;
   },
   SET_PLAYER_CONFIG(state, playerConfig) {
     state.playerConfig = playerConfig;
@@ -77,6 +81,14 @@ export const actions = {
       .getPlayers()
       .then((response) => {
         commit("SET_PLAYERS", response.data);
+      })
+      .catch((err) => console.log(err));
+  },
+  getTrainers({ commit }) {
+    return api
+      .getTrainers()
+      .then((response) => {
+        commit("SET_TRAINERS", response.data);
       })
       .catch((err) => console.log(err));
   },
