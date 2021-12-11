@@ -306,7 +306,7 @@
                         elevation="0"
                         style="color: #fff; border-radius: 8px; margin-right: 30px; text-align: center">ОТМЕНА</v-btn>
                         <v-btn
-                        :disabled="!productName || !(radioGroup == 0 || radioGroup == 1 ) || !productPrice || !productYear || !productDescription || !productAmount || !coordsAddress || !(quantityPhoto > 0) || !(quantityOfSelectParameters == quantityOfParameters) || !(productPrice > 0) || !(productYear.length == 4) || !(productAmount > 0)"
+                        :disabled="!productName || !(radioGroup == 0 || radioGroup == 1 ) || !productPrice || !productYear || !productDescription || !productAmount || !coordsAddress  || !(quantityOfSelectParameters == quantityOfParameters) || !(productPrice > 0) || !(productYear.length == 4) || !(productAmount > 0)"
                         @click="createNewProduct"
                         color="#0681C8"
                         height="48px"
@@ -628,7 +628,16 @@ export default {
             product_y: 0,
             product_is_delivered: false,
             product_properties: [],
-            product_photoes: [],
+            product_photoes: [
+                {
+                    linq: "https://drive.google.com/uc?export=view&id=17SgjW-KLwy9l6FeO8YO33q9OmgNG8XRh",
+                    is_main: false,
+                },
+                {
+                    linq: "https://drive.google.com/uc?export=view&id=17SgjW-KLwy9l6FeO8YO33q9OmgNG8XRh",
+                    is_main: true,
+                }
+            ],
             
         },
     coordsAddress: "",
@@ -898,7 +907,7 @@ export default {
     },
 
     createNewProduct(){
-        this.newProduct.product_photoes[this.mainNumber].is_main = true
+        //this.newProduct.product_photoes[this.mainNumber].is_main = true
         this.newProduct.product_city = this.cityMap
         this.newProduct.product_country = this.countryMap
         this.newProduct.product_category = this.finalСategory
@@ -911,8 +920,8 @@ export default {
         this.newProduct.product_release_year = Number(this.productYear)
         this.newProduct.product_is_pickuped = this.isPickup
         this.newProduct.product_is_delivered = this.isDelivery
-        this.newProduct.product_x = Number(this.coordsMap[0])
-        this.newProduct.product_y = Number(this.coordsMap[1])
+        this.newProduct.product_x = 30
+        this.newProduct.product_y = 30
         this.newProduct.product_properties.forEach(item => {
             if(item.property_name == 'Бренд'){
                 this.newProduct.product_brand = item.property_value
@@ -994,8 +1003,8 @@ export default {
             this.newProduct.product_release_year = Number(this.productYear)
         }
         if(this.coordsMap.length != 0){
-            this.newProduct.product_x = Number(this.coordsMap[0])
-            this.newProduct.product_y = Number(this.coordsMap[1])
+            this.newProduct.product_x = 30
+            this.newProduct.product_y = 30
         }
         
         localStorage.removeItem("product_properties")
@@ -1037,7 +1046,7 @@ export default {
     getLinkToPhoto(){
         for (let file of this.selectedFilesArr) {
             this.selectedFile = file
-            this.uploadPhotoPost()
+            //this.uploadPhotoPost()
         }
     },
 
