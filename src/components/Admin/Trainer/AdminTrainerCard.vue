@@ -40,7 +40,7 @@
               class="primary"
               elevation="0"
             >
-              Открепить Тренер
+              Открепить Тренера
             </v-btn>
           </v-col>
           <v-col>

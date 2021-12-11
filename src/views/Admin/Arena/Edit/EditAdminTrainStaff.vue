@@ -111,7 +111,7 @@
               <v-checkbox
                 :value="checked"
                 @click.stop="toggle"
-                label="Скрыть Тренер"
+                label="Скрыть Тренера"
               />
             </template>
           </AdminTrainerCard>
