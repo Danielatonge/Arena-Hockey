@@ -183,7 +183,7 @@ export default {
     changeProductPrice(data){
       this.productPriceData += data.product_prise * data.product_count
       },
-      showRemaining(){
+    showRemaining(){
       const timer = setInterval(() => {
         const now = new Date()
         const end = new Date(this.endYear, this.endMonth, this.endDay, this.endHour, this.endMinute, this.endSecond, 0)

@@ -69,7 +69,7 @@ export default {
         if(res.data.result.length == 0){
           this.showCategories = false
           this.$router.push({name: 'productCatalog'})
-        } else{
+        } else {
           this.showCategories = true
           this.categories = res.data.result
         }

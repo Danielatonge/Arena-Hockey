@@ -1,5 +1,5 @@
 <template>
-    <div style="margin-top: 30px;padding-top: 25px;max-width:1170px;margin:0 auto;">
+    <div style="margin-top: 30px">
         <v-row>
             <v-col
             cols="10">
@@ -297,7 +297,7 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <div style="display: flex; justify-content: center; margin-bottom: 15px">
+                    <div style="display: flex; justify-content: center; ">
                         <div>
                         <v-btn
                         @click="cancelingAdCreationDialog = true"
@@ -306,7 +306,7 @@
                         elevation="0"
                         style="color: #fff; border-radius: 8px; margin-right: 30px; text-align: center">ОТМЕНА</v-btn>
                         <v-btn
-                        :disabled="!productName || !(radioGroup == 0 || radioGroup == 1 ) || !productPrice || !productYear || !productDescription || !productAmount || !coordsAddress  || !(quantityOfSelectParameters == quantityOfParameters) || !(productPrice > 0) || !(productYear.length == 4) || !(productAmount > 0)"
+                        :disabled="!productName || !(radioGroup == 0 || radioGroup == 1 ) || !productPrice || !productYear || !productDescription || !productAmount || !coordsAddress || !(quantityPhoto > 0) || !(quantityOfSelectParameters == quantityOfParameters) || !(productPrice > 0) || !(productYear.length == 4) || !(productAmount > 0)"
                         @click="createNewProduct"
                         color="#0681C8"
                         height="48px"
@@ -378,6 +378,7 @@
                                 <v-icon>mdi-window-close</v-icon>
                             </v-btn>
                     </div>
+                    
                 </v-card-title>
                 <v-card-text>
                     <v-row>
@@ -386,7 +387,7 @@
                                 <p style="font-family: Roboto; font-style: normal; font-weight: normal; font-size: 18px; line-height: 21px;">Выберите основную фотографию товара</p>
                             </div>
                             <div v-else>
-                                <img :src="srcMainImage" :alt="altMainImage" style="width: 100%">
+                                <img :src="srcMainImage" :alt="altMainImage">
                             </div>
                         </v-col>
                         <v-col cols="8" style="padding-right: 0px">
@@ -628,16 +629,7 @@ export default {
             product_y: 0,
             product_is_delivered: false,
             product_properties: [],
-            product_photoes: [
-                {
-                    linq: "https://drive.google.com/uc?export=view&id=17SgjW-KLwy9l6FeO8YO33q9OmgNG8XRh",
-                    is_main: false,
-                },
-                {
-                    linq: "https://drive.google.com/uc?export=view&id=17SgjW-KLwy9l6FeO8YO33q9OmgNG8XRh",
-                    is_main: true,
-                }
-            ],
+            product_photoes: [],
             
         },
     coordsAddress: "",
@@ -647,7 +639,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions('sushilka',["CHANGE_UNAUTHTORISE"]),
+    ...mapActions(["CHANGE_UNAUTHTORISE"]),
     changeCategoryFirst(data){
         localStorage.setItem("productCategory", data)
         localStorage.removeItem("productSubCategory")
@@ -907,7 +899,7 @@ export default {
     },
 
     createNewProduct(){
-        //this.newProduct.product_photoes[this.mainNumber].is_main = true
+        this.newProduct.product_photoes[this.mainNumber].is_main = true
         this.newProduct.product_city = this.cityMap
         this.newProduct.product_country = this.countryMap
         this.newProduct.product_category = this.finalСategory
@@ -920,8 +912,8 @@ export default {
         this.newProduct.product_release_year = Number(this.productYear)
         this.newProduct.product_is_pickuped = this.isPickup
         this.newProduct.product_is_delivered = this.isDelivery
-        this.newProduct.product_x = 30
-        this.newProduct.product_y = 30
+        this.newProduct.product_x = Number(this.coordsMap[0])
+        this.newProduct.product_y = Number(this.coordsMap[1])
         this.newProduct.product_properties.forEach(item => {
             if(item.property_name == 'Бренд'){
                 this.newProduct.product_brand = item.property_value
@@ -1003,8 +995,8 @@ export default {
             this.newProduct.product_release_year = Number(this.productYear)
         }
         if(this.coordsMap.length != 0){
-            this.newProduct.product_x = 30
-            this.newProduct.product_y = 30
+            this.newProduct.product_x = Number(this.coordsMap[0])
+            this.newProduct.product_y = Number(this.coordsMap[1])
         }
         
         localStorage.removeItem("product_properties")
@@ -1031,23 +1023,24 @@ export default {
         this.selectedFilesArr = event.target.files
         this.srcImage = []
         this.srcMainImage = null
-        let filess = this.selectedFilesArr
+        const files = this.selectedFilesArr
         this.imgDialog = true
-        for (const file of filess) {
+        files.forEach(file => {
+            //console.log(file)
             this.altImage.push(file.name)
             const reader = new FileReader()
             reader.onload = ev => {
                 this.srcImage.push(ev.target.result)
             }
             reader.readAsDataURL(file)
-        }
+        })
     },
 
     getLinkToPhoto(){
-        for (let file of this.selectedFilesArr) {
+        this.selectedFilesArr.forEach(file => {
             this.selectedFile = file
-            //this.uploadPhotoPost()
-        }
+            this.uploadPhotoPost()
+        })
     },
 
     photoIsMain(src, num, alt){
