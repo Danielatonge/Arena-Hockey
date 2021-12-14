@@ -113,8 +113,8 @@
             </v-row>
             </template>
         </div>
-        <div class="mb-4 text-h5" >
-            Активные объявления
+        <div class="mb-4 text-h5" v-if="advertisements.length != 0">
+          Активные объявления
         </div>
         <v-row dense class="mt-5">
         <v-col cols="12" md="6" v-for="item in advertisements" :key="item.id">
@@ -136,48 +136,56 @@ import AdminForumCard from '../../../components/Admin/Forum/AdminForumCard.vue';
 export default {
   components: { AdminForumCard },
   created() {
-    this.$store.dispatch("user/getUser", this.playerId);
+    this.$store.dispatch("user/getUser", this.playerId).then(() => {
+      this.mail = this.user.mail;
+      const user = this.user;
+      this.contact_list = [
+        {
+          icon: "mdi-whatsapp",
+          link: `${user.whatsApp ? user.whatsApp : ""}`,
+        },
+        {
+          icon: "mdi-instagram",
+          link: `${user.instagram ? user.instagram : ""}`,
+        },
+        {
+          icon: "mdi-alpha-k-box",
+          link: `${user.vk ? user.vk : ""}`,
+        },
+        {
+          icon: "mdi-web",
+          link: `${user.website ? user.website : ""}`,
+        },
+        {
+          icon: "mdi-music-note-outline",
+          link: `${user.tiktok ? user.tiktok : ""}`,
+        },
+        {
+          icon: "mdi-twitter",
+          link: `${user.twitter ? user.twitter : ""}`,
+        },
+        {
+          icon: "mdi-youtube",
+          link: `${user.youtube ? user.youtube : ""}`,
+        },
+        {
+          icon: "mdi-facebook",
+          link: `${user.facebook ? user.facebook : ""}`,
+        },
+      ];
+    })
+    this.$store.dispatch("team-player/getPlayerInformation", this.playerId);
     //const playerId = this.playerId;
-    this.mail = this.user.mail;
-
-    const user = this.user;
-    this.contact_list = [
-      {
-        icon: "mdi-whatsapp",
-        link: `${user.whatsApp ? user.whatsApp : ""}`,
-      },
-      {
-        icon: "mdi-instagram",
-        link: `${user.instagram ? user.instagram : ""}`,
-      },
-      {
-        icon: "mdi-alpha-k-box",
-        link: `${user.vk ? user.vk : ""}`,
-      },
-      {
-        icon: "mdi-web",
-        link: `${user.website ? user.website : ""}`,
-      },
-      {
-        icon: "mdi-music-note-outline",
-        link: `${user.tiktok ? user.tiktok : ""}`,
-      },
-      {
-        icon: "mdi-twitter",
-        link: `${user.twitter ? user.twitter : ""}`,
-      },
-      {
-        icon: "mdi-youtube",
-        link: `${user.youtube ? user.youtube : ""}`,
-      },
-      {
-        icon: "mdi-facebook",
-        link: `${user.facebook ? user.facebook : ""}`,
-      },
-    ];
-    this.getCartCount();
+    
+    
+    this.getUserAdvertisements();
+  },
+  mounted(){
   },
   computed: {
+    playerId() {
+      return this.$route.params.playerId;
+    },
     ...mapState("user", ["user"]),
     valid_contact_list() {
       return this.contact_list.filter((x) => {
@@ -190,9 +198,7 @@ export default {
       const { birthDate, gender, phone, address, mail } = this.user;
       return birthDate || gender || phone || address || mail;
     },
-    playerId() {
-      return this.$route.params.playerId;
-    },
+    
   },
   data() {
     return {
@@ -218,11 +224,16 @@ export default {
     };
   },
   methods: {
-    async getCartCount() {
+    getInfo(){
+      console.log(this.user)
+    },
+    async getUserAdvertisements() {
         const playerId = this.playerId;
         await Axios.get(`${GET_USER_BY_ID}${playerId}/forums`)
         .then((res) => {
           this.advertisements = res.data
+          // console.log(this.advertisements)
+          // this.getInfo()
         })
         .catch((error) => {
           console.error(error);

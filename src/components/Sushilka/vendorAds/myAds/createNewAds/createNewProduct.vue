@@ -387,7 +387,7 @@
                                 <p style="font-family: Roboto; font-style: normal; font-weight: normal; font-size: 18px; line-height: 21px;">Выберите основную фотографию товара</p>
                             </div>
                             <div v-else>
-                                <img :src="srcMainImage" :alt="altMainImage">
+                                <img :src="srcMainImage" :alt="altMainImage" width="100%">
                             </div>
                         </v-col>
                         <v-col cols="8" style="padding-right: 0px">
@@ -1025,8 +1025,7 @@ export default {
         this.srcMainImage = null
         const files = this.selectedFilesArr
         this.imgDialog = true
-        files.forEach(file => {
-            //console.log(file)
+        Array.prototype.forEach.call(files, file => {
             this.altImage.push(file.name)
             const reader = new FileReader()
             reader.onload = ev => {
@@ -1034,13 +1033,25 @@ export default {
             }
             reader.readAsDataURL(file)
         })
+        // files.forEach(file => {
+        //     this.altImage.push(file.name)
+        //     const reader = new FileReader()
+        //     reader.onload = ev => {
+        //         this.srcImage.push(ev.target.result)
+        //     }
+        //     reader.readAsDataURL(file)
+        // })
     },
 
     getLinkToPhoto(){
-        this.selectedFilesArr.forEach(file => {
+        Array.prototype.forEach.call(this.selectedFilesArr, file => {
             this.selectedFile = file
             this.uploadPhotoPost()
         })
+        // this.selectedFilesArr.forEach(file => {
+        //     this.selectedFile = file
+        //     this.uploadPhotoPost()
+        // })
     },
 
     photoIsMain(src, num, alt){
@@ -1057,7 +1068,7 @@ export default {
         this.selectedFilesArr.splice(num, 1)
         this.altImage = []
         this.srcImage = []
-        this.selectedFilesArr.forEach(file => {
+        Array.prototype.forEach.call(this.selectedFilesArr, file => {
             this.altImage.push(file.name)
             const reader = new FileReader()
             reader.onload = ev => {
@@ -1065,6 +1076,14 @@ export default {
             }
             reader.readAsDataURL(file)
         })
+        // this.selectedFilesArr.forEach(file => {
+        //     this.altImage.push(file.name)
+        //     const reader = new FileReader()
+        //     reader.onload = ev => {
+        //         this.srcImage.push(ev.target.result)
+        //     }
+        //     reader.readAsDataURL(file)
+        // })
     },
 
     async uploadPhotoPost(){

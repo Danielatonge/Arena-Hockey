@@ -340,39 +340,42 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch("user/getUser", this.userId);
+    this.$store.dispatch("user/getUser", this.userId).then(() => {
+      this.defineRole();
+      const id = this.userId;
+      this.sections = [
+        {
+          text: "Игрок",
+          link: `/admin/sport_complex/${id}/information`,
+        },
+        {
+          text: "Представитель команды",
+          link: `/admin/sport_complex/${id}/payment_portal`,
+        },
+        {
+          text: "Тренер",
+          link: `/admin/sport_complex/${id}/schedule_event`,
+        },
+        {
+          text: "Представитель организации",
+          link: `/admin/sport_complex/${id}/team_list`,
+        },
+        {
+          text: "Представитель катка",
+          link: `/admin/sport_complex/${id}/training_staff`,
+        },
+        {
+          text: "Продавец",
+          link: `/admin/sport_complex/${id}/management_staff`,
+        },
+        {
+          text: "Покупатель",
+          link: `/admin/sport_complex/${id}/management_staff`,
+        },
+      ];
+    })
     // this.$store.dispatch("user/getUserRoles", this.userId);
-    const id = this.userId;
-    this.sections = [
-      {
-        text: "Игрок",
-        link: `/admin/sport_complex/${id}/information`,
-      },
-      {
-        text: "Представитель команды",
-        link: `/admin/sport_complex/${id}/payment_portal`,
-      },
-      {
-        text: "Тренер",
-        link: `/admin/sport_complex/${id}/schedule_event`,
-      },
-      {
-        text: "Представитель организации",
-        link: `/admin/sport_complex/${id}/team_list`,
-      },
-      {
-        text: "Представитель катка",
-        link: `/admin/sport_complex/${id}/training_staff`,
-      },
-      {
-        text: "Продавец",
-        link: `/admin/sport_complex/${id}/management_staff`,
-      },
-      {
-        text: "Покупатель",
-        link: `/admin/sport_complex/${id}/management_staff`,
-      },
-    ];
+    
   },
   data() {
     return {
@@ -511,7 +514,7 @@ export default {
     }
   },
   created(){
-    this.defineRole();
+    
   }
 };
 </script>

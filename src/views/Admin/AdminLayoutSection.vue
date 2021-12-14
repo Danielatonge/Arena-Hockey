@@ -200,88 +200,90 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("user/getUser", this.userId);
-    const userId = this.userId;
-    this.sidebar_items = [
-      {
-        text: "Профиль",
-        link: { name: "user-profile", params: { userId } },
-      },
-      {
-        text: "Центр сообщений",
-        link: "",
-      },
-      {
-        text: "Корзина",
-        link: ``,
-      },
-      {
-        text: "Избранное",
-        link: ``,
-      },
-      {
-        text: "Мои команды",
-        link: { name: "admin-team", params: { userId } },
-      },
-      {
-        text: "Мои спортивные комплексы",
-        link: { name: "admin-add-arena-sportcomplex", params: { userId } },
-      },
+    this.$store.dispatch("user/getUser", this.userId).then(() => {
+      const userId = this.userId;
+      this.sidebar_items = [
+        {
+          text: "Профиль",
+          link: { name: "user-profile", params: { userId } },
+        },
+        {
+          text: "Центр сообщений",
+          link: "",
+        },
+        {
+          text: "Корзина",
+          link: ``,
+        },
+        {
+          text: "Избранное",
+          link: ``,
+        },
+        {
+          text: "Мои команды",
+          link: { name: "admin-team", params: { userId } },
+        },
+        {
+          text: "Мои спортивные комплексы",
+          link: { name: "admin-add-arena-sportcomplex", params: { userId } },
+        },
 
-      {
-        text: "Моя организация",
-        link: ``,
-      },
-      {
-        text: "Мои мероприятия",
-        link: { name: "admin-events", params: { userId } },
-      },
-      { 
-        text: "Календарь мероприятий", 
-        link: `` 
-      },
-      {
-        text: "Мои объявления",
-        link: { name: "admin-advertisements", params: { userId } },
-      },
-    ];
-    this.mail = this.user.mail;
+        {
+          text: "Моя организация",
+          link: ``,
+        },
+        {
+          text: "Мои мероприятия",
+          link: { name: "admin-events", params: { userId } },
+        },
+        { 
+          text: "Календарь мероприятий", 
+          link: `` 
+        },
+        {
+          text: "Мои объявления",
+          link: { name: "admin-advertisements", params: { userId } },
+        },
+      ];
+      this.mail = this.user.mail;
 
-    const user = this.user;
-    this.contact_list = [
-      {
-        icon: "mdi-whatsapp",
-        link: `${user.whatsApp ? user.whatsApp : ""}`,
-      },
-      {
-        icon: "mdi-instagram",
-        link: `${user.instagram ? user.instagram : ""}`,
-      },
-      {
-        icon: "mdi-alpha-k-box",
-        link: `${user.vk ? user.vk : ""}`,
-      },
-      {
-        icon: "mdi-web",
-        link: `${user.website ? user.website : ""}`,
-      },
-      {
-        icon: "mdi-music-note-outline",
-        link: `${user.tiktok ? user.tiktok : ""}`,
-      },
-      {
-        icon: "mdi-twitter",
-        link: `${user.twitter ? user.twitter : ""}`,
-      },
-      {
-        icon: "mdi-youtube",
-        link: `${user.youtube ? user.youtube : ""}`,
-      },
-      {
-        icon: "mdi-facebook",
-        link: `${user.facebook ? user.facebook : ""}`,
-      },
-    ];
+      const user = this.user;
+      this.contact_list = [
+        {
+          icon: "mdi-whatsapp",
+          link: `${user.whatsApp ? user.whatsApp : ""}`,
+        },
+        {
+          icon: "mdi-instagram",
+          link: `${user.instagram ? user.instagram : ""}`,
+        },
+        {
+          icon: "mdi-alpha-k-box",
+          link: `${user.vk ? user.vk : ""}`,
+        },
+        {
+          icon: "mdi-web",
+          link: `${user.website ? user.website : ""}`,
+        },
+        {
+          icon: "mdi-music-note-outline",
+          link: `${user.tiktok ? user.tiktok : ""}`,
+        },
+        {
+          icon: "mdi-twitter",
+          link: `${user.twitter ? user.twitter : ""}`,
+        },
+        {
+          icon: "mdi-youtube",
+          link: `${user.youtube ? user.youtube : ""}`,
+        },
+        {
+          icon: "mdi-facebook",
+          link: `${user.facebook ? user.facebook : ""}`,
+        },
+      ];
+    })
+    
   },
   computed: {
     ...mapState("user", ["user"]),

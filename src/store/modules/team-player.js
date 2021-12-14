@@ -10,6 +10,7 @@ export const state = () => ({
   teams: [],
   teamConfig: {},
   teamCities: [],
+  playerInfo: [],
 });
 
 export const mutations = {
@@ -33,6 +34,9 @@ export const mutations = {
   },
   SET_TEAM_CONFIG(state, teamConfig) {
     state.teamConfig = teamConfig;
+  },
+  SET_PLAYER_INFORMATION(state, playerInfo) {
+    state.playerInfo = playerInfo;
   },
 };
 
@@ -106,6 +110,15 @@ export const actions = {
       .getPlayerCities()
       .then((response) => {
         commit("SET_PLAYER_CITIES", response.data);
+        return response.data;
+      })
+      .catch((err) => console.log(err));
+  },
+  getPlayerInformation({ commit }, id) {
+    return api
+      .getPlayerInformation(id)
+      .then((response) => {
+        commit("SET_PLAYER_INFORMATION", response.data);
         return response.data;
       })
       .catch((err) => console.log(err));
