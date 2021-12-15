@@ -266,6 +266,21 @@
                     ></v-textarea>
                   </v-col>
                 </v-row>
+                <v-row
+                  v-if="pickedRole ? pickedRole.value === 'ARENA_ADMIN' : false"
+                >
+                  <v-col cols="12" class="">
+                    <div class="mb-2">Биография</div>
+                    <v-textarea
+                      solo
+                      v-model="nrole.biography"
+                      height="100"
+                      flat
+                      elevation="0"
+                      hide-details="auto"
+                    ></v-textarea>
+                  </v-col>
+                </v-row>
                 <div class="mt-6" v-if="pickedRole">
                   <v-btn
                     large
@@ -328,6 +343,7 @@ export default {
         if (role.name === "PLAYER") return { ...role, name: "Игрок" };
         if (role.name === "TRAINER") return { ...role, name: "Тренер" };
         if (role.name === "SELLER") return { ...role, name: "Продавец" };
+        if (role.name === "ARENA_ADMIN") return { ...role, name: "Администратор арены" };
         if (role.name === "string")
           return { ...role, name: "недопустимая роль" };
       });
@@ -384,6 +400,7 @@ export default {
       allroles: [
         { name: "PLAYER", text: "Игрок" },
         { value: "TRAINER", text: "Тренер" },
+        { value: "ARENA_ADMIN", text: "Администратор арены" },
       ],
       checkbox: null,
       sections: null,
@@ -426,6 +443,9 @@ export default {
       if (this.pickedRole.value === "TRAINER") {
         this.createTrainerRole();
       }
+      if (this.pickedRole.value === "ARENA_ADMIN") {
+        this.createArenaAdminRole();
+      }
     },
     createPlayerRole() {
       const userId = this.userId;
@@ -455,6 +475,21 @@ export default {
         biography,
         status,
         category: roleCategory,
+        userId,
+      };
+
+      this.$store.dispatch("user/createRole", _role).then(() => {
+        this.dialog = false;
+        this.nrole = this.initUserDialog();
+        this.$router.go();
+      });
+    },
+    createArenaAdminRole() {
+      const userId = this.userId;
+      const { biography } = this.nrole;
+      const _role = {
+        name: "ARENA_ADMIN",
+        biography,
         userId,
       };
 
