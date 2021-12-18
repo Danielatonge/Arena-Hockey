@@ -77,10 +77,10 @@
     </v-container>
     <v-container
       class="mt-10"
-      v-show="team.arenas ? team.arenas.length : false"
+      v-show="teamArenas ? teamArenas.length : false"
     >
       <p class="text-h5">Место проведения тренировок</p>
-      <v-row dense class="mx-n4" v-for="(arena, id) in team.arenas" :key="id">
+      <v-row dense class="mx-n4" v-for="(arena, id) in teamArenas" :key="id">
         <v-col cols="12" md="7">
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
@@ -89,8 +89,8 @@
                   <v-img
                     contain
                     :src="
-                      arena.profilePicture != null
-                        ? arena.profilePicture
+                      arena.arena.profilePicture != null
+                        ? arena.arena.profilePicture
                         : require('@/assets/team_room_1.jpg')
                     "
                   ></v-img>
@@ -98,14 +98,14 @@
               </div>
               <div class="description">
                 <v-card-text>
-                  <div class="text-h5 mb-4">{{ arena.title }}</div>
+                  <div class="text-h5 mb-4">{{ arena.arena.title }}</div>
                   <div class="body-1 grey--text">
-                    {{ arena.city }}
+                    {{ arena.arena.city }}
                   </div>
                 </v-card-text>
                 <v-card-actions class="pl-4 bottom">
                   <router-link
-                    :to="{ name: 'arena-information', params: { arenaId } }"
+                    :to="{ name: 'arena-information', params: { arenaId: arena.arena.id } }"
                     class="reset-link"
                   >
                     <v-btn
@@ -148,17 +148,17 @@
     <v-container
       class="mt-10"
       v-if="
-        team.trainers || team.players
-          ? team.trainers.length || team.players.length
+        teamTrainers || teamPlayers
+          ? teamTrainers.length || teamPlayers.length
           : false
       "
     >
       <p class="text-h5">Состав</p>
-      <p class="text-h6" v-if="team.trainers ? team.trainers.length : false">
+      <p class="text-h6" v-if="teamTrainers ? teamTrainers.length : false">
         Тренеры, сотрудники
       </p>
       <v-row dense class="mx-n4">
-        <v-col cols="12" md="6" v-for="(item, i) in trainers" :key="i">
+        <v-col cols="12" md="6" v-for="(item, i) in teamTrainers" :key="i">
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
               <v-avatar class="ma-3 rounded-lg" size="125" tile>
@@ -181,11 +181,9 @@
                     item.user.surname
                   }}
                 </div>
-                <div
-                  class="body-1 blue--text mb-2"
-                  v-show="item.user.age && item.user.city"
-                >
-                  {{ item.user.age }}, {{ item.user.city }}
+                <div class="body-1 blue--text mb-2">
+                  {{ item.user.age ? item.user.age + ",  " : "" }}
+                  {{ item.user.city ? item.user.city : "" }}
                 </div>
 
                 <div class="body-1 grey--text">{{ item.user.position }}</div>
@@ -195,11 +193,11 @@
         </v-col>
       </v-row>
 
-      <p class="text-h6 mt-8" v-if="team.players ? team.players.length : false">
+      <p class="text-h6 mt-8" v-if="teamPlayers ? teamPlayers.length : false">
         Игроки
       </p>
       <v-row dense class="mx-n4">
-        <v-col cols="12" md="6" v-for="(item, i) in players" :key="i">
+        <v-col cols="12" md="6" v-for="(item, i) in teamPlayers" :key="i">
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
               <v-avatar class="ma-3 rounded-lg" size="125" tile>
@@ -223,8 +221,8 @@
                   }}
                 </div>
                 <div class="body-1 blue--text mb-2">
-                  {{ item.user.age ? item.user.age + "  " : "" }}
-                  {{ item.user.level ? item.user.level : "" }}
+                  {{ item.user.age ? item.user.age + ", " : "" }}
+                  {{ item.user.city ? item.user.city : "" }}
                 </div>
 
                 <div class="body-1 grey--text">{{ item.user.position }}</div>
@@ -352,6 +350,8 @@
 
 <script>
 import { mapState } from "vuex";
+import Axios from "axios";
+import { GET_TEAM } from "@/api";
 import LightBox from "vue-image-lightbox";
 
 export default {
@@ -407,9 +407,12 @@ export default {
     },
   },
   created() {
+    this.getAllTeamPlayers()
+    this.getAllTeamTrainer()
+    this.getAllTeamArenas()
     const teamId = this.$route.params.teamId;
 
-    this.$store.dispatch("team/getPlayers", teamId);
+    this.$store.dispatch("team/getPlayers", teamId)
     this.$store.dispatch("team/getForums", teamId);
     this.$store.dispatch("team/getTeam", teamId).then(() => {
       const teamItem = this.team;
@@ -436,7 +439,9 @@ export default {
           icon: "mdi-instagram",
           link: `${teamItem.instagram ? teamItem.instagram : ""}`,
         },
-        { icon: "mdi-alpha-k-box", link: `${teamItem.vk ? teamItem.vk : ""}` },
+        { 
+          icon: "mdi-alpha-k-box", 
+          link: `${teamItem.vk ? teamItem.vk : ""}` },
         {
           icon: "mdi-web",
           link: `${teamItem.website ? teamItem.website : ""}`,
@@ -475,6 +480,36 @@ export default {
 
       return formatter.format(newDate);
     },
+    async getAllTeamPlayers() {
+      await Axios.get(`${GET_TEAM}${this.teamId}/users?role=PLAYER`)
+      .then( (res) => {
+        this.teamPlayers = res.data
+        console.log(this.teamPlayers)
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+    },
+    async getAllTeamTrainer() {
+      await Axios.get(`${GET_TEAM}${this.teamId}/users?role=TRAINER`)
+      .then( (res) => {
+        this.teamTrainers = res.data
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+    },
+    async getAllTeamArenas() {
+      await Axios.get(`${GET_TEAM}${this.teamId}/arenas`)
+      .then( (res) => {
+        this.teamArenas = res.data
+        
+        console.log(this.teamArenas)
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+    },
   },
   data() {
     return {
@@ -485,6 +520,9 @@ export default {
       contact_list: null,
       readMoreInfo: false,
       breadcrumb_items: null,
+      teamPlayers: [],
+      teamTrainers: [],
+      teamArenas: [],
     };
   },
 };
