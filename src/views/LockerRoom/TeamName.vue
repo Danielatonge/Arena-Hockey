@@ -80,8 +80,9 @@
       v-show="teamArenas ? teamArenas.length : false"
     >
       <p class="text-h5">Место проведения тренировок</p>
-      <v-row dense class="mx-n4" v-for="(arena, id) in teamArenas" :key="id">
-        <v-col cols="12" md="7">
+      <v-row dense class="mx-n4" >
+        <div v-for="(arena, id) in teamArenas" :key="id">
+          <v-col cols="12">
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
               <div class="ma-3">
@@ -97,7 +98,7 @@
                 </v-avatar>
               </div>
               <div class="description">
-                <v-card-text>
+                <v-card-text style="width: 100%">
                   <div class="text-h5 mb-4">{{ arena.arena.title }}</div>
                   <div class="body-1 grey--text">
                     {{ arena.arena.city }}
@@ -122,27 +123,9 @@
             </div>
           </v-card>
         </v-col>
-        <v-col cols="12" md="5">
-          <p class="text-h5">Расписание тренировок</p>
-          <v-simple-table>
-            <template v-slot:default>
-              <thead>
-                <tr class="grey lighten-3">
-                  <th class="text-left">Понедельник</th>
-                  <th class="text-left">Среда</th>
-                  <th class="text-left">Суббота</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>15:30 - 16:00</td>
-                  <td>15:30 - 16:00</td>
-                  <td>15:30 - 16:00</td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
-        </v-col>
+        </div>
+        
+        
       </v-row>
     </v-container>
     <v-container
