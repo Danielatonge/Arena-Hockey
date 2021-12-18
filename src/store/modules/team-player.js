@@ -96,6 +96,14 @@ export const actions = {
       })
       .catch((err) => console.log(err));
   },
+  getTeamPlayers({ commit }) {
+    return api
+      .getTeamPlayers()
+      .then((response) => {
+        commit("SET_PLAYERS", response.data);
+      })
+      .catch((err) => console.log(err));
+  },
   getTeamCities({ commit }) {
     return api
       .getTeamCities()

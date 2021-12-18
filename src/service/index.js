@@ -386,6 +386,10 @@ export const apiTeamPlayer = {
   getTrainers() {
     return apiClient.get(`/user/role?role=TRAINER`);
   },
+/////////////////
+  getTeamPlayers() {
+    return apiClient.get(`/user/role?role=PLAYER`);
+  },
   /////////////////
   getPlayerInformation({id}){
     return apiClient.get(`/user/${id}/forums`)

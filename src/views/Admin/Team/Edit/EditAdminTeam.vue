@@ -110,6 +110,12 @@
         <div class="mb-6">
           <AdminGallery :items="galleryPics"> </AdminGallery>
         </div>
+        <div class="mb-6">
+          <AdminTeamPlayers :teamId="teamId" />
+        </div>
+        <div class="mb-6">
+          <AdminTeamTrainers :teamId="teamId" />
+        </div>
 
         <div class="mb-6">
           <AdminContact :contact="contact"></AdminContact>
@@ -150,6 +156,8 @@ import AdminGallery from "@/components/Admin/AdminGallery.vue";
 import AdminContact from "@/components/Admin/AdminContact.vue";
 import AdminSocialMedia from "@/components/Admin/AdminSocialMedia.vue";
 import { mapState } from "vuex";
+import AdminTeamPlayers from '../../../../components/Admin/AdminTeamPlayers.vue';
+import AdminTeamTrainers from '../../../../components/Admin/AdminTeamTrainers.vue';
 
 export default {
   components: {
@@ -157,6 +165,8 @@ export default {
     AdminGallery,
     AdminContact,
     AdminSocialMedia,
+    AdminTeamPlayers,
+    AdminTeamTrainers,
   },
   props: {
     teamId: {

@@ -90,6 +90,9 @@ export default {
         queryString: search,
         sortBy: sort_asc.key,
       };
+      console.log(filters)
+      console.log(`/user/${filters.userId}/teams/LK?city=${filters.city}&currentPage=${filters.currentPage}&pageSize=${filters.pageSize}` +
+      `&queryString=${filters.queryString}&type=${filters.type}&sortBy=${filters.sortBy}`)
       this.$store
         .dispatch("user/filterAdminTeams", filters)
         .then(({ paginationLength, numFound }) => {
@@ -109,10 +112,11 @@ export default {
         numItems: { state: "Показывать по 5", value: 5 },
         sort_asc: { key: 1, value: "По именни (от А до Я)" },
         address: "Москва",
-        type: { value: "ADULT", text: "Взрослая" },
+        type: { value: "", text: "Все команды" },
       },
       cities: ["Москва", "Казань"],
       types: [
+        { value: "", text: "Все команды" },
         { value: "KID", text: "Детскaя" },
         { value: "ADULT", text: "Взрослая" },
         { value: "YOUTH", text: "Юношеская" },

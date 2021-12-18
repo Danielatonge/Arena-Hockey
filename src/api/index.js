@@ -47,3 +47,5 @@ export const CHANGE_MY_PRODUCT_DELIVERY = addIP("/api/Product/change-my-product-
 //Portal
 export const GET_ARENAS = addPortalIP("/user/");
 export const GET_USER_BY_ID = addPortalIP("/user/");
+export const CREATE_TEAM_USER = addPortalIP("/team/user");
+export const GET_TEAM = addPortalIP("/team/");
