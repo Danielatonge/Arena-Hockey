@@ -330,10 +330,10 @@ export default {
           "🚀 ~ file: UserInformation.vue ~ line 441 ~ this.$store.dispatch ~ response",
           forum
         );
-        const { description, city, role, grip, id } = forum;
+        const { type, description, city, role, grip, id } = forum;
         this.forumId = id;
         this.mforum = {
-          find: { value: "PLAYERTEAM", state: "Игрок ищет команду" },
+          find: { value: `${type}`, state: "" },
           description,
           city,
           position: role,
@@ -413,6 +413,7 @@ export default {
     updateForum() {
       const forumId = this.forumId;
       const { description, position, city, grip, find } = this.mforum;
+      console.log(find)
       const putForum = {
         date: moment().format("YYYY-MM-DD"),
         description,
@@ -426,7 +427,7 @@ export default {
         .then(() => {
           this.mforum = this.initForumDialog();
           this.modifyForumDialog = false;
-          this.$router.go();
+          this.$store.dispatch("user/getForums", this.userId);
         });
     },
   },

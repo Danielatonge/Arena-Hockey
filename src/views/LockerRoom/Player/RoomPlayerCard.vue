@@ -139,6 +139,7 @@ export default {
     this.$store.dispatch("user/getUser", this.playerId).then(() => {
       this.mail = this.user.mail;
       const user = this.user;
+      console.log(user)
       this.contact_list = [
         {
           icon: "mdi-whatsapp",
