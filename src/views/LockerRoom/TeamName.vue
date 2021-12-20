@@ -131,8 +131,8 @@
     <v-container
       class="mt-10"
       v-if="
-        teamTrainers || teamPlayers
-          ? teamTrainers.length || teamPlayers.length
+        teamTrainers || teamPlayers || teamAdmin
+          ? teamTrainers.length || teamPlayers.length || teamAdmin.length
           : false
       "
     >
@@ -142,6 +142,44 @@
       </p>
       <v-row dense class="mx-n4">
         <v-col cols="12" md="6" v-for="(item, i) in teamTrainers" :key="i">
+          <router-link
+          :to="{ name: 'room-player-card', params: { playerId: item.user.id } }"
+          class="undo-link-default"
+          >
+            <v-card color="transparent" elevation="0" >
+              <div class="d-flex flex-no-wrap">
+                <v-avatar class="ma-3 rounded-lg" size="125" tile>
+                  <v-img
+                    contain
+                    :src="
+                      item.user.profilePicture.length
+                        ? item.user.profilePicture
+                        : require('@/assets/team_room_1.jpg')
+                    "
+                  ></v-img>
+                </v-avatar>
+                <v-card-text>
+                  <div class="text-h5 mb-2">
+                    {{
+                      item.user.name +
+                      " " +
+                      item.user.middleName +
+                      " " +
+                      item.user.surname
+                    }}
+                  </div>
+                  <div class="body-1 blue--text mb-2">
+                    {{ item.user.age ? item.user.age + ",  " : "" }}
+                    {{ item.user.city ? item.user.city : "" }}
+                  </div>
+
+                  <div class="body-1 grey--text">{{ item.user.position }}</div>
+                </v-card-text>
+              </div>
+            </v-card>
+          </router-link>
+        </v-col>
+        <v-col cols="12" md="6" v-for="(item, i) in teamAdmin" :key="i">
           <router-link
           :to="{ name: 'room-player-card', params: { playerId: item.user.id } }"
           class="undo-link-default"
@@ -403,6 +441,7 @@ export default {
     this.getAllTeamPlayers()
     this.getAllTeamTrainer()
     this.getAllTeamArenas()
+    this.getAllTeamAdmin()
     const teamId = this.$route.params.teamId;
 
     this.$store.dispatch("team/getPlayers", teamId)
@@ -477,7 +516,6 @@ export default {
       await Axios.get(`${GET_TEAM}${this.teamId}/users?role=PLAYER`)
       .then( (res) => {
         this.teamPlayers = res.data
-        console.log(this.teamPlayers)
       })
       .catch((error) => {
         console.error(error);
@@ -487,6 +525,15 @@ export default {
       await Axios.get(`${GET_TEAM}${this.teamId}/users?role=TRAINER`)
       .then( (res) => {
         this.teamTrainers = res.data
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+    },
+    async getAllTeamAdmin() {
+      await Axios.get(`${GET_TEAM}${this.teamId}/users?role=TEAM_ADMIN`)
+      .then( (res) => {
+        this.teamAdmin = res.data
       })
       .catch((error) => {
         console.error(error);
@@ -515,6 +562,7 @@ export default {
       breadcrumb_items: null,
       teamPlayers: [],
       teamTrainers: [],
+      teamAdmin: [],
       teamArenas: [],
     };
   },
