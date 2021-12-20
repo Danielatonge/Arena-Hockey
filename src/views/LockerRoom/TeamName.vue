@@ -179,6 +179,12 @@
             </v-card>
           </router-link>
         </v-col>
+      </v-row>
+
+      <p class="text-h6 mt-8" v-if="teamAdmin ? teamAdmin.length : false">
+        Администратор команды
+      </p>
+      <v-row dense class="mx-n4">
         <v-col cols="12" md="6" v-for="(item, i) in teamAdmin" :key="i">
           <router-link
           :to="{ name: 'room-player-card', params: { playerId: item.user.id } }"
