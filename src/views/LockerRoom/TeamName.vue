@@ -142,37 +142,42 @@
       </p>
       <v-row dense class="mx-n4">
         <v-col cols="12" md="6" v-for="(item, i) in teamTrainers" :key="i">
-          <v-card color="transparent" elevation="0">
-            <div class="d-flex flex-no-wrap">
-              <v-avatar class="ma-3 rounded-lg" size="125" tile>
-                <v-img
-                  contain
-                  :src="
-                    item.user.profilePicture.length
-                      ? item.user.profilePicture
-                      : require('@/assets/team_room_1.jpg')
-                  "
-                ></v-img>
-              </v-avatar>
-              <v-card-text>
-                <div class="text-h5 mb-2">
-                  {{
-                    item.user.name +
-                    " " +
-                    item.user.middleName +
-                    " " +
-                    item.user.surname
-                  }}
-                </div>
-                <div class="body-1 blue--text mb-2">
-                  {{ item.user.age ? item.user.age + ",  " : "" }}
-                  {{ item.user.city ? item.user.city : "" }}
-                </div>
+          <router-link
+          :to="{ name: 'room-player-card', params: { playerId: item.user.id } }"
+          class="undo-link-default"
+          >
+            <v-card color="transparent" elevation="0" >
+              <div class="d-flex flex-no-wrap">
+                <v-avatar class="ma-3 rounded-lg" size="125" tile>
+                  <v-img
+                    contain
+                    :src="
+                      item.user.profilePicture.length
+                        ? item.user.profilePicture
+                        : require('@/assets/team_room_1.jpg')
+                    "
+                  ></v-img>
+                </v-avatar>
+                <v-card-text>
+                  <div class="text-h5 mb-2">
+                    {{
+                      item.user.name +
+                      " " +
+                      item.user.middleName +
+                      " " +
+                      item.user.surname
+                    }}
+                  </div>
+                  <div class="body-1 blue--text mb-2">
+                    {{ item.user.age ? item.user.age + ",  " : "" }}
+                    {{ item.user.city ? item.user.city : "" }}
+                  </div>
 
-                <div class="body-1 grey--text">{{ item.user.position }}</div>
-              </v-card-text>
-            </div>
-          </v-card>
+                  <div class="body-1 grey--text">{{ item.user.position }}</div>
+                </v-card-text>
+              </div>
+            </v-card>
+          </router-link>
         </v-col>
       </v-row>
 
@@ -181,37 +186,42 @@
       </p>
       <v-row dense class="mx-n4">
         <v-col cols="12" md="6" v-for="(item, i) in teamPlayers" :key="i">
-          <v-card color="transparent" elevation="0">
-            <div class="d-flex flex-no-wrap">
-              <v-avatar class="ma-3 rounded-lg" size="125" tile>
-                <v-img
-                  contain
-                  :src="
-                    item.user.profilePicture != null
-                      ? item.user.profilePicture
-                      : require('@/assets/team_room_1.jpg')
-                  "
-                ></v-img>
-              </v-avatar>
-              <v-card-text>
-                <div class="text-h5 mb-2">
-                  {{
-                    item.user.name +
-                    " " +
-                    item.user.middleName +
-                    " " +
-                    item.user.surname
-                  }}
-                </div>
-                <div class="body-1 blue--text mb-2">
-                  {{ item.user.age ? item.user.age + ", " : "" }}
-                  {{ item.user.city ? item.user.city : "" }}
-                </div>
+          <router-link
+          :to="{ name: 'room-player-card', params: { playerId: item.user.id } }"
+          class="undo-link-default"
+          >
+            <v-card color="transparent" elevation="0">
+              <div class="d-flex flex-no-wrap">
+                <v-avatar class="ma-3 rounded-lg" size="125" tile>
+                  <v-img
+                    contain
+                    :src="
+                      item.user.profilePicture != null
+                        ? item.user.profilePicture
+                        : require('@/assets/team_room_1.jpg')
+                    "
+                  ></v-img>
+                </v-avatar>
+                <v-card-text>
+                  <div class="text-h5 mb-2">
+                    {{
+                      item.user.name +
+                      " " +
+                      item.user.middleName +
+                      " " +
+                      item.user.surname
+                    }}
+                  </div>
+                  <div class="body-1 blue--text mb-2">
+                    {{ item.user.age ? item.user.age + ", " : "" }}
+                    {{ item.user.city ? item.user.city : "" }}
+                  </div>
 
-                <div class="body-1 grey--text">{{ item.user.position }}</div>
-              </v-card-text>
-            </div>
-          </v-card>
+                  <div class="body-1 grey--text">{{ item.user.position }}</div>
+                </v-card-text>
+              </div>
+            </v-card>
+          </router-link>
         </v-col>
       </v-row>
     </v-container>

@@ -50,22 +50,6 @@
               <div class="text-h5">{{ user.surname }}</div>
               <div>{{ user.city }}</div>
             </div>
-            <div>
-              <v-btn
-                large
-                class="mr-2 mb-2"
-                color="primary"
-                elevation="0"
-                @click="
-                  $router.push({
-                    name: 'admin-edit-user',
-                    params: { playerId: user.id },
-                  })
-                "
-              >
-                редактировать
-              </v-btn>
-            </div>
           </v-col>
         </v-row>
       </v-container>
@@ -139,6 +123,19 @@ export default {
     this.$store.dispatch("user/getUser", this.playerId).then(() => {
       this.mail = this.user.mail;
       const user = this.user;
+      this.breadcrumb_items = [
+        {
+          text: "Раздевалка",
+          disabled: false,
+          exact: true,
+          to: { name: "room" },
+        },
+        {
+          text: user.name + " " + user.surname,
+          disabled: true,
+          to: "",
+        },
+      ],
       console.log(user)
       this.contact_list = [
         {
@@ -203,12 +200,7 @@ export default {
   },
   data() {
     return {
-      breadcrumb_items: [
-        {
-          text: "Личный кабинет",
-          disabled: true,
-        },
-      ],
+      breadcrumb_items: null,
       sidebar_items: [],
       sidebar_tab: 0,
       enterMail: true,
