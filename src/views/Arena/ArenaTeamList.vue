@@ -12,10 +12,10 @@
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 0">
           <v-col cols="12" v-for="(item, i) in teams" :key="i">
             <router-link
-              :to="{ name: 'team-name', params: { teamId: item.id } }"
-              class="undo-link-default"
+            :to="{ name: 'team-name', params: { teamId: item.team.id } }"
+            class="undo-link-default"
             >
-              <v-card color="transparent" elevation="0">
+              <v-card color="transparent" elevation="0" >
                 <div class="d-flex flex-no-wrap">
                   <v-avatar class="ma-3 rounded-lg" size="125" tile>
                     <v-img
@@ -229,6 +229,11 @@ export default {
   },
   created() {
     this.$store.dispatch("arena/getTeamsVisible", this.arenaId);
+  },
+  methods: {
+    funk(id){
+      console.log(id)
+    }
   },
   data() {
     return {
