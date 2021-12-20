@@ -92,7 +92,7 @@ export default {
     },
     goToTeam() {
       this.$router.push({
-        name: "admin-team-view",
+        name: "team-name",
         params: { teamId: this.arenaTeam.team.id },
       });
     },
