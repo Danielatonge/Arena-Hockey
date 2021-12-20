@@ -213,7 +213,7 @@
           class="pa-4"
           cols="12"
           md="6"
-          v-for="(item, i) in ttrainer.items"
+          v-for="(item, i) in _ttrainer"
           :key="i"
           @click="viewForum(item)"
         >
@@ -223,7 +223,7 @@
       <ForumPagination
         :page="ttrainer.page"
         :length="ttrainer.paginationLength"
-        :show="!!ttrainer.items.length"
+        :show="!!_ttrainer.length"
       />
     </v-container>
     <v-container class="pt-16 pb-0" v-show="value == 3">
@@ -239,7 +239,7 @@
           class="pa-4"
           cols="12"
           md="6"
-          v-for="(item, i) in ttrainer.items"
+          v-for="(item, i) in _tteam"
           :key="i"
           @click="viewForum(item)"
         >
@@ -249,7 +249,7 @@
       <ForumPagination
         :page="tteam.page"
         :length="tteam.paginationLength"
-        :show="!!tteam.items.length"
+        :show="!!_tteam.length"
       />
     </v-container>
 
