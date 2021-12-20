@@ -116,6 +116,9 @@
         <div class="mb-6">
           <AdminTeamTrainers :teamId="teamId" />
         </div>
+        <div class="mb-6">
+          <AdminTeamAdministrator :teamId="teamId" />
+        </div>
 
         <div class="mb-6">
           <AdminContact :contact="contact"></AdminContact>
@@ -158,6 +161,7 @@ import AdminSocialMedia from "@/components/Admin/AdminSocialMedia.vue";
 import { mapState } from "vuex";
 import AdminTeamPlayers from '../../../../components/Admin/AdminTeamPlayers.vue';
 import AdminTeamTrainers from '../../../../components/Admin/AdminTeamTrainers.vue';
+import AdminTeamAdministrator from '../../../../components/Admin/AdminTeamAdministrator.vue';
 
 export default {
   components: {
@@ -167,6 +171,7 @@ export default {
     AdminSocialMedia,
     AdminTeamPlayers,
     AdminTeamTrainers,
+    AdminTeamAdministrator,
   },
   props: {
     teamId: {

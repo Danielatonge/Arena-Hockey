@@ -5,6 +5,7 @@ export const namespaced = true;
 export const state = () => ({
   trainers: [],
   players: [],
+  admins: [],
   playerCities: [],
   playerConfig: {},
   teams: [],
@@ -19,6 +20,9 @@ export const mutations = {
   },
   SET_TRAINERS(state, trainers) {
     state.trainers = trainers;
+  },
+  SET_ADMINS(state, admins) {
+    state.admins = admins;
   },
   SET_PLAYER_CONFIG(state, playerConfig) {
     state.playerConfig = playerConfig;
@@ -101,6 +105,14 @@ export const actions = {
       .getTeamPlayers()
       .then((response) => {
         commit("SET_PLAYERS", response.data);
+      })
+      .catch((err) => console.log(err));
+  },
+  getTeamAdmins({ commit }) {
+    return api
+      .getTeamAdmins()
+      .then((response) => {
+        commit("SET_ADMINS", response.data);
       })
       .catch((err) => console.log(err));
   },

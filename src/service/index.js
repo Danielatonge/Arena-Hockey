@@ -390,6 +390,9 @@ export const apiTeamPlayer = {
   getTeamPlayers() {
     return apiClient.get(`/user/role?role=PLAYER`);
   },
+  getTeamAdmins() {
+    return apiClient.get(`/user/role?role=TEAM_ADMIN`);
+  },
   /////////////////
   getPlayerInformation({id}){
     return apiClient.get(`/user/${id}/forums`)
