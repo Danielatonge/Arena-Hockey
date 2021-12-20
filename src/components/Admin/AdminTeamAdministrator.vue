@@ -14,7 +14,7 @@
     <v-dialog v-model="admins_dialog" max-width="600">
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-          class="mr-2 mt-4"
+          class="mr-2 mt-6"
           color="primary"
           large
           elevation="0"
@@ -135,8 +135,7 @@ export default {
         visibility: 1,
       };
       await Axios.post(`${CREATE_TEAM_USER}`, data)
-      .then( (res) => {
-        console.log(res.data)
+      .then( () => {
         this.admins_dialog = false;
         this.selected_user = null;
         this.getAllTeamAdministrator()
@@ -151,7 +150,7 @@ export default {
     async removeTrainer(id) {
       await Axios.delete(`${GET_TEAM}${this.teamId}/user/${id}`)
       .then( () => {
-        this.getAllTeamTrainer()
+        this.getAllTeamAdministrator()
       })
       .catch((error) => {
         console.error(error);

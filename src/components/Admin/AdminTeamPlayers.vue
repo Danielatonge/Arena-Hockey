@@ -14,7 +14,7 @@
     <v-dialog v-model="players_dialog" max-width="600">
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-          class="mr-2 mt-4"
+          class="mr-2 mt-6"
           color="primary"
           large
           elevation="0"
