@@ -138,7 +138,7 @@
     >
       <p class="text-h5">Состав</p>
       <p class="text-h6" v-if="teamTrainers ? teamTrainers.length : false">
-        Тренеры, сотрудники
+        Тренеры
       </p>
       <v-row dense class="mx-n4">
         <v-col cols="12" md="6" v-for="(item, i) in teamTrainers" :key="i">
@@ -182,7 +182,7 @@
       </v-row>
 
       <p class="text-h6 mt-8" v-if="teamAdmin ? teamAdmin.length : false">
-        Администратор команды
+        Администраторы команды
       </p>
       <v-row dense class="mx-n4">
         <v-col cols="12" md="6" v-for="(item, i) in teamAdmin" :key="i">
