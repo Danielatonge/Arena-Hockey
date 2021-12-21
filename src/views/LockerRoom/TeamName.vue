@@ -1,52 +1,65 @@
 <template>
   <div class="grey lighten-4">
-    <v-container class="pt-8 pb-0">
-      <v-row>
-        <div>
-          <v-breadcrumbs :items="breadcrumb_items" class="px-3"></v-breadcrumbs>
-        </div>
-        <v-spacer></v-spacer>
-        <div class="pr-3">
-          <a
-            v-for="(item, index) in valid_contact_list"
-            class="reset-link"
-            :key="index"
-            :href="item.link"
-            target="_blank"
-          >
-            <v-btn
-              elevation="0"
-              x-small
-              color="transparent"
-              height="40px"
-              class="mx-1"
+    <v-img
+      color="grey"
+      height="350px"
+      width="100%"
+      src="@/assets/banner-room.jpg"
+    >
+      <v-container class="pt-8 pb-0">
+        <v-row class="">
+          <div>
+            <v-breadcrumbs
+              dark
+              :items="breadcrumb_items"
+              class="px-3"
+            ></v-breadcrumbs>
+          </div>
+          <v-spacer></v-spacer>
+          <div class="pr-3 my-auto">
+            <a
+              v-for="(item, index) in valid_contact_list"
+              class="reset-link"
+              :key="index"
+              :href="item.link"
+              target="_blank"
             >
-              <v-icon color=""> {{ item.icon }}</v-icon>
-            </v-btn>
-          </a>
+              <v-btn
+                elevation="0"
+                x-small
+                color="transparent"
+                height="40px"
+                class="mx-1"
+              >
+                <v-icon color="white"> {{ item.icon }}</v-icon>
+              </v-btn>
+            </a>
+          </div>
+        </v-row>
+
+        <div class="d-flex mt-5 mb-2">
+          <div class="pr-4">
+            <v-avatar class="rounded-lg" contain tile size="180">
+              <v-img
+                contain
+                :src="
+                  team.profilePicture != null
+                    ? team.profilePicture
+                    : require('@/assets/team_room_1.jpg')
+                "
+              ></v-img>
+            </v-avatar>
+          </div>
+          <div class="my-auto">
+            <p class="text-h4 white--text">{{ team.title }}</p>
+            <p class="white--text">
+              <v-icon color="white">mdi-map-marker-outline</v-icon>
+              {{ team.city }}
+            </p>
+          </div>
         </div>
-      </v-row>
-      <v-row class="mb-3">
-        <v-col cols="8" sm="6" md="7" lg="5">
-          <p class="text-h5 blue--text">{{ team.city }}</p>
-          <p class="text-h4">{{ team.title }}</p>
-          <!-- <v-btn class="mt-8" color="primary" elevation="0"
-            >Вступить в команду
-          </v-btn> -->
-        </v-col>
-        <v-spacer></v-spacer>
-        <v-avatar class="rounded-lg" size="200" tile>
-          <v-img
-            contain
-            :src="
-              team.profilePicture != null
-                ? team.profilePicture
-                : require('@/assets/team_room_1.jpg')
-            "
-          ></v-img>
-        </v-avatar>
-      </v-row>
-    </v-container>
+      </v-container>
+    </v-img>
     <v-container
       class="mt-10"
       v-if="team.description ? team.description.length : false"
