@@ -3,7 +3,7 @@
     <div class="text-h4 pb-5">Платные услуги</div>
     <v-card color="transparent" elevation="0" class="mb-5 d-flex flex-no-wrap">
       <v-row>
-        <v-col class="pa-2" cols="6" sm="4" md="4">
+        <!-- <v-col class="pa-2" cols="6" sm="4" md="4">
           <admin-image-uploader v-model="avatar">
             <div slot="activator">
               <div v-if="!avatar" class="white rounded-xl pa-4">
@@ -41,18 +41,20 @@
               </div>
             </div>
           </admin-image-uploader>
-        </v-col>
+        </v-col> -->
         <v-col>
           <v-row>
-            <v-col cols="6">
-              <v-text-field
+            <v-col cols="12">
+              <div class="text-h5">{{service.title}}</div>
+              
+              <!-- <v-text-field
                 label="Название"
                 v-model="service.title"
                 outlined
                 flat
                 hide-details="auto"
                 class="rounded-lg"
-              ></v-text-field>
+              ></v-text-field> -->
             </v-col>
             <v-col cols="12">
               <v-textarea
@@ -95,11 +97,11 @@
 </template>
 
 <script>
-import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
+// import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
 import { mapState } from "vuex";
 export default {
   components: {
-    AdminImageUploader,
+    // AdminImageUploader,
   },
   props: {
     arenaId: {
