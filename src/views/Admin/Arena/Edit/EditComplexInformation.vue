@@ -223,8 +223,11 @@
       <div class="mb-4">
         <AdminSocialMedia :items="social_media"></AdminSocialMedia>
       </div>
-      <div class="mb-6">
+      <!-- <div class="mb-6">
         <AdminContact :contact="contact"></AdminContact>
+      </div> -->
+      <div class="mb-6">
+        <AdminArenaContact :contact="contacts"></AdminArenaContact>
       </div>
       <div class="mb-6">
         <AdminGallery :items="galleryPics"> </AdminGallery>
@@ -270,8 +273,9 @@
 import { yandexMap, ymapMarker } from "vue-yandex-maps";
 import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
 import AdminGallery from "@/components/Admin/AdminGallery.vue";
-import AdminContact from "@/components/Admin/AdminContact.vue";
+// import AdminContact from "@/components/Admin/AdminContact.vue";
 import AdminSocialMedia from "@/components/Admin/AdminSocialMedia.vue";
+import AdminArenaContact from '../../../../components/Admin/AdminArenaContact.vue';
 
 export default {
   components: {
@@ -279,8 +283,8 @@ export default {
     yandexMap,
     ymapMarker,
     AdminGallery,
-    AdminContact,
     AdminSocialMedia,
+    AdminArenaContact,
   },
   props: {
     arena: {
@@ -345,8 +349,8 @@ export default {
     this.address = arena.address;
     this.city = arena.city;
     this.metro = arena.metro;
-    this.contact.tel = arena.phones;
-    this.contact.mail = arena.mails;
+    this.contacts = arena.contacts;
+    // this.contact.mail = arena.mails;
     this.social_media[0].link = arena.vk;
     this.social_media[1].link = arena.whatsApp;
     this.social_media[2].link = arena.website;
@@ -396,10 +400,7 @@ export default {
         "Сухой лед",
         "Оплата картой",
       ],
-      contact: {
-        tel: [],
-        mail: [],
-      },
+      contacts: [],
       coordinate: {
         lat: "55.753336",
         lon: "37.623084",
@@ -518,8 +519,7 @@ export default {
         lan: Number(this.coordinate.lon),
         profilePicture: this.avatar.imageURL,
         gallery: this.galleryPics,
-        phones: this.contact.tel,
-        mails: this.contact.mail,
+        contacts: this.contacts,
         instagram: this.social_media[3].link,
         vk: this.social_media[0].link,
         website: this.social_media[2].link,

@@ -87,13 +87,8 @@
         </div>
         <p class="text-h6 font-weight-bold mt-10">Контакты</p>
         <div>
-          <p v-if="arena.phones">
-            <span v-for="x in arena.phones" :key="x"> {{ x }} <br /> </span>
-          </p>
-          <p v-if="arena.mails ? arena.mails.length : false">
-            Email:
-            {{ arena.mails ? arena.mails.toString() : "" }}
-            <br />
+          <p v-if="arena.contacts">
+            <span v-for="x in arena.contacts" :key="x"> {{ x }} <br /> </span>
           </p>
           <a :href="arena.website" target="_blank">
             {{ arena.website }}
