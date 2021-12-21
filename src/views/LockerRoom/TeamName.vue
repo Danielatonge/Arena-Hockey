@@ -89,13 +89,12 @@
       </v-btn>
     </v-container>
     <v-container
-      class="mt-10"
       v-show="teamArenas ? teamArenas.length : false"
     >
       <p class="text-h5">Место проведения тренировок</p>
       <v-row dense class="mx-n4" >
         <div v-for="(arena, id) in teamArenas" :key="id">
-          <v-col cols="12">
+          <v-col class="pt-0" cols="12">
           <v-card color="transparent" elevation="0">
             <div class="d-flex flex-no-wrap">
               <div class="ma-3">
@@ -137,8 +136,20 @@
           </v-card>
         </v-col>
         </div>
-        
-        
+      </v-row>
+    </v-container>
+    <v-container  v-if="media ? media.length : false">
+      <p class="text-h5">Галерея</p>
+      <v-row>
+        <v-col cols="6" md="4" lg="3" v-for="(item, i) in media" :key="i">
+          <v-img style="height: 200px" :src="item" @click="openGallery(i)"></v-img>
+        </v-col>
+        <LightBox
+          ref="lightbox"
+          :media="media"
+          :show-caption="true"
+          :show-light-box="false"
+        />
       </v-row>
     </v-container>
     <v-container
@@ -163,7 +174,7 @@
               <div class="d-flex flex-no-wrap">
                 <v-avatar class="ma-3 rounded-lg" size="125" tile>
                   <v-img
-                    contain
+                    
                     :src="
                       item.user.profilePicture.length
                         ? item.user.profilePicture
@@ -207,7 +218,6 @@
               <div class="d-flex flex-no-wrap">
                 <v-avatar class="ma-3 rounded-lg" size="125" tile>
                   <v-img
-                    contain
                     :src="
                       item.user.profilePicture.length
                         ? item.user.profilePicture
@@ -242,44 +252,104 @@
         Игроки
       </p>
       <v-row dense class="mx-n4">
-        <v-col cols="12" md="6" v-for="(item, i) in teamPlayers" :key="i">
-          <router-link
-          :to="{ name: 'room-player-card', params: { playerId: item.user.id } }"
-          class="undo-link-default"
-          >
-            <v-card color="transparent" elevation="0">
-              <div class="d-flex flex-no-wrap">
-                <v-avatar class="ma-3 rounded-lg" size="125" tile>
-                  <v-img
-                    contain
-                    :src="
-                      item.user.profilePicture != null
-                        ? item.user.profilePicture
-                        : require('@/assets/team_room_1.jpg')
-                    "
-                  ></v-img>
-                </v-avatar>
-                <v-card-text>
-                  <div class="text-h5 mb-2">
-                    {{
-                      item.user.name +
-                      " " +
-                      item.user.middleName +
-                      " " +
-                      item.user.surname
-                    }}
-                  </div>
-                  <div class="body-1 blue--text mb-2">
-                    {{ item.user.age ? item.user.age + ", " : "" }}
-                    {{ item.user.city ? item.user.city : "" }}
-                  </div>
+        <v-col cols="6" v-for="(item, i) in teamPlayers" :key="i">
+          <div v-show="!readMorePlayers && i < 4">
+            <router-link
+            :to="{ name: 'room-player-card', params: { playerId: item.user.id } }"
+            class="undo-link-default"
+            >
+              <v-card color="transparent" elevation="0">
+                <div class="d-flex flex-no-wrap">
+                  <v-avatar class="ma-3 rounded-lg" size="125" tile>
+                    <v-img
+                      contain
+                      :src="
+                        item.user.profilePicture != null
+                          ? item.user.profilePicture
+                          : require('@/assets/team_room_1.jpg')
+                      "
+                    ></v-img>
+                  </v-avatar>
+                  <v-card-text>
+                    <div class="text-h5 mb-2">
+                      {{
+                        item.user.name +
+                        " " +
+                        item.user.middleName +
+                        " " +
+                        item.user.surname
+                      }}
+                    </div>
+                    <div class="body-1 blue--text mb-2">
+                      {{ item.user.age ? item.user.age + ", " : "" }}
+                      {{ item.user.city ? item.user.city : "" }}
+                    </div>
+                    <div v-for="(role, i) in item.user.roles" :key="i" class="body-1 mb-2">
+                      <div v-if="role.name == 'PLAYER'">
+                        {{ role.grip ? role.grip + ", " : "" }}
+                        {{ role.position ? role.position : "" }}
+                      </div>
+                    </div>
 
-                  <div class="body-1 grey--text">{{ item.user.position }}</div>
-                </v-card-text>
-              </div>
-            </v-card>
-          </router-link>
+                    <div class="body-1 grey--text">{{ item.user.position }}</div>
+                  </v-card-text>
+                </div>
+              </v-card>
+            </router-link>
+          </div>
+          <div v-if="readMorePlayers">
+            <router-link
+            :to="{ name: 'room-player-card', params: { playerId: item.user.id } }"
+            class="undo-link-default"
+            >
+              <v-card color="transparent" elevation="0">
+                <div class="d-flex flex-no-wrap">
+                  <v-avatar class="ma-3 rounded-lg" size="125" tile>
+                    <v-img
+                      contain
+                      :src="
+                        item.user.profilePicture != null
+                          ? item.user.profilePicture
+                          : require('@/assets/team_room_1.jpg')
+                      "
+                    ></v-img>
+                  </v-avatar>
+                  <v-card-text>
+                    <div class="text-h5 mb-2">
+                      {{
+                        item.user.name +
+                        " " +
+                        item.user.middleName +
+                        " " +
+                        item.user.surname
+                      }}
+                    </div>
+                    <div class="body-1 blue--text mb-2">
+                      {{ item.user.age ? item.user.age + ", " : "" }}
+                      {{ item.user.city ? item.user.city : "" }}
+                    </div>
+                    <div v-for="(role, i) in item.user.roles" :key="i" class="body-1 mb-2">
+                      <div v-if="role.name == 'PLAYER'">
+                        {{ role.grip ? role.grip + ", " : "" }}
+                        {{ role.position ? role.position : "" }}
+                      </div>
+                    </div>
+
+                    <div class="body-1 grey--text">{{ item.user.position }}</div>
+                  </v-card-text>
+                </div>
+              </v-card>
+            </router-link>
+          </div>
         </v-col>
+        <v-btn
+        color="grey lighten-2 mb-5 ml-5"
+        v-show="teamPlayers.length > 4"
+        elevation="0"
+        @click="readMorePlayers = !readMorePlayers"
+        >
+          {{ readMorePlayers ? "Скрыть" : "Развернуть" }}
+        </v-btn>
       </v-row>
     </v-container>
 
@@ -379,21 +449,6 @@
           </v-row>
         </v-tab-item>
       </v-tabs-items>
-    </v-container>
-
-    <v-container class="mt-10" v-if="media ? media.length : false">
-      <p class="text-h5">Галерея</p>
-      <v-row>
-        <v-col cols="6" md="4" lg="3" v-for="(item, i) in media" :key="i">
-          <v-img :src="item" @click="openGallery(i)"></v-img>
-        </v-col>
-        <LightBox
-          ref="lightbox"
-          :media="media"
-          :show-caption="true"
-          :show-light-box="false"
-        />
-      </v-row>
     </v-container>
   </div>
 </template>
@@ -535,6 +590,7 @@ export default {
       await Axios.get(`${GET_TEAM}${this.teamId}/users?role=PLAYER`)
       .then( (res) => {
         this.teamPlayers = res.data
+        console.log(this.teamPlayers)
       })
       .catch((error) => {
         console.error(error);
@@ -583,6 +639,7 @@ export default {
       teamTrainers: [],
       teamAdmin: [],
       teamArenas: [],
+      readMorePlayers: false,
     };
   },
 };
