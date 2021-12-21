@@ -102,10 +102,6 @@ export default {
         link: { name: "admin-payment-portal", params: { userId, arenaId } },
       },
       {
-        text: "Расписание мероприятий",
-        link: { name: "admin-schedule-event", params: { userId, arenaId } },
-      },
-      {
         text: "Список команд",
         link: { name: "admin-team-list", params: { userId, arenaId } },
       },

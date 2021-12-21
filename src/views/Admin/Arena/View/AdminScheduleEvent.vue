@@ -47,6 +47,7 @@
             <v-date-picker
               v-model="date"
               @input="date_picker = false"
+              :first-day-of-week="1"
               locale="ru-RU"
             ></v-date-picker>
           </v-menu>
@@ -180,7 +181,7 @@ export default {
       schedule_nav: ["Дневное", "Недельное", "Месячное", "Список мероприятий"],
       mode: "column",
       mode_lesson: ["0", "1", "2"],
-      weekday: [0, 1, 2, 3, 4, 5, 6],
+      weekday: [1, 2, 3, 4, 5, 6, 0],
       value: 1,
       selectedEvent: {},
       selectedElement: null,

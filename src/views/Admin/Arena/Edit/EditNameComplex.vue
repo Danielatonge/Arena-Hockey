@@ -68,13 +68,6 @@ export default {
         },
       },
       {
-        text: "Расписание мероприятий",
-        link: {
-          name: "edit-admin-schedule-event",
-          params: { userId, arenaId },
-        },
-      },
-      {
         text: "Список команд",
         link: { name: "edit-admin-teamlist", params: { userId, arenaId } },
       },
