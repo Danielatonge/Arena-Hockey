@@ -96,6 +96,35 @@
           </v-col>
         </v-row>
         <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 3">
+          <v-col cols="12" v-for="(item, i) in adult_trainers" :key="i">
+            <v-card color="transparent" elevation="0">
+              <div class="d-flex flex-no-wrap">
+                <v-avatar class="ma-3 rounded-lg" size="125" tile>
+                  <v-img
+                    :src="
+                      item.profilePicture != null
+                        ? item.profilePicture
+                        : require('@/assets/player_2.jpg')
+                    "
+                  ></v-img>
+                </v-avatar>
+                <v-card-text>
+                  <div class="text-h5 mb-2">
+                    {{ full_name(item) }}
+                  </div>
+                  <div class="body-1 blue--text mb-2">
+                    {{ isValidOutput(item.age) }}
+                    {{ isValidCityOutput(item.city) }}
+                  </div>
+                  <div class="body-2 grey--text">
+                    {{ isValidOutput(item.position) }}
+                  </div>
+                </v-card-text>
+              </div>
+            </v-card>
+          </v-col>
+        </v-row>
+        <v-row dense class="mx-n4 mt-5" v-show="premises_tab == 4">
           <v-col cols="12" v-for="(item, i) in female_trainer" :key="i">
             <v-card color="transparent" elevation="0">
               <div class="d-flex flex-no-wrap">
@@ -158,6 +187,9 @@ export default {
     youth_trainers() {
       return this.trainers.filter((x) => x.level === "YOUTH");
     },
+    adult_trainers() {
+      return this.trainers.filter((x) => x.level === "ADULT");
+    },
     female_trainer() {
       return this.trainers.filter((x) => x.level === "FEMALE");
     },
@@ -172,13 +204,14 @@ export default {
         "Все тренеры",
         "Детские тренеры",
         "Юношеские тренеры",
+        "Взрослые тренеры",
         "Женские тренеры",
       ],
     };
   },
   methods: {
     isValidCityOutput(input) {
-      return input && input !== "string" ? ", " + input : null;
+      return input && input !== "string" ? input : null;
     },
     isValidOutput(input) {
       return input && input !== "string" ? input : null;

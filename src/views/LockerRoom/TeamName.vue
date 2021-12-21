@@ -286,7 +286,7 @@
                     </div>
                     <div v-for="(role, i) in item.user.roles" :key="i" class="body-1 mb-2">
                       <div v-if="role.name == 'PLAYER'">
-                        {{ role.grip ? role.grip + ", " : "" }}
+                        {{ role.grip ? role.grip : "" }}
                         {{ role.position ? role.position : "" }}
                       </div>
                     </div>
@@ -330,7 +330,7 @@
                     </div>
                     <div v-for="(role, i) in item.user.roles" :key="i" class="body-1 mb-2">
                       <div v-if="role.name == 'PLAYER'">
-                        {{ role.grip ? role.grip + ", " : "" }}
+                        {{ role.grip ? role.grip : "" }}
                         {{ role.position ? role.position : "" }}
                       </div>
                     </div>

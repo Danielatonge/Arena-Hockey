@@ -72,7 +72,7 @@ export const apiArena = {
     return apiClient.get(`/arena/${arenaId}/users`);
   },
   getTrainersVisible(arenaId) {
-    return apiClient.get(`/arena/${arenaId}/users/visible`);
+    return apiClient.get(`/arena/${arenaId}/trainers`);
   },
   getEvents(arenaId) {
     return apiClient.get(`/arena/${arenaId}/events`);

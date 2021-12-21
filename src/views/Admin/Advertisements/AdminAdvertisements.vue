@@ -52,6 +52,16 @@
                   hide-details="auto"
                 ></v-select>
               </v-col>
+              <v-col cols="12">
+                <div class="mb-2">Название объявления</div>
+                <v-text-field
+                label="Название объявления"
+                v-model="nforum.title"
+                solo
+                flat
+                hide-details="auto"
+                ></v-text-field>
+              </v-col>
               <v-col cols="12" class="">
                 <div class="mb-2">Описание объявления</div>
                 <v-textarea
@@ -77,7 +87,7 @@
                 ></v-select>
               </v-col>
 
-              <v-col cols="12" class="">
+              <v-col cols="12" class="" v-if="nforum.find.value == 'TEAMPLAYER'">
                 <div class="mb-2">Навыки</div>
                 <v-select
                   :items="positions"
@@ -91,7 +101,7 @@
                   hide-details="auto"
                 ></v-select>
               </v-col>
-              <v-col cols="12" class="mb-2">
+              <v-col cols="12" class="mb-2" v-if="nforum.find.value == 'TEAMPLAYER'">
                 <v-select
                   :items="grips"
                   v-model="nforum.grip"
@@ -152,6 +162,16 @@
                   hide-details="auto"
                 ></v-select>
               </v-col>
+              <v-col cols="12">
+                <div class="mb-2">Название объявления</div>
+                <v-text-field
+                label="Название объявления"
+                v-model="mforum.title"
+                solo
+                flat
+                hide-details="auto"
+                ></v-text-field>
+              </v-col>
               <v-col cols="12" class="">
                 <div class="mb-2">Описание объявления</div>
                 <v-textarea
@@ -177,7 +197,7 @@
                 ></v-select>
               </v-col>
 
-              <v-col cols="12" class="">
+              <v-col v-if="mforum.find.value == 'TEAMPLAYER'" cols="12" class="">
                 <div class="mb-2">Навыки</div>
                 <v-select
                   :items="positions"
@@ -191,7 +211,7 @@
                   hide-details="auto"
                 ></v-select>
               </v-col>
-              <v-col cols="12" class="mb-2">
+              <v-col v-if="mforum.find.value == 'TEAMPLAYER'" cols="12" class="mb-2">
                 <v-select
                   :items="grips"
                   v-model="mforum.grip"
@@ -288,6 +308,8 @@ export default {
         city: "Москва",
         position: "",
         grip: "",
+        title: "",
+        organizer: "",
       },
       mforum: {
         find: {},
@@ -295,6 +317,7 @@ export default {
         city: "",
         position: "",
         grip: "",
+        title: "",
       },
       cities: ["Москва"],
       playerSearch: [
@@ -304,7 +327,7 @@ export default {
         { value: "TRAINERTEAM", state: "Тренер ищет команду" },
       ],
       positions: ["Защитник", "Нападающий", "Вратарь"],
-      grips: ["левый", "правый"],
+      grips: ["Левый", "Правый"],
       forumId: "",
     };
   },
@@ -330,7 +353,7 @@ export default {
           "🚀 ~ file: UserInformation.vue ~ line 441 ~ this.$store.dispatch ~ response",
           forum
         );
-        const { type, description, city, role, grip, id } = forum;
+        const { type, description, city, role, grip, id, title } = forum;
         this.forumId = id;
         this.mforum = {
           find: { value: `${type}`, state: "" },
@@ -338,6 +361,7 @@ export default {
           city,
           position: role,
           grip,
+          title,
         };
       });
       this.modifyForumDialog = true;
@@ -390,16 +414,17 @@ export default {
       };
     },
     saveForum() {
-      const { description, position, city, grip, find } = this.nforum;
+      const { description, position, city, grip, find, title } = this.nforum;
       const postForum = {
         date: moment().format("YYYY-MM-DD"),
         description,
         grip,
         city,
-        title: this.fullName,
+        title,
         role: position,
         userId: this.userId,
         type: find.value,
+        organizer: this.fullName,
       };
       this.$store.dispatch("user/postForum", postForum).then(() => {
         this.nforum = this.initForumDialog();

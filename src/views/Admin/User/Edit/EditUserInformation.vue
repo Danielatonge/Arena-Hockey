@@ -386,7 +386,7 @@ export default {
       ],
       statuses: ["действующий", "Не действующий"],
       positions: ["Защитник", "Нападающий", "Вратарь"],
-      grips: ["левый", "правый"],
+      grips: ["Левый", "Правый"],
       socialMediaDialog: false,
       social_media_text: "",
       toggleSocialMedia: null,
