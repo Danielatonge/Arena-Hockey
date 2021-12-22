@@ -55,7 +55,7 @@
           :key="i"
           @click="viewForum(item)"
         >
-          <AdminForumCard :forum="item"> Навыки: </AdminForumCard>
+          <AdminForumCard :forum="item">  </AdminForumCard>
           <!-- <v-card elevation="0" class="pa-5 rounded-lg">
             <div class="d-flex flex-no-wrap">
               <v-card-text class="px-0 pt-0">
@@ -191,7 +191,7 @@
           :key="i"
           @click="viewForum(item)"
         >
-          <AdminForumCard :forum="item"> Навыки: </AdminForumCard>
+          <AdminForumCard :forum="item"> </AdminForumCard>
         </v-col>
       </v-row>
       <ForumPagination
@@ -217,7 +217,7 @@
           :key="i"
           @click="viewForum(item)"
         >
-          <AdminForumCard :forum="item"> Навыки: </AdminForumCard>
+          <AdminForumCard :forum="item"></AdminForumCard>
         </v-col>
       </v-row>
       <ForumPagination
@@ -243,7 +243,7 @@
           :key="i"
           @click="viewForum(item)"
         >
-          <AdminForumCard :forum="item"> Навыки: </AdminForumCard>
+          <AdminForumCard :forum="item"></AdminForumCard>
         </v-col>
       </v-row>
       <ForumPagination

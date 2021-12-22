@@ -89,7 +89,7 @@
         <p class="text-h6 font-weight-bold mt-10">Контакты</p>
         <div>
           <p v-if="arena.contacts">
-            <span v-for="x in arena.contacts" :key="x"> {{ x }} <br /> </span>
+            <span v-for="x in arena.contacts" :key="x"> {{ x }} <br /> <br /> </span>
           </p>
           <a :href="arena.website" target="_blank">
             {{ arena.website }}
@@ -132,7 +132,7 @@ export default {
     },
     media() {
       let _media = [];
-      console.log(this.arena.description)
+      console.log(this.arena.contacts)
       if (this.arena.gallery) {
         this.arena.gallery.forEach((x) => {
           const item = {
