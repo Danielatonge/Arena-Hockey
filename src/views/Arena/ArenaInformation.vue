@@ -132,6 +132,7 @@ export default {
     },
     media() {
       let _media = [];
+      console.log(this.arena.description)
       if (this.arena.gallery) {
         this.arena.gallery.forEach((x) => {
           const item = {

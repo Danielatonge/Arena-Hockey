@@ -182,6 +182,7 @@ export default {
       trainers: (state) => state.arena.trainers.map((user) => user.user),
     }),
     kid_trainers() {
+      console.log(this.trainers)
       return this.trainers.filter((x) => x.level === "KID");
     },
     youth_trainers() {
