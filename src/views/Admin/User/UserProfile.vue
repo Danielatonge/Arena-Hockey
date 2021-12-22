@@ -414,7 +414,7 @@ export default {
       pickedRole: null,
       rolelist: [],
       allroles: [
-        { name: "PLAYER", text: "Игрок" },
+        { value: "PLAYER", text: "Игрок" },
         { value: "TRAINER", text: "Тренер" },
         { value: "ARENA_ADMIN", text: "Администратор арены" },
         { value: "TEAM_ADMIN", text: "Администратор команды" },
