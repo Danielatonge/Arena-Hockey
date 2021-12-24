@@ -42,8 +42,8 @@
           <v-row>
             <v-col class="d-flex" cols="12" md="6">
               <v-select
-                :items="['Москва']"
-                v-model="city"
+                :items="cities"
+                :value="city"
                 solo
                 flat
                 class="my-auto"
@@ -96,6 +96,8 @@
 
 <script>
 import { yandexMap, ymapMarker } from "vue-yandex-maps";
+import metros from "@/utils/metros";
+import cities from "@/utils/cities";
 export default {
   components: {
     yandexMap,
@@ -139,14 +141,8 @@ export default {
         coordorder: "latlong",
         version: "2.1",
       },
-      mettro: [
-        "Юго-западная",
-        "Охотный ряд",
-        "Библиотека им. Ленина",
-        "Кропоткинская",
-        "Парк культуры",
-        "Фрунзенская",
-      ],
+      cities: cities,
+      mettro: metros,
       placeMark: null,
     };
   },
@@ -165,7 +161,9 @@ export default {
 
       this.map.events.add("click", (e) => {
         let coords = e.get("coords");
-
+        console.log(coords);
+        this.map.geoObjects.removeAll();
+        this.getMetroByCoord(coords);
         this.assignCoordinates(coords);
 
         if (this.placeMark) {
@@ -183,6 +181,32 @@ export default {
         }
         this.getAddress(coords, this.placeMark);
       });
+    },
+
+    getMetroByCoord(coords) {
+      // eslint-disable-next-line no-undef
+      ymaps
+        .geocode(coords, {
+          // Ищем только станции метро.
+          kind: "metro",
+          // Запрашиваем не более 20 результатов.
+          results: 3,
+        })
+        .then((res) => {
+          res.geoObjects.options.set("preset", "islands#redCircleIcon");
+          console.log(res.geoObjects.get(0).getAddressLine());
+          let metros = new Set();
+          res.geoObjects.each((metro) => {
+            metros.add(
+              metro.getAddressLine().split(",").pop().replace(" метро ", "")
+            );
+          });
+          console.log(metros);
+          this.$emit("update-metro", Array.from(metros));
+
+          // Добавляем коллекцию найденных геообъектов на карту.
+          this.map.geoObjects.add(res.geoObjects);
+        });
     },
     createPlacemark(coords) {
       // eslint-disable-next-line no-undef
@@ -207,6 +231,11 @@ export default {
         var firstGeoObject = res.geoObjects.get(0);
 
         this.$emit("update-address", firstGeoObject.getAddressLine());
+        const city = firstGeoObject.getLocalities().length
+          ? firstGeoObject.getLocalities()
+          : "";
+        this.$emit("update-city", city[0]);
+        console.log(city[0]);
         myPlaceMark.properties.set({
           // Формируем строку с данными об объекте.
           iconCaption: [

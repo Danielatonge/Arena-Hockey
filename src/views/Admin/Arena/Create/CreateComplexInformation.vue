@@ -132,6 +132,11 @@
                   address = value;
                 }
               "
+              @update-city="
+                (value) => {
+                  city = value;
+                }
+              "
             />
 
             <!-- {{ address }} + {{ city }} + {{ coordinate }} + {{ metro }} -->
@@ -395,3 +400,4 @@ export default {
 </script>
 
 <style></style>
+

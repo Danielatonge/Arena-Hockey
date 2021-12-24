@@ -133,7 +133,13 @@
             address = value;
           }
         "
+        @update-city="
+          (value) => {
+            city = value;
+          }
+        "
       />
+      <!-- {{ address }} + {{ city }} + {{ coordinate }} + {{ metro }} -->
       <div class="mb-4">
         <AdminSocialMedia :items="social_media"></AdminSocialMedia>
       </div>
@@ -280,17 +286,9 @@ export default {
       shortTitle: "",
       description: "",
       metro: [],
-      mettro: [
-        "Юго-западная",
-        "Охотный ряд",
-        "Библиотека им. Ленина",
-        "Кропоткинская",
-        "Парк культуры",
-        "Фрунзенская",
-      ],
       address: "",
       route: "",
-      city: "Москва",
+      city: "",
       avatar: null,
       tag_chips: [],
       tag_items: [
