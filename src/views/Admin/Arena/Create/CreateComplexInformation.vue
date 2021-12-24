@@ -111,101 +111,38 @@
                 </template>
               </v-combobox>
             </div>
-            <div class="mb-6">
-              <div class="text-h6 mb-2">Адрес</div>
-              <v-text-field
-                v-model="address"
-                outlined
-                flat
-                hide-details="auto"
-                class="rounded-lg"
-              ></v-text-field>
-            </div>
-            <div class="mb-8">
-              <v-row>
-                <v-col>
-                  <v-sheet height="350px">
-                    <yandex-map
-                      :settings="settings"
-                      :coords="coords"
-                      zoom="16"
-                      style="width: 100%; height: 100%"
-                      @map-was-initialized="initHandler"
-                    >
-                      <ymap-marker
-                        v-for="(billboard, index) in surfaces"
-                        :key="index"
-                        :marker-id="index"
-                        marker-type="placemark"
-                        :coords="billboard.coords"
-                      ></ymap-marker>
-                    </yandex-map>
-                  </v-sheet>
-                </v-col>
 
-                <v-col>
-                  <v-row>
-                    <v-col class="d-flex" cols="12" md="6">
-                      <v-select
-                        :items="['Москва']"
-                        v-model="city"
-                        solo
-                        flat
-                        class="my-auto"
-                        hide-details="auto"
-                      ></v-select>
-                    </v-col>
-                    <v-col class="d-flex pr-0" cols="12" md="6">
-                      <v-select
-                        label="Метро"
-                        :items="mettro"
-                        v-model="metro"
-                        solo
-                        flat
-                        multiple
-                        chips
-                        attach
-                        class="my-auto"
-                        hide-details="auto"
-                      ></v-select>
-                      <!-- <v-text-field
-                    label="Метро"
-                    outlined
-                    v-model="metro"
-                    flat
-                    hide-details="auto"
-                    class="rounded-lg mr-3"
-                  ></v-text-field> -->
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col class="d-flex">
-                      <v-text-field
-                        label="Широта"
-                        outlined
-                        v-model="coordinate.lat"
-                        flat
-                        hide-details="auto"
-                        class="rounded-lg mr-3"
-                      ></v-text-field>
-                      <v-text-field
-                        label="Долгота"
-                        outlined
-                        v-model="coordinate.lon"
-                        flat
-                        hide-details="auto"
-                        class="rounded-lg ml-3"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-col>
-              </v-row>
-            </div>
+            <AdminSelectLocation
+              :address="address"
+              :city="city"
+              :coordinate="coordinate"
+              :metro="metro"
+              @update-metro="
+                (value) => {
+                  metro = value;
+                }
+              "
+              @update-coords="
+                (value) => {
+                  coordinate = value;
+                }
+              "
+              @update-address="
+                (value) => {
+                  address = value;
+                }
+              "
+            />
+
+            <!-- {{ address }} + {{ city }} + {{ coordinate }} + {{ metro }} -->
             <div class="mb-4">
               <AdminSocialMedia :items="social_media"></AdminSocialMedia>
             </div>
-            <div class="mb-6">
+            <!-- <div class="mb-6">
               <AdminContact :contact="contact"></AdminContact>
+            </div> -->
+            <div class="mb-6">
+              <AdminArenaContact :contact="contacts"></AdminArenaContact>
             </div>
             <div class="mb-6">
               <AdminGallery :items="galleryPics"> </AdminGallery>
@@ -243,21 +180,20 @@
 </template>
 
 <script>
-import { yandexMap, ymapMarker } from "vue-yandex-maps";
+import AdminSelectLocation from "@/components/Admin/AdminSelectLocation.vue";
 import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
 import AdminGallery from "@/components/Admin/AdminGallery.vue";
-import AdminContact from "@/components/Admin/AdminContact.vue";
 import AdminSocialMedia from "@/components/Admin/AdminSocialMedia.vue";
+import AdminArenaContact from "@/components/Admin/AdminArenaContact.vue";
 import { mapState } from "vuex";
 
 export default {
   components: {
     AdminImageUploader,
-    yandexMap,
-    ymapMarker,
     AdminSocialMedia,
-    AdminContact,
+    AdminArenaContact,
     AdminGallery,
+    AdminSelectLocation,
   },
   watch: {
     avatar: {
@@ -321,31 +257,14 @@ export default {
   },
   data() {
     return {
-      settings: {
-        apiKey: "cd43d2ef-9a2e-465e-b60b-fd240a2ec37a",
-        lang: "ru_RU",
-        coordorder: "latlong",
-        version: "2.1",
-      },
-      addressOptions: [],
       isLoading: false,
-      search: "",
       galleryPics: [],
       map: {},
       fullTitle: "",
       shortTitle: "",
       description: "",
       metro: [],
-      mettro: [
-        "Юго-западная",
-        "Охотный ряд",
-        "Библиотека им. Ленина",
-        "Кропоткинская",
-        "Парк культуры",
-        "Фрунзенская",
-      ],
       address: "",
-      route: "",
       city: "Москва",
       avatar: null,
       tag_chips: [],
@@ -369,10 +288,7 @@ export default {
         "Сухой лед",
         "Оплата картой",
       ],
-      contact: {
-        tel: [],
-        mail: [],
-      },
+      contacts: [],
       coordinate: {
         lat: "55.753336",
         lon: "37.623084",
@@ -419,41 +335,6 @@ export default {
       this.chips.splice(this.chips.indexOf(item), 1);
       this.chips = [...this.chips];
     },
-    initHandler(obj) {
-      this.map = obj;
-    },
-    findCoordinateGivenAddress(address) {
-      this.isLoading = true;
-      this.addressOptions = [];
-      // const { address } = this;
-      // eslint-disable-next-line no-undef
-      ymaps
-        .geocode(address, {
-          results: 5,
-        })
-        .then((res) => {
-          console.log("findCoordinate:");
-          const responseLength = res.metaData.geocoder.found;
-          for (let i = 0; i < responseLength; i++) {
-            let geoObject = res.geoObjects.get(i);
-            let coords = geoObject.geometry.getCoordinates();
-            let address = geoObject.getAddressLine();
-            const addressObj = {
-              coords: coords,
-              address: address,
-            };
-            this.addressOptions.push(addressObj);
-          }
-          this.isLoading = false;
-        });
-    },
-
-    assignCoordinates() {
-      const coords = this.address.coords;
-      this.coordinate.lat = coords[0];
-      this.coordinate.lon = coords[1];
-      console.log(coords);
-    },
 
     saveNewArena() {
       let whatsapp = "";
@@ -469,14 +350,13 @@ export default {
         tags: this.tag_chips,
         address: this.address,
         description: this.description,
-        metro: this.metro,
+        metro: this.metro.length ? this.metro : [],
         city: this.city,
         lat: Number(this.coordinate.lat),
         lan: Number(this.coordinate.lon),
         profilePicture: !this.avatar ? "" : this.avatar.imageURL,
         gallery: this.galleryPics,
-        phones: this.contact.tel,
-        mails: this.contact.mail,
+        contacts: this.contacts,
         instagram: this.social_media[3].link,
         vk: this.social_media[0].link,
         website: this.social_media[2].link,
@@ -490,6 +370,7 @@ export default {
       const userId = this.userId;
 
       this.$store.dispatch("arena/saveArena", data).then((arena) => {
+        console.log(arena);
         const ndata = {
           arenaId: arena.id,
           userId: userId,

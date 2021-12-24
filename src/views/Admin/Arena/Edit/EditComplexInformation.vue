@@ -113,113 +113,27 @@
           </template>
         </v-combobox>
       </div>
-      <div class="mb-6">
-        <div class="text-h6 mb-2">Адрес</div>
-        <v-text-field
-          v-model="address"
-          outlined
-          flat
-          hide-details="auto"
-          class="rounded-lg"
-        ></v-text-field>
-        <!-- <v-autocomplete
-          v-model="address"
-          :items="addressOptions"
-          :loading="isLoading"
-          :search-input.sync="search"
-          @change="assignCoordinates"
-          hide-no-data
-          hide-selected
-          item-text="address"
-          item-value="coords"
-          label="Address"
-          return-object
-          outlined
-          cache-items
-          flat
-          hide-details="auto"
-          class="rounded-lg"
-        ></v-autocomplete> -->
-      </div>
-      <div class="mb-4">
-        <v-row>
-          <v-col>
-            <v-sheet height="350px">
-              <yandex-map
-                :settings="settings"
-                :coords="coords"
-                zoom="16"
-                style="width: 100%; height: 100%"
-                @map-was-initialized="initHandler"
-              >
-                <ymap-marker
-                  v-for="(billboard, index) in surfaces"
-                  :key="index"
-                  :marker-id="index"
-                  marker-type="placemark"
-                  :coords="billboard.coords"
-                ></ymap-marker>
-              </yandex-map>
-            </v-sheet>
-          </v-col>
-          <v-col>
-            <v-row>
-              <v-col class="d-flex" cols="12" md="6">
-                <v-select
-                  :items="['Москва']"
-                  v-model="city"
-                  solo
-                  flat
-                  class="my-auto"
-                  hide-details="auto"
-                ></v-select>
-              </v-col>
-              <v-col class="d-flex" cols="12" md="6">
-                <v-select
-                  label="Метро"
-                  :items="mettro"
-                  v-model="metro"
-                  solo
-                  flat
-                  multiple
-                  chips
-                  attach
-                  class="my-auto"
-                  hide-details="auto"
-                ></v-select>
-                <!-- <v-text-field
-                  label="Метро"
-                  outlined
-                  v-model="metro"
-                  flat
-                  hide-details="auto"
-                  class="rounded-lg mr-3"
-                ></v-text-field> -->
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col class="d-flex">
-                <v-text-field
-                  label="Широта"
-                  outlined
-                  v-model="coordinate.lat"
-                  flat
-                  hide-details="auto"
-                  class="rounded-lg mr-3"
-                ></v-text-field>
-                <v-text-field
-                  label="Долгота"
-                  outlined
-                  v-model="coordinate.lon"
-                  flat
-                  hide-details="auto"
-                  class="rounded-lg ml-3"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
-      </div>
+      <AdminSelectLocation
+        :address="address"
+        :city="city"
+        :coordinate="coordinate"
+        :metro="metro"
+        @update-metro="
+          (value) => {
+            metro = value;
+          }
+        "
+        @update-coords="
+          (value) => {
+            coordinate = value;
+          }
+        "
+        @update-address="
+          (value) => {
+            address = value;
+          }
+        "
+      />
       <div class="mb-4">
         <AdminSocialMedia :items="social_media"></AdminSocialMedia>
       </div>
@@ -270,18 +184,17 @@
 </template>
 
 <script>
-import { yandexMap, ymapMarker } from "vue-yandex-maps";
+import AdminSelectLocation from "@/components/Admin/AdminSelectLocation.vue";
 import AdminImageUploader from "@/components/Admin/AdminImageUploader.vue";
 import AdminGallery from "@/components/Admin/AdminGallery.vue";
 // import AdminContact from "@/components/Admin/AdminContact.vue";
 import AdminSocialMedia from "@/components/Admin/AdminSocialMedia.vue";
-import AdminArenaContact from '../../../../components/Admin/AdminArenaContact.vue';
+import AdminArenaContact from "@/components/Admin/AdminArenaContact.vue";
 
 export default {
   components: {
     AdminImageUploader,
-    yandexMap,
-    ymapMarker,
+    AdminSelectLocation,
     AdminGallery,
     AdminSocialMedia,
     AdminArenaContact,
@@ -449,7 +362,7 @@ export default {
       ],
 
       settings: {
-        apiKey: "cd43d2ef-9a2e-465e-b60b-fd240a2ec37a",
+        apiKey: "c845f0cd-98df-40dc-9d9b-a4d580c6e230",
         lang: "ru_RU",
         coordorder: "latlong",
         version: "2.1",
@@ -517,7 +430,7 @@ export default {
         city: this.city,
         lat: Number(this.coordinate.lat),
         lan: Number(this.coordinate.lon),
-        profilePicture: this.avatar.imageURL,
+        profilePicture: !this.avatar ? "" : this.avatar.imageURL,
         gallery: this.galleryPics,
         contacts: this.contacts,
         instagram: this.social_media[3].link,

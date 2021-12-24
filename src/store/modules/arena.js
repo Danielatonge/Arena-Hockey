@@ -344,7 +344,7 @@ export const actions = {
   updateArenaUser(_context, arenaUserObj) {
     return api
       .putArenaUser(arenaUserObj)
-      .then(() => {})
+      .then(() => { })
       .catch((err) => {
         console.log(err);
       });
@@ -352,7 +352,7 @@ export const actions = {
   updateArenaTeam(_context, arenaTeamObj) {
     return api
       .putArenaTeam(arenaTeamObj)
-      .then(() => {})
+      .then(() => { })
       .catch((err) => {
         console.log(err);
       });
@@ -374,7 +374,7 @@ export const actions = {
       .postArena(arena)
       .then((response) => {
         const res = response.data;
-        console.log("🚀 ~ file: arena.js ~ line 314 ~ .then ~ res", res);
+        console.log("🚀 ~ file: arena.js ~ line 314 ~ .then ~ res", response);
         commit("ADD_ARENA", res);
         return res;
       })

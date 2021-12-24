@@ -1,5 +1,6 @@
 <template>
   <yandex-map
+    :settings="settings"
     :coords="coords"
     :zoom="zoom"
     @map-was-initialized="initHandler"
@@ -7,6 +8,7 @@
       suppressMapOpenBlock: true,
       autoFitToViewport: 'always',
     }"
+    :controls="['geolocationControl', 'zoomControl', 'trafficControl']"
     :cluster-callbacks="{ '1': { click: getDataPoint } }"
     :cluster-options="{
       1: {
@@ -58,6 +60,13 @@ export default {
   data() {
     return {
       map: {},
+      settings: {
+        apiKey: "c845f0cd-98df-40dc-9d9b-a4d580c6e230",
+        lang: "ru_RU",
+        coordorder: "latlong",
+        enterprise: false,
+        version: "2.1",
+      },
     };
   },
   watch: {
@@ -98,6 +107,15 @@ export default {
     },
     initHandler(obj) {
       this.map = obj;
+
+      // eslint-disable-next-line no-undef
+      let mySearchControl = new ymaps.control.SearchControl({
+        options: {
+          noPlacemark: true,
+        },
+      });
+
+      this.map.controls.add(mySearchControl);
     },
   },
 };
