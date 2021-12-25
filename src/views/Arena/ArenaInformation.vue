@@ -63,7 +63,7 @@
       </v-row>
     </div>
     <v-row>
-      <v-col cols="12" md="8">
+      <v-col cols="12">
         <section class="wrapper-map">
           <ArenaMap
             :coords="coords"
@@ -73,7 +73,9 @@
           />
         </section>
       </v-col>
-      <v-col cols="12" md="4">
+    </v-row>
+    <v-row>
+      <v-col cols="12">
         <div v-if="arena.address">
           <p class="text-h6 mb-1">Адрес</p>
           <p class="blue--text">
@@ -83,10 +85,10 @@
         <div v-if="arena.metro ? arena.metro.length : false">
           <p class="text-h6 mt-5 mb-1">Ближайшие станции метро:</p>
           <span class="mr-3" v-for="(metro, i) in arena.metro" :key="i">
-            {{ metro }}
+            {{ metro }} <br />
           </span>
         </div>
-        <p class="text-h6 font-weight-bold mt-10">Контакты</p>
+        <p class="text-h6 font-weight-bold mt-4">Контакты</p>
         <div>
           <p v-if="arena.contacts">
             <span v-for="x in arena.contacts" :key="x"> {{ x }} <br /> <br /> </span>

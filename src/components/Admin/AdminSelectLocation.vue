@@ -37,20 +37,22 @@
             </yandex-map>
           </v-sheet>
         </v-col>
-
+      </v-row>
+      <v-row>
         <v-col>
           <v-row>
-            <v-col class="d-flex" cols="12" md="6">
+            <v-col class="d-flex" cols="12" md="3">
               <v-select
                 :items="cities"
                 :value="city"
                 solo
                 flat
+                disabled
                 class="my-auto"
                 hide-details="auto"
               ></v-select>
             </v-col>
-            <v-col class="d-flex pr-0" cols="12" md="6">
+            <v-col class="d-flex pr-0" cols="12" md="9">
               <v-select
                 label="Метро"
                 :items="mettro"
@@ -59,6 +61,7 @@
                 solo
                 flat
                 multiple
+                disabled
                 chips
                 attach
                 class="my-auto"
@@ -66,7 +69,7 @@
               ></v-select>
             </v-col>
           </v-row>
-          <v-row>
+          <!-- <v-row>
             <v-col class="d-flex">
               <v-text-field
                 label="Широта"
@@ -87,7 +90,7 @@
                 class="rounded-lg ml-3"
               ></v-text-field>
             </v-col>
-          </v-row>
+          </v-row> -->
         </v-col>
       </v-row>
     </div>
