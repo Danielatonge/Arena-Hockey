@@ -19,10 +19,10 @@
     </div>
     <div class="text-h6 mb-4">Дата и время<i class="error--text">*</i></div>
     <v-row class="mb-4">
-      <v-col class="d-flex" cols="12" md="3">
+      <v-col class="d-flex" cols="3">
         <AppSelectDatePicker :label="start" :date.sync="startDate" />
       </v-col>
-      <v-col class="d-flex" cols="12" md="2">
+      <v-col class="d-flex" cols="3">
         <v-menu
           ref="menu"
           v-model="menu2"
@@ -36,7 +36,7 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-              label="время"
+              label="время начала"
               prepend-inner-icon="mdi-calendar"
               outlined
               dense
@@ -57,7 +57,7 @@
           ></v-time-picker>
         </v-menu>
       </v-col>
-      <v-col class="d-flex" cols="12" md="2">
+      <v-col class="d-flex" cols="3">
         <v-text-field
           label="длительность"
           outlined
@@ -71,7 +71,7 @@
         <div class="my-auto">мин</div>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col class="d-flex"  cols="12" md="3">
+      <v-col class="d-flex"  cols="2">
         <v-checkbox
           v-model="repeat"
           label="Повторять"
