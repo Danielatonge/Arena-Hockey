@@ -20,7 +20,7 @@
     <div class="text-h6 mb-4">Дата и время<i class="error--text">*</i></div>
     <v-row class="mb-4">
       <v-col class="d-flex" cols="12" md="3">
-        <AppSelectDatePicker :date.sync="startDate" />
+        <AppSelectDatePicker :label="start" :date.sync="startDate" />
       </v-col>
       <v-col class="d-flex" cols="12" md="2">
         <v-menu
@@ -71,10 +71,17 @@
         <div class="my-auto">мин</div>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col class="d-flex" cols="12" md="3">
-        <AppSelectDatePicker :date.sync="endDate" />
+      <v-col class="d-flex"  cols="12" md="3">
+        <v-checkbox
+          v-model="repeat"
+          label="Повторять"
+          color="blue darken-3"
+          class="my-auto"
+          @click="changeDates"
+        ></v-checkbox>
+        
       </v-col>
-      <v-col class="d-flex" cols="12" md="10">
+      <v-col class="d-flex" v-if="repeat" cols="12" md="9">
         <v-combobox
           v-model="choosen_days"
           :items="days"
@@ -102,13 +109,8 @@
           </template>
         </v-combobox>
       </v-col>
-      <v-col class="d-flex" cols="5" md="2">
-        <v-checkbox
-          v-model="repeat"
-          label="Повторять"
-          color="blue darken-3"
-          class="my-auto"
-        ></v-checkbox>
+      <v-col class="d-flex" v-if="repeat" cols="12" md="3">
+        <AppSelectDatePicker :label="end" :date.sync="endDate" />
       </v-col>
     </v-row>
 
@@ -226,6 +228,9 @@ export default {
   },
   data() {
     return {
+      start: "Дата мероприятия",
+      end: "Дата конца",
+      repeatEvent: false,
       time: "00:00",
       menu2: false,
       timeNeeded: 0,
@@ -236,6 +241,7 @@ export default {
       startDate: moment().format("YYYY-MM-DD"),
       date_picker_end: false,
       endDate: moment().format("YYYY-MM-DD"),
+      endDay: null,
       choosen_days: [],
       days: [
         "понедельник",
@@ -251,6 +257,14 @@ export default {
     };
   },
   methods: {
+    changeDates(){
+      if(this.repeat == true){
+        this.start = "Дата начала"
+      } else {
+        this.start = "Дата мероприятия"
+      }
+      console.log(this.repeat)
+    },
     remove(item) {
       this.choosen_days.splice(this.choosen_days.indexOf(item), 1);
       this.choosen_days = [...this.choosen_days];
@@ -271,7 +285,14 @@ export default {
       let startDate = this.startDate;
       let startDateTime = new Date(`${startDate}T${this.time}:00`);
       let startMoment = moment(startDateTime);
-      let endDate = this.endDate;
+      let endDate = ''
+      if(this.repeat == true){
+        this.endDay = this.endDate;
+      } else {
+        this.endDay = startDate
+        const cuttentDayIndex = new Date(this.endDay).getDay();
+        this.choosen_days.push(this.days[cuttentDayIndex - 1])
+      }
       let endTime = startMoment.add(this.timeNeeded, "minutes").format("HH:mm");
 
       const event = {
