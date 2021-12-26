@@ -285,7 +285,6 @@ export default {
       let startDate = this.startDate;
       let startDateTime = new Date(`${startDate}T${this.time}:00`);
       let startMoment = moment(startDateTime);
-      let endDate = ''
       if(this.repeat == true){
         this.endDay = this.endDate;
       } else {
@@ -301,7 +300,7 @@ export default {
         type: "",
         days: this.processChoosenDays(this.choosen_days),
         startDate: startDate,
-        endDate: endDate,
+        endDate: this.endDay,
         startTime: this.time,
         endTime: endTime,
         description: this.description,
