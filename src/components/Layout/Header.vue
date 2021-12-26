@@ -75,7 +75,7 @@
         </v-badge>
       </router-link>
 
-      <!-- <div v-if="(USER_ROLE == 'Продавец') || (userRole == 'Продавец')" > -->
+      <div v-if="(USER_ROLE == 'Продавец') || (userRole == 'Продавец')" >
         <v-btn
         style = "position: relative;
           left:70px;"
@@ -84,7 +84,7 @@
           <v-icon
           color="#0681C8">mdi-file-document-multiple-outline</v-icon>
         </v-btn>
-      <!-- </div> -->
+      </div>
         
       </div>
     </v-toolbar>
@@ -97,13 +97,25 @@ import { mapGetters, mapActions, mapState } from "vuex";
 import { GET_CLIENT_CART_COUNT } from "@/api";
 export default {
   name: "Header",
+  data() {
+    return {
+      userRole: "",
+    }
+  },
   computed: {
     ...mapGetters("auth", ["loggedIn"]),
     ...mapState("auth", ["userId"]),
     ...mapGetters('sushilka',["CART_COUNT", "USER_ROLE"]),
   },
+  created(){
+    this.getUserRole();
+    this.getCartCount();
+  },
   methods: {
-       ...mapActions('sushilka',["CHANGE_CART_COUNT"]),
+    ...mapActions('sushilka',["CHANGE_CART_COUNT"]),
+    getUserRole(){
+      this.userRole = localStorage.getItem('user_role')
+    },
     logout() {
       const userId = this.userId;
       this.$store.dispatch("auth/logoutUser");
