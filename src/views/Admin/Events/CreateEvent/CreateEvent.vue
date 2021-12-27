@@ -243,7 +243,7 @@ export default {
     return {
       rules: {
         num: value => {
-          return Number(value) >= 0  || 'Должно быть больше 0'
+          return Number(value) >= 60  || 'Длительность должна быть больше 60'
         },
       },
       formHasErrors: false,
