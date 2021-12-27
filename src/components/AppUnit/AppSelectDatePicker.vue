@@ -26,6 +26,7 @@
       @change="$emit('update:date', dateCopied)"
       @input="date_picker = false"
       locale="ru-RU"
+      :first-day-of-week="1"
     ></v-date-picker>
   </v-menu>
 </template>

@@ -293,8 +293,16 @@ export default {
   },
   methods: {
     changeDates(){
+      this.choosen_days = []
       if(this.repeat == true){
         this.start = "Дата начала"
+        console.log(this.startDate)
+        let cuttentDayIndex = new Date(this.startDate).getDay();
+        console.log(cuttentDayIndex)
+        if(cuttentDayIndex == 0){
+          cuttentDayIndex = 7
+        }
+        this.choosen_days.push(this.days[cuttentDayIndex - 1])
       } else {
         this.start = "Дата мероприятия"
       }
