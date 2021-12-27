@@ -42,7 +42,7 @@
           <v-tab-item 
           v-for="arena in allArenas"
           :key="arena.arenaId">
-            <!-- <admin-schedule-event :arenaId="componentKey" :userId="userId" :key="componentKey" /> -->
+            <admin-schedule-event :arenaId="componentKey" :userId="userId" :key="componentKey" />
             <!-- <create-event :arenaId="componentKey" :userId="userId" :key="componentKey" /> -->
           </v-tab-item>
         </v-tabs-items>
@@ -56,12 +56,12 @@
 <script>
 import Axios from "axios";
 import { GET_ARENAS } from "@/api";
-// import AdminScheduleEvent from '../Arena/View/AdminScheduleEvent.vue';
+import AdminScheduleEvent from '../Arena/View/AdminScheduleEvent.vue';
 // import CreateEvent from './CreateEvent/CreateEvent.vue';
 
 export default {
   components: {
-    // AdminScheduleEvent,
+    AdminScheduleEvent,
     // CreateEvent,
   },
   props: {
