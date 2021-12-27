@@ -164,10 +164,10 @@ export default {
     ...mapState("arena", ["events"]),
     ievents() {
       const events = [];
-      this.events.forEach((event) => {
-        const nEvents = this.generateEvents(event);
-        events.push(...nEvents);
-      });
+      // this.events.forEach((event) => {
+      //   const nEvents = this.generateEvents(event);
+      //   events.push(...nEvents);
+      // });
       return events;
     },
   },
