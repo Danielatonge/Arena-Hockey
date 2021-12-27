@@ -287,7 +287,6 @@ export default {
     form () {
       return {
         timeNeeded: this.timeNeeded,
-        choosen_days: this.choosen_days,
       }
     },
   },
@@ -326,20 +325,25 @@ export default {
     saveEvent() {
       this.formHasErrors = false
 
-      
-      if(this.formHasErrors == true){
+      Object.keys(this.form).forEach(f => {
+        if (!this.form[f]) this.formHasErrors = true
+        
+        this.$refs[f].validate(true)
+        
+      })
+      if(this.timeNeeded < 60){
         return
-      }
-      // if(this.choosen_days.length < 1){
-      //   console.log("bleeeeee")
-      //   return
-      // }
+      }      
       console.log("прошли")
       const arenaId = this.arenaId;
       let startDate = this.startDate;
       let startDateTime = new Date(`${startDate}T${this.time}:00`);
       let startMoment = moment(startDateTime);
       if(this.repeat == true){
+        if(this.choosen_days.length < 1){
+          console.log("Bleeeeee")
+          return
+        }
         this.endDay = this.endDate;
       } else {
         this.endDay = startDate
