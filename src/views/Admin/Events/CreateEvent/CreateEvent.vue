@@ -67,6 +67,10 @@
           hide-details="auto"
           type="number"
           class="rounded-lg mr-3"
+          required
+          ref="timeNeeded"
+          :rules="[rules.num]"
+          :error-messages="errorMessages"
         ></v-text-field>
         <div class="my-auto">мин</div>
       </v-col>
@@ -203,6 +207,15 @@
       >
         Отменить
       </v-btn>
+      <!-- <v-btn
+        color="grey lighten-2"
+        large
+        class="body-2 px-6 ml-2 rounded-lg"
+        elevation="0"
+        @click="testFunc"
+      >
+        Test
+      </v-btn> -->
     </div>
   </div>
 </template>
@@ -228,6 +241,13 @@ export default {
   },
   data() {
     return {
+      rules: {
+        num: value => {
+          return Number(value) >= 0  || 'Должно быть больше 0'
+        },
+      },
+      formHasErrors: false,
+      errorMessages: '',
       start: "Дата мероприятия",
       end: "Дата конца",
       repeatEvent: false,
@@ -256,7 +276,29 @@ export default {
       title: "",
     };
   },
+  computed: {
+    form () {
+      return {
+        timeNeeded: this.timeNeeded,
+      }
+    },
+  },
   methods: {
+    // testFunc(){
+    //   this.formHasErrors = false
+
+    //   Object.keys(this.form).forEach(f => {
+    //     if (!this.form[f]) this.formHasErrors = true
+        
+    //     this.$refs[f].validate(true)
+        
+    //   })
+    //   if(this.formHasErrors == true){
+    //     return true
+    //   }
+      
+    //   console.log("Here")
+    // },
     changeDates(){
       if(this.repeat == true){
         this.start = "Дата начала"
@@ -281,6 +323,17 @@ export default {
       });
     },
     saveEvent() {
+      this.formHasErrors = false
+
+      Object.keys(this.form).forEach(f => {
+        if (!this.form[f]) this.formHasErrors = true
+        
+        this.$refs[f].validate(true)
+        
+      })
+      if(this.formHasErrors == true){
+        return true
+      }
       const arenaId = this.arenaId;
       let startDate = this.startDate;
       let startDateTime = new Date(`${startDate}T${this.time}:00`);
