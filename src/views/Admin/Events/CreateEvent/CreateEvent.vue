@@ -97,6 +97,10 @@
           label="выберите дни"
           multiple
           solo
+          required
+          ref="choosen_days"
+          :rules="[rules.length]"
+          :error-messages="errorMessages"
         >
           <template v-slot:selection="{ attrs, item, select, selected }">
             <v-chip
@@ -245,6 +249,9 @@ export default {
         num: value => {
           return Number(value) >= 60  || 'Длительность должна быть больше 60'
         },
+        length: value => {
+          return value.length >= 2  || 'Выберите дни проведения мероприятия'
+        },
       },
       formHasErrors: false,
       errorMessages: '',
@@ -280,25 +287,11 @@ export default {
     form () {
       return {
         timeNeeded: this.timeNeeded,
+        choosen_days: this.choosen_days,
       }
     },
   },
   methods: {
-    // testFunc(){
-    //   this.formHasErrors = false
-
-    //   Object.keys(this.form).forEach(f => {
-    //     if (!this.form[f]) this.formHasErrors = true
-        
-    //     this.$refs[f].validate(true)
-        
-    //   })
-    //   if(this.formHasErrors == true){
-    //     return true
-    //   }
-      
-    //   console.log("Here")
-    // },
     changeDates(){
       if(this.repeat == true){
         this.start = "Дата начала"
@@ -332,8 +325,12 @@ export default {
         
       })
       if(this.formHasErrors == true){
-        return true
+        return
       }
+      if(this.choosen_days.length < 1){
+        return
+      }
+      console.log("прошли")
       const arenaId = this.arenaId;
       let startDate = this.startDate;
       let startDateTime = new Date(`${startDate}T${this.time}:00`);
