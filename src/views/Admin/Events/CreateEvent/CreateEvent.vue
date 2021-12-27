@@ -326,18 +326,14 @@ export default {
     saveEvent() {
       this.formHasErrors = false
 
-      Object.keys(this.form).forEach(f => {
-        if (!this.form[f]) this.formHasErrors = true
-        
-        this.$refs[f].validate(true)
-        
-      })
+      
       if(this.formHasErrors == true){
         return
       }
-      if(this.choosen_days.length < 1){
-        return
-      }
+      // if(this.choosen_days.length < 1){
+      //   console.log("bleeeeee")
+      //   return
+      // }
       console.log("прошли")
       const arenaId = this.arenaId;
       let startDate = this.startDate;
