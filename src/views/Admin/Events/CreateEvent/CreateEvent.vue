@@ -225,7 +225,7 @@
 </template>
 
 <script>
-import moment from "moment";
+//import moment from "moment";
 
 export default {
   created() {},
@@ -265,9 +265,9 @@ export default {
       event_nav_value: 0,
       event_nav: ["Запланировано", "Выполнено", "Отменено"],
       date_picker_start: false,
-      startDate: moment().format("YYYY-MM-DD"),
+      startDate: "",
       date_picker_end: false,
-      endDate: moment().format("YYYY-MM-DD"),
+      endDate: "",
       endDay: null,
       choosen_days: [],
       days: [
@@ -342,7 +342,7 @@ export default {
       const arenaId = this.arenaId;
       let startDate = this.startDate;
       let startDateTime = new Date(`${startDate}T${this.time}:00`);
-      let startMoment = moment(startDateTime);
+      let startMoment = startDateTime
       if(this.repeat == true){
         this.endDay = this.endDate;
       } else {
