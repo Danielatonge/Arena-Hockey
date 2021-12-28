@@ -223,6 +223,19 @@ export const apiUser = {
       `&queryString=${queryString}&type=${type}&sortBy=${sortBy}`;
     return apiClient.get(url);
   },
+  filterAdminAllTeams({
+    userId,
+    city,
+    currentPage,
+    pageSize,
+    queryString,
+    sortBy,
+  }) {
+    const url =
+      `/user/${userId}/teams/LK?city=${city}&currentPage=${currentPage}&pageSize=${pageSize}` +
+      `&queryString=${queryString}&sortBy=${sortBy}`;
+    return apiClient.get(url);
+  },
   filterTeams({ userId, userTeamFilter }) {
     //TODO: will finally change to this in future
     const { page, search, numItems, sort_asc, address, type } = userTeamFilter;

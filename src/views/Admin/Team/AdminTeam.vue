@@ -90,9 +90,11 @@ export default {
         queryString: search,
         sortBy: sort_asc.key,
       };
-      console.log(filters)
-      console.log(`/user/${filters.userId}/teams/LK?city=${filters.city}&currentPage=${filters.currentPage}&pageSize=${filters.pageSize}` +
-      `&queryString=${filters.queryString}&type=${filters.type}&sortBy=${filters.sortBy}`)
+      if(type.text == 'Все команды'){
+        this.getAllTeams()
+        return
+      }
+      console.log("Here")
       this.$store
         .dispatch("user/filterAdminTeams", filters)
         .then(({ paginationLength, numFound }) => {
@@ -100,6 +102,23 @@ export default {
           this.userTeam.numFound = numFound;
         });
     },
+    getAllTeams(){
+      const { address, sort_asc, numItems, search, page } = this.userTeam;
+      const filters = {
+        userId: this.userId,
+        city: address,
+        currentPage:page,
+        pageSize: numItems.value,
+        queryString: search,
+        sortBy: sort_asc.key,
+      };
+      this.$store
+        .dispatch("user/filterAdminAllTeams", filters)
+        .then(({ paginationLength, numFound }) => {
+          this.userTeam.paginationLength = paginationLength;
+          this.userTeam.numFound = numFound;
+        });
+    }
   },
   data() {
     return {

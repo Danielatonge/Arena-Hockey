@@ -127,6 +127,23 @@ export const actions = {
         console.log(err);
       });
   },
+  filterAdminAllTeams({ commit }, filters) {
+    return api
+      .filterAdminAllTeams(filters)
+      .then((response) => {
+        const res = response.data;
+        console.log("🚀 ~ file: arena.js ~ line 183 ~ .then ~ res", res);
+
+        commit("SET_TEAMS", res.content);
+        return {
+          paginationLength: res.totalPages,
+          numFound: res.totalElements,
+        };
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   filterAdminArenas({ commit }, filters) {
     return api
       .filterAdminArenas(filters)
