@@ -8,6 +8,7 @@
     <input
       type="file"
       ref="file"
+      accept=".png,.jpeg,.jpg"
       :name="uploadFieldName"
       @change="onFileChange($event.target.name, $event.target.files)"
       style="display: none"
