@@ -360,11 +360,13 @@
         </v-bottom-sheet>
         <v-dialog
         v-model="imgDialog"
-        width="1100px"
+        width="1000px"
+        
         persistent>
             <v-card
             color="#EAEAEA"
-            style="max-width: 1100px">
+            height= "850px"
+            >
                 <v-card-title style="display: flex; justify-content: flex-start; position: relative;">
                     <div class="itemcenter">
                         <p class="img_title">Загрузка фото</p>
@@ -382,15 +384,32 @@
                 </v-card-title>
                 <v-card-text>
                     <v-row>
-                        <v-col style="padding-left: 24px" align-self="center" cols="4">
+                        <v-col style="padding-left: 24px" align-self="center" cols="12" md="6">
                             <div v-if="srcMainImage == null" style="display: flex; align-items: center; text-align: center;">
                                 <p style="font-family: Roboto; font-style: normal; font-weight: normal; font-size: 18px; line-height: 21px;">Выберите основную фотографию товара</p>
                             </div>
                             <div v-else>
-                                <img :src="srcMainImage" :alt="altMainImage" width="100%">
+                                <!-- <img :src="srcMainImage" :alt="altMainImage" width="300" height="400"> -->
+                                <crop :dataPhoto="srcMainImage"> </crop>
+                                <!-- <div style="position: fixed;top: 600px;width:320px;height:100px">
+                                <v-slider
+                                  v-model="widthPhotoEdit"
+                                  class="align-self-stretch"
+                                  min="200"
+                                  max="400"
+                                  step="1"
+                                >Ширина</v-slider>
+                                <v-slider
+                                  v-model="heightPhotoEdit"
+                                  class="align-self-stretch"
+                                  min="200"
+                                  max="400"
+                                  step="1"
+                                >Высота</v-slider>
+                                </div> -->
                             </div>
                         </v-col>
-                        <v-col cols="8" style="padding-right: 0px">
+                        <v-col cols="12" md="6">
                             <div
                             class="block_with_img_all">
                                 <div 
@@ -406,9 +425,9 @@
                         </v-col>
                     </v-row>
                 </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
+                
                     <v-btn
+                    style="position: absolute;top: 700px; left: 800px;"
                     :loading="loadPhoto"
                     elevation="0"
                     color="#0681C8"
@@ -416,8 +435,8 @@
                     width="145px"
                     class="btn_text"
                     @click="getLinkToPhoto">Сохранить</v-btn>
-                    <v-spacer></v-spacer>
-                </v-card-actions>
+                  
+                
             </v-card>
         </v-dialog>
         <v-dialog
@@ -538,11 +557,12 @@
 <script>
 import Axios from "axios";
 import vMapInAds from "./vMapInAds.vue"
+import crop from './createNewProduct/crop.vue'
 import { GET_CATEGORIES, GET_PRODUCT_PARAMETERS, CREATE_PRODUCT, UPLOAD_PHOTO, CREATE_DRAFT_PRODUCT } from "@/api";
 import { mapActions } from "vuex";
 
 export default {
-  components: { vMapInAds },
+  components: { vMapInAds, crop },
   name: "createNewProduct",
   data() {
     return {
@@ -636,6 +656,8 @@ export default {
     cityMap: "",
     countryMap: "",
     coordsMap: [],
+    // widthPhotoEdit: 300,
+    // heightPhotoEdit: 300,
     };
   },
   methods: {

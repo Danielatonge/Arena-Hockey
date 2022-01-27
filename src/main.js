@@ -8,11 +8,14 @@ import VueLazyLoad from "vue-lazyload";
 import { Plugin } from "vue-fragment";
 import upperFirst from "lodash/upperFirst";
 import camelCase from "lodash/camelCase";
+import VueCroppie from "vue-croppie";
+import "croppie/croppie.css";
 
 Vue.config.productionTip = false;
 Vue.use(VueLazyLoad);
 Vue.use(Plugin);
 Vue.use(Vuelidate);
+Vue.use(VueCroppie);
 
 const requireComponent = require.context(
   // The relative path of the components folder
