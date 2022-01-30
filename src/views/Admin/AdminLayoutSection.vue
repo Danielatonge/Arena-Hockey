@@ -178,7 +178,12 @@
       <v-container>
         <v-row>
           <v-col cols="12" md="3">
+            <div>
             <AppVerticalSidebar :items="sidebar_items" />
+            </div>
+            <div class = "mt-10">
+            <AppVerticalSidebarTest :items="sidebar_itemsTest" />
+            </div>
           </v-col>
           <v-col cols="12" md="9">
             <router-view :user="user"></router-view>
@@ -202,6 +207,12 @@ export default {
   created() {
     this.$store.dispatch("user/getUser", this.userId).then(() => {
       const userId = this.userId;
+      this.sidebar_itemsTest = [
+        {
+          text: "Мои команды Тест",
+          link: { name: "admin-team-test", params: { userId } },
+        },
+      ],
       this.sidebar_items = [
         {
           text: "Профиль",
@@ -218,6 +229,10 @@ export default {
         {
           text: "Избранное",
           link: ``,
+        },
+        {
+          text: "Мои команды Тест",
+          link: { name: "admin-team-test-information", params: { userId } },
         },
         {
           text: "Мои команды",

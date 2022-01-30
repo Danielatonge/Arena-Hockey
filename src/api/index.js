@@ -50,3 +50,4 @@ export const GET_USER_BY_ID = addPortalIP("/user/");
 export const CREATE_TEAM_USER = addPortalIP("/team/user");
 export const GET_TEAM = addPortalIP("/team/");
 export const GET_ARENA = addPortalIP("/arena/");
+export const POST_TEAM_USER = addPortalIP("/team/user");

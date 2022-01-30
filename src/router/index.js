@@ -31,6 +31,7 @@ import SubstituteBench from "../views/Bench/SubstituteBench.vue";
 
 import AdminAddArenaSportComplex from "../views/Admin/Arena/AdminAddArenaSportComplex.vue";
 import AdminTeam from "../views/Admin/Team/AdminTeam";
+import AdminTeamTestInforamtion from "../views/Admin/Team/teamSelect/AdminTeamTestInformation"
 
 import AdminAdvertisements from "../views/Admin/Advertisements/AdminAdvertisements.vue";
 
@@ -238,6 +239,14 @@ const routes = [
         component: AdminTeam,
         props: true,
         meta: { requiresAuth: true },
+      },
+      {
+        path: "teamsTestInformation",
+        name: "admin-team-test-information",
+        component: AdminTeamTestInforamtion,
+        props: true,
+        meta: { requiresAuth: true },
+        
       },
       {
         path: "advertisement",

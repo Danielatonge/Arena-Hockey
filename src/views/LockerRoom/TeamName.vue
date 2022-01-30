@@ -57,6 +57,9 @@
               {{ team.city }}
             </p>
           </div>
+          <div class="ma-auto">
+            <v-btn @click="addUserInTeam">Вступить в команду</v-btn>
+          </div>
         </div>
       </v-container>
     </v-img>
@@ -456,7 +459,7 @@
 <script>
 import { mapState } from "vuex";
 import Axios from "axios";
-import { GET_TEAM } from "@/api";
+import { GET_TEAM, POST_TEAM_USER } from "@/api";
 import LightBox from "vue-image-lightbox";
 
 export default {
@@ -481,6 +484,7 @@ export default {
     ...mapState("team", ["team"]),
     ...mapState("team", ["users"]),
     ...mapState("team", ["forums"]),
+    ...mapState("user", ["user"]),
     valid_contact_list() {
       return this.contact_list.filter((x) => x.link !== "");
     },
@@ -585,6 +589,14 @@ export default {
       });
 
       return formatter.format(newDate);
+    },
+    async addUserInTeam(){
+      let obj = {}
+      obj = {teamId: this.teamId, userId: this.user.id, visibility: 1}
+      await Axios.post(`${POST_TEAM_USER}`, obj)
+      .then((res) =>
+      console.log("res", res)
+      )
     },
     async getAllTeamPlayers() {
       await Axios.get(`${GET_TEAM}${this.teamId}/users?role=PLAYER`)
